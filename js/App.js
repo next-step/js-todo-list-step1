@@ -2,6 +2,7 @@ import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 
 export default class App {
+  countId = 3;
   constructor({ data, $targetTodoInput, $targetTodoList }) {
     this.data = data;
 
@@ -10,7 +11,7 @@ export default class App {
       $target: $targetTodoInput,
       onInput: (text) => {
         const todo = {
-          id: this.data[this.data.length - 1].id + 1,
+          id: this.countId++,
           text,
           isCompleted: false,
         };
@@ -23,8 +24,27 @@ export default class App {
     this.todoList = new TodoList({
       data: this.data,
       $target: $targetTodoList,
+      onToggle: (id) => {
+        const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
+        const { isCompleted } = todo;
+        todo.isCompleted = !isCompleted;
+        const restData = this.data.filter((todo) => todo.id.toString() !== id);
+        const nextData = [...restData, todo].sort((a, b) => {
+          return a.id < b.id ? -1 : a.id > b.id ? 1 : 1;
+        });
+        this.setState(nextData);
+      },
       onRemove: (id) => {
         const nextData = this.data.filter((todo) => todo.id.toString() !== id);
+        this.setState(nextData);
+      },
+      onEdit: (id, text) => {
+        const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
+        todo.text = text;
+        const restData = this.data.filter((todo) => todo.id.toString() !== id);
+        const nextData = [...restData, todo].sort((a, b) => {
+          return a.id < b.id ? -1 : a.id > b.id ? 1 : 1;
+        });
         this.setState(nextData);
       },
     });
