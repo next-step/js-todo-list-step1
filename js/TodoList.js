@@ -3,8 +3,8 @@ export default class TodoList {
     (this.data = data), (this.$target = $target);
 
     this.$target.addEventListener("click", (e) => {
-      const $targetClassName = e.target.className;
-      switch ($targetClassName) {
+      const { className } = e.target
+      switch (className) {
         case "toggle":
           onToggle(e.target.closest("li").dataset.id);
           break;
@@ -17,15 +17,15 @@ export default class TodoList {
       }
     });
     this.$target.addEventListener("dblclick", (e) => {
-      const $targetClassName = e.target.className;
-      if ($targetClassName === "label") {
+      const { className } = e.target
+      if (className === "label") {
         e.target.closest("li").className = "editing";
         e.target.closest("li").querySelector(".edit").focus();
       }
     });
     this.$target.addEventListener("keyup", (e) => {
-      const $targetClassName = e.target.className;
-      if ($targetClassName === "edit") {
+      const { className } = e.target
+      if (className === "edit") {
         if (e.key === "Escape") {
           if (e.target.closest("li").querySelector(".toggle").checked) {
             e.target.closest("li").className = "completed";
@@ -50,9 +50,8 @@ export default class TodoList {
     this.render();
   }
   render() {
-    const renderedHTML = this.data
+    const renderedHTML = this.data && this.data
       .map((todo) => {
-        console.log(todo.text);
         return `
           <li ${todo.isCompleted ? "class=completed" : ""} data-id=${todo.id}>
             <div class="view">

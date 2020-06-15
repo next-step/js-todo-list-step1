@@ -4,8 +4,10 @@ export default class TodoInput {
 
     this.$target.addEventListener("keyup", (e) => {
       if (e.key === "Enter") {
-        onInput(e.target.value);
-        e.target.value = "";
+        if (e.target.value) {
+          onInput(e.target.value);
+          e.target.value = "";
+        }
       }
     });
   }

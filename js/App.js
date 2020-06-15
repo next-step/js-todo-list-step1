@@ -1,10 +1,20 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
+import TodoCount from "./TodoCount.js";
+import TodoFilters from "./TodoFilters.js";
 
 export default class App {
   countId = 3;
-  constructor({ data, $targetTodoInput, $targetTodoList }) {
+  // filteredData = [];
+  constructor({
+    data,
+    $targetTodoInput,
+    $targetTodoList,
+    $targetTodoCount,
+    $targetTodoFilters,
+  }) {
     this.data = data;
+    // this.filteredData = this.filteredData;
 
     this.todoInput = new TodoInput({
       data: this.data,
@@ -18,6 +28,7 @@ export default class App {
         const nextData = [...this.data, todo];
         console.log(nextData);
         this.setState(nextData);
+        this.todoCount.setState(this.data)
       },
     });
 
@@ -48,14 +59,40 @@ export default class App {
         this.setState(nextData);
       },
     });
+
+    this.todoCount = new TodoCount({
+      data: this.data,
+      $target: $targetTodoCount,
+      $targetTodoFilters,
+    });
+
+    this.todoFilters = new TodoFilters({
+      data: this.data,
+      $target: $targetTodoFilters,
+      $targetTodoList,
+      onClickFilter: (boolean) => {
+        this.filteredData = this.data.filter(
+          (todo) => todo.isCompleted.toString() !== boolean
+        );
+        console.log(this.filteredData);
+        this.todoList.setState(this.filteredData);
+        this.todoCount.setState(this.filteredData);
+        // this.render(this.filteredData)
+      },
+    });
+
     this.render();
   }
+
   setState(nextData) {
     this.data = nextData;
     this.todoList.setState(this.data);
+    // this.todoFilters.setState(this.data)
   }
 
   render() {
-    this.todoList.setState(this.data);
+    this.todoList.render(this.data);
+    // this.todoList.setState(filteredData);
+    // this.todoCount.setState(filteredData);
   }
 }
