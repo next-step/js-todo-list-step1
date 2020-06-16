@@ -14,28 +14,24 @@ export default class TodoFilters {
       })
       switch ($targetClassName){
         case "all":
-          onClickFilter('undefined')
           e.target.classList.add("selected")
           break;
         case "active":
-          console.log("active")
-          onClickFilter('true')
           e.target.classList.add("selected")
 
           break;
         case "completed":
-          onClickFilter('false')
           e.target.classList.add("selected")
           break;
         default:
           console.log("NO MATCH FILTER")
           break;
       }
+      onClickFilter()
     })
   }
 
   setState(filteredData){
     this.data = filteredData
-    this.render()
   }
 }

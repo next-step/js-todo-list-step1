@@ -26,7 +26,6 @@ export default class App {
           isCompleted: false,
         };
         const nextData = [...this.data, todo];
-        console.log(nextData);
         this.setState(nextData);
         this.todoCount.setState(this.data)
       },
@@ -35,6 +34,7 @@ export default class App {
     this.todoList = new TodoList({
       data: this.data,
       $target: $targetTodoList,
+      $targetTodoFilters,
       onToggle: (id) => {
         const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
         const { isCompleted } = todo;
@@ -44,6 +44,8 @@ export default class App {
           return a.id < b.id ? -1 : a.id > b.id ? 1 : 1;
         });
         this.setState(nextData);
+        this.todoCount.setState(this.data)
+
       },
       onRemove: (id) => {
         const nextData = this.data.filter((todo) => todo.id.toString() !== id);
@@ -71,13 +73,16 @@ export default class App {
       $target: $targetTodoFilters,
       $targetTodoList,
       onClickFilter: (boolean) => {
-        this.filteredData = this.data.filter(
-          (todo) => todo.isCompleted.toString() !== boolean
-        );
-        console.log(this.filteredData);
-        this.todoList.setState(this.filteredData);
-        this.todoCount.setState(this.filteredData);
-        // this.render(this.filteredData)
+        // this.filteredData = this.data.filter(
+        //   (todo) => todo.isCompleted.toString() !== boolean
+        // );
+        // console.log(this.filteredData);
+        // this.todoList.setState(this.filteredData);
+        // this.todoCount.setState(this.filteredData);
+        // this.render()
+        this.todoList.setState(this.data)
+        this.todoCount.setState(this.data);
+
       },
     });
 
