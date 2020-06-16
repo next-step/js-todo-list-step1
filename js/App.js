@@ -5,7 +5,6 @@ import TodoFilters from "./TodoFilters.js";
 
 export default class App {
   countId = 3;
-  // filteredData = [];
   constructor({
     data,
     $targetTodoInput,
@@ -14,7 +13,6 @@ export default class App {
     $targetTodoFilters,
   }) {
     this.data = data;
-    // this.filteredData = this.filteredData;
 
     this.todoInput = new TodoInput({
       data: this.data,
@@ -27,7 +25,7 @@ export default class App {
         };
         const nextData = [...this.data, todo];
         this.setState(nextData);
-        this.todoCount.setState(this.data)
+        this.todoCount.setState(this.data);
       },
     });
 
@@ -44,13 +42,12 @@ export default class App {
           return a.id < b.id ? -1 : a.id > b.id ? 1 : 1;
         });
         this.setState(nextData);
-        this.todoCount.setState(this.data)
-
+        this.todoCount.setState(this.data);
       },
       onRemove: (id) => {
         const nextData = this.data.filter((todo) => todo.id.toString() !== id);
         this.setState(nextData);
-        this.todoCount.setState(this.data)
+        this.todoCount.setState(this.data);
       },
       onEdit: (id, text) => {
         const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
@@ -74,16 +71,8 @@ export default class App {
       $target: $targetTodoFilters,
       $targetTodoList,
       onClickFilter: (boolean) => {
-        // this.filteredData = this.data.filter(
-        //   (todo) => todo.isCompleted.toString() !== boolean
-        // );
-        // console.log(this.filteredData);
-        // this.todoList.setState(this.filteredData);
-        // this.todoCount.setState(this.filteredData);
-        // this.render()
-        this.todoList.setState(this.data)
+        this.todoList.setState(this.data);
         this.todoCount.setState(this.data);
-
       },
     });
 
@@ -93,12 +82,9 @@ export default class App {
   setState(nextData) {
     this.data = nextData;
     this.todoList.setState(this.data);
-    // this.todoFilters.setState(this.data)
   }
 
   render() {
     this.todoList.render(this.data);
-    // this.todoList.setState(filteredData);
-    // this.todoCount.setState(filteredData);
   }
 }
