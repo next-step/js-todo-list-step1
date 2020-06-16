@@ -4,7 +4,7 @@ import TodoCount from "./TodoCount.js";
 import TodoFilters from "./TodoFilters.js";
 
 export default class App {
-  countId = 3;
+  countId;
   constructor({
     data,
     $targetTodoInput,
@@ -14,6 +14,7 @@ export default class App {
     $targetTodoToggleAll,
   }) {
     this.data = data;
+    this.countId = this.data[this.data.length-1].id+1
 
     this.todoInput = new TodoInput({
       data: this.data,
