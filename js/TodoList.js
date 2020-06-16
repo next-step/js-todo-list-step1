@@ -20,12 +20,13 @@ export default class TodoList {
 
     this.$target.addEventListener("click", (e) => {
       const { className } = e.target;
+      const { id } = e.target.closest("li").dataset;
       switch (className) {
         case "toggle":
-          onToggle(e.target.closest("li").dataset.id);
+          onToggle(id);
           break;
         case "destroy":
-          onRemove(e.target.closest("li").dataset.id);
+          onRemove(id);
           break;
         default:
           console.error(ERRORTYPE.NOMATCHCLASS);
@@ -45,28 +46,30 @@ export default class TodoList {
     this.$target.addEventListener("dblclick", (e) => {
       const { className } = e.target;
       if (className === "label") {
-        e.target.closest("li").className = "editing";
-        e.target.closest("li").querySelector(".edit").focus();
+        const $targetLi = e.target.closest("li");
+        $targetLi.className = "editing";
+        $targetLi.querySelector(".edit").focus();
       }
     });
-    
+
     this.$target.addEventListener("keyup", (e) => {
       const { className } = e.target;
       if (className === "edit") {
+        const $targetLi = e.target.closest("li");
         if (e.key === KEYNAME.ESC) {
-          if (e.target.closest("li").querySelector(".toggle").checked) {
-            e.target.closest("li").className = "completed";
+          if ($targetLi.querySelector(".toggle").checked) {
+            $targetLi.className = "completed";
           } else {
-            e.target.closest("li").className = "";
+            $targetLi.className = "";
           }
-        } else if (e.key === KEYNAME.ENTER) {
-          const id = e.target.closest("li").dataset.id;
+        } else if (e.key === KEYNAME.ENTER && e.target.value !== "") {
+          const id = $targetLi.dataset.id;
           const text = e.target.value;
           onEdit(id, text);
-          if (e.target.closest("li").querySelector(".toggle").checked) {
-            e.target.closest("li").className = "completed";
+          if ($targetLi.querySelector(".toggle").checked) {
+            $targetLi.className = "completed";
           } else {
-            e.target.closest("li").className = "";
+            $targetLi.className = "";
           }
         }
       }

@@ -2,6 +2,7 @@ import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 import TodoCount from "./TodoCount.js";
 import TodoFilters from "./TodoFilters.js";
+import { sortData } from "./utils/Funcs.js";
 
 export default class App {
   countId;
@@ -14,7 +15,7 @@ export default class App {
     $targetTodoToggleAll,
   }) {
     this.data = data;
-    this.countId = this.data[this.data.length-1].id+1
+    this.countId = 1
 
     this.todoInput = new TodoInput({
       data: this.data,
@@ -40,10 +41,7 @@ export default class App {
         const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
         const { isCompleted } = todo;
         todo.isCompleted = !isCompleted;
-        const restData = this.data.filter((todo) => todo.id.toString() !== id);
-        const nextData = [...restData, todo].sort((a, b) => {
-          return a.id < b.id ? -1 : a.id > b.id ? 1 : 1;
-        });
+        const nextData = sortData(todo, this.data, id);
         this.setState(nextData);
       },
       onToggleAll: (boolean) => {
@@ -62,10 +60,7 @@ export default class App {
       onEdit: (id, text) => {
         const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
         todo.text = text;
-        const restData = this.data.filter((todo) => todo.id.toString() !== id);
-        const nextData = [...restData, todo].sort((a, b) => {
-          return a.id < b.id ? -1 : a.id > b.id ? 1 : 1;
-        });
+        const nextData = sortData(todo, this.data, id);
         this.setState(nextData);
       },
     });
@@ -84,10 +79,9 @@ export default class App {
         if (className === "destroy-all") {
           this.data = [];
         }
-        this.setState(this.data)
+        this.setState(this.data);
       },
     });
-
     this.render();
   }
 
