@@ -50,6 +50,7 @@ export default class App {
       onRemove: (id) => {
         const nextData = this.data.filter((todo) => todo.id.toString() !== id);
         this.setState(nextData);
+        this.todoCount.setState(this.data)
       },
       onEdit: (id, text) => {
         const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
