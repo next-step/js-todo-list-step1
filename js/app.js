@@ -8,9 +8,17 @@ class App {
     this.todoList = new TodoList({
       $element: document.getElementById('todo-list'),
       items: this.todoItems,
-      onClickCheck: id => {
+      onClickToggle: id => {
         const newTodoItems = [...this.todoItems];
-        newTodoItems[id].isCompleted = !newTodoItems[id].isCompleted;
+        newTodoItems[id] = {
+          content: this.todoItems[id].content,
+          isCompleted: !this.todoItems[id].isCompleted
+        };
+        this.setState(newTodoItems);
+      },
+      onClickDestroy: id => {
+        const newTodoItems = [...this.todoItems];
+        newTodoItems.splice(id, 1);
         this.setState(newTodoItems);
       }
     });

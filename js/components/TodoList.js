@@ -2,19 +2,25 @@ const Item = ({ id, content, isCompleted }) => {
   return `<li ${isCompleted ? 'class=completed' : ''}>
   <input class="toggle" type="checkbox" value="${id}" ${isCompleted ? 'checked' : ''}>
   <label>${content}</label>
+  <button class="destroy" name="${id}"></button>
   </li>`;
 };
 
 export default class TodoList {
   constructor(props) {
-    const { $element, items, onClickCheck } = props;
+    const { $element, items, onClickToggle, onClickDestroy } = props;
     this.$element = $element;
     this.items = items;
 
     this.render();
     this.$element.addEventListener('click', e => {
       if (e.target.nodeName == 'INPUT') {
-        onClickCheck(e.target.value);
+        onClickToggle(e.target.value);
+      }
+
+      if (e.target.nodeName == 'BUTTON') {
+        console.log(e.target.name);
+        onClickDestroy(e.target.name);
       }
     });
   }

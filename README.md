@@ -17,6 +17,7 @@
 
 - [x] todo list에 todoItem을 키보드로 입력하여 추가하기
 - [x] todo list의 체크박스를 클릭하여 complete 상태로 변경 (li tag 에 completed class 추가)
+- [x] todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
 
 ## 📝 License
 
