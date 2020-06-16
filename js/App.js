@@ -1,13 +1,13 @@
-import TodoInput from "./TodoInput.js";
-import TodoList from "./TodoList.js";
-import TodoCount from "./TodoCount.js";
-import TodoFilters from "./TodoFilters.js";
-import { sortData } from "./utils/Funcs.js";
+import TodoInput from './TodoInput.js';
+import TodoList from './TodoList.js';
+import TodoCount from './TodoCount.js';
+import TodoFilters from './TodoFilters.js';
+import { sortData } from './utils/Funcs.js';
 
 export default class App {
-  countId;
   constructor({
     data,
+    countId,
     $targetTodoInput,
     $targetTodoList,
     $targetTodoCount,
@@ -15,7 +15,7 @@ export default class App {
     $targetTodoToggleAll,
   }) {
     this.data = data;
-    this.countId = 1
+    this.countId = countId;
 
     this.todoInput = new TodoInput({
       data: this.data,
@@ -34,6 +34,7 @@ export default class App {
 
     this.todoList = new TodoList({
       data: this.data,
+      filteredData: [],
       $target: $targetTodoList,
       $targetTodoFilters,
       $targetTodoToggleAll,
@@ -76,7 +77,7 @@ export default class App {
       $target: $targetTodoFilters,
       $targetTodoList,
       onClickFilter: (className) => {
-        if (className === "destroy-all") {
+        if (className === 'destroy-all') {
           this.data = [];
         }
         this.setState(this.data);
@@ -89,7 +90,7 @@ export default class App {
     this.data = nextData;
     this.todoList.setState(this.data);
     this.todoCount.setState(this.data);
-    localStorage.setItem("myTodo", JSON.stringify(this.data));
+    localStorage.setItem('myTodo', JSON.stringify(this.data));
   }
 
   render() {

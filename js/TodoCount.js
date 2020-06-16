@@ -1,4 +1,4 @@
-import * as template from "./utils/templates.js";
+import * as template from './utils/templates.js';
 import { ERRORTYPE } from './utils/constants.js';
 
 export default class TodoCount {
@@ -14,26 +14,26 @@ export default class TodoCount {
     this.render();
   }
   render() {
-    const filterDOMList = this.$targetTodoFilters.querySelectorAll("li a");
+    const filterDOMList = this.$targetTodoFilters.querySelectorAll('li a');
     let selectedDOMClassName = undefined;
     for (let node of filterDOMList.values()) {
-      if (node.classList.contains("selected")) {
+      if (node.classList.contains('selected')) {
         selectedDOMClassName = node.classList[0];
         break;
       }
     }
     switch (selectedDOMClassName) {
-      case "all":
+      case 'all':
         this.filteredData = this.data;
         break;
-      case "active":
+      case 'active':
         this.filteredData = this.data.filter(
-          (todo) => todo.isCompleted === false
+          (todo) => todo.isCompleted === false,
         );
         break;
-      case "completed":
+      case 'completed':
         this.filteredData = this.data.filter(
-          (todo) => todo.isCompleted === true
+          (todo) => todo.isCompleted === true,
         );
         break;
       default:

@@ -1,10 +1,10 @@
-import { KEYNAME, ERRORTYPE } from "./utils/constants.js";
-import * as template from "./utils/templates.js";
+import { KEYNAME, ERRORTYPE } from './utils/constants.js';
+import * as template from './utils/templates.js';
 
 export default class TodoList {
-  filteredData = null;
   constructor({
     data,
+    filteredData,
     $target,
     $targetTodoFilters,
     $targetTodoToggleAll,
@@ -14,18 +14,19 @@ export default class TodoList {
     onEdit,
   }) {
     this.data = data;
+    this.filteredData = filteredData;
     this.$target = $target;
     this.$targetTodoFilters = $targetTodoFilters;
     this.$targetTodoToggleAll = $targetTodoToggleAll;
 
-    this.$target.addEventListener("click", (e) => {
+    this.$target.addEventListener('click', (e) => {
       const { className } = e.target;
-      const { id } = e.target.closest("li").dataset;
+      const { id } = e.target.closest('li').dataset;
       switch (className) {
-        case "toggle":
+        case 'toggle':
           onToggle(id);
           break;
-        case "destroy":
+        case 'destroy':
           onRemove(id);
           break;
         default:
@@ -35,41 +36,41 @@ export default class TodoList {
     });
 
     let toggleBoolean = true;
-    this.$targetTodoToggleAll.addEventListener("click", (e) => {
+    this.$targetTodoToggleAll.addEventListener('click', (e) => {
       const { className } = e.target;
-      if (className === "toggle-all-label") {
+      if (className === 'toggle-all-label') {
         onToggleAll(toggleBoolean);
         toggleBoolean = !toggleBoolean;
       }
     });
 
-    this.$target.addEventListener("dblclick", (e) => {
+    this.$target.addEventListener('dblclick', (e) => {
       const { className } = e.target;
-      if (className === "label") {
-        const $targetLi = e.target.closest("li");
-        $targetLi.className = "editing";
-        $targetLi.querySelector(".edit").focus();
+      if (className === 'label') {
+        const $targetLi = e.target.closest('li');
+        $targetLi.className = 'editing';
+        $targetLi.querySelector('.edit').focus();
       }
     });
 
-    this.$target.addEventListener("keyup", (e) => {
+    this.$target.addEventListener('keyup', (e) => {
       const { className } = e.target;
-      if (className === "edit") {
-        const $targetLi = e.target.closest("li");
+      if (className === 'edit') {
+        const $targetLi = e.target.closest('li');
         if (e.key === KEYNAME.ESC) {
-          if ($targetLi.querySelector(".toggle").checked) {
-            $targetLi.className = "completed";
+          if ($targetLi.querySelector('.toggle').checked) {
+            $targetLi.className = 'completed';
           } else {
-            $targetLi.className = "";
+            $targetLi.className = '';
           }
-        } else if (e.key === KEYNAME.ENTER && e.target.value !== "") {
+        } else if (e.key === KEYNAME.ENTER && e.target.value !== '') {
           const id = $targetLi.dataset.id;
           const text = e.target.value;
           onEdit(id, text);
-          if ($targetLi.querySelector(".toggle").checked) {
-            $targetLi.className = "completed";
+          if ($targetLi.querySelector('.toggle').checked) {
+            $targetLi.className = 'completed';
           } else {
-            $targetLi.className = "";
+            $targetLi.className = '';
           }
         }
       }
@@ -80,26 +81,26 @@ export default class TodoList {
     this.render();
   }
   render() {
-    const filterDOMList = this.$targetTodoFilters.querySelectorAll("li a");
+    const filterDOMList = this.$targetTodoFilters.querySelectorAll('li a');
     let selectedDOMClassName = undefined;
     for (let node of filterDOMList.values()) {
-      if (node.classList.contains("selected")) {
+      if (node.classList.contains('selected')) {
         selectedDOMClassName = node.classList[0];
         break;
       }
     }
     switch (selectedDOMClassName) {
-      case "all":
+      case 'all':
         this.filteredData = this.data;
         break;
-      case "active":
+      case 'active':
         this.filteredData = this.data.filter(
-          (todo) => todo.isCompleted === false
+          (todo) => todo.isCompleted === false,
         );
         break;
-      case "completed":
+      case 'completed':
         this.filteredData = this.data.filter(
-          (todo) => todo.isCompleted === true
+          (todo) => todo.isCompleted === true,
         );
         break;
       default:
