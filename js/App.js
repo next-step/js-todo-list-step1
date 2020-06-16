@@ -47,6 +47,16 @@ export default class App {
         this.setState(nextData);
         this.todoCount.setState(this.data);
       },
+      onToggleAll: (boolean) => {
+        const toggleData = this.data.map((val) => {
+          return {
+            ...val,
+            isCompleted: (val.isCompleted = boolean),
+          };
+        });
+        this.setState(toggleData);
+        this.todoCount.setState(this.data);
+      },
       onRemove: (id) => {
         const nextData = this.data.filter((todo) => todo.id.toString() !== id);
         this.setState(nextData);

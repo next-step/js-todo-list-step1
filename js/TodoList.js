@@ -6,6 +6,7 @@ export default class TodoList {
     $targetTodoFilters,
     $targetTodoToggleAll,
     onToggle,
+    onToggleAll,
     onRemove,
     onEdit,
   }) {
@@ -33,13 +34,7 @@ export default class TodoList {
     this.$targetTodoToggleAll.addEventListener("click", (e) => {
       const { className } = e.target;
       if (className === "toggle-all-label") {
-        const toggleData = this.data.map((val) => {
-          return {
-            ...val,
-            isCompleted: (val.isCompleted = toggleBoolean),
-          };
-        });
-        this.setState(toggleData);
+        onToggleAll(toggleBoolean)
         toggleBoolean = !toggleBoolean;
       }
     });
