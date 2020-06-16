@@ -299,6 +299,18 @@ body {
     border-color: rgba(175, 47, 47, 0.2);
 }
 
+.destroy-all {
+    float: right;
+    text-align: left;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.destroy-all:hover {
+    font-weight: bold;
+    color: rgba(255, 0, 0, 0.733);
+}
+
 .clear-completed, html .clear-completed:active {
     float: right;
     position: relative;

@@ -9,4 +9,5 @@ new App({
   $targetTodoList: document.querySelector(".todo-list"),
   $targetTodoCount: document.querySelector(".todo-count"),
   $targetTodoFilters: document.querySelector(".filters"),
+  $targetTodoToggleAll: document.querySelector(".toggle-all-label")
 });

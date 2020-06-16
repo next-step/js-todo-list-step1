@@ -11,6 +11,7 @@ export default class App {
     $targetTodoList,
     $targetTodoCount,
     $targetTodoFilters,
+    $targetTodoToggleAll,
   }) {
     this.data = data;
 
@@ -33,6 +34,7 @@ export default class App {
       data: this.data,
       $target: $targetTodoList,
       $targetTodoFilters,
+      $targetTodoToggleAll,
       onToggle: (id) => {
         const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
         const { isCompleted } = todo;
@@ -70,7 +72,11 @@ export default class App {
       data: this.data,
       $target: $targetTodoFilters,
       $targetTodoList,
-      onClickFilter: (boolean) => {
+      onClickFilter: (className) => {
+        if (className === "destroy-all") {
+          this.data = [];
+          this.setState(this.data);
+        }
         this.todoList.setState(this.data);
         this.todoCount.setState(this.data);
       },
@@ -82,7 +88,7 @@ export default class App {
   setState(nextData) {
     this.data = nextData;
     this.todoList.setState(this.data);
-    localStorage.setItem('myTodo', JSON.stringify(this.data))
+    localStorage.setItem("myTodo", JSON.stringify(this.data));
   }
 
   render() {
