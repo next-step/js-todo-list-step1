@@ -1,6 +1,8 @@
 import App from "./App.js";
-import { data } from "./utils/constants.js";
+import { exData } from "./utils/constants.js";
 
+const myStorageData = JSON.parse(localStorage.getItem('myTodo'))
+const data = (myStorageData || exData)
 new App({
   data,
   $targetTodoInput: document.querySelector(".new-todo"),

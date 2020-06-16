@@ -1,4 +1,4 @@
-export const data = [
+export const exData = [
   {
     id: 1,
     text: "JS 공부하기",

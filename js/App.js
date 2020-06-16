@@ -82,6 +82,7 @@ export default class App {
   setState(nextData) {
     this.data = nextData;
     this.todoList.setState(this.data);
+    localStorage.setItem('myTodo', JSON.stringify(this.data))
   }
 
   render() {
