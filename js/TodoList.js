@@ -49,6 +49,7 @@ export default class TodoList {
         e.target.closest("li").querySelector(".edit").focus();
       }
     });
+    
     this.$target.addEventListener("keyup", (e) => {
       const { className } = e.target;
       if (className === "edit") {

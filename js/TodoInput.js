@@ -16,7 +16,6 @@ export default class TodoInput {
             "li a"
           );
           filterDOMList.forEach((val) => {
-            console.log(val);
             if (val.classList.contains("all")) {
               val.classList.add("selected");
             } else {

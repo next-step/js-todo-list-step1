@@ -28,7 +28,6 @@ export default class App {
         };
         const nextData = [...this.data, todo];
         this.setState(nextData);
-        this.todoCount.setState(this.data);
       },
     });
 
@@ -46,7 +45,6 @@ export default class App {
           return a.id < b.id ? -1 : a.id > b.id ? 1 : 1;
         });
         this.setState(nextData);
-        this.todoCount.setState(this.data);
       },
       onToggleAll: (boolean) => {
         const toggleData = this.data.map((val) => {
@@ -56,12 +54,10 @@ export default class App {
           };
         });
         this.setState(toggleData);
-        this.todoCount.setState(this.data);
       },
       onRemove: (id) => {
         const nextData = this.data.filter((todo) => todo.id.toString() !== id);
         this.setState(nextData);
-        this.todoCount.setState(this.data);
       },
       onEdit: (id, text) => {
         const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
@@ -87,10 +83,8 @@ export default class App {
       onClickFilter: (className) => {
         if (className === "destroy-all") {
           this.data = [];
-          this.setState(this.data);
         }
-        this.todoList.setState(this.data);
-        this.todoCount.setState(this.data);
+        this.setState(this.data)
       },
     });
 
@@ -100,6 +94,7 @@ export default class App {
   setState(nextData) {
     this.data = nextData;
     this.todoList.setState(this.data);
+    this.todoCount.setState(this.data);
     localStorage.setItem("myTodo", JSON.stringify(this.data));
   }
 
