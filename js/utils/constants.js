@@ -18,5 +18,5 @@ export const KEYNAME = {
 
 export const ERRORTYPE = {
   NOMATCHCLASS: '버튼을 정확히 눌러주세요',
-  NOMATCHFILTER: '필터버튼을 정확히 눌러주세요',
+  NOMATCHFILTER: '필터를 정확히 눌러주세요',
 };
