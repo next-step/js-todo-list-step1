@@ -7,7 +7,12 @@ class App {
 
     this.todoList = new TodoList({
       $element: document.getElementById('todo-list'),
-      items: this.todoItems
+      items: this.todoItems,
+      onClickCheck: id => {
+        const newTodoItems = [...this.todoItems];
+        newTodoItems[id].isCompleted = !newTodoItems[id].isCompleted;
+        this.setState(newTodoItems);
+      }
     });
 
     this.todoInput = new TodoInput({
