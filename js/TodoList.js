@@ -1,3 +1,6 @@
+import { KEYNAME, ERRORTYPE } from "./utils/constants.js";
+import * as template from "./utils/templates.js";
+
 export default class TodoList {
   filteredData = null;
   constructor({
@@ -25,7 +28,7 @@ export default class TodoList {
           onRemove(e.target.closest("li").dataset.id);
           break;
         default:
-          console.log("NO MATCH CLASSNAME");
+          console.error(ERRORTYPE.NOMATCHCLASS);
           break;
       }
     });
@@ -34,7 +37,7 @@ export default class TodoList {
     this.$targetTodoToggleAll.addEventListener("click", (e) => {
       const { className } = e.target;
       if (className === "toggle-all-label") {
-        onToggleAll(toggleBoolean)
+        onToggleAll(toggleBoolean);
         toggleBoolean = !toggleBoolean;
       }
     });
@@ -49,13 +52,13 @@ export default class TodoList {
     this.$target.addEventListener("keyup", (e) => {
       const { className } = e.target;
       if (className === "edit") {
-        if (e.key === "Escape") {
+        if (e.key === KEYNAME.ESC) {
           if (e.target.closest("li").querySelector(".toggle").checked) {
             e.target.closest("li").className = "completed";
           } else {
             e.target.closest("li").className = "";
           }
-        } else if (e.key === "Enter") {
+        } else if (e.key === KEYNAME.ENTER) {
           const id = e.target.closest("li").dataset.id;
           const text = e.target.value;
           onEdit(id, text);
@@ -90,35 +93,17 @@ export default class TodoList {
           (todo) => todo.isCompleted === false
         );
         break;
-
       case "completed":
         this.filteredData = this.data.filter(
           (todo) => todo.isCompleted === true
         );
         break;
       default:
-        console.log("NO MATCH CLASSNAME");
+        console.error(ERRORTYPE.NOMATCHFILTER);
         break;
     }
 
-    const renderedHTML =
-      this.filteredData &&
-      this.filteredData
-        .map((todo) => {
-          return `
-          <li ${todo.isCompleted ? "class=completed" : ""} data-id=${todo.id}>
-            <div class="view">
-              <input class="toggle" type="checkbox" 
-              ${todo.isCompleted ? "checked" : ""} 
-              />
-              <label class="label">${todo.text}</label>
-              <button class="destroy"></button>
-            </div>
-            <input class="edit" placeholder="${todo.text}" value="" />
-          </li>
-        `;
-        })
-        .join("");
-    this.$target.innerHTML = renderedHTML;
+    this.$target.innerHTML =
+      this.filteredData && template.TODOLIST(this.filteredData);
   }
 }

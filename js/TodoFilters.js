@@ -1,3 +1,5 @@
+import { ERRORTYPE } from './utils/constants.js';
+
 export default class TodoFilters {
   constructor({ data, $target, $targetTodoList, onClickFilter }) {
     this.data = data;
@@ -15,7 +17,6 @@ export default class TodoFilters {
       filterDOMList.forEach((val) => {
         val.classList.remove("selected");
       });
-
       switch ($targetClassName) {
         case "all":
           e.target.classList.add("selected");
@@ -27,7 +28,7 @@ export default class TodoFilters {
           e.target.classList.add("selected");
           break;
         default:
-          console.log("NO MATCH FILTER");
+          console.error(ERRORTYPE.NOMATCHFILTER);
           break;
       }
       onClickFilter();

@@ -19,6 +19,7 @@ export default class App {
     this.todoInput = new TodoInput({
       data: this.data,
       $target: $targetTodoInput,
+      $targetTodoFilters,
       onInput: (text) => {
         const todo = {
           id: this.countId++,

@@ -1,3 +1,6 @@
+import * as template from "./utils/templates.js";
+import { ERRORTYPE } from './utils/constants.js';
+
 export default class TodoCount {
   constructor({ data, $target, $targetTodoFilters }) {
     this.data = data;
@@ -34,11 +37,11 @@ export default class TodoCount {
         );
         break;
       default:
-        console.log("NO MATCH CLASSNAME");
+        console.error(ERRORTYPE.NOMATCHFILTER);
         break;
     }
 
-    const renderedHTML = this.filteredData && this.filteredData.length;
-    this.$target.innerHTML = `총 <strong>${renderedHTML}</strong> 개`;
+    this.$target.innerHTML =
+      this.filteredData && template.TODOCOUNT(this.filteredData.length);
   }
 }

@@ -10,3 +10,13 @@ export const exData = [
     isCompleted: true,
   },
 ];
+
+export const KEYNAME = {
+  ESC: "Escape",
+  ENTER: "Enter",
+};
+
+export const ERRORTYPE = {
+  NOMATCHCLASS: "버튼을 정확히 눌러주세요",
+  NOMATCHFILTER: "필터버튼을 정확히 눌러주세요",
+};
