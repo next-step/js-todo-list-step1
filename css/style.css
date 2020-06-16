@@ -101,10 +101,14 @@ body {
     width: 1px;
     height: 1px;
     border: none;
-    opacity: 0;
+    opacity: 1;
     position: absolute;
     right: 100%;
     bottom: 100%;
+}
+
+.toggle-all + label:hover {
+    cursor: pointer;
 }
 
 .toggle-all + label {
@@ -121,7 +125,7 @@ body {
 .toggle-all + label:before {
     content: '❯';
     font-size: 22px;
-    color: #e6e6e6;
+    color: #6d6d6d;
     padding: 10px 27px 10px 27px;
 }
 
@@ -176,6 +180,10 @@ body {
 
 .todo-list li .toggle {
     opacity: 0;
+}
+
+.todo-list li .toggle:hover {
+    cursor: pointer;
 }
 
 .todo-list li .toggle + label {
