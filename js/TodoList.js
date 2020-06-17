@@ -1,27 +1,23 @@
-function TodoList(params) {
-  if (!(this instanceof TodoList)) {
-    throw new Error("It Should be created by new");
-  }
+import { validator } from "../utils/validator.js";
 
-  if (typeof params !== "object") {
-    throw new Error("It Should be object type");
-  }
+const validateTodoList = (context, params) => {
+  validator.isNewInstance(context, TodoList);
+  validator.isObject(params);
 
   const { $target, data } = params;
 
-  if (!($target instanceof Element)) {
-    throw new Error("It Should be Element");
-  } else if (!(data instanceof Array)) {
-    throw new Error("It Should be Array");
-  }
+  validator.isElement($target);
+  validator.isArray(data);
 
   data.forEach((todo) => {
-    if (typeof todo.content !== "string") {
-      throw new Error("It Should be string");
-    } else if (todo.content.length === 0) {
-      throw new Error("It Should not be 0 length");
-    } else if (typeof todo.isCompleted !== "boolean") {
-      throw new Error("It Should be Boolean");
-    }
+    validator.isString(todo.content);
+    validator.isNotZeroLengthString(todo.content);
+    validator.isBoolean(todo.isCompleted);
   });
+};
+
+export default function TodoList(params) {
+  validateTodoList(this, params);
+
+  const { $target, data } = params;
 }

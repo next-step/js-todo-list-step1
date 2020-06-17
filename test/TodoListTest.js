@@ -1,3 +1,5 @@
+import TodoList from "../js/TodoList.js";
+
 describe("TodoList", () => {
   const $target = document.querySelector("body");
   const data = [
