@@ -2,7 +2,6 @@ import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
 import TodoFilters from './TodoFilters.js';
-import { sortData } from './utils/Funcs.js';
 
 export default class App {
   constructor({
@@ -39,10 +38,9 @@ export default class App {
       $targetTodoFilters,
       $targetTodoToggleAll,
       onToggle: (id) => {
-        const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
-        const { isCompleted } = todo;
-        todo.isCompleted = !isCompleted;
-        const nextData = sortData(todo, this.data, id);
+        const index = this.data.findIndex((todo) => todo.id.toString() === id);
+        let nextData = [...this.data];
+        nextData[index].isCompleted = !this.data[index].isCompleted;
         this.setState(nextData);
       },
       onToggleAll: (boolean) => {
@@ -59,9 +57,9 @@ export default class App {
         this.setState(nextData);
       },
       onEdit: (id, text) => {
-        const todo = this.data.filter((todo) => todo.id.toString() === id)[0];
-        todo.text = text;
-        const nextData = sortData(todo, this.data, id);
+        const index = this.data.findIndex((todo) => todo.id.toString() === id);
+        let nextData = [...this.data];
+        nextData[index].text = text;
         this.setState(nextData);
       },
     });
