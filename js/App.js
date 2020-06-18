@@ -70,6 +70,7 @@ export default class App {
 
     this.todoCount = new TodoCount({
       data: this.data,
+      filteredData: [],
       filterType: this.filterType,
       $target: $targetTodoCount,
       $targetTodoFilters,
@@ -77,7 +78,6 @@ export default class App {
 
     this.todoFilters = new TodoFilters({
       data: this.data,
-      filterType: this.filterType,
       $target: $targetTodoFilters,
       $targetTodoList,
       onClickFilter: (className) => {

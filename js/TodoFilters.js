@@ -1,9 +1,8 @@
 import { ERRORTYPE,FILTERNAME } from './utils/constants.js';
 
 export default class TodoFilters {
-  constructor({ data, filterType, $target, $targetTodoList, onClickFilter }) {
+  constructor({ data, $target, $targetTodoList, onClickFilter }) {
     this.data = data;
-    this.filterType = filterType;
     this.$target = $target;
     this.$targetTodoList = $targetTodoList;
     this.$target.addEventListener('click', (e) => {
