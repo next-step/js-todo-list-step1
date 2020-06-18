@@ -1,10 +1,11 @@
-import { KEYNAME, ERRORTYPE } from './utils/constants.js';
+import { KEYNAME, ERRORTYPE, FILTERNAME } from './utils/constants.js';
 import * as template from './utils/templates.js';
 
 export default class TodoList {
   constructor({
     data,
     filteredData,
+    filterType,
     $target,
     $targetTodoFilters,
     $targetTodoToggleAll,
@@ -15,6 +16,7 @@ export default class TodoList {
   }) {
     this.data = data;
     this.filteredData = filteredData;
+    this.filterType = filterType;
     this.$target = $target;
     this.$targetTodoFilters = $targetTodoFilters;
     this.$targetTodoToggleAll = $targetTodoToggleAll;
@@ -76,29 +78,22 @@ export default class TodoList {
       }
     });
   }
-  setState(nextData) {
+  setState(nextData, nextFilterType) {
     this.data = nextData;
+    this.filterType = nextFilterType;
     this.render();
   }
   render() {
-    const filterDOMList = this.$targetTodoFilters.querySelectorAll('li a');
-    let selectedDOMClassName = undefined;
-    for (let node of filterDOMList.values()) {
-      if (node.classList.contains('selected')) {
-        selectedDOMClassName = node.classList[0];
-        break;
-      }
-    }
-    switch (selectedDOMClassName) {
-      case 'all':
+    switch (this.filterType) {
+      case FILTERNAME.ALL:
         this.filteredData = this.data;
         break;
-      case 'active':
+      case FILTERNAME.ACTIVE:
         this.filteredData = this.data.filter(
           (todo) => todo.isCompleted === false,
         );
         break;
-      case 'completed':
+      case FILTERNAME.COMPLETED:
         this.filteredData = this.data.filter(
           (todo) => todo.isCompleted === true,
         );

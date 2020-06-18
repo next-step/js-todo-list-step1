@@ -11,6 +11,12 @@ export const exData = [
   // },
 ];
 
+export const FILTERNAME = {
+  ALL: 'all',
+  ACTIVE: 'active',
+  COMPLETED: 'completed'
+}
+
 export const KEYNAME = {
   ESC: 'Escape',
   ENTER: 'Enter',

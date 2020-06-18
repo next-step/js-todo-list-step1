@@ -1,12 +1,15 @@
 import App from './App.js';
-import { exData } from './utils/constants.js';
+import { exData, FILTERNAME } from './utils/constants.js';
 
 const myStorageData = JSON.parse(localStorage.getItem('myTodo'));
 const data = myStorageData || exData;
+const countId = data[data.length -1 ].id + 1 || 1;
+const filterType = FILTERNAME.ALL;
 
 new App({
   data,
-  countId: 1,
+  countId,
+  filterType,
   $targetTodoInput: document.querySelector('.new-todo'),
   $targetTodoList: document.querySelector('.todo-list'),
   $targetTodoCount: document.querySelector('.todo-count'),

@@ -1,37 +1,31 @@
 import * as template from './utils/templates.js';
-import { ERRORTYPE } from './utils/constants.js';
+import { ERRORTYPE, FILTERNAME } from './utils/constants.js';
 
 export default class TodoCount {
-  constructor({ data, $target, $targetTodoFilters }) {
+  constructor({ data, filterType, $target, $targetTodoFilters }) {
     this.data = data;
+    this.filterType = filterType;
     this.$target = $target;
     this.$targetTodoFilters = $targetTodoFilters;
 
     this.render();
   }
-  setState(nextData) {
+  setState(nextData, nextFilterType) {
     this.data = nextData;
+    this.filterType = nextFilterType;
     this.render();
   }
   render() {
-    const filterDOMList = this.$targetTodoFilters.querySelectorAll('li a');
-    let selectedDOMClassName = undefined;
-    for (let node of filterDOMList.values()) {
-      if (node.classList.contains('selected')) {
-        selectedDOMClassName = node.classList[0];
-        break;
-      }
-    }
-    switch (selectedDOMClassName) {
-      case 'all':
+    switch (this.filterType) {
+      case FILTERNAME.ALL:
         this.filteredData = this.data;
         break;
-      case 'active':
+      case FILTERNAME.ACTIVE:
         this.filteredData = this.data.filter(
           (todo) => todo.isCompleted === false,
         );
         break;
-      case 'completed':
+      case FILTERNAME.COMPLETED:
         this.filteredData = this.data.filter(
           (todo) => todo.isCompleted === true,
         );

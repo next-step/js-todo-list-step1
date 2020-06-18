@@ -1,11 +1,11 @@
-import { ERRORTYPE } from './utils/constants.js';
+import { ERRORTYPE,FILTERNAME } from './utils/constants.js';
 
 export default class TodoFilters {
-  constructor({ data, $target, $targetTodoList, onClickFilter }) {
+  constructor({ data, filterType, $target, $targetTodoList, onClickFilter }) {
     this.data = data;
+    this.filterType = filterType;
     this.$target = $target;
     this.$targetTodoList = $targetTodoList;
-
     this.$target.addEventListener('click', (e) => {
       const $targetClassName = e.target.classList[0];
       if ($targetClassName === 'destroy-all') {
@@ -14,31 +14,33 @@ export default class TodoFilters {
         return;
       }
 
-      if (['all', 'active', 'completed'].includes($targetClassName)) {
+      if (
+        [FILTERNAME.ALL, FILTERNAME.ACTIVE, FILTERNAME.COMPLETED].includes(
+          $targetClassName,
+        )
+      ) {
         const filterDOMList = this.$target.querySelectorAll('li a');
         filterDOMList.forEach((val) => {
           val.classList.remove('selected');
         });
         switch ($targetClassName) {
-          case 'all':
+          case FILTERNAME.ALL:
             e.target.classList.add('selected');
+            onClickFilter(FILTERNAME.ALL);
             break;
-          case 'active':
+          case FILTERNAME.ACTIVE:
             e.target.classList.add('selected');
+            onClickFilter(FILTERNAME.ACTIVE);
             break;
-          case 'completed':
+          case FILTERNAME.COMPLETED:
             e.target.classList.add('selected');
+            onClickFilter(FILTERNAME.COMPLETED);
             break;
           default:
             console.error(ERRORTYPE.NOMATCHFILTER);
             break;
         }
-        onClickFilter();
       }
     });
-  }
-
-  setState(filteredData) {
-    this.data = filteredData;
   }
 }
