@@ -2,6 +2,14 @@ const todo_ul = document.querySelector(".todo-list")
 const todo_input = document.querySelector(".new-todo") 
 const todo_list = []
 
+function deleteTodo(event) {
+    event.preventDefault()
+    const li = event.target.parentElement.parentElement
+    todo = findTodo(li)
+    todo_list.splice(todo_list.indexOf(todo), 1)
+    todo_ul.removeChild(li)
+}
+
 function editingTodo(event) {
     event.preventDefault()
     const li = event.target.parentElement
@@ -77,10 +85,11 @@ function drawTodo(current_todo, complete) {
     edit_input.classList.add("edit")
     edit_input.value = current_todo
     edit_input.addEventListener("keyup", editingTodo)
-    label.addEventListener("dblclick", editTodo)
     label.classList.add("label")
     label.innerText = current_todo
+    label.addEventListener("dblclick", editTodo)
     btn.classList.add("destroy")
+    btn.addEventListener("click", deleteTodo)
     if (complete) {
         li.classList.add("completed")
     }
