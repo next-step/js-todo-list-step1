@@ -5,8 +5,26 @@ const filt_ul = document.querySelector(".filters")
 const all_a = filt_ul.querySelector(".all")
 const active_a = filt_ul.querySelector(".active")
 const complete_a = filt_ul.querySelector(".completed")
-const todo_list = []
+let todo_list = []
 let id = 0
+
+function localTodo() {
+    const local_todo = localStorage.getItem("todo_list")
+    todo_list = JSON.parse(local_todo)
+    if (todo_list.length === 0) {
+        todo_list = []
+    } else {
+        todo_list.forEach(function(todo){
+            drawTodo(todo.todo, todo.complete, todo.id)
+        })
+        countTodo()
+        id = todo_list[todo_list.length - 1].id + 1
+    }
+}
+
+function localSave() {
+    localStorage.setItem("todo_list", JSON.stringify(todo_list))
+}
 
 function allClear() {
     const li = todo_ul.querySelectorAll("li")
@@ -55,6 +73,7 @@ function deleteTodo(event) {
     todo_list.splice(todo_list.indexOf(todo), 1)
     todo_ul.removeChild(li)
     countTodo()
+    localSave()
 }
 
 function editingTodo(event) {
@@ -69,6 +88,7 @@ function editingTodo(event) {
         label.innerText = event.target.value
         li.classList.remove("editing")
         todo.todo = label.innerText
+        localSave()
     }
 }
 
@@ -98,6 +118,7 @@ function todoComplete(event) {
         li.classList.remove("completed")
         todo.complete = false
     }
+    localSave()
 }
 
 function save(current_todo, boolean) {
@@ -118,6 +139,7 @@ function inputTodo(event) {
         drawTodo(current_todo, false, id)
         save(current_todo, false)
         countTodo()
+        localSave()
     }
 }
 
@@ -158,6 +180,7 @@ function init() {
     all_a.addEventListener("click", viewFilt)
     active_a.addEventListener("click", viewFilt)
     complete_a.addEventListener("click", viewFilt)
+    localTodo()
 }
 
 init()
