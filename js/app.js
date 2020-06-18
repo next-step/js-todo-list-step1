@@ -1,6 +1,12 @@
 const todo_ul = document.querySelector(".todo-list")
 const todo_input = document.querySelector(".new-todo") 
+const count_span = document.querySelector(".todo-count")
 const todo_list = []
+
+function countTodo() {
+    total_todo = todo_list.length
+    count_span.innerText = `총 ${total_todo} 개`
+}
 
 function deleteTodo(event) {
     event.preventDefault()
@@ -8,6 +14,7 @@ function deleteTodo(event) {
     todo = findTodo(li)
     todo_list.splice(todo_list.indexOf(todo), 1)
     todo_ul.removeChild(li)
+    countTodo()
 }
 
 function editingTodo(event) {
@@ -68,6 +75,7 @@ function inputTodo(event) {
         current_todo = todo_input.value
         todo_input.value = ""
         drawTodo(current_todo, false)
+        countTodo()
     }
 }
 
