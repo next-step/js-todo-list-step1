@@ -1,7 +1,7 @@
 import TodoCount from './TodoCount.js';
 import TodoFilter from './TodoFilter.js';
 
-export default class CounterContainer {
+export default class FilterContainer {
   constructor({ totalCount, selectedFilter }) {
     this.todoCount = new TodoCount({
       $element: document.getElementsByClassName('todo-count')[0],

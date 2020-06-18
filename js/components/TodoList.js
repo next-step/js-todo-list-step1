@@ -11,17 +11,21 @@ const EditInput = ({ id, content }) => {
   return `<input class="edit" name="${id}" value="${content}" autofocus/>`;
 };
 
-const Item = props => {
-  const { isCompleted, editing } = props;
+export const Item = props => {
+  const { content, isCompleted, editing } = props;
   const completed = isCompleted ? 'completed' : '';
   const edit = editing ? 'editing' : '';
-  return `<li class="${completed} ${edit}">${ContentWrapper(props)}${EditInput(props)}</li>`;
+  return {
+    content,
+    isCompleted,
+    editing,
+    template: `<li class="${completed} ${edit}">${ContentWrapper(props)}${EditInput(props)}</li>`
+  };
 };
 
-export default class TodoList {
+export class TodoList {
   constructor(props) {
     const { $element, items, onClickToggle, onClickDestroy, onToggleEdit } = props;
-
     this.$element = $element;
     this.todoItems = items;
     this.isEditing = -1; // 현재 편집 중인 아이템의 id 저장
@@ -37,14 +41,21 @@ export default class TodoList {
       this.isEditing = -1;
     };
 
+    // 편집 중인 아이템 외의 기능 선택 시 편집 완료
+    window.addEventListener(
+      'click', // autofocus가 실행되지 않아 blur 이벤트 대신 사용 중
+      e => {
+        if (this.isEditing !== -1 && e.target.className !== 'edit') {
+          e.stopPropagation();
+          handleFinishEdit(true);
+          return;
+        }
+      },
+      true
+    );
+
     // 마우스 클릭 이벤트
     this.$element.addEventListener('click', e => {
-      // 편집 중인 아이템 외의 기능 선택 시 편집 완료
-      if (this.isEditing !== -1 && e.target.className !== 'edit') {
-        handleFinishEdit(true);
-        return;
-      }
-
       // 아이템 완료/미완료 선택
       if (e.target.nodeName === 'INPUT' && e.target.className === 'toggle') {
         onClickToggle(e.target.name);
@@ -69,7 +80,8 @@ export default class TodoList {
     });
 
     // 키보드 입력 이벤트
-    this.$element.addEventListener('keydown', e => {
+    // autofocus가 실행되지 않아 input에 focus 안 되어 window 이벤트로 등록
+    window.addEventListener('keydown', e => {
       if (this.isEditing !== -1) {
         if (e.key === 'Escape') {
           handleFinishEdit(false);
@@ -85,16 +97,7 @@ export default class TodoList {
   }
 
   render() {
-    this.$element.innerHTML = `${this.todoItems
-      .map((item, id) =>
-        Item({
-          id: id,
-          content: item.content,
-          isCompleted: item.isCompleted,
-          editing: item.editing
-        })
-      )
-      .join('')}`;
+    this.$element.innerHTML = `${this.todoItems.map(item => item.template).join('')}`;
   }
 
   setState(newItems) {
