@@ -1,5 +1,6 @@
-import { KEYNAME, ERRORTYPE, FILTERNAME } from './utils/constants.js';
-import * as template from './utils/templates.js';
+import { KEYNAME, ERRORTYPE } from './utils/constants.js';
+import * as templates from './utils/templates.js';
+import * as funcs from './utils/funcs.js';
 
 export default class TodoList {
   constructor({
@@ -84,26 +85,9 @@ export default class TodoList {
     this.render();
   }
   render() {
-    switch (this.filterType) {
-      case FILTERNAME.ALL:
-        this.filteredData = this.data;
-        break;
-      case FILTERNAME.ACTIVE:
-        this.filteredData = this.data.filter(
-          (todo) => todo.isCompleted === false,
-        );
-        break;
-      case FILTERNAME.COMPLETED:
-        this.filteredData = this.data.filter(
-          (todo) => todo.isCompleted === true,
-        );
-        break;
-      default:
-        console.error(ERRORTYPE.NOMATCHFILTER);
-        break;
-    }
+    this.filteredData = funcs.filteringData(this.filterType, this.data);
 
     this.$target.innerHTML =
-      this.filteredData && template.TODOLIST(this.filteredData);
+      this.filteredData && templates.TODOLIST(this.filteredData);
   }
 }
