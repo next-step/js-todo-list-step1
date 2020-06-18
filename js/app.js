@@ -1,7 +1,47 @@
 const todo_ul = document.querySelector(".todo-list")
 const todo_input = document.querySelector(".new-todo") 
 const count_span = document.querySelector(".todo-count")
+const filt_ul = document.querySelector(".filters")
+const all_a = filt_ul.querySelector(".all")
+const active_a = filt_ul.querySelector(".active")
+const complete_a = filt_ul.querySelector(".completed")
 const todo_list = []
+let id = 0
+
+function allClear() {
+    const li = todo_ul.querySelectorAll("li")
+    li.forEach(function(li){
+        todo_ul.removeChild(li)
+    })
+    all_a.classList.remove("selected")
+    active_a.classList.remove("selected")
+    complete_a.classList.remove("selected")
+
+}
+
+function viewFilt(event) {
+    event.preventDefault()
+    allClear()
+    filtTodo(event.target.classList[0]).forEach(function(todo){
+        drawTodo(todo.todo, todo.complete, todo.id)
+    })
+}
+
+function filtTodo(click_btn) {
+    const filt_todo = todo_list.filter(function(todo){
+        if (click_btn === "all") {
+            all_a.classList.add("selected")
+            return true
+        } else if (click_btn === "active") {
+            active_a.classList.add("selected")
+            return !todo.complete
+        } else if (click_btn === "completed") {
+            complete_a.classList.add("selected")
+            return todo.complete
+        }
+    })
+    return filt_todo
+}
 
 function countTodo() {
     total_todo = todo_list.length
@@ -39,9 +79,8 @@ function editTodo(event) {
 }
 
 function findTodo(li) {
-    const label = li.querySelector(".label")
     for (const todo of todo_list) {
-        if (todo.todo === label.innerText) {
+        if (todo.id == li.id) {
             return todo
         }
     }
@@ -64,8 +103,10 @@ function todoComplete(event) {
 function save(current_todo, boolean) {
     todo = {
         'todo': current_todo,
-        'complete': boolean
+        'complete': boolean,
+        "id": id
     }
+    id = id + 1
     todo_list.push(todo)
 }
 
@@ -74,12 +115,13 @@ function inputTodo(event) {
     if (event.key === "Enter") {
         current_todo = todo_input.value
         todo_input.value = ""
-        drawTodo(current_todo, false)
+        drawTodo(current_todo, false, id)
+        save(current_todo, false)
         countTodo()
     }
 }
 
-function drawTodo(current_todo, complete) {
+function drawTodo(current_todo, complete, id) {
     const li = document.createElement("li")
     const div = document.createElement("div")
     const input = document.createElement("input")
@@ -98,8 +140,10 @@ function drawTodo(current_todo, complete) {
     label.addEventListener("dblclick", editTodo)
     btn.classList.add("destroy")
     btn.addEventListener("click", deleteTodo)
+    li.id = id
     if (complete) {
         li.classList.add("completed")
+        input.checked = "checked"
     }
     div.appendChild(input)
     div.appendChild(label)
@@ -107,11 +151,13 @@ function drawTodo(current_todo, complete) {
     li.appendChild(div)
     li.appendChild(edit_input)
     todo_ul.appendChild(li)
-    save(current_todo, complete)
 }
 
 function init() {
     todo_input.addEventListener("keyup", inputTodo)
+    all_a.addEventListener("click", viewFilt)
+    active_a.addEventListener("click", viewFilt)
+    complete_a.addEventListener("click", viewFilt)
 }
 
 init()
