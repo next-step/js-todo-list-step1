@@ -10,10 +10,10 @@ let id = 0
 
 function localTodo() {
     const local_todo = localStorage.getItem("todo_list")
-    todo_list = JSON.parse(local_todo)
-    if (todo_list.length === 0) {
+    if (local_todo == null || JSON.parse(local_todo).length === 0) {
         todo_list = []
     } else {
+        todo_list = JSON.parse(local_todo)
         todo_list.forEach(function(todo){
             drawTodo(todo.todo, todo.complete, todo.id)
         })
