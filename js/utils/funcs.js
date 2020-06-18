@@ -8,18 +8,14 @@ export const filteringData = (filterType, data) => {
       filteredData = data;
       break;
     case FILTERNAME.ACTIVE:
-      filteredData = data.filter(
-        (todo) => todo.isCompleted === false,
-      );
+      filteredData = data.filter((todo) => todo.isCompleted === false);
       break;
     case FILTERNAME.COMPLETED:
-      filteredData = data.filter(
-        (todo) => todo.isCompleted === true,
-      );
+      filteredData = data.filter((todo) => todo.isCompleted === true);
       break;
     default:
       console.error(ERRORTYPE.NOMATCHFILTER);
       break;
   }
-  return filteredData
-}
+  return filteredData;
+};
