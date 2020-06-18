@@ -54,7 +54,7 @@ export default class App {
             isCompleted: (val.isCompleted = boolean),
           };
         });
-        this.setState(toggleData);
+        this.setState(toggleData, this.filterType);
       },
       onRemove: (id) => {
         const nextData = this.data.filter((todo) => todo.id.toString() !== id);
