@@ -2,8 +2,11 @@ import TodoInput from './TodoInput.js'
 import TodoList from './TodoList.js'
 import TodoCount from './TodoCount.js'
 import TodoStatus from './TodoStatus.js'
-import { todoStatus } from '../utils/constant.js'
-import { dummyData } from '../utils/dummyData.js'
+import { todoStatus, TODO_KEY } from '../utils/constant.js'
+import {
+  getLocalStorageData,
+  setLocalStorageData,
+} from '../utils/localStorage.js'
 
 export default function TodoApp() {
   const onAddTodo = (text) => {
@@ -52,6 +55,7 @@ export default function TodoApp() {
 
   this.setState = function (todos) {
     this.todos = todos
+    setLocalStorageData(TODO_KEY, this.todos)
     this.filteredTodos = filteredTodosByStatus(this.todoViewStatus)
 
     this.todoList.setState(this.filteredTodos)
@@ -59,7 +63,7 @@ export default function TodoApp() {
   }
 
   this.init = function () {
-    this.todos = []
+    this.todos = getLocalStorageData(TODO_KEY) || []
     this.filteredTodos = []
     this.todoViewStatus = todoStatus.ALL
 

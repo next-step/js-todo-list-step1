@@ -18,3 +18,5 @@ export const todoClassName = {
   SELECTED: 'selected',
   FILTERS: 'filters',
 }
+
+export const TODO_KEY = 'TODOS'
