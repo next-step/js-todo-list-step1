@@ -3,29 +3,27 @@ import TodoList from './TodoList.js'
 import TodoCount from './TodoCount.js'
 import TodoStatus from './TodoStatus.js'
 import { todoStatus } from '../utils/constant.js'
+import { dummyData } from '../utils/dummyData.js'
 
 export default function TodoApp() {
   const onAddTodo = (text) => {
     const newTodos = [...this.todos, { contents: text, isCompleted: false }]
 
-    this.todos = newTodos
-    this.setState(this.todos)
+    this.setState(newTodos)
   }
 
   const onToggleTodo = (id) => {
     const updateTodos = [...this.todos]
     updateTodos[id].isCompleted = !updateTodos[id].isCompleted
 
-    this.todos = updateTodos
-    this.setState(this.todos)
+    this.setState(updateTodos)
   }
 
   const onDeleteTodo = (id) => {
     const updateTodos = [...this.todos]
     updateTodos.splice(id, 1)
 
-    this.todos = updateTodos
-    this.setState(this.todos)
+    this.setState(updateTodos)
   }
 
   const filteredTodosByStatus = (status) => {
@@ -48,17 +46,22 @@ export default function TodoApp() {
   }
 
   const onGetTodoStatus = (status) => {
-    const filteredTodos = filteredTodosByStatus(status)
-    this.setState(filteredTodos)
+    this.todoViewStatus = status
+    this.setState(this.todos)
   }
 
   this.setState = function (todos) {
-    this.todoList.setState(todos)
-    this.todoCount.setState(todos)
+    this.todos = todos
+    this.filteredTodos = filteredTodosByStatus(this.todoViewStatus)
+
+    this.todoList.setState(this.filteredTodos)
+    this.todoCount.setState(this.filteredTodos)
   }
 
   this.init = function () {
     this.todos = []
+    this.filteredTodos = []
+    this.todoViewStatus = todoStatus.ALL
 
     this.$todoInput = document.querySelector('.new-todo')
     this.$todoList = document.querySelector('.todo-list')
