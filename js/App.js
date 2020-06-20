@@ -87,6 +87,7 @@ export default class App {
         } else {
           this.filterType = className;
         }
+        document.querySelector('#new-todo-title').focus()
         this.setState(this.data, this.filterType);
       },
     });
