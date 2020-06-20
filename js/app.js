@@ -2,39 +2,43 @@ import TodoInput from './components/TodoInput.js';
 import { TodoList, Item } from './components/TodoList.js';
 import FilterContainer from './components/FilterContainer.js';
 import { FILTER } from './constants.js';
+import { STORAGE_KEY, $TODO_INPUT, $TODO_LIST } from './config.js';
 
-const STORAGE_KEY = 'js-todo-list';
+const getWindowLocation = () => {
+  return window.location.hash.substr(2);
+};
+
+const getNewItem = (id, content, isCompleted = false, editing = false) => {
+  return Item({
+    id,
+    content,
+    isCompleted,
+    editing
+  });
+};
 
 class App {
-  filter = window.location.hash.substr(2);
+  filter = getWindowLocation();
 
   constructor() {
     const storageData = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    this.todoItems = storageData || [];
+    const storedTodoItems = storageData || [];
 
-    const getNewItem = (id, content, isCompleted = false, editing = false) => {
-      return Item({
-        id,
-        content,
-        isCompleted,
-        editing
-      });
-    };
+    this.todoItems = this.makeTemplateTodoItems(storedTodoItems);
+    this.filteredItems = this.filterTodoItems(this.filter, this.todoItems);
 
     new TodoInput({
-      $element: document.getElementById('new-todo-title'),
+      $element: $TODO_INPUT,
       onEnter: newContent => {
-        this.setState(
-          [...this.todoItems, getNewItem(this.todoItems.length, newContent)],
-          this.appFilter
-        );
+        this.setState({
+          newItems: [...this.todoItems, getNewItem(this.todoItems.length, newContent)],
+          newFilter: this.filter
+        });
       }
     });
 
-    this.filterTodoItems(this.todoItems);
-
     this.todoList = new TodoList({
-      $element: document.getElementById('todo-list'),
+      $element: $TODO_LIST,
       items: this.filteredItems,
       onClickToggle: id => {
         const newTodoItems = [...this.todoItems];
@@ -43,12 +47,18 @@ class App {
           this.todoItems[id].content,
           !this.todoItems[id].isCompleted
         );
-        this.setState(newTodoItems, this.filter);
+        this.setState({
+          newItems: newTodoItems,
+          newFilter: this.filter
+        });
       },
       onClickDestroy: id => {
         const newTodoItems = [...this.todoItems];
         newTodoItems.splice(id, 1);
-        this.setState(newTodoItems, this.filter);
+        this.setState({
+          newItems: newTodoItems,
+          newFilter: this.filter
+        });
       },
       onToggleEdit: (id, newContent, editing) => {
         const newTodoItems = [...this.todoItems];
@@ -58,7 +68,10 @@ class App {
           this.todoItems[id].isCompleted,
           editing
         );
-        this.setState(newTodoItems, this.filter);
+        this.setState({
+          newItems: newTodoItems,
+          newFilter: this.filter
+        });
       }
     });
 
@@ -69,19 +82,22 @@ class App {
 
     // 필터 변경 되었을 때
     window.addEventListener('hashchange', () => {
-      const newFilter = window.location.hash.substr(2);
-      this.setState(this.todoItems, newFilter);
+      this.setState({
+        newItems: this.todoItems,
+        newFilter: getWindowLocation()
+      });
     });
   }
 
-  setState(newItems, newFilter) {
+  setState({ newItems, newFilter }) {
     this.filter = newFilter;
-    this.filterTodoItems(newItems);
+    this.todoItems = this.makeTemplateTodoItems(newItems);
+    this.filteredItems = this.filterTodoItems(newFilter, newItems);
 
     this.todoList.setState(this.filteredItems);
     this.FilterContainer.setState({
       newCount: this.filteredItems.length,
-      newFilter: this.filter
+      newFilter
     });
 
     localStorage.setItem(
@@ -97,24 +113,23 @@ class App {
         })
       )
     );
-    this.todoItems = newItems;
-    this.appFilter = newFilter;
   }
 
-  filterTodoItems(todoItems) {
-    this.todoItems = todoItems.map((item, id) =>
+  makeTemplateTodoItems(todoItems) {
+    return todoItems.map((item, id) =>
       Item({
         id,
         content: item.content,
         isCompleted: item.isCompleted,
-        editing: item.editing
+        editing: item.editing || false
       })
     );
+  }
 
-    this.filteredItems =
-      this.filter === ''
-        ? this.todoItems
-        : this.todoItems.filter(item => (this.filter === FILTER.COMPLETED) === item.isCompleted);
+  filterTodoItems(filter, todoItems) {
+    return filter === ''
+      ? todoItems
+      : todoItems.filter(item => (filter === FILTER.COMPLETED) === item.isCompleted);
   }
 }
 
