@@ -1,4 +1,4 @@
-import { KEYNAME, ERRORTYPE } from './utils/constants.js';
+import { KEY_NAME, ERROR_TYPE } from './utils/constants.js';
 import * as templates from './utils/templates.js';
 import * as functions from './utils/functions.js';
 
@@ -33,7 +33,7 @@ export default class TodoList {
           onRemove(id);
           break;
         default:
-          console.error(ERRORTYPE.NOMATCHCLASS);
+          console.error(ERROR_TYPE.NO_MATCH_CLASS);
           break;
       }
     });
@@ -60,13 +60,13 @@ export default class TodoList {
       const { className } = e.target;
       if (className === 'edit') {
         const $targetLi = e.target.closest('li');
-        if (e.key === KEYNAME.ESC) {
+        if (e.key === KEY_NAME.ESC) {
           if ($targetLi.querySelector('.toggle').checked) {
             $targetLi.className = 'completed';
           } else {
             $targetLi.className = '';
           }
-        } else if (e.key === KEYNAME.ENTER && e.target.value !== '') {
+        } else if (e.key === KEY_NAME.ENTER && e.target.value !== '') {
           const id = $targetLi.dataset.id;
           const text = e.target.value;
           onEdit(id, text);

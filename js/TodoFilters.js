@@ -1,4 +1,10 @@
-import { ERRORTYPE,FILTERNAME } from './utils/constants.js';
+import {
+  ERROR_TYPE,
+  FILTER_NAME,
+  METHOD_NAME,
+  STORAGE_NAME,
+} from './utils/constants.js';
+import * as functions from './utils/functions.js';
 
 export default class TodoFilters {
   constructor({ data, $target, $targetTodoList, onClickFilter }) {
@@ -9,12 +15,12 @@ export default class TodoFilters {
       const $targetClassName = e.target.classList[0];
       if ($targetClassName === 'destroy-all') {
         onClickFilter('destroy-all');
-        localStorage.removeItem('myTodo');
+        functions.controlLocalStorage(STORAGE_NAME, METHOD_NAME.REMOVE);
         return;
       }
 
       if (
-        [FILTERNAME.ALL, FILTERNAME.ACTIVE, FILTERNAME.COMPLETED].includes(
+        [FILTER_NAME.ALL, FILTER_NAME.ACTIVE, FILTER_NAME.COMPLETED].includes(
           $targetClassName,
         )
       ) {
@@ -23,20 +29,20 @@ export default class TodoFilters {
           val.classList.remove('selected');
         });
         switch ($targetClassName) {
-          case FILTERNAME.ALL:
+          case FILTER_NAME.ALL:
             e.target.classList.add('selected');
-            onClickFilter(FILTERNAME.ALL);
+            onClickFilter(FILTER_NAME.ALL);
             break;
-          case FILTERNAME.ACTIVE:
+          case FILTER_NAME.ACTIVE:
             e.target.classList.add('selected');
-            onClickFilter(FILTERNAME.ACTIVE);
+            onClickFilter(FILTER_NAME.ACTIVE);
             break;
-          case FILTERNAME.COMPLETED:
+          case FILTER_NAME.COMPLETED:
             e.target.classList.add('selected');
-            onClickFilter(FILTERNAME.COMPLETED);
+            onClickFilter(FILTER_NAME.COMPLETED);
             break;
           default:
-            console.error(ERRORTYPE.NOMATCHFILTER);
+            console.error(ERROR_TYPE.NO_MATCH_FILTER);
             break;
         }
       }

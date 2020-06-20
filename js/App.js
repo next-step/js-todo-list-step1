@@ -2,7 +2,8 @@ import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
 import TodoFilters from './TodoFilters.js';
-import { FILTERNAME } from './utils/constants.js';
+import { FILTER_NAME, METHOD_NAME, STORAGE_NAME } from './utils/constants.js';
+import * as functions from './utils/functions.js';
 
 export default class App {
   constructor({
@@ -30,7 +31,7 @@ export default class App {
           isCompleted: false,
         };
         const nextData = [...this.data, todo];
-        this.setState(nextData, FILTERNAME.ALL);
+        this.setState(nextData, FILTER_NAME.ALL);
       },
     });
 
@@ -84,7 +85,7 @@ export default class App {
         if (className === 'destroy-all') {
           this.data = [];
         } else {
-          this.filterType = className
+          this.filterType = className;
         }
         this.setState(this.data, this.filterType);
       },
@@ -97,7 +98,7 @@ export default class App {
     this.filterType = nextFilterType;
     this.todoList.setState(this.data, this.filterType);
     this.todoCount.setState(this.data, this.filterType);
-    localStorage.setItem('myTodo', JSON.stringify(this.data));
+    functions.controlLocalStorage(STORAGE_NAME, METHOD_NAME.SET, this.data);
   }
 
   render() {

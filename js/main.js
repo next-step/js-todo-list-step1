@@ -1,10 +1,19 @@
 import App from './App.js';
-import { exData, FILTERNAME } from './utils/constants.js';
+import {
+  exData,
+  FILTER_NAME,
+  METHOD_NAME,
+  STORAGE_NAME,
+} from './utils/constants.js';
+import * as functions from './utils/functions.js';
 
-const myStorageData = JSON.parse(localStorage.getItem('myTodo'));
+const myStorageData = functions.controlLocalStorage(
+  STORAGE_NAME,
+  METHOD_NAME.GET,
+);
 const data = myStorageData || exData;
-const countId = data[data.length -1 ].id + 1 || 1;
-const filterType = FILTERNAME.ALL;
+const countId = data.length > 0 && data[data.length - 1].id + 1 || 1;
+const filterType = FILTER_NAME.ALL;
 
 new App({
   data,
