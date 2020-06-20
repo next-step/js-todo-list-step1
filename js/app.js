@@ -5,12 +5,23 @@ function TodoList(element) {
   this.todoList = [];
 
   this.addListItem = value => {
-    this.todoList = [{ text: value }, ...this.todoList];
+    this.todoList = [{ text: value, completed: false }, ...this.todoList];
+    this.render();
+  };
+
+  this.$ul.addEventListener('click', e => {
+    if (e.target.nodeName === 'INPUT') {
+      this.toggleComplete(e.target.id);
+    }
+  });
+
+  this.toggleComplete = index => {
+    this.todoList[index].completed = !this.todoList[index].completed;
     this.render();
   };
 
   this.render = () => {
-    this.$ul.innerHTML = this.todoList.map((item, index) => `<li><input type="checkbox" id="${index}" class="toggle"><label for="${index}">${item.text}</label></li>`).join('');
+    this.$ul.innerHTML = this.todoList.map((item, index) => `<li class="${item.completed ? 'completed' : ''}"><input type="checkbox" ${item.completed ? 'checked' : ''} id="${index}" class="toggle"><label for="${index}">${item.text}</label></li>`).join('');
   };
 }
 
