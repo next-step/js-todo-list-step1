@@ -1,4 +1,4 @@
-const validateType = (data, type) => {
+export const validateType = (data, type) => {
   if (typeof data === type) {
     if (type === 'number' && isNaN(data)) {
       return false;
@@ -8,8 +8,5 @@ const validateType = (data, type) => {
   return false;
 }
 
-// export default {
-//   validateType
-// };
 // for running test
-module.exports = validateType;
+// module.exports = validateType;

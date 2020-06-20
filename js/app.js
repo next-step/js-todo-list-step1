@@ -1,19 +1,34 @@
+import { validateType } from './util.js';
+import { VALIDATION_TYPE } from './constants.js';
+
 const KEYCODE_ENTER = 13;
 
 function TodoList(element) {
   this.$ul = element;
   this.todoList = [];
 
-  this.addListItem = value => {
+  this.$ul.addEventListener('click', e => {
+    const { className } = e.target;
+    const { id } = e.target.closest('li').dataset;
+    if (className === 'destroy') {
+      this.deleteItem(parseInt(id));
+    } else if (className === 'toggle') {
+      this.toggleComplete(id);
+    }
+  });
+
+  this.addItem = value => {
     this.todoList = [{ text: value, completed: false }, ...this.todoList];
     this.render();
   };
 
-  this.$ul.addEventListener('click', e => {
-    if (e.target.nodeName === 'INPUT') {
-      this.toggleComplete(e.target.id);
+  this.deleteItem = id => {
+    if (!validateType(id, VALIDATION_TYPE.NUMBER)) {
+      throw Error('Invalid id type');
     }
-  });
+    this.todoList = [...this.todoList.slice(0, id), ...this.todoList.slice(id + 1)];
+    this.render();
+  }
 
   this.toggleComplete = index => {
     this.todoList[index].completed = !this.todoList[index].completed;
@@ -21,7 +36,7 @@ function TodoList(element) {
   };
 
   this.render = () => {
-    this.$ul.innerHTML = this.todoList.map((item, index) => `<li class="${item.completed ? 'completed' : ''}"><input type="checkbox" ${item.completed ? 'checked' : ''} id="${index}" class="toggle"><label for="${index}">${item.text}</label></li>`).join('');
+    this.$ul.innerHTML = this.todoList.map((item, index) => `<li data-id="${index}" class="${item.completed ? 'completed' : ''}"><input type="checkbox" ${item.completed ? 'checked' : ''} id="${index}" class="toggle"><label for="${index}">${item.text}<button class="destroy"></button></label></li>`).join('');
   };
 }
 
@@ -35,7 +50,7 @@ function TodoInput(element, { addTodo }) {
 
 const addTodo = e => {
   if (e.keyCode === KEYCODE_ENTER) {
-    todoList.addListItem(e.target.value);
+    todoList.addItem(e.target.value);
     todoInput.setText('');
   }
 };
