@@ -19,5 +19,15 @@ const validateTodoList = (context, params) => {
 export default function TodoList(params) {
   validateTodoList(this, params);
 
-  const { $target, data } = params;
+  const { $target } = params;
+  this.data = params.data;
+
+  this.setState = (nextData) => {
+    this.data = nextData;
+    this.render();
+  };
+
+  this.render = () => {
+    console.log(this.data);
+  };
 }
