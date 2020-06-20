@@ -59,4 +59,31 @@ describe("TodoList", () => {
 
     expect(() => new TodoList({ $target, data: badTodos })).toThrow();
   });
+
+  describe("setState", () => {
+    it("기존의 data를 인자로 받은 nextData로 바꿔준다.", () => {
+      const todoList = new TodoList(params);
+      const nextData = [
+        {
+          content: "nextData",
+          isCompleted: false,
+        },
+      ];
+      todoList.setState(nextData);
+      expect(todoList.data).toBe(nextData);
+    });
+
+    it("setState 실행 후 render함수가 실행 된다.", () => {
+      const todoList = new TodoList(params);
+      spyOn(todoList, "render");
+      const nextData = [
+        {
+          content: "nextData",
+          isCompleted: false,
+        },
+      ];
+      todoList.setState(nextData);
+      expect(todoList.render).toHaveBeenCalled();
+    });
+  });
 });
