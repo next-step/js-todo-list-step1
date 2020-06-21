@@ -1,21 +1,16 @@
-function TodoList($todoList, data){
+function TodoList($todoList, data, removeItem){
     this.$todoList = $todoList
     this.data = data
 
-    this.addItem = (item) => {
-        this.data = [...this.data, item]
+    this.updateItem = (nextData) => {
+        //왜 this.data === nextData?
+        this.data = [...nextData]
         this.render()
         this.bindEvents()
     }
 
     this.editItem = (index, text) => {
         this.data[index].text = text
-        this.render()
-        this.bindEvents()
-    }
-
-    this.removeItem = (index) => {
-        this.data.splice(index, 1)
         this.render()
         this.bindEvents()
     }
@@ -37,13 +32,13 @@ function TodoList($todoList, data){
             $item.querySelector('button.destroy').addEventListener('click', (e) => {
                 e.stopPropagation()
                 const { index } = e.target.closest('.todo-item').dataset //{} obj destruction해줘야함
-                this.removeItem(index)
+                removeItem(index)
             })
             
             $item.querySelector('label').addEventListener('dblclick', (e) => {
                 e.stopPropagation()
                 const $todoItem = e.target.closest('.todo-item')
-                const { index } = e.target.closest('.todo-item').dataset //{} obj destruction해줘야함
+                const { index } = e.target.closest('.todo-item').dataset 
                 const oldValue = e.target.innerText
 
                 $todoItem.classList.add('editing')
