@@ -6,3 +6,6 @@ export const VALIDATION_TYPE = {
   OBJECT: 'object',
   FUNCTION: 'function',
 }
+
+export const KEYCODE_ENTER = 13;
+export const KEYCODE_ESC = 27;
