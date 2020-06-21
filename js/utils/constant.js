@@ -5,10 +5,6 @@ export const todoStatus = {
   SELECTED: 'selected',
 }
 
-export const key = {
-  ENTER: 'Enter',
-}
-
 export const todoClassName = {
   TOGGLE: 'toggle',
   DESTROY: 'destroy',

@@ -10,23 +10,48 @@ import {
 
 export default function TodoApp() {
   const onAddTodo = (text) => {
-    const newTodos = [...this.todos, { contents: text, isCompleted: false }]
-
-    this.setState(newTodos)
+    this.todos = [...this.todos, { content: text, isCompleted: false }]
+    this.setState(this.todos)
   }
 
-  const onToggleTodo = (id) => {
-    const updateTodos = [...this.todos]
-    updateTodos[id].isCompleted = !updateTodos[id].isCompleted
+  const onToggleTodo = (index) => {
+    switch (this.todoViewStatus) {
+      case todoStatus.ALL:
+        this.todos[index].isCompleted = !this.todos[index].isCompleted
+        break
 
-    this.setState(updateTodos)
+      case todoStatus.ACTIVE:
+      case todoStatus.COMPLETED:
+        const todoText = this.filteredTodos[index].content
+        const findIdx = this.todos.findIndex(
+          (todo) => todo.content === todoText
+        )
+        if (findIdx !== -1) {
+          this.todos[findIdx].isCompleted = !this.todos[findIdx].isCompleted
+        }
+        break
+    }
+    this.setState(this.todos)
   }
 
-  const onDeleteTodo = (id) => {
-    const updateTodos = [...this.todos]
-    updateTodos.splice(id, 1)
+  const onDeleteTodo = (index) => {
+    switch (this.todoViewStatus) {
+      case todoStatus.ALL:
+        this.todos.splice(index, 1)
+        break
 
-    this.setState(updateTodos)
+      case todoStatus.ACTIVE:
+      case todoStatus.COMPLETED:
+        const todoText = this.filteredTodos[index].content
+        const findIdx = this.todos.findIndex(
+          (todo) => todo.content === todoText
+        )
+        if (findIdx !== -1) {
+          this.todos.splice(findIdx, 1)
+        }
+        break
+    }
+    this.setState(this.todos)
   }
 
   const filteredTodosByStatus = (status) => {
@@ -48,7 +73,7 @@ export default function TodoApp() {
     return filteredTodos
   }
 
-  const onGetTodoStatus = (status) => {
+  const onSetTodoStatus = (status) => {
     this.todoViewStatus = status
     this.setState(this.todos)
   }
@@ -92,7 +117,7 @@ export default function TodoApp() {
 
       this.todoStatus = new TodoStatus({
         $target: this.$todoStatus,
-        onGetTodoStatus,
+        onSetTodoStatus,
       })
     } catch (err) {
       console.log(err)

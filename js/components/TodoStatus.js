@@ -1,7 +1,7 @@
 import { todoStatus } from '../utils/constant.js'
 import { todoClassName } from '../utils/constant.js'
 
-export default function TodoStatus({ $target, onGetTodoStatus }) {
+export default function TodoStatus({ $target, onSetTodoStatus }) {
   if (!(this instanceof TodoStatus)) {
     throw new Error('TodoStatus must be called with new')
   }
@@ -25,7 +25,7 @@ export default function TodoStatus({ $target, onGetTodoStatus }) {
     } else if (e.target.classList.contains(todoClassName.COMPLETED)) {
       this.status = todoStatus.COMPLETED
     }
-    onGetTodoStatus(this.status)
+    onSetTodoStatus(this.status)
     this.render()
   }
   this.$target.addEventListener('click', onClickHandler)

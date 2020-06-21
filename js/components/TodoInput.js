@@ -1,5 +1,3 @@
-import { key } from '../utils/constant.js'
-
 export default function TodoInput({ $target, onAddTodo }) {
   if (!(this instanceof TodoInput)) {
     throw new Error('TodoInput must be called with new')
@@ -12,7 +10,7 @@ export default function TodoInput({ $target, onAddTodo }) {
   this.$target = $target
 
   const onKeyPressEventHandler = (e) => {
-    if (e.key === key.ENTER && e.target.value) {
+    if (e.key === 'Enter' && e.target.value) {
       onAddTodo(e.target.value)
       e.target.value = ''
     }

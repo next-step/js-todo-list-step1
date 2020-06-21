@@ -20,10 +20,10 @@ export default function TodoList({
         <input class="toggle" type="checkbox" ${
           todoItem.isCompleted ? 'checked' : ''
         }>
-        <label class="label">${todoItem.contents}</label>
+        <label class="label">${todoItem.content}</label>
         <button class="destroy"></button>
       </div>
-      <input class="edit" value="${todoItem.contents}">
+      <input class="edit" value="${todoItem.content}">
     </li>`
 
   const onClickHandler = (e) => {
