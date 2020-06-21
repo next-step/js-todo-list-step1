@@ -7,7 +7,7 @@ function TodoInput($todoInput, $todoList, onAdd){
     this.$todoInput = $todoInput
     this.$targetList = $todoList
 
-    this.$todoInput.addEventListener('keypress', (e) => {
+    this.$todoInput.addEventListener('keyup', (e) => {
         if (e.keyCode === ENTER_KEY){
             if (!/\S/.test(this.$todoInput.value) || this.$todoInput === null){
                 alert('할일을 입력하세요!')

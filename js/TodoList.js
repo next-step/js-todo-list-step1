@@ -8,6 +8,12 @@ function TodoList($todoList, data){
         this.bindEvents()
     }
 
+    this.editItem = (index, text) => {
+        this.data[index].text = text
+        this.render()
+        this.bindEvents()
+    }
+
     this.removeItem = (index) => {
         this.data.splice(index, 1)
         this.render()
@@ -32,6 +38,24 @@ function TodoList($todoList, data){
                 e.stopPropagation()
                 const { index } = e.target.closest('.todo-item').dataset //{} obj destruction해줘야함
                 this.removeItem(index)
+            })
+            
+            $item.querySelector('label').addEventListener('dblclick', (e) => {
+                e.stopPropagation()
+                const $todoItem = e.target.closest('.todo-item')
+                const { index } = e.target.closest('.todo-item').dataset //{} obj destruction해줘야함
+                const oldValue = e.target.innerText
+
+                $todoItem.classList.add('editing')
+                $todoItem.addEventListener('keyup', (e) => {
+                    if (e.keyCode === ESC_KEY){
+                        $todoItem.classList.remove('editing')
+                        e.target.value = oldValue
+                    }
+                    else if (e.keyCode === ENTER_KEY){
+                        this.editItem(index, e.target.value)
+                    }
+                })
             })
         })
     }
