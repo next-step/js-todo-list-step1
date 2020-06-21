@@ -1,7 +1,7 @@
 import App from "./App.js"
 
 try {
-  new App({ selector: '.todoapp'})
+  new App()
 } catch(e) {
   console.error(e)
 }

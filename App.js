@@ -1,13 +1,16 @@
-import {checkSelector} from "./utils/validations.js"
-import { TodoInput, TodoList, TodoCount } from './components'
+import { TodoInput } from './components'
 
-export default function App({ selector }) {
-  checkSelector(selector)
-  if (new.target !== App) return new App({ selector })
+export default function App() {
+  if (new.target !== App) return new App()
   this.init = () => {
-    this.$todoInput = new TodoInput({ title: 'TODOS', selector })
-    this.$todoList = new TodoList({ selector })
-    this.$todoCount = new TodoCount({ selector })
+    const { onAddTodo } = this
+    this.todos = []
+    new TodoInput({ selector: '.new-todo', onAddTodo })
   }
+
+  this.onAddTodo = (text) => {
+    this.todos = [...this.todos, { text, isCompleted: false }]
+  }
+
   this.init()
 }
