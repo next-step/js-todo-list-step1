@@ -3,18 +3,18 @@ function App(){
     const $todoList = document.querySelector('#todo-list')
     let data = []
     
-    function setState(text) {
+    function addItem(text) {
         const nextData = {
             text,
             isCompleted: false
         }
 
-        todoList.setState(nextData)
+        todoList.addItem(nextData)
     }
 
-    const todoList = new TodoList($todoList, data);
+    const todoList = new TodoList($todoList, data)
     const todoInput = new TodoInput($todoInput, $todoList, (text) => {
-        setState(text)
+        addItem(text)
     })
 
     
