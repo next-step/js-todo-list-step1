@@ -33,7 +33,6 @@ function allClear() {
     all_a.classList.remove("selected")
     active_a.classList.remove("selected")
     complete_a.classList.remove("selected")
-
 }
 
 function viewFilter(event) {
