@@ -14,6 +14,3 @@ export const validateType = (data, type) => {
   }
   return false;
 }
-
-// for running test
-// module.exports = validateType;
