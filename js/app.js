@@ -5,17 +5,19 @@ const filt_ul = document.querySelector(".filters")
 const all_a = filt_ul.querySelector(".all")
 const active_a = filt_ul.querySelector(".active")
 const complete_a = filt_ul.querySelector(".completed")
+const Enter = "Enter"
+const Esc = "Escape"
 let todo_list = []
 let id = 0
 
 function localTodo() {
     const local_todo = localStorage.getItem("todo_list")
-    if (local_todo == null || JSON.parse(local_todo).length === 0) {
+    if (local_todo === null || JSON.parse(local_todo).length === 0) {
         todo_list = []
     } else {
         todo_list = JSON.parse(local_todo)
         todo_list.forEach(function(todo){
-            drawTodo(todo.todo, todo.complete, todo.id)
+            drawTodo(todo)
         })
         countTodo()
         id = todo_list[todo_list.length - 1].id + 1
@@ -27,26 +29,23 @@ function localSave() {
 }
 
 function allClear() {
-    const li = todo_ul.querySelectorAll("li")
-    li.forEach(function(li){
-        todo_ul.removeChild(li)
-    })
+    todo_ul.innerHTML = ""
     all_a.classList.remove("selected")
     active_a.classList.remove("selected")
     complete_a.classList.remove("selected")
 
 }
 
-function viewFilt(event) {
+function viewFilter(event) {
     event.preventDefault()
     allClear()
-    filtTodo(event.target.classList[0]).forEach(function(todo){
-        drawTodo(todo.todo, todo.complete, todo.id)
+    filterTodo(event.target.classList[0]).forEach(function(todo){
+        drawTodo(todo)
     })
 }
 
-function filtTodo(click_btn) {
-    const filt_todo = todo_list.filter(function(todo){
+function filterTodo(click_btn) {
+    const filter_todo = todo_list.filter(function(todo){
         if (click_btn === "all") {
             all_a.classList.add("selected")
             return true
@@ -58,18 +57,17 @@ function filtTodo(click_btn) {
             return todo.complete
         }
     })
-    return filt_todo
+    return filter_todo
 }
 
 function countTodo() {
-    total_todo = todo_list.length
+    const total_todo = todo_list.length
     count_span.innerText = `총 ${total_todo} 개`
 }
 
 function deleteTodo(event) {
-    event.preventDefault()
-    const li = event.target.parentElement.parentElement
-    todo = findTodo(li)
+    const li = event.target.closest("li")
+    const todo = findTodo(li)
     todo_list.splice(todo_list.indexOf(todo), 1)
     todo_ul.removeChild(li)
     countTodo()
@@ -77,39 +75,33 @@ function deleteTodo(event) {
 }
 
 function editingTodo(event) {
-    event.preventDefault()
     const li = event.target.parentElement
     const label = li.querySelector(".label")
-    if (event.key === "Escape") {
+    if (event.key === Esc) {
         li.classList.remove("editing")
         event.target.value = label.innerText
-    } else if (event.key === "Enter") {
-        todo = findTodo(li)
-        label.innerText = event.target.value
-        li.classList.remove("editing")
-        todo.todo = label.innerText
-        localSave()
+    } else if (event.key === Enter) {
+        if (!checkBlank(event.target.value)) {
+            todo = findTodo(li)
+            label.innerText = event.target.value
+            li.classList.remove("editing")
+            todo.todo = label.innerText
+            localSave()
+        }
     }
 }
 
 function editTodo(event) {
-    event.preventDefault()
-    const li = event.target.parentElement.parentElement
+    const li = event.target.closest("li")
     li.classList.add("editing")
 }
 
 function findTodo(li) {
-    for (const todo of todo_list) {
-        if (todo.id == li.id) {
-            return todo
-        }
-    }
-    
+    return todo_list.find(todo => todo.id === parseInt(li.id))
 }
 
 function todoComplete(event) {
-    event.preventDefault()
-    const li = event.target.parentElement.parentElement
+    const li = event.target.closest("li")
     todo = findTodo(li)
     if (event.target.checked) {
         li.classList.add("completed")
@@ -125,25 +117,35 @@ function save(current_todo, boolean) {
     todo = {
         'todo': current_todo,
         'complete': boolean,
-        "id": id
+        id
     }
     id = id + 1
     todo_list.push(todo)
+    return todo
 }
 
-function inputTodo(event) {
-    event.preventDefault()
-    if (event.key === "Enter") {
-        current_todo = todo_input.value
-        todo_input.value = ""
-        drawTodo(current_todo, false, id)
-        save(current_todo, false)
-        countTodo()
-        localSave()
+function checkBlank(input_value){
+    if (!input_value) {
+        return true
+    } else {
+        return false
     }
 }
 
-function drawTodo(current_todo, complete, id) {
+function inputTodo(event) {
+    if (event.key === Enter) {
+        current_todo = todo_input.value
+        todo_input.value = ""
+        if (!checkBlank(current_todo)) {
+            const todo = save(current_todo, false)
+            drawTodo(todo)
+            countTodo()
+            localSave()
+        }
+    }
+}
+
+function drawTodo(todo) {
     const li = document.createElement("li")
     const div = document.createElement("div")
     const input = document.createElement("input")
@@ -155,15 +157,15 @@ function drawTodo(current_todo, complete, id) {
     input.type = "checkbox"
     input.addEventListener("change", todoComplete)
     edit_input.classList.add("edit")
-    edit_input.value = current_todo
+    edit_input.value = todo.todo
     edit_input.addEventListener("keyup", editingTodo)
     label.classList.add("label")
-    label.innerText = current_todo
+    label.innerText = todo.todo
     label.addEventListener("dblclick", editTodo)
     btn.classList.add("destroy")
     btn.addEventListener("click", deleteTodo)
-    li.id = id
-    if (complete) {
+    li.id = todo.id
+    if (todo.complete) {
         li.classList.add("completed")
         input.checked = "checked"
     }
@@ -177,9 +179,9 @@ function drawTodo(current_todo, complete, id) {
 
 function init() {
     todo_input.addEventListener("keyup", inputTodo)
-    all_a.addEventListener("click", viewFilt)
-    active_a.addEventListener("click", viewFilt)
-    complete_a.addEventListener("click", viewFilt)
+    all_a.addEventListener("click", viewFilter)
+    active_a.addEventListener("click", viewFilter)
+    complete_a.addEventListener("click", viewFilter)
     localTodo()
 }
 
