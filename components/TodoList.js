@@ -1,7 +1,7 @@
 import {checkSelector} from "../utils/validations.js"
 
 export default function TodoList(props) {
-  const {selector, todos} = props
+  const { selector, todos, onToggle, onDelete } = props
   if (new.target !== TodoList) return new TodoList({selector})
   checkSelector(selector)
 
@@ -14,14 +14,20 @@ export default function TodoList(props) {
 
   this.bindEvent = () => {
     this.$target.addEventListener('click', (e) => {
-
+      const li = e.target.closest('li')
+      const { id } = li.dataset
+      if (e.target.tagName === 'INPUT') {
+        onToggle(Number(id))
+      } else if (e.target.tagName === 'BUTTON') {
+        onDelete(Number(id))
+      }
     })
   }
 
   this.render = () => {
     this.$target.innerHTML = this.todos.map(({id, text, isCompleted}) => {
       return `
-        <li>
+        <li data-id=${id} class=${isCompleted ? 'completed' : ''}>
             <div class="view">
               <input class="toggle" type="checkbox" />
               <label class="label">${text}</label>
