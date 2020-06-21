@@ -7,5 +7,11 @@ export const VALIDATION_TYPE = {
   FUNCTION: 'function',
 }
 
+export const FILTER_TYPE = {
+  ALL: 'all',
+  ACTIVE: 'active',
+  COMPLETED: 'completed'
+}
+
 export const KEYCODE_ENTER = 13;
 export const KEYCODE_ESC = 27;

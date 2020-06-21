@@ -1,10 +1,15 @@
 import TodoList from './TodoList.js';
 import TodoInput from './TodoInput.js';
+import TodoFilter from './TodoFilter.js';
 import { defaultItem } from './util.js';
 import { todoListTemplate } from './template.js';
+import { FILTER_TYPE } from './constants.js';
 
 function App() {
   this.todoList = [];
+  this.activeList = [];
+  this.completedList = [];
+  this.mode = FILTER_TYPE.ALL;
 
   this.addTodo = value => {
     this.todoList = [defaultItem(value), ...this.todoList];
@@ -39,14 +44,21 @@ function App() {
   this.findIndexById = id => {
     return this.todoList.findIndex(item => item.id === id);
   };
-  
-  this.getTodoCount = () => {
-    return this.todoList.length;
-  };
+
+  this.filterTodo = mode => {
+    this.mode = mode;
+    this.render();
+  }
 
   this.render = () => {
-    this.TodoList.$ul.innerHTML = todoListTemplate(this.todoList);
-    this.$todoCount.innerHTML = `총 <strong>${this.getTodoCount()}</strong> 개`;
+    const renderList = {
+      [FILTER_TYPE.ALL]: this.todoList,
+      [FILTER_TYPE.ACTIVE]: this.todoList.filter(item => !item.completed),
+      [FILTER_TYPE.COMPLETED]: this.todoList.filter(item => item.completed),
+    };
+    
+    this.TodoList.$ul.innerHTML = todoListTemplate(renderList[this.mode]);
+    this.$todoCount.innerHTML = `총 <strong>${renderList[this.mode].length}</strong> 개`;
   };
 
   this.TodoList = new TodoList(document.getElementById('todo-list'), {
@@ -59,6 +71,9 @@ function App() {
     addTodo: this.addTodo
   });
   this.$todoCount = document.getElementsByClassName('todo-count')[0];
+  this.TodoFilter = new TodoFilter(document.getElementsByClassName('filters')[0], {
+    filterTodo: this.filterTodo
+  });
 }
 
 new App();
