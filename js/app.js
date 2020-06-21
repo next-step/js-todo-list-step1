@@ -7,6 +7,9 @@ const active_a = filt_ul.querySelector(".active")
 const complete_a = filt_ul.querySelector(".completed")
 const Enter = "Enter"
 const Esc = "Escape"
+const All = "all"
+const Active = 'active'
+const Completed = 'completed'
 let todo_list = []
 let id = 0
 
@@ -45,13 +48,13 @@ function viewFilter(event) {
 
 function filterTodo(click_btn) {
     const filter_todo = todo_list.filter(function(todo){
-        if (click_btn === "all") {
+        if (click_btn === All) {
             all_a.classList.add("selected")
             return true
-        } else if (click_btn === "active") {
+        } else if (click_btn === Active) {
             active_a.classList.add("selected")
             return !todo.complete
-        } else if (click_btn === "completed") {
+        } else if (click_btn === Completed) {
             complete_a.classList.add("selected")
             return todo.complete
         }
@@ -65,34 +68,40 @@ function countTodo() {
 }
 
 function deleteTodo(event) {
-    const li = event.target.closest("li")
-    const todo = findTodo(li)
-    todo_list.splice(todo_list.indexOf(todo), 1)
-    todo_ul.removeChild(li)
-    countTodo()
-    localSave()
+    if (event.target.nodeName === "BUTTON") {
+        const li = event.target.closest("li")
+        const todo = findTodo(li)
+        todo_list.splice(todo_list.indexOf(todo), 1)
+        todo_ul.removeChild(li)
+        countTodo()
+        localSave()
+    }
 }
 
 function editingTodo(event) {
-    const li = event.target.parentElement
-    const label = li.querySelector(".label")
-    if (event.key === Esc) {
-        li.classList.remove("editing")
-        event.target.value = label.innerText
-    } else if (event.key === Enter) {
-        if (!checkBlank(event.target.value)) {
-            todo = findTodo(li)
-            label.innerText = event.target.value
+    if (event.target.nodeName === "INPUT" && event.target.classList[0] === "edit") {
+        const li = event.target.parentElement
+        const label = li.querySelector(".label")
+        if (event.key === Esc) {
             li.classList.remove("editing")
-            todo.todo = label.innerText
-            localSave()
+            event.target.value = label.innerText
+        } else if (event.key === Enter) {
+            if (!checkBlank(event.target.value)) {
+                todo = findTodo(li)
+                label.innerText = event.target.value
+                li.classList.remove("editing")
+                todo.todo = label.innerText
+                localSave()
+            }
         }
     }
 }
 
 function editTodo(event) {
-    const li = event.target.closest("li")
-    li.classList.add("editing")
+    if (event.target.nodeName === "LABEL") {
+        const li = event.target.closest("li")
+        li.classList.add("editing")
+    }
 }
 
 function findTodo(li) {
@@ -100,16 +109,18 @@ function findTodo(li) {
 }
 
 function todoComplete(event) {
-    const li = event.target.closest("li")
-    todo = findTodo(li)
-    if (event.target.checked) {
-        li.classList.add("completed")
-        todo.complete = true
-    } else {
-        li.classList.remove("completed")
-        todo.complete = false
+    if (event.target.nodeName === "INPUT" && event.target.classList[0] === "toggle") {
+        const li = event.target.closest("li")
+        todo = findTodo(li)
+        if (event.target.checked) {
+            li.classList.add("completed")
+            todo.complete = true
+        } else {
+            li.classList.remove("completed")
+            todo.complete = false
+        }
+        localSave()
     }
-    localSave()
 }
 
 function save(current_todo, boolean) {
@@ -124,11 +135,7 @@ function save(current_todo, boolean) {
 }
 
 function checkBlank(input_value){
-    if (!input_value) {
-        return true
-    } else {
-        return false
-    }
+    return !input_value
 }
 
 function inputTodo(event) {
@@ -145,35 +152,25 @@ function inputTodo(event) {
 }
 
 function drawTodo(todo) {
-    const li = document.createElement("li")
-    const div = document.createElement("div")
-    const input = document.createElement("input")
-    const edit_input = document.createElement("input") 
-    const label = document.createElement("label")
-    const btn = document.createElement("button")
-    div.classList.add("view")
-    input.classList.add("toggle")
-    input.type = "checkbox"
-    input.addEventListener("change", todoComplete)
-    edit_input.classList.add("edit")
-    edit_input.value = todo.todo
-    edit_input.addEventListener("keyup", editingTodo)
-    label.classList.add("label")
-    label.innerText = todo.todo
-    label.addEventListener("dblclick", editTodo)
-    btn.classList.add("destroy")
-    btn.addEventListener("click", deleteTodo)
-    li.id = todo.id
-    if (todo.complete) {
-        li.classList.add("completed")
-        input.checked = "checked"
+    const todoItemTemplate = function(todo, complete, checked){
+        return `
+        <li id=${todo.id} class=${complete}>
+            <div class="view">
+                <input class="toggle" type="checkbox" ${checked} />
+                <label class="label">${todo.todo}</label>
+                <button class="destroy"></button>
+            </div>
+            <input class="edit" value="${todo.todo}" />
+        </li>
+        `
     }
-    div.appendChild(input)
-    div.appendChild(label)
-    div.appendChild(btn)
-    li.appendChild(div)
-    li.appendChild(edit_input)
-    todo_ul.appendChild(li)
+    if (todo.complete) {
+        const todoItem = todoItemTemplate(todo, "completed", "checked")
+        todo_ul.innerHTML += todoItem
+    } else {
+        const todoItem = todoItemTemplate(todo, "", "")
+        todo_ul.innerHTML += todoItem
+    } 
 }
 
 function init() {
@@ -181,6 +178,10 @@ function init() {
     all_a.addEventListener("click", viewFilter)
     active_a.addEventListener("click", viewFilter)
     complete_a.addEventListener("click", viewFilter)
+    todo_ul.addEventListener("change", todoComplete)
+    todo_ul.addEventListener("keyup", editingTodo)
+    todo_ul.addEventListener("dblclick", editTodo)
+    todo_ul.addEventListener("click", deleteTodo)
     localTodo()
 }
 
