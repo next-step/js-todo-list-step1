@@ -39,9 +39,14 @@ function App() {
   this.findIndexById = id => {
     return this.todoList.findIndex(item => item.id === id);
   };
+  
+  this.getTodoCount = () => {
+    return this.todoList.length;
+  };
 
   this.render = () => {
     this.TodoList.$ul.innerHTML = todoListTemplate(this.todoList);
+    this.$todoCount.innerHTML = `총 <strong>${this.getTodoCount()}</strong> 개`;
   };
 
   this.TodoList = new TodoList(document.getElementById('todo-list'), {
@@ -53,6 +58,7 @@ function App() {
   this.TodoInput = new TodoInput(document.getElementById('new-todo-title'), {
     addTodo: this.addTodo
   });
+  this.$todoCount = document.getElementsByClassName('todo-count')[0];
 }
 
 new App();
