@@ -1,5 +1,6 @@
 import { validateType } from './util.js';
 import { VALIDATION_TYPE } from './constants.js';
+import { todoListTemplate } from './template.js';
 
 const KEYCODE_ENTER = 13;
 
@@ -36,7 +37,8 @@ function TodoList(element) {
   };
 
   this.render = () => {
-    this.$ul.innerHTML = this.todoList.map((item, index) => `<li data-id="${index}" class="${item.completed ? 'completed' : ''}"><input type="checkbox" ${item.completed ? 'checked' : ''} id="${index}" class="toggle"><label for="${index}">${item.text}<button class="destroy"></button></label></li>`).join('');
+    console.log(todoListTemplate(this.todoList));
+    this.$ul.innerHTML = todoListTemplate(this.todoList);
   };
 }
 
