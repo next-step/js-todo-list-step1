@@ -41,18 +41,9 @@ export class TodoList {
       this.isEditing = -1;
     };
 
-    // 편집 중인 아이템 외의 기능 선택 시 편집 완료
-    window.addEventListener(
-      'click', // autofocus가 실행되지 않아 blur 이벤트 대신 사용 중
-      e => {
-        if (this.isEditing !== -1 && e.target.className !== 'edit') {
-          e.stopPropagation();
-          handleFinishEdit(true);
-          return;
-        }
-      },
-      true
-    );
+    this.$element.addEventListener('focusout', e => {
+      handleFinishEdit(true);
+    });
 
     // 마우스 클릭 이벤트
     this.$element.addEventListener('click', e => {
@@ -76,12 +67,15 @@ export class TodoList {
         const editId = e.target.htmlFor;
         this.isEditing = editId;
         onToggleEdit(editId, '', true);
+
+        // 편집 아이템으로 포커스
+        const editInputElement = document.querySelector(`input.edit[name="${editId}"]`);
+        editInputElement.focus();
       }
     });
 
     // 키보드 입력 이벤트
-    // autofocus가 실행되지 않아 input에 focus 안 되어 window 이벤트로 등록
-    window.addEventListener('keydown', e => {
+    this.$element.addEventListener('keydown', e => {
       if (this.isEditing !== -1) {
         if (e.key === 'Escape') {
           handleFinishEdit(false);
