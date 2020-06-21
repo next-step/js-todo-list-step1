@@ -1,4 +1,4 @@
-const validateType = require('./util.js');
+import { validateType } from './util.js';
 
 describe('util test', () => {
   test('validateType test', () => {
