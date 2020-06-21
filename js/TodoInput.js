@@ -1,4 +1,4 @@
-function TodoInput($todoInput, $todoList){
+function TodoInput($todoInput, $todoList, onAdd){
     //더 상세한 validation?
     if (!$todoInput || !$todoList){
         throw new Error('ERROR: Invalid object')
@@ -14,14 +14,7 @@ function TodoInput($todoInput, $todoList){
                 return
             }
 
-            this.$targetList.innerHTML += `<li>
-            <div class="view">
-            <input class="toggle" type="checkbox" />
-            <label class="label">${this.$todoInput.value}</label>
-            <button class="destroy"></button>
-            </div>
-            <input class="edit" value="${this.$todoInput.value}" />
-            </li>`
+            onAdd(this.$todoInput.value)
 
             this.$todoInput.value = ''
         }
