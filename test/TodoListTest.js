@@ -25,6 +25,9 @@ describe("TodoList", () => {
     onRemove: (id) => {
       console.log("remove", id);
     },
+    onModify: (id, content) => {
+      console.log("onModify", id, content);
+    },
   };
 
   it("객체로 생성되지 않으면 예외를 던진다", () => {
@@ -123,6 +126,30 @@ describe("TodoList", () => {
 
       const editing = $edit.classList.contains("editing");
       expect(editing).toBe(false);
+    });
+
+    it("수정 완료 후 Enter 입력 시 onModify 실행", () => {
+      spyOn(todoList, "onModify");
+
+      let id, content;
+
+      $target.addEventListener("keydown", (e) => {
+        if (e.target.classList.contains("edit")) {
+          id = e.target.closest("li").dataset.id;
+          if (e.key === "Enter") {
+            content = e.target.value;
+          }
+        }
+      });
+
+      const keyDown = document.createEvent("Events");
+      keyDown.initEvent("keydown", true, true);
+      keyDown.key = "Enter";
+
+      const $onEdit = $target.querySelector(".edit");
+      $onEdit.dispatchEvent(keyDown);
+
+      expect(todoList.onModify).toHaveBeenCalledWith(id, content);
     });
   });
 
