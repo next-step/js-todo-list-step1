@@ -1,7 +1,7 @@
 import TodoList from "../js/TodoList.js";
 
 describe("TodoList", () => {
-  const $target = document.querySelector("body");
+  const $target = document.querySelector("#todo-list");
   const data = [
     {
       content: "새로운 타이틀",
@@ -19,6 +19,9 @@ describe("TodoList", () => {
   const params = {
     $target,
     data,
+    onToggle: (id) => {
+      console.log(id);
+    },
   };
 
   it("객체로 생성되지 않으면 예외를 던진다", () => {
@@ -58,6 +61,19 @@ describe("TodoList", () => {
     ];
 
     expect(() => new TodoList({ $target, data: badTodos })).toThrow();
+  });
+
+  it("체크 박스 클릭시 onToggle(id) 실행.", () => {
+    const todoList = new TodoList(params);
+    spyOn(todoList, "onToggle");
+    const $toggle = $target.querySelector(".toggle");
+    let id;
+    $toggle.addEventListener("click", (e) => {
+      id = e.target.closest("li").dataset.id;
+    });
+    $toggle.click();
+
+    expect(todoList.onToggle).toHaveBeenCalledWith(id);
   });
 
   describe("setState", () => {
