@@ -54,6 +54,11 @@ export default function TodoApp() {
     this.setState(this.todos)
   }
 
+  const onChangeTodo = (text, index) => {
+    this.todos[index].content = text
+    this.setState(this.todos)
+  }
+
   const filteredTodosByStatus = (status) => {
     let filteredTodos = []
 
@@ -108,6 +113,7 @@ export default function TodoApp() {
         $target: this.$todoList,
         onToggleTodo,
         onDeleteTodo,
+        onChangeTodo,
       })
 
       this.todoCount = new TodoCount({

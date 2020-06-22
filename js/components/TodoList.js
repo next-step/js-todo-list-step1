@@ -5,6 +5,7 @@ export default function TodoList({
   $target,
   onToggleTodo,
   onDeleteTodo,
+  onChangeTodo,
 }) {
   if (!(this instanceof TodoList)) {
     throw new Error('TodoList must be called with new')
@@ -44,6 +45,39 @@ export default function TodoList({
     }
   }
 
+  const onKeydownHandler = (e) => {
+    if (
+      e.target.nodeName === 'INPUT' &&
+      e.target.classList.contains(todoClassName.EDIT)
+    ) {
+      const li = e.target.closest('li')
+
+      if (e.key === 'Enter' && e.target.value) {
+        const text = e.target.value
+        const id = li.dataset.id
+
+        li.querySelector(`.${todoClassName.LABEL}`).innerHTML = text
+        li.classList.remove(todoClassName.EDITING)
+
+        onChangeTodo(text, id)
+      } else if (e.key === 'Escape') {
+        li.classList.remove(todoClassName.EDITING)
+      }
+    }
+  }
+
+  const onDbClickHandler = (e) => {
+    if (
+      e.target.nodeName === 'LABEL' &&
+      e.target.classList.contains(todoClassName.LABEL)
+    ) {
+      const li = e.target.closest('li')
+
+      li.classList.add(todoClassName.EDITING)
+      li.querySelector(`.${todoClassName.EDIT}`).focus()
+    }
+  }
+
   this.setState = function (nextData) {
     this.todos = nextData
     this.render()
@@ -55,6 +89,8 @@ export default function TodoList({
 
   this.bindEvents = function () {
     this.$target.addEventListener('click', onClickHandler)
+    this.$target.addEventListener('dblclick', onDbClickHandler)
+    this.$target.addEventListener('keydown', onKeydownHandler)
   }
 
   this.init = function () {

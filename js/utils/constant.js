@@ -13,6 +13,9 @@ export const todoClassName = {
   COMPLETED: 'completed',
   SELECTED: 'selected',
   FILTERS: 'filters',
+  EDITING: 'editing',
+  EDIT: 'edit',
+  LABEL: 'label',
 }
 
 export const TODO_KEY = 'TODOS'
