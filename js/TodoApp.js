@@ -1,7 +1,8 @@
 import TodoList from "./TodoList.js";
+import TodoInput from "./TodoInput.js";
 
 export default function TodoApp(params) {
-  const { $targetTodoList } = params;
+  const { $targetTodoList, $targetTodoInput } = params;
   this.data = params.data;
 
   const onToggle = (id) => {
@@ -22,6 +23,16 @@ export default function TodoApp(params) {
     );
     this.setState(nextData);
   };
+
+  const onKeyEnter = (content) => {
+    const nextData = this.data.concat({ content, isCompleted: false });
+    this.setState(nextData);
+  };
+
+  this.todoInput = new TodoInput({
+    $target: $targetTodoInput,
+    onKeyEnter,
+  });
 
   this.todoList = new TodoList({
     $target: $targetTodoList,
