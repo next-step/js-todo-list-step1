@@ -1,4 +1,5 @@
 import { validator } from "../utils/validator.js";
+import { todoListTemplate } from "../utils/templates.js";
 
 const validateTodoList = (context, params) => {
   validator.isNewInstance(context, TodoList);
@@ -28,6 +29,8 @@ export default function TodoList(params) {
   };
 
   this.render = () => {
-    console.log(this.data);
+    $target.innerHTML = todoListTemplate(this.data);
   };
+
+  this.render();
 }
