@@ -2,7 +2,7 @@ import { filterMap } from "./constants.js";
 
 export const todoListTemplate = (todos) => {
   return todos
-    .map((todo, index) => {
+    .map((todo) => {
       const contentHtmlString = `
       <div class="view"> 
         <input class="toggle" type="checkbox" ${
@@ -15,7 +15,7 @@ export const todoListTemplate = (todos) => {
 
       const completedClassName = todo.isCompleted ? 'class = "completed"' : "";
 
-      return `<li ${completedClassName} data-id="${index}">${contentHtmlString}</li>`;
+      return `<li ${completedClassName} data-id="${todo.id}">${contentHtmlString}</li>`;
     })
     .join("");
 };

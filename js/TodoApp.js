@@ -13,28 +13,33 @@ export default function TodoApp(params) {
   } = params;
   this.data = params.data;
   this.filter = filterMap.ALL;
+  this.nextId = this.data.length + 1;
 
   const onToggle = (id) => {
-    const nextData = this.data.map((todo, index) =>
-      index == id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+    const nextData = this.data.map((todo) =>
+      todo.id == id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );
     this.setState(nextData, this.filter);
   };
 
   const onRemove = (id) => {
-    const nextData = this.data.filter((todo, index) => index != id);
+    const nextData = this.data.filter((todo) => todo.id != id);
     this.setState(nextData, this.filter);
   };
 
   const onModify = (id, nextContent) => {
-    const nextData = this.data.map((todo, index) =>
-      index == id ? { ...todo, content: nextContent } : todo
+    const nextData = this.data.map((todo) =>
+      todo.id == id ? { ...todo, content: nextContent } : todo
     );
     this.setState(nextData, this.filter);
   };
 
   const onKeyEnter = (content) => {
-    const nextData = this.data.concat({ content, isCompleted: false });
+    const nextData = this.data.concat({
+      id: this.nextId++,
+      content,
+      isCompleted: false,
+    });
     this.setState(nextData, this.filter);
   };
 
