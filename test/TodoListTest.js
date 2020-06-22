@@ -22,6 +22,9 @@ describe("TodoList", () => {
     onToggle: (id) => {
       console.log(id);
     },
+    onRemove: (id) => {
+      console.log("remove", id);
+    },
   };
 
   it("객체로 생성되지 않으면 예외를 던진다", () => {
@@ -74,6 +77,19 @@ describe("TodoList", () => {
     $toggle.click();
 
     expect(todoList.onToggle).toHaveBeenCalledWith(id);
+  });
+
+  it("삭제 버튼 클릭시 onRemove(id) 실행.", () => {
+    const todoList = new TodoList(params);
+    spyOn(todoList, "onRemove");
+    const $remove = $target.querySelector(".destroy");
+    let id;
+    $remove.addEventListener("click", (e) => {
+      id = e.target.closest("li").dataset.id;
+    });
+    $remove.click();
+
+    expect(todoList.onRemove).toHaveBeenCalledWith(id);
   });
 
   describe("setState", () => {
