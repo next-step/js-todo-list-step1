@@ -23,11 +23,14 @@ export default function TodoList(params) {
   const { $target } = params;
   this.data = params.data;
   this.onToggle = params.onToggle;
+  this.onRemove = params.onRemove;
 
   $target.addEventListener("click", (e) => {
     const { id } = e.target.closest("li").dataset;
     if (e.target.classList.contains("toggle")) {
       this.onToggle(id);
+    } else if (e.target.classList.contains("destroy")) {
+      this.onRemove(id);
     }
   });
 
