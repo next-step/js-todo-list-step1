@@ -13,4 +13,10 @@ export const classNameMap = {
   REMOVE: "destroy",
   LABEL: "label",
   FOCUS: "editing",
+  ON_EDIT: "edit",
+};
+
+export const keyMap = {
+  ESC: "Escape",
+  ENTER: "Enter",
 };
