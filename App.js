@@ -1,5 +1,6 @@
 import { TodoInput, TodoList, TodoCount, TodoFilter } from './components'
-import { ALL, ACTIVE, COMPLETED } from './utils/constants.js'
+import { ALL, ACTIVE, COMPLETED, STORAGE_KEY } from './utils/constants.js'
+import { storage } from './utils/storage.js'
 
 function getTodosByStatus(todos, status) {
   switch (status) {
@@ -14,19 +15,19 @@ function getTodosByStatus(todos, status) {
   }
 }
 
-
 export default function App() {
   if (new.target !== App) return new App()
 
   this.init = () => {
     const { onAddTodo, onToggle, onDelete, onEdit, onFilter } = this
-    this.todos = []
+    this.todos = storage.get(STORAGE_KEY)
     this.filterStatus = ALL
 
     new TodoInput({
       selector: '.new-todo',
       onAddTodo
     })
+
     this.$todoList = new TodoList({
       selector: '.todo-list',
       todos: this.todos,
@@ -34,6 +35,7 @@ export default function App() {
       onDelete,
       onEdit,
     })
+
     this.$todoCount = new TodoCount({
       selector: '.todo-count',
       count: this.todos.length
@@ -45,6 +47,7 @@ export default function App() {
   }
 
   this.setState = (todos, status) => {
+    storage.set(STORAGE_KEY, todos)
     const renderTodos = getTodosByStatus(todos, status)
     this.$todoList.setState(renderTodos)
     this.$todoCount.setState(renderTodos.length)
