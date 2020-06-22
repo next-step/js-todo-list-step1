@@ -20,3 +20,9 @@ export const keyMap = {
   ESC: "Escape",
   ENTER: "Enter",
 };
+
+export const filterMap = {
+  ALL: "all",
+  ACTIVE: "active",
+  COMPLETED: "completed",
+};
