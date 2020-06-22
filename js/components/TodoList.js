@@ -42,7 +42,9 @@ export class TodoList {
     };
 
     this.$element.addEventListener('focusout', e => {
-      handleFinishEdit(true);
+      if (e.target.className === 'edit') {
+        handleFinishEdit(true);
+      }
     });
 
     // 마우스 클릭 이벤트
