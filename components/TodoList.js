@@ -43,8 +43,6 @@ export default function TodoList(props) {
         onEdit(Number(li.dataset.id), e.target.value.trim()) // id, text
       }
     })
-
-
   }
 
   this.render = () => {

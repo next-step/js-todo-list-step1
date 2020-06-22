@@ -1,4 +1,5 @@
-import { TodoInput, TodoList } from './components'
+import { TodoInput, TodoList, TodoCount } from './components'
+import { ALL } from './utils/constants.js'
 
 export default function App() {
   if (new.target !== App) return new App()
@@ -6,6 +7,7 @@ export default function App() {
   this.init = () => {
     const { onAddTodo, onToggle, onDelete, onEdit } = this
     this.todos = []
+    this.filterStatus = ALL
 
     new TodoInput({
       selector: '.new-todo',
@@ -18,17 +20,24 @@ export default function App() {
       onDelete,
       onEdit,
     })
+    this.$todoCount = new TodoCount({
+      selector: '.todo-count',
+      count: this.todos.length
+    })
   }
 
   this.setState = (todos) => {
     this.$todoList.setState(todos)
+    this.$todoCount.setState(todos.length)
   }
 
   this.onAddTodo = (text) => {
-    this.todos = [...this.todos, {
+    this.todos = [
+      ...this.todos, {
       id: this.todos.length ? Math.max(...this.todos.map((todo) => todo.id)) + 1 : 0,
       text,
-      isCompleted: false }]
+      isCompleted: false }
+      ]
     this.setState(this.todos)
   }
 
