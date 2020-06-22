@@ -26,7 +26,7 @@ export default function TodoList(params) {
   this.onToggle = params.onToggle;
   this.onRemove = params.onRemove;
 
-  this.onFocus = ($edit) => $edit.classList.toggle(classNameMap.ON_EDIT);
+  this.onFocus = ($edit) => $edit.classList.toggle(classNameMap.FOCUS);
 
   $target.addEventListener("click", (e) => {
     const { id } = e.target.closest("li").dataset;
