@@ -48,11 +48,12 @@ export default function TodoList(params) {
   $target.addEventListener("keydown", (e) => {
     if (e.target.classList.contains(classNameMap.ON_EDIT)) {
       const $edit = e.target.closest("li");
+      const { id } = e.target.closest("li").dataset;
       if (e.key === keyMap.ESC) {
+        e.target.value = this.data[id].content;
         this.onFocus($edit);
       } else if (e.key == keyMap.ENTER) {
         const content = e.target.value;
-        const { id } = e.target.closest("li").dataset;
         this.onModify(id, content);
       }
     }
