@@ -4,7 +4,7 @@ export default function App() {
   if (new.target !== App) return new App()
 
   this.init = () => {
-    const { onAddTodo, onToggle, onDelete } = this
+    const { onAddTodo, onToggle, onDelete, onEdit } = this
     this.todos = []
 
     new TodoInput({
@@ -16,6 +16,7 @@ export default function App() {
       todos: this.todos,
       onToggle,
       onDelete,
+      onEdit,
     })
   }
 
@@ -36,6 +37,16 @@ export default function App() {
     this.todos = [
       ...this.todos.slice(0, targetIndex),
       {...this.todos[targetIndex], isCompleted: !this.todos[targetIndex].isCompleted},
+      ...this.todos.slice(targetIndex + 1, this.todos.length)
+    ]
+    this.setState(this.todos)
+  }
+
+  this.onEdit = (id, text) => {
+    const targetIndex = this.todos.findIndex((todo) => todo.id === id)
+    this.todos = [
+      ...this.todos.slice(0, targetIndex),
+      {...this.todos[targetIndex], text},
       ...this.todos.slice(targetIndex + 1, this.todos.length)
     ]
     this.setState(this.todos)
