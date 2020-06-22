@@ -92,20 +92,38 @@ describe("TodoList", () => {
     expect(todoList.onRemove).toHaveBeenCalledWith(id);
   });
 
-  it("label 더블 클릭시 onFocus($edit) 실행.", () => {
-    const todoList = new TodoList(params);
-    spyOn(todoList, "onFocus");
-    const $label = $target.querySelector(".label");
-    let $edit;
-    $label.addEventListener("dblclick", (e) => {
-      $edit = e.target.closest("li");
+  describe("onFocus", () => {
+    let todoList, $label, $edit, dblclick;
+
+    beforeEach(() => {
+      todoList = new TodoList(params);
+      spyOn(todoList, "onFocus");
+      $label = $target.querySelector(".label");
+      $edit;
+      $label.addEventListener("dblclick", (e) => {
+        $edit = e.target.closest("li");
+      });
+
+      dblclick = document.createEvent("MouseEvents");
+      dblclick.initEvent("dblclick", true, true);
+      $label.dispatchEvent(dblclick);
     });
 
-    const dblclick = document.createEvent("MouseEvents");
-    dblclick.initEvent("dblclick", true, true);
-    $label.dispatchEvent(dblclick);
+    it("label 더블 클릭시 onFocus($edit) 실행.", () => {
+      expect(todoList.onFocus).toHaveBeenCalledWith($edit);
+    });
 
-    expect(todoList.onFocus).toHaveBeenCalledWith($edit);
+    it("수정 완료전 ESC 키 입력시 editing 클래스 제거", () => {
+      const $onEdit = $target.querySelector(".edit");
+
+      const keyDown = document.createEvent("Events");
+      keyDown.initEvent("keydown", true, true);
+      keyDown.key = "Escape";
+      $onEdit.dispatchEvent(keyDown);
+
+      const editing = $edit.classList.contains("editing");
+      expect(editing).toBe(false);
+    });
   });
 
   describe("setState", () => {
