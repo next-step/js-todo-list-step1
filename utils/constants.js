@@ -7,3 +7,8 @@ export const errorMessageMap = {
   SHOULD_NOT_BE_ZERO_LENGTH: "It Should not be 0 length",
   SHOULD_BE_BOOLEAN: "It Should be Boolean",
 };
+
+export const classNameMap = {
+  TOGGLE: "toggle",
+  REMOVE: "destroy",
+};

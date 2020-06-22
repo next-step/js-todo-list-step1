@@ -1,5 +1,6 @@
 import { validator } from "../utils/validator.js";
 import { todoListTemplate } from "../utils/templates.js";
+import { classNameMap } from "../utils/constants.js";
 
 const validateTodoList = (context, params) => {
   validator.isNewInstance(context, TodoList);
@@ -27,9 +28,9 @@ export default function TodoList(params) {
 
   $target.addEventListener("click", (e) => {
     const { id } = e.target.closest("li").dataset;
-    if (e.target.classList.contains("toggle")) {
+    if (e.target.classList.contains(classNameMap.TOGGLE)) {
       this.onToggle(id);
-    } else if (e.target.classList.contains("destroy")) {
+    } else if (e.target.classList.contains(classNameMap.REMOVE)) {
       this.onRemove(id);
     }
   });
