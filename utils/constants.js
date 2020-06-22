@@ -11,4 +11,6 @@ export const errorMessageMap = {
 export const classNameMap = {
   TOGGLE: "toggle",
   REMOVE: "destroy",
+  LABEL: "label",
+  ON_EDIT: "editing",
 };

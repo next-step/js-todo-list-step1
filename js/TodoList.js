@@ -26,12 +26,21 @@ export default function TodoList(params) {
   this.onToggle = params.onToggle;
   this.onRemove = params.onRemove;
 
+  this.onFocus = ($edit) => $edit.classList.toggle(classNameMap.ON_EDIT);
+
   $target.addEventListener("click", (e) => {
     const { id } = e.target.closest("li").dataset;
     if (e.target.classList.contains(classNameMap.TOGGLE)) {
       this.onToggle(id);
     } else if (e.target.classList.contains(classNameMap.REMOVE)) {
       this.onRemove(id);
+    }
+  });
+
+  $target.addEventListener("dblclick", (e) => {
+    if (e.target.classList.contains(classNameMap.LABEL)) {
+      const $edit = e.target.closest("li");
+      this.onFocus($edit);
     }
   });
 
