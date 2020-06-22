@@ -1,8 +1,9 @@
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
+import TodoCount from "./TodoCount.js";
 
 export default function TodoApp(params) {
-  const { $targetTodoList, $targetTodoInput } = params;
+  const { $targetTodoList, $targetTodoInput, $targetTodoCount } = params;
   this.data = params.data;
 
   const onToggle = (id) => {
@@ -42,13 +43,20 @@ export default function TodoApp(params) {
     onModify,
   });
 
+  this.todoCount = new TodoCount({
+    $target: $targetTodoCount,
+    count: this.data.length,
+  });
+
   this.setState = (nextData) => {
     this.data = nextData;
     this.todoList.setState(this.data);
+    this.todoCount.setState(this.data.length);
     this.render();
   };
 
   this.render = () => {
     this.todoList.render();
+    this.todoCount.render();
   };
 }

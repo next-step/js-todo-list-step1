@@ -17,3 +17,5 @@ export const todoListTemplate = (todos) => {
     })
     .join("");
 };
+
+export const todoCountTemplate = (count) => `총 <strong>${count}</strong> 개`;
