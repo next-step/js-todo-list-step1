@@ -22,6 +22,14 @@ export default function TodoList(params) {
 
   const { $target } = params;
   this.data = params.data;
+  this.onToggle = params.onToggle;
+
+  $target.addEventListener("click", (e) => {
+    const { id } = e.target.closest("li").dataset;
+    if (e.target.classList.contains("toggle")) {
+      this.onToggle(id);
+    }
+  });
 
   this.setState = (nextData) => {
     this.data = nextData;
