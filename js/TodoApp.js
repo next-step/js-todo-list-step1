@@ -25,7 +25,7 @@ export default function TodoApp(params) {
 
   this.todoList = new TodoList({
     $target: $targetTodoList,
-    data,
+    data: this.data,
     onToggle,
     onRemove,
     onModify,
