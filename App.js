@@ -1,11 +1,25 @@
-import { TodoInput, TodoList, TodoCount } from './components'
-import { ALL } from './utils/constants.js'
+import { TodoInput, TodoList, TodoCount, TodoFilter } from './components'
+import { ALL, ACTIVE, COMPLETED } from './utils/constants.js'
+
+function getTodosByStatus(todos, status) {
+  switch (status) {
+    case ALL:
+      return todos
+    case ACTIVE:
+      return todos.filter((todo) => todo.isCompleted === false)
+    case COMPLETED:
+      return todos.filter((todo) => todo.isCompleted === true)
+    default:
+      throw new Error('Unhandled Case')
+  }
+}
+
 
 export default function App() {
   if (new.target !== App) return new App()
 
   this.init = () => {
-    const { onAddTodo, onToggle, onDelete, onEdit } = this
+    const { onAddTodo, onToggle, onDelete, onEdit, onFilter } = this
     this.todos = []
     this.filterStatus = ALL
 
@@ -24,11 +38,16 @@ export default function App() {
       selector: '.todo-count',
       count: this.todos.length
     })
+    new TodoFilter({
+      selector: '.filters',
+      onFilter
+    })
   }
 
-  this.setState = (todos) => {
-    this.$todoList.setState(todos)
-    this.$todoCount.setState(todos.length)
+  this.setState = (todos, status) => {
+    const renderTodos = getTodosByStatus(todos, status)
+    this.$todoList.setState(renderTodos)
+    this.$todoCount.setState(renderTodos.length)
   }
 
   this.onAddTodo = (text) => {
@@ -38,7 +57,7 @@ export default function App() {
       text,
       isCompleted: false }
       ]
-    this.setState(this.todos)
+    this.setState(this.todos, this.filterStatus)
   }
 
   this.onToggle = (id) => {
@@ -48,7 +67,7 @@ export default function App() {
       {...this.todos[targetIndex], isCompleted: !this.todos[targetIndex].isCompleted},
       ...this.todos.slice(targetIndex + 1, this.todos.length)
     ]
-    this.setState(this.todos)
+    this.setState(this.todos, this.filterStatus)
   }
 
   this.onEdit = (id, text) => {
@@ -58,12 +77,17 @@ export default function App() {
       {...this.todos[targetIndex], text},
       ...this.todos.slice(targetIndex + 1, this.todos.length)
     ]
-    this.setState(this.todos)
+    this.setState(this.todos, this.filterStatus)
   }
 
   this.onDelete = (id) => {
     this.todos = this.todos.filter((todo) => todo.id !== id)
-    this.setState(this.todos)
+    this.setState(this.todos, this.filterStatus)
+  }
+
+  this.onFilter = (status) => {
+    this.filterStatus = status
+    this.setState(this.todos, this.filterStatus)
   }
 
   this.init()
