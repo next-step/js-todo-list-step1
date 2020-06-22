@@ -43,6 +43,12 @@ export default function TodoList(props) {
         onEdit(Number(li.dataset.id), e.target.value.trim()) // id, text
       }
     })
+
+    this.$target.addEventListener('focus', (e) => {
+      if (e.target.tagName === 'INPUT' && e.target.className === 'edit') {
+        e.target.selectionStart = e.target.value.length
+      }
+    }, true) // 맨 마지막 글자에 focus
   }
 
   this.render = () => {
