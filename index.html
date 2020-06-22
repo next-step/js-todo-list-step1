@@ -19,23 +19,25 @@
       </div>
       <div class="main">
         <input class="toggle-all" type="checkbox" />
+        <label class="toggle-all-label"></label>
         <ul id="todo-list" class="todo-list"></ul>
       </div>
       <div class="count-container">
         <span class="todo-count">총 <strong>0</strong> 개</span>
         <ul class="filters">
           <li>
-            <a class="all selected" href="#/">전체보기</a>
+            <a class="all selected">전체보기</a>
           </li>
           <li>
-            <a class="active" href="#/active">해야할 일</a>
+            <a class="active">해야할 일</a>
           </li>
           <li>
-            <a class="completed" href="#/completed">완료한 일</a>
+            <a class="completed">완료한 일</a>
           </li>
+          <span class="destroy-all">전체삭제</span>
         </ul>
       </div>
     </section>
-    <script src="js/app.js"></script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>
