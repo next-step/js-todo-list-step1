@@ -92,6 +92,22 @@ describe("TodoList", () => {
     expect(todoList.onRemove).toHaveBeenCalledWith(id);
   });
 
+  it("label 더블 클릭시 onFocus($edit) 실행.", () => {
+    const todoList = new TodoList(params);
+    spyOn(todoList, "onFocus");
+    const $label = $target.querySelector(".label");
+    let $edit;
+    $label.addEventListener("dblclick", (e) => {
+      $edit = e.target.closest("li");
+    });
+
+    const dblclick = document.createEvent("MouseEvents");
+    dblclick.initEvent("dblclick", true, true);
+    $label.dispatchEvent(dblclick);
+
+    expect(todoList.onFocus).toHaveBeenCalledWith($edit);
+  });
+
   describe("setState", () => {
     it("기존의 data를 인자로 받은 nextData로 바꿔준다.", () => {
       const todoList = new TodoList(params);
