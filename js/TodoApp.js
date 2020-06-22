@@ -3,6 +3,7 @@ import TodoInput from "./TodoInput.js";
 import TodoCount from "./TodoCount.js";
 import { filterMap } from "../utils/constants.js";
 import TodoFilter from "./TodoFilter.js";
+import { loadTodos, saveTodos } from "../utils/localStorage.js";
 
 export default function TodoApp(params) {
   const {
@@ -11,7 +12,7 @@ export default function TodoApp(params) {
     $targetTodoCount,
     $targetTodoFilter,
   } = params;
-  this.data = params.data;
+  this.data = loadTodos() || [];
   this.filter = filterMap.ALL;
   this.nextId = this.data.length + 1;
 
@@ -90,6 +91,7 @@ export default function TodoApp(params) {
     this.todoList.setState(filteredTodos);
     this.todoCount.setState(filteredTodos.length);
     this.todoFilter.setState(this.filter);
+    saveTodos(this.data);
     this.render();
   };
 
