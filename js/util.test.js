@@ -8,6 +8,6 @@ describe('util test', () => {
     expect(validateType(true, 'string')).toBe(false);
     expect(validateType({}, 'boolean')).toBe(false);
     expect(validateType(undefined, 'undefined')).toBe(true);
-    expect(validateType(function(){}, 'function')).toBe(true);
+    expect(validateType(function () { }, 'function')).toBe(true);
   });
-})
+});
