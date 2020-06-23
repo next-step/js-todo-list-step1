@@ -23,12 +23,31 @@ export const Item = props => {
   };
 };
 
+const isNil = data => {
+  return data === null || data === undefined;
+};
+
+const isTodoItemValid = param => {
+  // 데이터가 null / undefined 또는 array가 아닐 경우 판별
+  if (isNil(param) || !Array.isArray(param)) {
+    return false;
+  }
+
+  // 데이터 내용이 이상할 때 판별
+  return param.every(item => toString.call(item) === '[object Object]');
+};
+
 export class TodoList {
   constructor(props) {
     const { $element, items, onClickToggle, onClickDestroy, onToggleEdit } = props;
     this.$element = $element;
     this.todoItems = items;
     this.isEditing = -1; // 현재 편집 중인 아이템의 id 저장
+
+    if (!isTodoItemValid(items)) {
+      console.log('[TodoList] 데이터가 올바르지 않습니다.');
+      return;
+    }
 
     this.render();
 

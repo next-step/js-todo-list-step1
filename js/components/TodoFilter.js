@@ -1,10 +1,22 @@
 import { FILTER } from '../constants.js';
 
+const isFilterValid = filter => {
+  const filterValue = filter || FILTER.ALL;
+  return Object.keys(FILTER).some(key => FILTER[key] === filterValue);
+};
+
 export default class TodoFilter {
   constructor(props) {
     const { $element, selectedFilter } = props;
+
+    if (!isFilterValid(selectedFilter)) {
+      console.log('[TodoFilter] 데이터가 올바르지 않습니다.');
+      return;
+    }
+
     this.$element = $element;
     this.selectedFilter = selectedFilter;
+
     this.render();
   }
 

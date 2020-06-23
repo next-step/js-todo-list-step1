@@ -1,5 +1,14 @@
+const isCountInteger = data => {
+  return data && Number.isInteger(data) && data >= 0;
+};
+
 export default class TodoCount {
   constructor({ $element, count }) {
+    if (!isCountInteger(count)) {
+      console.log('[TodoCount] 데이터가 올바르지 않습니다.');
+      return;
+    }
+
     this.$element = $element;
     this.count = count;
 
