@@ -48,9 +48,9 @@ export default function App() {
     })
   }
 
-  this.setState = (todos, status) => {
+  this.setState = (todos) => {
     storage.set(STORAGE_KEY, todos)
-    const renderTodos = getTodosByStatus(todos, status)
+    const renderTodos = getTodosByStatus(todos, this.filterStatus)
     this.$todoList.setState(renderTodos)
     this.$todoCount.setState(renderTodos.length)
   }
@@ -84,7 +84,7 @@ export default function App() {
 
   this.onFilter = (status) => {
     this.filterStatus = status
-    this.setState(this.todos, this.filterStatus)
+    this.setState(this.todos)
   }
 
   this.init()
