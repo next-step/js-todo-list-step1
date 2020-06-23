@@ -16,7 +16,9 @@ function getTodosByStatus(todos, status) {
 }
 
 export default function App() {
-  if (new.target !== App) return new App()
+  if (new.target !== App) {
+    return new App()
+  }
 
   this.init = () => {
     const { onAddTodo, onToggle, onDelete, onEdit, onFilter } = this
@@ -65,21 +67,13 @@ export default function App() {
 
   this.onToggle = (id) => {
     const targetIndex = this.todos.findIndex((todo) => todo.id === id)
-    this.todos = [
-      ...this.todos.slice(0, targetIndex),
-      {...this.todos[targetIndex], isCompleted: !this.todos[targetIndex].isCompleted},
-      ...this.todos.slice(targetIndex + 1, this.todos.length)
-    ]
+    this.todos[targetIndex] = { ...this.todos[targetIndex], isCompleted: !this.todos[targetIndex].isCompleted }
     this.setState(this.todos, this.filterStatus)
   }
 
   this.onEdit = (id, text) => {
     const targetIndex = this.todos.findIndex((todo) => todo.id === id)
-    this.todos = [
-      ...this.todos.slice(0, targetIndex),
-      {...this.todos[targetIndex], text},
-      ...this.todos.slice(targetIndex + 1, this.todos.length)
-    ]
+    this.todos[targetIndex] = { ...this.todos[targetIndex], text }
     this.setState(this.todos, this.filterStatus)
   }
 

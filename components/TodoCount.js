@@ -1,7 +1,9 @@
 import { checkSelector } from "../utils/validations.js"
 
 export default function TodoCount({ selector, count }) {
-  if (new.target !== TodoCount) return new TodoCount()
+  if (new.target !== TodoCount) {
+    return new TodoCount({ selector, count })
+  }
   checkSelector(selector)
 
   this.init = () => {

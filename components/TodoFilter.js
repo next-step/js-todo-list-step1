@@ -15,6 +15,9 @@ function getStatus(className) {
 }
 
 export default function TodoFilter({ selector, onFilter }){
+  if (new.target !== TodoFilter) {
+    return new TodoFilter({ selector, onFilter })
+  }
   checkSelector(selector)
 
   this.init = () => {

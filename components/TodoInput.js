@@ -1,7 +1,9 @@
 import {checkSelector} from "../utils/validations.js"
 
 export default function TodoInput({ selector, onAddTodo }) {
-  if (new.target !== TodoInput) return new TodoInput(selector)
+  if (new.target !== TodoInput) {
+    return new TodoInput({ selector, onAddTodo })
+  }
   checkSelector(selector)
   this.init = () => {
     this.$target = document.querySelector(selector)
