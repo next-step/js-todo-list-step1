@@ -31,12 +31,12 @@ function TodoList(element, { deleteTodo, toggleTodo, toggleEditMode, editTodo })
 
   this.$ul.addEventListener('keyup', e => {
     const { id } = e.target.closest('li');
-    if (e.keyCode === KEYCODE_ESC) {
+    if (e.key === KEYCODE_ESC) {
       this.toggleEditMode(id);
     }
     const newValue = e.target.value;
     if (newValue === '') return null;
-    if (e.keyCode === KEYCODE_ENTER) {
+    if (e.key === KEYCODE_ENTER) {
       this.editTodo(id, newValue);
     }
   });

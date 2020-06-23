@@ -6,8 +6,8 @@ function TodoInput(element, { addTodo }) {
 
   this.$input.addEventListener('keypress',e => {
     const newValue = e.target.value;
-    if (newValue === '') return null;
-    if (e.keyCode === KEYCODE_ENTER) {
+    if (newValue === '') return;
+    if (e.key === KEYCODE_ENTER) {
       this.addTodo(newValue);
       this.setText('');
     }

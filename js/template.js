@@ -1,5 +1,5 @@
 export const todoListTemplate = todoList => {
-  return todoList.map((item, index) => (
+  return todoList.map(item => (
     `<li id="${item.id}" class="${item.completed ? 'completed' : ''} ${item.editing ? 'editing' : ''}">
       <div class="view">
         <input class="toggle" type="checkbox" ${item.completed ? 'checked' : ''}/>
