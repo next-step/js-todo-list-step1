@@ -4,14 +4,17 @@ describe("TodoList", () => {
   const $target = document.querySelector("#todo-list");
   const data = [
     {
+      id: 1,
       content: "새로운 타이틀",
       isCompleted: false,
     },
     {
+      id: 2,
       content: "완료된 타이틀",
       isCompleted: true,
     },
     {
+      id: 3,
       content: "완료된 타이틀",
       isCompleted: true,
     },
@@ -37,6 +40,10 @@ describe("TodoList", () => {
   });
 
   it("생성시 인자가 하나라도 누락되었거나 타입이 잘못되면 예외를 던진다", () => {
+    const onToggle = () => {};
+    const onRemove = () => {};
+    const onModify = () => {};
+
     const badParameters = [
       "params",
       {},
@@ -45,6 +52,10 @@ describe("TodoList", () => {
       { $target: null, data },
       { $target: undefined, data },
       { $target: $target, data: "Should be Array" },
+      { $target, data },
+      { $target, data, onToggle, onRemove },
+      { $target, data, onToggle, onModify },
+      { $target, data, onRemove, onModify },
     ];
 
     badParameters.forEach((params) => {
