@@ -50,10 +50,12 @@ export default function TodoList(props) {
     }
 
     const focusOutEventHandler = (e) => {
-      e.target.value = this.editInputValue //초기상태의 value로 reset
-      const li = e.target.closest('li')
-      if (li.classList.contains('editing')) {
-        li.classList.remove('editing')
+      if (e.target.tagName === 'INPUT' && e.target.className === 'edit') {
+        e.target.value = this.editInputValue //초기상태의 value로 reset
+        const li = e.target.closest('li')
+        if (li.classList.contains('editing')) {
+          li.classList.remove('editing')
+        }
       }
     }
 
