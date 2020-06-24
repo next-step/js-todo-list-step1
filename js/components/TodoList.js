@@ -59,6 +59,7 @@ export default function TodoList({
         li.classList.remove(todoClassName.EDITING)
         onChangeTodo(text, Number(id))
       } else if (e.key === 'Escape') {
+        e.target.value = this.todoInitialInputValue
         li.classList.remove(todoClassName.EDITING)
       }
     }
@@ -75,6 +76,7 @@ export default function TodoList({
       const input = li.querySelector(`.${todoClassName.EDIT}`)
       input.focus()
       input.setSelectionRange(input.value.length, input.value.length)
+      this.todoInitialInputValue = input.value
     }
   }
 
@@ -83,6 +85,8 @@ export default function TodoList({
       e.target.nodeName === 'INPUT' &&
       e.target.classList.contains(todoClassName.EDIT)
     ) {
+      e.target.value = this.todoInitialInputValue
+
       const li = e.target.closest('li')
       if (li.classList.contains(todoClassName.EDITING)) {
         li.classList.remove(todoClassName.EDITING)
