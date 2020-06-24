@@ -33,7 +33,7 @@ export default function TodoList({
       e.target.classList.contains(todoClassName.TOGGLE)
     ) {
       const id = e.target.closest('li').dataset.id
-      onToggleTodo(id)
+      onToggleTodo(Number(id))
     }
 
     if (
@@ -41,7 +41,7 @@ export default function TodoList({
       e.target.classList.contains(todoClassName.DESTROY)
     ) {
       const id = e.target.closest('li').dataset.id
-      onDeleteTodo(id)
+      onDeleteTodo(Number(id))
     }
   }
 
@@ -56,10 +56,8 @@ export default function TodoList({
         const text = e.target.value
         const id = li.dataset.id
 
-        li.querySelector(`.${todoClassName.LABEL}`).innerHTML = text
         li.classList.remove(todoClassName.EDITING)
-
-        onChangeTodo(text, id)
+        onChangeTodo(text, Number(id))
       } else if (e.key === 'Escape') {
         li.classList.remove(todoClassName.EDITING)
       }
@@ -74,7 +72,21 @@ export default function TodoList({
       const li = e.target.closest('li')
 
       li.classList.add(todoClassName.EDITING)
-      li.querySelector(`.${todoClassName.EDIT}`).focus()
+      const input = li.querySelector(`.${todoClassName.EDIT}`)
+      input.focus()
+      input.setSelectionRange(input.value.length, input.value.length)
+    }
+  }
+
+  const onFocusoutHandler = (e) => {
+    if (
+      e.target.nodeName === 'INPUT' &&
+      e.target.classList.contains(todoClassName.EDIT)
+    ) {
+      const li = e.target.closest('li')
+      if (li.classList.contains(todoClassName.EDITING)) {
+        li.classList.remove(todoClassName.EDITING)
+      }
     }
   }
 
@@ -91,6 +103,7 @@ export default function TodoList({
     this.$target.addEventListener('click', onClickHandler)
     this.$target.addEventListener('dblclick', onDbClickHandler)
     this.$target.addEventListener('keydown', onKeydownHandler)
+    this.$target.addEventListener('focusout', onFocusoutHandler)
   }
 
   this.init = function () {
