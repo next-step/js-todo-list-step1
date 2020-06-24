@@ -59,7 +59,15 @@ function App() {
     
     this.TodoList.$ul.innerHTML = todoListTemplate(renderList[this.mode]);
     this.$todoCount.innerHTML = `총 <strong>${renderList[this.mode].length}</strong> 개`;
+
+    localStorage.setItem('todo-list', JSON.stringify(this.todoList));
   };
+
+  this.init = () => {
+    const list = localStorage.getItem('todo-list');
+    this.todoList = JSON.parse(list);
+    this.render();
+  }
 
   this.TodoList = new TodoList(document.getElementById('todo-list'), {
     deleteTodo: this.deleteTodo,
@@ -76,4 +84,5 @@ function App() {
   });
 }
 
-new App();
+const app = new App();
+app.init();
