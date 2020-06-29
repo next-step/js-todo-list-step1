@@ -27,19 +27,19 @@ export default function App() {
 	});
 
 	const getTodoCount = function () {
-		const count = model.todo.reduce(
+		const { activeCount, completedCount } = model.todo.reduce(
 			({ activeCount, completedCount }, { isCompleted }) => {
 				return {
-					activeCount: isCompleted ? activeCount + 1 : activeCount,
-					completedCount: !isCompleted ? completedCount + 1 : completedCount,
+					activeCount: !isCompleted ? activeCount + 1 : activeCount,
+					completedCount: isCompleted ? completedCount + 1 : completedCount,
 				};
 			},
 			{ activeCount: 0, completedCount: 0 },
 		);
 
 		return {
-			active: count.activeCount,
-			completed: count.completedCount,
+			active: activeCount,
+			completed: completedCount,
 		};
 	};
 
