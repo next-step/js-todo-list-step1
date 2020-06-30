@@ -38,9 +38,9 @@ export default function TodoList(params) {
     }
   });
 
-  $target.addEventListener("dblclick", (e) => {
-    if (e.target.classList.contains(classNameMap.LABEL)) {
-      const $edit = e.target.closest("li");
+  $target.addEventListener("dblclick", ({ target }) => {
+    if (target.classList.contains(classNameMap.LABEL)) {
+      const $edit = target.closest("li");
       this.onFocus($edit);
     }
   });
