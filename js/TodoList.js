@@ -28,6 +28,26 @@ export default function TodoList(params) {
   this.onModify = params.onModify;
 
   this.onFocus = ($edit) => $edit.classList.toggle(classNameMap.FOCUS);
+  this.onKeyDown = (e) => {
+    const $edit = e.target.closest("li");
+    const { id } = e.target.closest("li").dataset;
+    console.log(id);
+
+    switch (e.key) {
+      case keyMap.ESC:
+        {
+          e.target.value = this.data[id].content;
+          this.onFocus($edit);
+        }
+        break;
+      case keyMap.ENTER:
+        {
+          const content = e.target.value;
+          this.onModify(id, content);
+        }
+        break;
+    }
+  };
 
   $target.addEventListener("click", (e) => {
     const { id } = e.target.closest("li").dataset;
@@ -46,17 +66,11 @@ export default function TodoList(params) {
   });
 
   $target.addEventListener("keydown", (e) => {
-    if (e.target.classList.contains(classNameMap.ON_EDIT)) {
-      const $edit = e.target.closest("li");
-      const { id } = e.target.closest("li").dataset;
-      if (e.key === keyMap.ESC) {
-        e.target.value = this.data[id].content;
-        this.onFocus($edit);
-      } else if (e.key == keyMap.ENTER) {
-        const content = e.target.value;
-        this.onModify(id, content);
-      }
+    if (!e.target.classList.contains(classNameMap.ON_EDIT)) {
+      return;
     }
+
+    this.onKeyDown(e);
   });
 
   this.setState = (nextData) => {
