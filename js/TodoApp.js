@@ -18,13 +18,13 @@ export default function TodoApp(params) {
 
   const onToggle = (id) => {
     const nextData = this.data.map((todo) =>
-      todo.id == id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+      todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );
     this.setState(nextData, this.filter);
   };
 
   const onRemove = (id) => {
-    const nextData = this.data.filter((todo) => todo.id != id);
+    const nextData = this.data.filter((todo) => todo.id !== id);
     this.setState(nextData, this.filter);
   };
 

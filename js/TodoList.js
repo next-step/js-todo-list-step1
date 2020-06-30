@@ -32,9 +32,9 @@ export default function TodoList(params) {
   $target.addEventListener("click", (e) => {
     const { id } = e.target.closest("li").dataset;
     if (e.target.classList.contains(classNameMap.TOGGLE)) {
-      this.onToggle(id);
+      this.onToggle(Number(id));
     } else if (e.target.classList.contains(classNameMap.REMOVE)) {
-      this.onRemove(id);
+      this.onRemove(Number(id));
     }
   });
 
