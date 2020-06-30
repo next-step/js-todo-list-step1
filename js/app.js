@@ -5,7 +5,7 @@ import { FILTER } from './constants.js';
 import { STORAGE_KEY, $TODO_INPUT, $TODO_LIST } from './config.js';
 
 const getWindowLocation = () => {
-  return window.location.hash.substr(2);
+  return window.location.hash.substring(2);
 };
 
 const getNewItem = (id, content, isCompleted = false, editing = false) => {
@@ -127,9 +127,10 @@ class App {
   }
 
   filterTodoItems(filter, todoItems) {
-    return filter === ''
-      ? todoItems
-      : todoItems.filter(item => (filter === FILTER.COMPLETED) === item.isCompleted);
+    const isCompletedFilter = filter === FILTER.COMPLETED;
+    return filter !== ''
+      ? todoItems.filter(item => isCompletedFilter === item.isCompleted)
+      : todoItems;
   }
 }
 
