@@ -34,12 +34,12 @@ export default function TodoList(params) {
   this.onKeyDown = (e) => {
     const $edit = e.target.closest("li");
     const { id } = e.target.closest("li").dataset;
-    console.log(id);
 
     switch (e.key) {
       case keyMap.ESC:
         {
-          e.target.value = this.data[id].content;
+          const index = this.data.findIndex((todo) => todo.id === Number(id));
+          e.target.value = this.data[index].content;
           this.onFocus($edit);
         }
         break;
