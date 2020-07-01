@@ -6,6 +6,7 @@ export const errorMessageMap = {
   SHOULD_BE_STRING: "It Should be string",
   SHOULD_NOT_BE_ZERO_LENGTH: "It Should not be 0 length",
   SHOULD_BE_BOOLEAN: "It Should be Boolean",
+  NOT_FUNCTION: "It Shold be Function",
 };
 
 export const classNameMap = {

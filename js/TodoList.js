@@ -6,10 +6,13 @@ const validateTodoList = (context, params) => {
   validator.isNewInstance(context, TodoList);
   validator.isObject(params);
 
-  const { $target, data } = params;
+  const { $target, data, onToggle, onRemove, onModify } = params;
 
   validator.isElement($target);
   validator.isArray(data);
+  validator.isFunction(onToggle);
+  validator.isFunction(onRemove);
+  validator.isFunction(onModify);
 
   data.forEach((todo) => {
     validator.isString(todo.content);

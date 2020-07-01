@@ -43,4 +43,10 @@ export const validator = {
     }
     return true;
   },
+  isFunction(it) {
+    if (typeof it !== "function") {
+      throw new Error(errorMessageMap.NOT_FUNCTION);
+    }
+    return true;
+  },
 };
