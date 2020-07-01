@@ -90,7 +90,7 @@ describe("TodoList", () => {
     });
     $toggle.click();
 
-    expect(todoList.onToggle).toHaveBeenCalledWith(id);
+    expect(todoList.onToggle).toHaveBeenCalledWith(Number(id));
   });
 
   it("삭제 버튼 클릭시 onRemove(id) 실행.", () => {
@@ -103,7 +103,7 @@ describe("TodoList", () => {
     });
     $remove.click();
 
-    expect(todoList.onRemove).toHaveBeenCalledWith(id);
+    expect(todoList.onRemove).toHaveBeenCalledWith(Number(id));
   });
 
   describe("onFocus", () => {
