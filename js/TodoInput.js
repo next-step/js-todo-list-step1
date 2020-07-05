@@ -1,6 +1,6 @@
 function TodoInput($todoInput, onAdd){
     //더 상세한 validation?
-    if (!$todoInput || !$todoList){
+    if (!$todoInput){
         throw new Error('ERROR: Invalid object')
     }
 

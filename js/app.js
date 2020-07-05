@@ -11,23 +11,23 @@ function App(){
         })
 
         todoList.updateItem(data)
-        todoCount.updateCount(data)
+        todoCount.render(data.length)
     }
 
     function removeItem(index) {
         data.splice(index, 1)
 
         todoList.updateItem(data)
-        todoCount.updateCount(data)
+        todoCount.render(data.length)
     }
 
     const todoList = new TodoList($todoList, data, (index) => {
         removeItem(index)
     })
-    const todoInput = new TodoInput($todoInput, $todoList, (text) => {
+    const todoInput = new TodoInput($todoInput, (text) => {
         addItem(text)
     })
-    const todoCount = new TodoCount($todoCount, data)
+    const todoCount = new TodoCount($todoCount, data.length)
     
 }
 
