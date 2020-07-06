@@ -101,14 +101,10 @@ body {
     width: 1px;
     height: 1px;
     border: none;
-    opacity: 1;
+    opacity: 0;
     position: absolute;
     right: 100%;
     bottom: 100%;
-}
-
-.toggle-all + label:hover {
-    cursor: pointer;
 }
 
 .toggle-all + label {
@@ -125,7 +121,7 @@ body {
 .toggle-all + label:before {
     content: '❯';
     font-size: 22px;
-    color: #6d6d6d;
+    color: #e6e6e6;
     padding: 10px 27px 10px 27px;
 }
 
@@ -180,10 +176,6 @@ body {
 
 .todo-list li .toggle {
     opacity: 0;
-}
-
-.todo-list li .toggle:hover {
-    cursor: pointer;
 }
 
 .todo-list li .toggle + label {
@@ -305,18 +297,6 @@ body {
 
 .filters li a.selected {
     border-color: rgba(175, 47, 47, 0.2);
-}
-
-.destroy-all {
-    float: right;
-    text-align: left;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.destroy-all:hover {
-    font-weight: bold;
-    color: rgba(255, 0, 0, 0.733);
 }
 
 .clear-completed, html .clear-completed:active {
