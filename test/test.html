@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      data-require="jasmine@2.0.0"
+      data-semver="2.0.0"
+      rel="stylesheet"
+      href="http://cdn.jsdelivr.net/jasmine/2.0.0/jasmine.css"
+    />
+  </head>
+
+  <body>
+    <h1>TodoList Test</h1>
+    <ul id="todo-list" class="todo-list"></ul>
+
+    <script
+      data-require="jasmine@2.0.0"
+      data-semver="2.0.0"
+      src="http://cdn.jsdelivr.net/jasmine/2.0.0/jasmine.js"
+    ></script>
+    <script
+      data-require="jasmine@2.0.0"
+      data-semver="2.0.0"
+      src="http://cdn.jsdelivr.net/jasmine/2.0.0/jasmine-html.js"
+    ></script>
+    <script
+      data-require="jasmine@2.0.0"
+      data-semver="2.0.0"
+      src="http://cdn.jsdelivr.net/jasmine/2.0.0/boot.js"
+    ></script>
+    <script type="module" src="../js/TodoList.js"></script>
+    <script type="module" src="./TodoListTest.js"></script>
+  </body>
+</html>
