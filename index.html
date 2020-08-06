@@ -56,5 +56,23 @@
 		}
 	}
 
+	function removeTodo({target}) {
+		if (target.className === 'destroy') {
+			target.parentElement.parentElement.remove();
+			document.querySelector('.todo-count > strong').textContent = todoList.childElementCount;
+		}
+	}
+
+	function checkCompleteTodo({target}) {
+		if (target.className === 'toggle') {
+			target.parentElement.parentElement.classList.toggle('completed');
+			target.toggleAttribute('checked')
+			document.querySelector('.todo-count > strong').textContent = todoList.childElementCount;
+		}
+	}
+
 	newTodoInput.addEventListener("keyup", addTodo);
+	todoList.addEventListener('click', removeTodo);
+	todoList.addEventListener('click', checkCompleteTodo);
+
 </script>
