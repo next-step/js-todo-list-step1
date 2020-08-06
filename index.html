@@ -22,7 +22,7 @@
             <span class="todo-count">총 <strong>0</strong> 개</span>
             <ul class="filters">
                 <li>
-                    <a class="all selected" href="/#">전체보기</a>
+                    <a class="all selected" href="#">전체보기</a>
                 </li>
                 <li>
                     <a class="active" href="#active">해야할 일</a>
@@ -39,11 +39,12 @@
 <script>
 	const newTodoInput = document.getElementById('new-todo-title');
 	const todoList = document.getElementById('todo-list');
+	const filters = document.querySelector('.filters');
 
 	function addTodo({key, target}) {
 		if (key === 'Enter') {
 			todoList.insertAdjacentHTML('beforeend',
-				`<li>
+				`<li class="active">
                 <div class="view">
                     <input class="toggle" type="checkbox" />
                     <label class="label">${target.value}</label>
@@ -66,6 +67,7 @@
 	function checkCompleteTodo({target}) {
 		if (target.className === 'toggle') {
 			target.parentElement.parentElement.classList.toggle('completed');
+			target.parentElement.parentElement.classList.toggle('active');
 			target.toggleAttribute('checked')
 			document.querySelector('.todo-count > strong').textContent = todoList.childElementCount;
 		}
@@ -77,6 +79,23 @@
 		} else if (key === 'Enter') {
 			target.parentElement.querySelector('.label').textContent = target.value;
 			target.parentElement.classList.remove('editing')
+		} else if (key === 'Escape') {
+			target.parentElement.classList.remove('editing')
+		}
+	}
+
+	function filter({target}) {
+		const completeTodos = todoList.getElementsByClassName('completed');
+		const activeTodos = todoList.getElementsByClassName('active')
+
+		Array.from(todoList.childNodes).map(todo => todo.removeAttribute('style'))
+		document.querySelector('.todo-count > strong').textContent = todoList.childElementCount;
+		if (target.className === 'active') {
+			Array.from(completeTodos).map(todo => todo.style.display = 'none')
+			document.querySelector('.todo-count > strong').textContent = activeTodos.length;
+		} else if (target.className === 'completed') {
+			Array.from(activeTodos).map(todo => todo.style.display = 'none')
+			document.querySelector('.todo-count > strong').textContent = completeTodos.length;
 		}
 	}
 
@@ -85,5 +104,6 @@
 	todoList.addEventListener('click', checkCompleteTodo);
 	todoList.addEventListener('dblclick', editTodo);
 	todoList.addEventListener('keyup', editTodo);
+	filters.addEventListener('click', filter)
 
 </script>
