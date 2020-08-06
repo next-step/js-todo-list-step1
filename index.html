@@ -40,39 +40,21 @@
 	const newTodoInput = document.getElementById('new-todo-title');
 	const todoList = document.getElementById('todo-list');
 
-	function initTodoElement() {
-		const li = document.createElement('li');
-		const view = document.createElement('div');
-		view.classList.add('view');
-		const toggle = document.createElement('input');
-		toggle.classList.add('toggle');
-		toggle.setAttribute('type', 'checkbox');
-
-		const label = document.createElement('label');
-		label.classList.add('label');
-
-		const destroy = document.createElement('button');
-		destroy.classList.add('destroy');
-
-		const edit = document.createElement('input');
-		edit.classList.add('edit');
-
-		li.appendChild(view);
-		view.appendChild(toggle);
-		view.appendChild(label);
-		view.appendChild(destroy)
-		li.appendChild(edit);
-
-		return li;
-	}
-
 	function addTodo({key, target}) {
 		if (key === 'Enter') {
-			let element = todoList.insertAdjacentElement('beforeend', initTodoElement());
-			element.querySelector('.label').textContent = target.value;
-			element.querySelector('.edit').setAttribute('value', target.value);
+			todoList.insertAdjacentHTML('beforeend',
+				`<li>
+                <div class="view">
+                    <input class="toggle" type="checkbox"/>
+                    <label class="label">${target.value}</label>
+                    <button class="destroy"></button>
+                </div>
+                <input class="edit" value=${target.value}/>
+            </li>`
+			);
+			document.querySelector('.todo-count > strong').textContent = todoList.childElementCount;
 		}
 	}
 
-	newTodoInput.addEventListener('keyup', addTodo);
+	newTodoInput.addEventListener("keyup", addTodo);
 </script>
