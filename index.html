@@ -45,11 +45,11 @@
 			todoList.insertAdjacentHTML('beforeend',
 				`<li>
                 <div class="view">
-                    <input class="toggle" type="checkbox"/>
+                    <input class="toggle" type="checkbox" />
                     <label class="label">${target.value}</label>
                     <button class="destroy"></button>
                 </div>
-                <input class="edit" value=${target.value}/>
+                <input class="edit" value=${target.value} />
             </li>`
 			);
 			document.querySelector('.todo-count > strong').textContent = todoList.childElementCount;
@@ -71,8 +71,19 @@
 		}
 	}
 
+	function editTodo({key, target}) {
+		if (target.className === 'label') {
+			target.parentElement.parentElement.classList.toggle('editing');
+		} else if (key === 'Enter') {
+			target.parentElement.querySelector('.label').textContent = target.value;
+			target.parentElement.classList.remove('editing')
+		}
+	}
+
 	newTodoInput.addEventListener("keyup", addTodo);
 	todoList.addEventListener('click', removeTodo);
 	todoList.addEventListener('click', checkCompleteTodo);
+	todoList.addEventListener('dblclick', editTodo);
+	todoList.addEventListener('keyup', editTodo);
 
 </script>
