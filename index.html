@@ -1,38 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>이벤트 - TODOS</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div class="todoapp">
-      <h1>TODOS</h1>
-      <input
-        id="new-todo-title"
-        class="new-todo"
-        placeholder="할일을 추가해주세요"
-        autofocus
-      />
-      <main>
-        <input class="toggle-all" type="checkbox" />
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="todoapp">
+    <h1>TODOS</h1>
+    <input
+            id="new-todo-title"
+            class="new-todo"
+            placeholder="할일을 추가해주세요"
+            autofocus
+    />
+    <main>
+        <input class="toggle-all" type="checkbox"/>
         <ul id="todo-list" class="todo-list"></ul>
         <div class="count-container">
-          <span class="todo-count">총 <strong>0</strong> 개</span>
-          <ul class="filters">
-            <li>
-              <a class="all selected" href="/#">전체보기</a>
-            </li>
-            <li>
-              <a class="active" href="#active">해야할 일</a>
-            </li>
-            <li>
-              <a class="completed" href="#completed">완료한 일</a>
-            </li>
-          </ul>
+            <span class="todo-count">총 <strong>0</strong> 개</span>
+            <ul class="filters">
+                <li>
+                    <a class="all selected" href="/#">전체보기</a>
+                </li>
+                <li>
+                    <a class="active" href="#active">해야할 일</a>
+                </li>
+                <li>
+                    <a class="completed" href="#completed">완료한 일</a>
+                </li>
+            </ul>
         </div>
-      </main>
-    </div>
-  </body>
+    </main>
+</div>
+</body>
 </html>
+<script>
+	const newTodoInput = document.getElementById('new-todo-title');
+	const todoList = document.getElementById('todo-list');
+
+	function initTodoElement() {
+		const li = document.createElement('li');
+		const view = document.createElement('div');
+		view.classList.add('view');
+		const toggle = document.createElement('input');
+		toggle.classList.add('toggle');
+		toggle.setAttribute('type', 'checkbox');
+
+		const label = document.createElement('label');
+		label.classList.add('label');
+
+		const destroy = document.createElement('button');
+		destroy.classList.add('destroy');
+
+		const edit = document.createElement('input');
+		edit.classList.add('edit');
+
+		li.appendChild(view);
+		view.appendChild(toggle);
+		view.appendChild(label);
+		view.appendChild(destroy)
+		li.appendChild(edit);
+
+		return li;
+	}
+
+	function addTodo({key, target}) {
+		if (key === 'Enter') {
+			let element = todoList.insertAdjacentElement('beforeend', initTodoElement());
+			element.querySelector('.label').textContent = target.value;
+			element.querySelector('.edit').setAttribute('value', target.value);
+		}
+	}
+
+	newTodoInput.addEventListener('keyup', addTodo);
+</script>
