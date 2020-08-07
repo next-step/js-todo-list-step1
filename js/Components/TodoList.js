@@ -12,27 +12,27 @@ function TodoList({ $target, todos }) {
   };
 
   this.onClick = (e) => {
-    console.log(e.target);
+    console.log(e.target.nodeName);
   };
 
   this.createTodoItemHTML = (todo) => {
     return `
-    <div id=${todo.id} class="view">
-      <input class="toggle" type="checkbox" 
-      ${todo.isCompleted ? 'checked' : ''} 
-      />
-      <label class="label">${todo.title}</label>
-      <button class="destroy"></button>
-    </div>`;
+    <li id=${todo.id}>
+      <div class="view">
+        <input class="toggle" type="checkbox" 
+        ${todo.isCompleted ? 'checked' : ''} 
+        />
+        <label class="label">${todo.title}</label>
+        <button class="destroy"></button>
+      </div>
+    </li>`;
   };
 
   this.createTodoListHTML = (todos) => {
-    return (
-      todos.reduce((html, todo) => {
-        html += this.createTodoItemHTML(todo);
-        return html;
-      }, `<li>`) + `</li>`
-    );
+    return todos.reduce((html, todo) => {
+      html += this.createTodoItemHTML(todo);
+      return html;
+    }, '');
   };
 
   this.setState = (nextState) => {
