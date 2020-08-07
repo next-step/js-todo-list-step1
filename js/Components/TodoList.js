@@ -1,4 +1,4 @@
-function TodoList({ $target, todos }) {
+function TodoList({ $target, todos, onToggleTodo }) {
   this.init = () => {
     this.$target = $target;
     this.todos = todos;
@@ -12,12 +12,24 @@ function TodoList({ $target, todos }) {
   };
 
   this.onClick = (e) => {
-    console.log(e.target.nodeName);
+    const clickedClassName = e.target.className;
+    if (clickedClassName !== 'toggle' && clickedClassName !== 'destroy') return;
+
+    const todoItemId = parseInt(e.target.closest('li').id);
+
+    if (clickedClassName == 'toggle') {
+      onToggleTodo(todoItemId);
+      return;
+    }
+
+    if (clickedClassName == 'destroy') {
+      return;
+    }
   };
 
   this.createTodoItemHTML = (todo) => {
     return `
-    <li id=${todo.id}>
+    <li id=${todo.id} >
       <div class="view">
         <input class="toggle" type="checkbox" 
         ${todo.isCompleted ? 'checked' : ''} 
@@ -42,7 +54,6 @@ function TodoList({ $target, todos }) {
   };
 
   this.render = () => {
-    console.log(this.$target);
     this.$target.innerHTML = this.createTodoListHTML(this.todos);
   };
 

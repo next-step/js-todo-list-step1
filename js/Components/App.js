@@ -20,6 +20,7 @@ function App($target) {
     this.todoList = new TodoList({
       $target: document.querySelector(SELECTOR.TODO_LIST),
       todos: this.state.todos,
+      onToggleTodo: this.onToggleTodo,
     });
   };
 
@@ -36,6 +37,23 @@ function App($target) {
 
     this.setState(nextState);
   };
+
+  this.onToggleTodo = (todoId) => {
+    const newTodos = this.state.todos.map((todo) => {
+      return todoId === todo.id
+        ? { ...todo, isCompleted: !todo.isCompleted }
+        : todo;
+    });
+
+    const nextState = {
+      ...this.state,
+      todos: newTodos,
+    };
+
+    this.setState(nextState);
+  };
+
+  this.onRemoveTodo = (todoId) => {};
 
   this.setState = (nextState) => {
     this.state = nextState;
