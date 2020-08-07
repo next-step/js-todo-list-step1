@@ -21,6 +21,7 @@ function App($target) {
       $target: document.querySelector(SELECTOR.TODO_LIST),
       todos: this.state.todos,
       onToggleTodo: this.onToggleTodo,
+      onRemoveTodo: this.onRemoveTodo,
     });
   };
 
@@ -53,7 +54,16 @@ function App($target) {
     this.setState(nextState);
   };
 
-  this.onRemoveTodo = (todoId) => {};
+  this.onRemoveTodo = (todoId) => {
+    const newTodos = this.state.todos.filter(({ id }) => todoId !== id);
+
+    const nextState = {
+      ...this.state,
+      todos: newTodos,
+    };
+
+    this.setState(nextState);
+  };
 
   this.setState = (nextState) => {
     this.state = nextState;

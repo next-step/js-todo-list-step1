@@ -1,4 +1,4 @@
-function TodoList({ $target, todos, onToggleTodo }) {
+function TodoList({ $target, todos, onToggleTodo, onRemoveTodo }) {
   this.init = () => {
     this.$target = $target;
     this.todos = todos;
@@ -23,6 +23,7 @@ function TodoList({ $target, todos, onToggleTodo }) {
     }
 
     if (clickedClassName == 'destroy') {
+      onRemoveTodo(todoItemId);
       return;
     }
   };
