@@ -3,17 +3,23 @@ import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
 
 import { SELECTOR } from '../utils/constant.js';
+import { dummyTodos } from '../utils/data.js';
 
 function App($target) {
   this.init = () => {
     this.$target = $target;
     this.state = {
-      todos: [],
+      todos: dummyTodos,
     };
 
     this.todoInput = new TodoInput({
       $target: document.querySelector(SELECTOR.TODO_INPUT),
       onAddTodo: this.onAddTodo,
+    });
+
+    this.todoList = new TodoList({
+      $target: document.querySelector(SELECTOR.TODO_LIST),
+      todos: this.state.todos,
     });
   };
 
@@ -34,7 +40,7 @@ function App($target) {
   this.setState = (nextState) => {
     this.state = nextState;
 
-    // console.log(nextState);
+    this.todoList.setState(this.state.todos);
   };
 
   this.init();
