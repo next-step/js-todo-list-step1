@@ -1,11 +1,11 @@
 import { todosValidation } from '../utils/validation.js';
-import { createUUID } from '../utils/uuid.js';
 
 export default class TodoList {
-  constructor(todos, toggleTodo, removeTodo) {
+  constructor(todos, toggleTodo, editTodo, removeTodo) {
     this.todos = [];
     this.todoListElement = document.querySelector('#todo-list');
     this.toggleTodo = toggleTodo;
+    this.editTodo = editTodo;
     this.removeTodo = removeTodo;
 
     if (todosValidation(todos)) {
@@ -20,45 +20,61 @@ export default class TodoList {
     this.render();
   }
 
-  findCilcedIndexTodo(id) {
-    return Array.from(this.todoListElement.children).findIndex(
-      (todo) => todo.id === id
-    );
+  findEditText(todoId) {
+    const target = document.querySelector(`#edit-${todoId}`);
+    return target.value;
+  }
+
+  findTodoItem(targetId) {
+    return this.todos.find((todo) => todo.id === targetId);
   }
 
   todoToggleEvent() {
     this.todoListElement.addEventListener('click', ($event) => {
-      let listId = '';
+      let todoId = '';
       const target = $event.target;
       if (['P', 'INPUT', 'LABEL', 'DIV'].includes(target.tagName)) {
-        listId = target.parentElement.id;
+        todoId = target.parentElement.id;
       } else {
-        listId = target.id;
+        todoId = target.id;
       }
 
-      const targetIndex = this.findCilcedIndexTodo(listId);
-      if (targetIndex > -1) {
-        if (target.className === 'destroy') {
-          this.removeTodo(targetIndex);
-        } else {
-          this.toggleTodo(targetIndex);
+      if (target.className === 'destroy') {
+        this.removeTodo(todoId);
+      } else if (target.className === 'edit') {
+        const targetTodo = this.findTodoItem(todoId);
+        let changeValue = '';
+        if (targetTodo.editMode) {
+          changeValue = this.findEditText(todoId);
         }
+        this.editTodo(todoId, changeValue);
+      } else if (target.className === 'toggle') {
+        this.toggleTodo(todoId);
       }
     });
+  }
+
+  changeEditMode(todoId, todoText, editMode) {
+    if (editMode) {
+      return `
+        <label for="toggle"></label>
+        <input id="edit-${todoId}" class="edit-todo-input" type="text" value="${todoText}">
+      `;
+    } else {
+      return `<label for="toggle-${todoId}" class="view">${todoText}</label>`;
+    }
   }
 
   render() {
     const todoList = this.todos.map((todo) => {
       return `
-        <li id="${createUUID()}">
-          <input id="toggle" class="toggle" type="checkbox" ${
-            todo.toggle ? 'checked' : ''
-          } />
-          <label for="toggle"></label>
+        <li id="${todo.id}">
+          <input id="toggle-${todo.id}" class="toggle" type="checkbox" ${
+        todo.toggle ? 'checked' : ''
+      } />
+          ${this.changeEditMode(todo.id, todo.text, todo.editMode)}
 
-          <p class="view">${todo.text}</p>
-
-          <div class="edit">수정</div>
+          <div class="edit">${todo.editMode ? '완료' : '수정'}</div>
           <div class="destroy"></div>
         </li>
       `;

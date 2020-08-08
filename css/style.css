@@ -136,6 +136,7 @@ main {
 .todo-list li {
   display: flex;
   align-items: center;
+  height: 60px;
   position: relative;
   font-size: 24px;
   border-bottom: 1px solid #ededed;
@@ -174,10 +175,16 @@ main {
 
 .todo-list li label {
   word-break: break-all;
-  padding: 15px 15px 15px 60px;
+  padding: 15px 0px 15px 60px;
   display: block;
   line-height: 1.2;
   transition: color 0.4s;
+}
+
+.todo-list li .edit-todo-input {
+  font-size: 24px;
+  margin: 8px 0;
+  padding: 6px 0;
 }
 
 .todo-list li .edit {

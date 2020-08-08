@@ -1,3 +1,5 @@
+import { createUUID } from '../utils/uuid.js';
+
 export default class TodoInput {
   constructor(addTodo) {
     this.todoInputElement = document.querySelector('#new-todo-input');
@@ -14,8 +16,10 @@ export default class TodoInput {
 
       const inputValue = $event.target.value;
       this.addTodo({
+        id: createUUID(),
         toggle: false,
         text: inputValue,
+        editMode: false,
       });
       $event.target.value = '';
     });

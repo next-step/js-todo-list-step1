@@ -13,6 +13,7 @@ export default class App {
       this.todoListComponent = new TodoList(
         this.filteredTodos,
         this.toggleTodo.bind(this),
+        this.editTodo.bind(this),
         this.removeTodo.bind(this)
       );
       this.todoInputComponent = new TodoInput(this.addTodo.bind(this));
@@ -75,33 +76,57 @@ export default class App {
   }
 
   render() {
-    this.saveTodos(this.todos);
     this.filteredTodos = this.filterTodos();
     this.todoListComponent.setState(this.filteredTodos);
     this.todoInfo.setState(this.filterList, this.filteredTodos.length);
   }
 
-  toggleTodo(targetIndex) {
-    const targetTodo = this.todos[targetIndex];
-    if (!this.todos[targetIndex]) {
-      return false;
-    }
-    this.todos[targetIndex].toggle = !targetTodo.toggle;
+  setTodoState(todos) {
+    this.todos = todos;
+    this.saveTodos(todos);
     this.render();
+  }
+
+  setFilterState(filterList) {
+    this.filterList = filterList;
+    this.saveTodoFilter(filterList);
+    this.render();
+  }
+
+  toggleTodo(targetId) {
+    const newTodos = this.todos.map((todo) => {
+      if (todo.id === targetId) {
+        todo.toggle = !todo.toggle;
+      }
+      return todo;
+    });
+    this.setTodoState(newTodos);
   }
 
   addTodo(todo) {
-    this.todos.push(todo);
-    this.render();
+    this.setTodoState([...this.todos, todo]);
   }
 
-  removeTodo(targetIndex) {
-    this.todos = this.todos.filter((todo, index) => index !== targetIndex);
-    this.render();
+  editTodo(targetId, changeValue) {
+    const newTodos = this.todos.map((todo) => {
+      if (todo.id === targetId) {
+        todo.editMode = !todo.editMode;
+        if (changeValue && todo.text !== changeValue) {
+          todo.text = changeValue;
+        }
+      }
+      return todo;
+    });
+    this.setTodoState(newTodos);
+  }
+
+  removeTodo(targetId) {
+    const newTodos = this.todos.filter((todo) => todo.id !== targetId);
+    this.setTodoState(newTodos);
   }
 
   selectFilter(clickedFilter) {
-    this.filterList = this.filterList.map((filter) => {
+    const newfilterList = this.filterList.map((filter) => {
       if (clickedFilter.includes(filter.state)) {
         filter.selected = true;
         location.hash = `#${filter.state}`;
@@ -110,7 +135,6 @@ export default class App {
       }
       return filter;
     });
-    this.saveTodoFilter(this.filterList);
-    this.render();
+    this.setFilterState(newfilterList);
   }
 }
