@@ -3,7 +3,7 @@ import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
 import TodoTab from './TodoTab.js';
 
-import { SELECTOR } from '../utils/constant.js';
+import { SELECTOR, TAB } from '../utils/constant.js';
 import { dummyTodos } from '../utils/data.js';
 
 function App($target) {
@@ -11,7 +11,7 @@ function App($target) {
     this.$target = $target;
     this.state = {
       todos: dummyTodos,
-      selectedTab: 'all',
+      selectedTab: TAB.ALL,
     };
 
     this.todoInput = new TodoInput({

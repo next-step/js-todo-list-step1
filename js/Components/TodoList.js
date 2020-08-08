@@ -1,3 +1,5 @@
+import { TAB, MESSAGE } from '../utils/constant.js';
+
 function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
   this.init = () => {
     this.$target = $target;
@@ -59,20 +61,20 @@ function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
     const { todos, selectedTab } = this.state;
 
     switch (selectedTab) {
-      case 'all':
+      case TAB.ALL:
         renderTodos = todos;
         break;
 
-      case 'active':
+      case TAB.ACTIVE:
         renderTodos = todos.filter(({ isCompleted }) => !isCompleted);
         break;
 
-      case 'completed':
+      case TAB.COMPLETED:
         renderTodos = todos.filter(({ isCompleted }) => isCompleted);
         break;
 
       default:
-        console.error(`TodoList Render Error : 올바르지 않은 Tab 이름입니다.`);
+        console.error(`TodoList Render Error : ${MESSAGE.UNDEFINED_TAB}`);
         break;
     }
 
