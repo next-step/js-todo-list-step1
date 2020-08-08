@@ -30,7 +30,6 @@ export default class TodoList {
     this.todoListElement.addEventListener('click', ($event) => {
       let listId = '';
       const target = $event.target;
-      console.dir(target);
       if (['P', 'INPUT', 'LABEL', 'DIV'].includes(target.tagName)) {
         listId = target.parentElement.id;
       } else {

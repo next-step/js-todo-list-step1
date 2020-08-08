@@ -224,7 +224,7 @@ main {
   display: block;
 }
 
-.count-container {
+#count-container {
   color: #777;
   padding: 10px 15px;
   height: 20px;
@@ -232,7 +232,7 @@ main {
   border-top: 1px solid #e6e6e6;
 }
 
-.count-container:before {
+#count-container:before {
   content: '';
   position: absolute;
   right: 0;
@@ -254,7 +254,7 @@ main {
   font-weight: 300;
 }
 
-.filters {
+#filters {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -263,11 +263,11 @@ main {
   left: 0;
 }
 
-.filters li {
+#filters li {
   display: inline;
 }
 
-.filters li a {
+#filters li a {
   color: inherit;
   margin: 3px;
   padding: 3px 7px;
@@ -276,11 +276,11 @@ main {
   border-radius: 3px;
 }
 
-.filters li a:hover {
+#filters li a:hover {
   border-color: rgba(175, 47, 47, 0.1);
 }
 
-.filters li a.selected {
+#filters li a.selected {
   border-color: rgba(175, 47, 47, 0.2);
 }
 
