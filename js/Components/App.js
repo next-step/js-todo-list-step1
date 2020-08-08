@@ -31,6 +31,11 @@ function App($target) {
       selectedTab: this.state.selectedTab,
       onChangeTab: this.onChangeTab,
     });
+
+    this.todoCount = new TodoCount({
+      $target: document.querySelector(SELECTOR.TODO_COUNT),
+      todoCountState: this.state,
+    });
   };
 
   this.onAddTodo = (keyword) => {
@@ -87,6 +92,7 @@ function App($target) {
     this.state = nextState;
 
     this.todoList.setState(this.state);
+    this.todoCount.setState(this.state);
     this.todoTab.setState(this.state.selectedTab);
   };
 

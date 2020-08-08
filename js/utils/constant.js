@@ -3,6 +3,7 @@ export const SELECTOR = {
   TODO_INPUT: '#new-todo-title',
   TODO_LIST: '#todo-list',
   TODO_TAB: '.filters',
+  TODO_COUNT: '.todo-count',
 };
 
 export const MESSAGE = {
