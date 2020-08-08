@@ -2,6 +2,7 @@ export const SELECTOR = {
   TODO_APP: '#todo-app',
   TODO_INPUT: '#new-todo-title',
   TODO_LIST: '#todo-list',
+  TODO_TAB: '.filters',
 };
 
 export const MESSAGE = {

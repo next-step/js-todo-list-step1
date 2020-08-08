@@ -1,6 +1,7 @@
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
+import TodoTab from './TodoTab.js';
 
 import { SELECTOR } from '../utils/constant.js';
 import { dummyTodos } from '../utils/data.js';
@@ -10,6 +11,7 @@ function App($target) {
     this.$target = $target;
     this.state = {
       todos: dummyTodos,
+      selectedTab: 'all',
     };
 
     this.todoInput = new TodoInput({
@@ -20,8 +22,15 @@ function App($target) {
     this.todoList = new TodoList({
       $target: document.querySelector(SELECTOR.TODO_LIST),
       todos: this.state.todos,
+      selectedTab: this.state.selectedTab,
       onToggleTodo: this.onToggleTodo,
       onRemoveTodo: this.onRemoveTodo,
+    });
+
+    this.todoTab = new TodoTab({
+      $target: document.querySelector(SELECTOR.TODO_TAB),
+      selectedTab: this.state.selectedTab,
+      onChangeTab: this.onChangeTab,
     });
   };
 
@@ -33,6 +42,7 @@ function App($target) {
     };
 
     const nextState = {
+      ...this.state,
       todos: [...this.state.todos, todoItem],
     };
 
@@ -65,10 +75,20 @@ function App($target) {
     this.setState(nextState);
   };
 
+  this.onChangeTab = (clickedTab) => {
+    const nextState = {
+      ...this.state,
+      selectedTab: clickedTab,
+    };
+
+    this.setState(nextState);
+  };
+
   this.setState = (nextState) => {
     this.state = nextState;
 
     this.todoList.setState(this.state.todos);
+    this.todoTab.setState(this.state.selectedTab);
   };
 
   this.init();
