@@ -10,27 +10,21 @@ function TodoCount({ $target, todoCountState }) {
 
   this.getSelectedTabCount = (selectedTab) => {
     const { todos } = this.state;
-    let renderCount = 0;
 
     switch (selectedTab) {
       case TAB.ALL:
-        renderCount = todos.length;
-        break;
+        return todos.length;
 
       case TAB.ACTIVE:
-        renderCount = todos.filter(({ isCompleted }) => !isCompleted).length;
-        break;
+        return todos.filter(({ isCompleted }) => !isCompleted).length;
 
       case TAB.COMPLETED:
-        renderCount = todos.filter(({ isCompleted }) => isCompleted).length;
-        break;
+        return todos.filter(({ isCompleted }) => isCompleted).length;
 
       default:
         console.error(`TodoCount Render Error : ${MESSAGE.UNDEFINED_TAB}`);
-        break;
+        return;
     }
-
-    return renderCount;
   };
 
   this.setState = (nextState) => {
