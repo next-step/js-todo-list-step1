@@ -1,6 +1,14 @@
 export default function TodoList(props) {
-    const {$target} = props;
+    const {
+        $target,
+        handleToggle: onToggle,
+    } = props;
     this.data = props.data;
+
+    $target.addEventListener("click", (e) => {
+        const {id} = e.target.closest("li").dataset;
+        onToggle(Number(id));
+    });
 
     this.setState = (newData) => {
         this.data = newData;
@@ -24,4 +32,5 @@ export default function TodoList(props) {
     };
 
     this.render();
+
 }

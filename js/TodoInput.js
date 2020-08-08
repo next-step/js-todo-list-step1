@@ -1,7 +1,7 @@
 export default function TodoInput(props) {
     const {
         $target,
-        onKeydown,
+        handleKeydown: onKeydown,
     } = props;
 
     $target.addEventListener(

@@ -10,28 +10,38 @@ export default function TodoApp(props) {
     this.data = loadTodos() || [];
     this.nextId = this.data.length + 1;
 
-    const onKeydown = (content) => {
-        console.log(content);
+    const handleKeydown = (description) => {
         const newData = this.data.concat({
             id: this.nextId++,
-            content,
+            description,
             isCompleted: false,
         });
         this.setState(newData);
     };
 
+    const handleToggle = (id) => {
+        const newData = this.data.map(todo => {
+            if (todo.id === id) {
+                return Object.assign({}, todo, {isCompleted: !todo.isCompleted})
+            }
+            return todo;
+        });
+
+        this.setState(newData);
+    }
+
     this.todoInput = new TodoInput({
         $target: $todoInput,
-        onKeydown,
+        handleKeydown,
     });
 
     this.todoList = new TodoList({
         $target: $todoList,
-        data: this.data
+        data: this.data,
+        handleToggle,
     });
 
     this.setState = (newData) => {
-        console.log(newData);
         this.data = newData;
 
         this.todoList.setState(this.data);
