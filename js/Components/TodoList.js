@@ -1,7 +1,7 @@
-function TodoList({ $target, todos, onToggleTodo, onRemoveTodo }) {
+function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
   this.init = () => {
     this.$target = $target;
-    this.todos = todos;
+    this.state = todoListState;
 
     this.bindEvents();
     this.render();
@@ -30,7 +30,7 @@ function TodoList({ $target, todos, onToggleTodo, onRemoveTodo }) {
 
   this.createTodoItemHTML = (todo) => {
     return `
-    <li id=${todo.id} >
+    <li id=${todo.id}>
       <div class="view">
         <input class="toggle" type="checkbox" 
         ${todo.isCompleted ? 'checked' : ''} 
@@ -49,13 +49,34 @@ function TodoList({ $target, todos, onToggleTodo, onRemoveTodo }) {
   };
 
   this.setState = (nextState) => {
-    this.todos = nextState;
+    this.state = nextState;
 
     this.render();
   };
 
   this.render = () => {
-    this.$target.innerHTML = this.createTodoListHTML(this.todos);
+    let renderTodos = [];
+    const { todos, selectedTab } = this.state;
+
+    switch (selectedTab) {
+      case 'all':
+        renderTodos = todos;
+        break;
+
+      case 'active':
+        renderTodos = todos.filter(({ isCompleted }) => !isCompleted);
+        break;
+
+      case 'completed':
+        renderTodos = todos.filter(({ isCompleted }) => isCompleted);
+        break;
+
+      default:
+        console.error(`TodoList Render Error : 올바르지 않은 Tab 이름입니다.`);
+        break;
+    }
+
+    this.$target.innerHTML = this.createTodoListHTML(renderTodos);
   };
 
   this.init();

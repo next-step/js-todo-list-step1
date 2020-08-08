@@ -21,8 +21,7 @@ function App($target) {
 
     this.todoList = new TodoList({
       $target: document.querySelector(SELECTOR.TODO_LIST),
-      todos: this.state.todos,
-      selectedTab: this.state.selectedTab,
+      todoListState: this.state,
       onToggleTodo: this.onToggleTodo,
       onRemoveTodo: this.onRemoveTodo,
     });
@@ -87,7 +86,7 @@ function App($target) {
   this.setState = (nextState) => {
     this.state = nextState;
 
-    this.todoList.setState(this.state.todos);
+    this.todoList.setState(this.state);
     this.todoTab.setState(this.state.selectedTab);
   };
 
