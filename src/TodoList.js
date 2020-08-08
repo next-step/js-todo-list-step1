@@ -37,12 +37,12 @@ export default function TodoList(
 
     if ($target.classList.contains("edit")) {
       // input이 비어있지 않고 enter키 입력 시
-      if ($target.value && event.keyCode === 13) {
+      if ($target.value && event.key === "Enter") {
         editItem($li.id, $target.value);
         changeStatus($li.id, VIEW);
       }
       // esc 눌렀다면 취소
-      if (event.keyCode === 27) {
+      if (event.key === "Escape") {
         changeStatus($li.id, VIEW);
         $target.value = $li.querySelector(".label").textContent;
       }
