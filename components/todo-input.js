@@ -15,13 +15,17 @@ export default class TodoInput {
       }
 
       const inputValue = $event.target.value;
-      this.addTodo({
-        id: createUUID(),
-        toggle: false,
-        text: inputValue,
-        editMode: false,
-      });
-      $event.target.value = '';
+      if (inputValue.trim()) {
+        this.addTodo({
+          id: createUUID(),
+          toggle: false,
+          text: inputValue,
+          editMode: false,
+        });
+        $event.target.value = '';
+      } else {
+        alert('할일을 입력해주세요.');
+      }
     });
   }
 
