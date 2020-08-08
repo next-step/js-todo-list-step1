@@ -1,9 +1,9 @@
-function TodoList($todoList, data, removeItem){
+function TodoList($todoList, data, removeItem) {
     this.$todoList = $todoList
     this.data = data
 
     this.updateItem = (nextData) => {
-        //왜 this.data === nextData?
+        // 왜 this.data === nextData?
         this.data = [...nextData]
         this.render()
         this.bindEvents()
@@ -18,36 +18,34 @@ function TodoList($todoList, data, removeItem){
     this.bindEvents = () => {
         document.querySelectorAll('.todo-item').forEach($item => {
             $item.querySelector('input.toggle').addEventListener('click', (e) => {
-                e.stopPropagation()  //이벤트 버블링 막기
+                e.stopPropagation() // 이벤트 버블링 막기
                 const $todoItem = e.target.closest('.todo-item')
 
-                if ($todoItem.classList.contains('completed')){
+                if ($todoItem.classList.contains('completed')) {
                     $todoItem.classList.remove('completed')
-                }
-                else{
+                } else {
                     $todoItem.classList.add('completed')
                 }
             })
 
             $item.querySelector('button.destroy').addEventListener('click', (e) => {
                 e.stopPropagation()
-                const { index } = e.target.closest('.todo-item').dataset //{} obj destruction해줘야함
+                const { index } = e.target.closest('.todo-item').dataset // {} obj destruction해줘야함
                 removeItem(index)
             })
-            
+
             $item.querySelector('label').addEventListener('dblclick', (e) => {
                 e.stopPropagation()
                 const $todoItem = e.target.closest('.todo-item')
-                const { index } = e.target.closest('.todo-item').dataset 
+                const { index } = e.target.closest('.todo-item').dataset
                 const oldValue = e.target.innerText
 
                 $todoItem.classList.add('editing')
                 $todoItem.addEventListener('keyup', (e) => {
-                    if (e.keyCode === ESC_KEY){
+                    if (e.keyCode === ESC_KEY) {
                         $todoItem.classList.remove('editing')
                         e.target.value = oldValue
-                    }
-                    else if (e.keyCode === ENTER_KEY){
+                    } else if (e.keyCode === ENTER_KEY) {
                         this.editItem(index, e.target.value)
                     }
                 })

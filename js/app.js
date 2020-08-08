@@ -1,9 +1,9 @@
-function App(){
+function App() {
     const $todoInput = document.querySelector('#new-todo-title')
     const $todoList = document.querySelector('#todo-list')
     const $todoCount = document.querySelector('.todo-count')
     const data = []
-    
+
     function addItem(text) {
         data.push({
             text,
@@ -28,7 +28,6 @@ function App(){
         addItem(text)
     })
     const todoCount = new TodoCount($todoCount, data.length)
-    
 }
 
-new App();
+new App()

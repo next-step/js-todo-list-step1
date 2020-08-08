@@ -1,4 +1,4 @@
-function TodoCount($todoCount, totalCount){
+function TodoCount($todoCount, totalCount) {
     this.$todoCount = $todoCount
     this.totalCount = totalCount
 
@@ -7,5 +7,5 @@ function TodoCount($todoCount, totalCount){
         this.$todoCount.innerHTML = `총 <strong>${this.totalCount}</strong> 개`
     }
 
-    this.render(this.totalCount);
+    this.render(this.totalCount)
 }
