@@ -50,6 +50,25 @@ function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
     }, '');
   };
 
+  this.getSelectedTodos = (selectedTab) => {
+    const { todos } = this.state;
+
+    switch (selectedTab) {
+      case TAB.ALL:
+        return todos;
+
+      case TAB.ACTIVE:
+        return todos.filter(({ isCompleted }) => !isCompleted);
+
+      case TAB.COMPLETED:
+        return todos.filter(({ isCompleted }) => isCompleted);
+
+      default:
+        console.error(`TodoList Render Error : ${MESSAGE.UNDEFINED_TAB}`);
+        return;
+    }
+  };
+
   this.setState = (nextState) => {
     this.state = nextState;
 
@@ -57,26 +76,7 @@ function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
   };
 
   this.render = () => {
-    let renderTodos = [];
-    const { todos, selectedTab } = this.state;
-
-    switch (selectedTab) {
-      case TAB.ALL:
-        renderTodos = todos;
-        break;
-
-      case TAB.ACTIVE:
-        renderTodos = todos.filter(({ isCompleted }) => !isCompleted);
-        break;
-
-      case TAB.COMPLETED:
-        renderTodos = todos.filter(({ isCompleted }) => isCompleted);
-        break;
-
-      default:
-        console.error(`TodoList Render Error : ${MESSAGE.UNDEFINED_TAB}`);
-        break;
-    }
+    const renderTodos = this.getSelectedTodos(this.state.selectedTab);
 
     this.$target.innerHTML = this.createTodoListHTML(renderTodos);
   };
