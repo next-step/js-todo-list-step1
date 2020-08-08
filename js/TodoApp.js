@@ -26,9 +26,13 @@ export default function TodoApp(props) {
             }
             return todo;
         });
-
         this.setState(newData);
     }
+
+    const handleRemove = (id) => {
+        const newData = this.data.filter(todo => (todo.id !== id));
+        this.setState(newData);
+    };
 
     this.todoInput = new TodoInput({
         $target: $todoInput,
@@ -39,6 +43,7 @@ export default function TodoApp(props) {
         $target: $todoList,
         data: this.data,
         handleToggle,
+        handleRemove,
     });
 
     this.setState = (newData) => {

@@ -2,12 +2,17 @@ export default function TodoList(props) {
     const {
         $target,
         handleToggle: onToggle,
+        handleRemove: onRemove,
     } = props;
     this.data = props.data;
 
     $target.addEventListener("click", (e) => {
         const {id} = e.target.closest("li").dataset;
-        onToggle(Number(id));
+        if (e.target.classList.contains("toggle")) {
+            onToggle(Number(id));
+        } else if (e.target.classList.contains("destroy")) {
+            onRemove(Number(id));
+        }
     });
 
     this.setState = (newData) => {
