@@ -4,7 +4,7 @@ export default function TodoList(
   $todoList,
   { changeStatus, removeItem, editItem }
 ) {
-  $todoList.addEventListener("click", (event) => {
+  const onClickItem = (event) => {
     const $target = event.target;
     const $li = $target.closest("li");
 
@@ -17,23 +17,22 @@ export default function TodoList(
       removeItem($li.id);
       return;
     }
-  });
+  };
 
-  // 더블 클릭 시 todo 수정
-  $todoList.addEventListener("dblclick", (event) => {
+  const onDblclickItem = (event) => {
     const $target = event.target;
     const $li = $target.closest("li");
 
     if ($target.classList.contains("label") && $li.classList.contains("view")) {
       changeStatus($li.id, EDITING);
     }
-  });
+  };
 
-  $todoList.addEventListener("keydown", (event) => {
+  const onKeydownItem = (event) => {
     const $target = event.target;
     const $li = $target.closest("li");
 
-    const editKeydown = () => {
+    const onEditKeydown = () => {
       if ($target.value && event.key === "Enter") {
         editItem($li.id, $target.value);
         changeStatus($li.id, VIEW);
@@ -46,9 +45,13 @@ export default function TodoList(
     };
 
     if ($target.classList.contains("edit")) {
-      editKeydown();
+      onEditKeydown();
     }
-  });
+  };
+
+  $todoList.addEventListener("click", onClickItem);
+  $todoList.addEventListener("dblclick", onDblclickItem);
+  $todoList.addEventListener("keydown", onKeydownItem);
 
   this.todoItemTemplate = (todoItem) => `
     <li id="item-${todoItem.id}" class="${todoItem.status}">

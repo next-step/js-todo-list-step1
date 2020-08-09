@@ -10,13 +10,15 @@ export default function TodoCount(
     parentRender(getFilteredItem(filter));
   };
 
-  $todoCount.addEventListener("click", (event) => {
+  const onClickFilter = (event) => {
     const $target = event.target;
 
     if ($target.classList.contains("todo-filter")) {
       this.changeSelected($target.className);
     }
-  });
+  };
+
+  $todoCount.addEventListener("click", onClickFilter);
 
   this.render = (count) => {
     $todoCount.querySelector(".todo-count strong").textContent = count;
