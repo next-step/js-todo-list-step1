@@ -3,16 +3,13 @@ import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
 import TodoTab from './TodoTab.js';
 
-import { SELECTOR, CLASS_NAME } from '../utils/constant.js';
-import { dummyTodos } from '../utils/data.js';
+import { SELECTOR, TODO_KEY } from '../utils/constant.js';
+import { fetchState, saveState } from '../utils/data.js';
 
 function App($target) {
   this.init = () => {
     this.$target = $target;
-    this.state = {
-      todos: dummyTodos,
-      selectedTab: CLASS_NAME.ALL,
-    };
+    this.state = fetchState(TODO_KEY);
 
     this.todoInput = new TodoInput({
       $target: document.querySelector(SELECTOR.TODO_INPUT),
@@ -109,6 +106,7 @@ function App($target) {
 
   this.setState = (nextState) => {
     this.state = nextState;
+    saveState(TODO_KEY, this.state);
 
     this.todoList.setState(this.state);
     this.todoCount.setState(this.state);
