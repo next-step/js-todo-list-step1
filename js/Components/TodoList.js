@@ -10,6 +10,7 @@ function TodoList({
   this.init = () => {
     this.$target = $target;
     this.state = todoListState;
+    this.isEditing = false;
 
     this.bindEvents();
     this.render();
@@ -44,7 +45,10 @@ function TodoList({
   };
 
   this.onDblClick = (e) => {
+    if (this.isEditing) return;
     if (e.target.nodeName !== NODE_NAME.LABEL) return;
+
+    this.isEditing = true;
 
     const todoItem = e.target.closest('li');
     todoItem.classList.add(CLASS_NAME.EDITING);
@@ -70,11 +74,13 @@ function TodoList({
           return;
         }
         onEditTodo(parseInt(todoItem.id), editContent);
+        this.isEditing = false;
         return;
 
       case 'Escape':
         todoItem.classList.remove(CLASS_NAME.EDITING);
         todoItem.removeChild(e.target);
+        this.isEditing = false;
         return;
 
       default:
