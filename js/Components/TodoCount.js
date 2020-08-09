@@ -1,4 +1,4 @@
-import { TAB, MESSAGE } from '../utils/constant.js';
+import { MESSAGE, CLASS_NAME } from '../utils/constant.js';
 
 function TodoCount({ $target, todoCountState }) {
   this.init = () => {
@@ -12,13 +12,13 @@ function TodoCount({ $target, todoCountState }) {
     const { todos } = this.state;
 
     switch (selectedTab) {
-      case TAB.ALL:
+      case CLASS_NAME.ALL:
         return todos.length;
 
-      case TAB.ACTIVE:
+      case CLASS_NAME.ACTIVE:
         return todos.filter(({ isCompleted }) => !isCompleted).length;
 
-      case TAB.COMPLETED:
+      case CLASS_NAME.COMPLETED:
         return todos.filter(({ isCompleted }) => isCompleted).length;
 
       default:

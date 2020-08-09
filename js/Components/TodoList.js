@@ -1,4 +1,4 @@
-import { TAB, MESSAGE } from '../utils/constant.js';
+import { NODE_NAME, CLASS_NAME, MESSAGE } from '../utils/constant.js';
 
 function TodoList({
   $target,
@@ -23,29 +23,34 @@ function TodoList({
 
   this.onClick = (e) => {
     const clickedClassName = e.target.className;
-    if (clickedClassName !== 'toggle' && clickedClassName !== 'destroy') return;
+    if (
+      clickedClassName !== CLASS_NAME.TOGGLE &&
+      clickedClassName !== CLASS_NAME.DESTROY
+    ) {
+      return;
+    }
 
     const todoItemId = parseInt(e.target.closest('li').id);
 
-    if (clickedClassName == 'toggle') {
+    if (clickedClassName == CLASS_NAME.TOGGLE) {
       onToggleTodo(todoItemId);
       return;
     }
 
-    if (clickedClassName == 'destroy') {
+    if (clickedClassName == CLASS_NAME.DESTROY) {
       onRemoveTodo(todoItemId);
       return;
     }
   };
 
   this.onDblClick = (e) => {
-    if (e.target.nodeName !== 'LABEL') return;
+    if (e.target.nodeName !== NODE_NAME.LABEL) return;
 
     const todoItem = e.target.closest('li');
-    todoItem.classList.add('editing');
+    todoItem.classList.add(CLASS_NAME.EDITING);
 
     const inputElem = document.createElement('input');
-    inputElem.className = 'edit';
+    inputElem.className = CLASS_NAME.EDIT;
     inputElem.value = e.target.innerText;
     todoItem.appendChild(inputElem);
     inputElem.focus();
@@ -61,19 +66,19 @@ function TodoList({
     switch (key) {
       case 'Enter':
         if (!editContent.length) {
-          alert('할 일을 입력해주세요');
+          alert(MESSAGE.NO_INPUT_KEYWORD);
           return;
         }
         onEditTodo(parseInt(todoItem.id), editContent);
         return;
 
       case 'Escape':
-        todoItem.classList.remove('editing');
+        todoItem.classList.remove(CLASS_NAME.EDITING);
         todoItem.removeChild(e.target);
         return;
 
       default:
-        console.error(`${e.key} : 등록되지 않은 KEY 입력입니다.`);
+        console.error(`${e.key} : ${MESSAGE.UNDEFINED_KEY}`);
         break;
     }
   };
@@ -102,13 +107,13 @@ function TodoList({
     const { todos } = this.state;
 
     switch (selectedTab) {
-      case TAB.ALL:
+      case CLASS_NAME.ALL:
         return todos;
 
-      case TAB.ACTIVE:
+      case CLASS_NAME.ACTIVE:
         return todos.filter(({ isCompleted }) => !isCompleted);
 
-      case TAB.COMPLETED:
+      case CLASS_NAME.COMPLETED:
         return todos.filter(({ isCompleted }) => isCompleted);
 
       default:

@@ -1,4 +1,4 @@
-import { TAB } from '../utils/constant.js';
+import { CLASS_NAME, NODE_NAME } from '../utils/constant.js';
 
 function TodoTab({ $target, selectedTab, onChangeTab }) {
   this.init = () => {
@@ -16,10 +16,10 @@ function TodoTab({ $target, selectedTab, onChangeTab }) {
 
   this.onClick = (e) => {
     e.preventDefault();
-    if (e.target.nodeName !== 'A') return;
+    if (e.target.nodeName !== NODE_NAME.A) return;
 
     const clickedTab = e.target.className;
-    if (clickedTab.includes(TAB.SELECTED_CLASS)) return;
+    if (clickedTab.includes(CLASS_NAME.SELECTED)) return;
 
     onChangeTab(clickedTab);
   };
@@ -32,12 +32,12 @@ function TodoTab({ $target, selectedTab, onChangeTab }) {
 
   this.render = () => {
     for (const tab of this.$tabs) {
-      if (tab.classList.contains(TAB.SELECTED_CLASS)) {
-        tab.classList.remove(TAB.SELECTED_CLASS);
+      if (tab.classList.contains(CLASS_NAME.SELECTED)) {
+        tab.classList.remove(CLASS_NAME.SELECTED);
       }
 
       if (tab.classList.contains(this.selectedTab)) {
-        tab.classList.add(TAB.SELECTED_CLASS);
+        tab.classList.add(CLASS_NAME.SELECTED);
       }
     }
   };
