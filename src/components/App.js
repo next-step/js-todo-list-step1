@@ -29,9 +29,7 @@ function App() {
     new TodoInput();
     new TodoCount();
 
-    this.$todoList = new TodoList({
-      onEdit,
-    });
+    this.$todoList = new TodoList();
 
     new TodoFilter({
       selector: ".filters",
@@ -43,12 +41,6 @@ function App() {
     storage.set(STORAGE_KEY, todos);
     const renderTodos = getTodosByStatus(todos, this.filterStatus);
     this.$todoList.setState(renderTodos);
-  };
-
-  this.onEdit = (id, text) => {
-    const targetIndex = this.todos.findIndex((todo) => todo.id === id);
-    this.todos[targetIndex] = { ...this.todos[targetIndex], text };
-    this.setState(this.todos, this.filterStatus);
   };
 
   this.onFilter = (status) => {

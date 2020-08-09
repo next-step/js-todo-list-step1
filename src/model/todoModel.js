@@ -30,6 +30,19 @@ class TodoModel extends Observer {
       },
     ];
     this.setTodos(this.todos);
+  } // 불변성 유지를 위해 Array 다시 생성
+
+  edit(id, text) {
+    const targetIndex = this.todos.findIndex((todo) => todo.id === id);
+    this.todos = [
+      ...this.todos.slice(0, targetIndex),
+      {
+        ...this.todos[targetIndex],
+        text,
+      },
+      ...this.todos.slice(targetIndex + 1, this.todos.length),
+    ];
+    this.setTodos(this.todos);
   }
 
   remove(id) {

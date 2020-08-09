@@ -1,11 +1,11 @@
 import TodoModel from "../model/todoModel.js";
 import { EVENT_NAME, SELECTOR, CLASS_NAME } from "../../utils/constants.js";
 import { todoItemHTMLTemplate } from "../../utils/template.js";
+import { isESC, isEnter } from "../../utils/functions.js";
 
-export default function TodoList(props) {
-  const { onEdit } = props;
+export default function TodoList() {
   if (new.target !== TodoList) {
-    return new TodoList(props);
+    return new TodoList();
   }
 
   this.init = () => {
@@ -32,24 +32,32 @@ export default function TodoList(props) {
         TodoModel.remove(Number(id));
       }
     };
-    const dblclickEventHandler = (e) => {
-      const li = e.target.closest("li");
-      this.editInputValue = e.target.innerText; // 수정 시작할 때 초기 상태의 value 저장
-      if (!li.classList.contains("editing")) {
-        li.classList.add("editing");
-        li.querySelector(".edit").focus();
+
+    const dblclickEventHandler = ({ target }) => {
+      const $li = target.closest("li");
+      if ($li.classList.contains(CLASS_NAME.EDITING)) {
+        return;
       }
+      this.editInputValue = target.innerText; // 수정 시작할 때 초기 상태의 value 저장
+
+      $li.classList.add(CLASS_NAME.EDITING);
+      $li.querySelector(`.${CLASS_NAME.EDIT}`).focus();
     };
+
     const keyUpEventHandler = (e) => {
-      if (e.key === "Escape") {
-        // ESC
-        const li = e.target.closest("li");
-        li.classList.remove("editing");
-      } else if (e.key === "Enter" && e.target.value.trim()) {
-        const li = e.target.closest("li");
-        li.classList.remove("editing");
-        onEdit(Number(li.dataset.id), e.target.value.trim()); // id, text
+      if (!isESC(e.key) && !isEnter(e.key)) {
+        return;
       }
+      const { target } = e;
+      const $li = target.closest("li");
+
+      if (isESC(e.key)) {
+        $li.classList.remove(CLASS_NAME.EDITING);
+        return;
+      }
+
+      $li.classList.remove(CLASS_NAME.EDITING);
+      TodoModel.edit(Number($li.dataset.id), target.value);
     };
 
     const focusInEventHandler = (e) => {

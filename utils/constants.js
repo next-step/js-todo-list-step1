@@ -6,6 +6,12 @@ export const COMPLETED = "completed";
 // for localstorage
 export const STORAGE_KEY = "TODO";
 
+// keyboard
+export const KEYBOARD = {
+  Enter: "Enter",
+  ESC: "Escape",
+};
+
 // for model
 export const EVENT_NAME = {
   TODO_CHANGED: "todoChanged",
@@ -23,4 +29,6 @@ export const SELECTOR = {
 export const CLASS_NAME = {
   TOGGLE: "toggle",
   REMOVE: "destroy",
+  EDITING: "editing",
+  EDIT: "edit",
 };
