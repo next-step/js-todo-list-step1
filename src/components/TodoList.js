@@ -21,7 +21,7 @@ export default function TodoList() {
   };
 
   this.bindEvent = () => {
-    const clickEventHandler = ({ target }) => {
+    const todoItemClickHandler = ({ target }) => {
       const li = target.closest("li");
       const { id } = li.dataset;
       if (target.classList.contains(CLASS_NAME.TOGGLE)) {
@@ -33,7 +33,7 @@ export default function TodoList() {
       }
     };
 
-    const dblclickEventHandler = ({ target }) => {
+    const inputDbClickHandler = ({ target }) => {
       const $li = target.closest("li");
       if ($li.classList.contains(CLASS_NAME.EDITING)) {
         return;
@@ -44,7 +44,7 @@ export default function TodoList() {
       $li.querySelector(`.${CLASS_NAME.EDIT}`).focus();
     };
 
-    const keyUpEventHandler = (e) => {
+    const inputKeyUpHandler = (e) => {
       if (!isESC(e.key) && !isEnter(e.key)) {
         return;
       }
@@ -60,32 +60,27 @@ export default function TodoList() {
       TodoModel.edit(Number($li.dataset.id), target.value);
     };
 
-    const focusInEventHandler = (e) => {
-      if (e.target.tagName === "INPUT" && e.target.className === "edit") {
-        e.target.selectionStart = e.target.value.length;
+    const inputFocusInHandler = ({ target }) => {
+      if (!target.classList.contains(CLASS_NAME.EDIT)) {
+        return;
       }
+      target.selectionStart = target.value.length; // 맨 마지막 글자에 focus
     };
 
-    const focusOutEventHandler = (e) => {
-      if (e.target.tagName === "INPUT" && e.target.className === "edit") {
-        e.target.value = this.editInputValue; //초기상태의 value로 reset
-        const li = e.target.closest("li");
-        if (li.classList.contains("editing")) {
-          li.classList.remove("editing");
-        }
+    const inputFocusOutHanlder = ({ target }) => {
+      if (!target.classList.contains(CLASS_NAME.EDIT)) {
+        return;
       }
+
+      target.value = this.editInputValue; //초기상태의 value로 reset
+      target.closest("li").classList.remove(CLASS_NAME.EDITING);
     };
 
-    this.$target.addEventListener("click", clickEventHandler);
-    this.$target.addEventListener("dblclick", dblclickEventHandler);
-    this.$target.addEventListener("keyup", keyUpEventHandler);
-    this.$target.addEventListener("focusin", focusInEventHandler); // 맨 마지막 글자에 focus
-    this.$target.addEventListener("focusout", focusOutEventHandler);
-  };
-
-  this.setState = (nextTodos) => {
-    this.todos = nextTodos;
-    this.render();
+    this.$target.addEventListener("click", todoItemClickHandler);
+    this.$target.addEventListener("dblclick", inputDbClickHandler);
+    this.$target.addEventListener("keyup", inputKeyUpHandler);
+    this.$target.addEventListener("focusin", inputFocusInHandler);
+    this.$target.addEventListener("focusout", inputFocusOutHanlder);
   };
 
   this.init();

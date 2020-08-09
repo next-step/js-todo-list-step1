@@ -23,24 +23,17 @@ function App() {
   }
 
   this.init = () => {
-    const { onEdit, onFilter } = this;
+    const { onFilter } = this;
     this.filterStatus = ALL;
 
     new TodoInput();
     new TodoCount();
-
-    this.$todoList = new TodoList();
+    new TodoList();
 
     new TodoFilter({
       selector: ".filters",
       onFilter,
     });
-  };
-
-  this.setState = (todos) => {
-    storage.set(STORAGE_KEY, todos);
-    const renderTodos = getTodosByStatus(todos, this.filterStatus);
-    this.$todoList.setState(renderTodos);
   };
 
   this.onFilter = (status) => {
