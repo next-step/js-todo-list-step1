@@ -9,14 +9,12 @@ export default function TodoList(
     const $li = $target.closest("li");
 
     if ($target.classList.contains("toggle")) {
-      // 체크박스 클릭 시 상태 변경
       if ($target.checked) {
         changeStatus($li.id, COMPLETED);
       } else {
         changeStatus($li.id, VIEW);
       }
     } else if ($target.classList.contains("destroy")) {
-      // x 버튼 클릭 시 아이템 제거
       removeItem($li.id);
     }
   });
@@ -36,12 +34,11 @@ export default function TodoList(
     const $li = $target.closest("li");
 
     if ($target.classList.contains("edit")) {
-      // input이 비어있지 않고 enter키 입력 시
       if ($target.value && event.key === "Enter") {
         editItem($li.id, $target.value);
         changeStatus($li.id, VIEW);
       }
-      // esc 눌렀다면 취소
+
       if (event.key === "Escape") {
         changeStatus($li.id, VIEW);
         $target.value = $li.querySelector(".label").textContent;

@@ -89,7 +89,6 @@ export default function TodoApp($todoApp) {
   const todosJson = localStorage.getItem("todos");
   todosJson && this.setState(JSON.parse(todosJson));
 
-  // 페이지 들어왔을 때 hash확인해서 필터 선택되게
   const initFilter = location.hash.replace("#", "");
   initFilter && todoCount.changeSelected(location.hash.replace("#", ""));
 }

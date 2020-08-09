@@ -2,7 +2,6 @@ export default function TodoCount(
   $todoCount,
   { parentRender, getFilteredItem }
 ) {
-  // 화면 하단 필터 선택 시 필터 적용
   this.changeSelected = (filter) => {
     filter = filter.replace("todo-filter", "").trim();
     const $target = $todoCount.querySelector(`.${filter}`);
