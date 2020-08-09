@@ -4,6 +4,7 @@ export default function TodoCount(
 ) {
   // 화면 하단 필터 선택 시 필터 적용
   this.changeSelected = (filter) => {
+    filter = filter.replace("todo-filter", "").trim();
     const $target = $todoCount.querySelector(`.${filter}`);
     $todoCount.querySelector(".selected").classList.remove("selected");
     $target.classList.add("selected");
@@ -13,7 +14,7 @@ export default function TodoCount(
   $todoCount.addEventListener("click", (event) => {
     const $target = event.target;
 
-    if ($target.nodeName === "A") {
+    if ($target.classList.contains("todo-filter")) {
       this.changeSelected($target.className);
     }
   });
