@@ -6,7 +6,9 @@ export const todoItemHTMLTemplate = ({ id, text, isCompleted }, index) => {
     isCompleted ? "completed" : ""
   }>
         <div class="view">
-          <input class="toggle" type="checkbox" />
+          <input class="toggle" type="checkbox" ${
+            isCompleted ? "checked" : ""
+          }/>
           <label class="label">${text}</label>
           <button class="destroy"></button>
         </div>

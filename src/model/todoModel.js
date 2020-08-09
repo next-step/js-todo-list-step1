@@ -36,6 +36,19 @@ class TodoModel extends Observer {
     this.todos = this.todos.filter((todo) => todo.id !== id);
     this.setTodos(this.todos);
   }
+
+  toggle(id) {
+    const targetIndex = this.todos.findIndex((todo) => todo.id === id);
+    this.todos = [
+      ...this.todos.slice(0, targetIndex),
+      {
+        ...this.todos[targetIndex],
+        isCompleted: !this.todos[targetIndex].isCompleted,
+      },
+      ...this.todos.slice(targetIndex + 1, this.todos.length),
+    ];
+    this.setTodos(this.todos);
+  }
 }
 
 export default new TodoModel();

@@ -23,16 +23,13 @@ function App() {
   }
 
   this.init = () => {
-    const { onToggle, onEdit, onFilter } = this;
+    const { onEdit, onFilter } = this;
     this.filterStatus = ALL;
 
     new TodoInput();
     new TodoCount();
 
     this.$todoList = new TodoList({
-      selector: ".todo-list",
-      todos: this.todos,
-      onToggle,
       onEdit,
     });
 
@@ -46,15 +43,6 @@ function App() {
     storage.set(STORAGE_KEY, todos);
     const renderTodos = getTodosByStatus(todos, this.filterStatus);
     this.$todoList.setState(renderTodos);
-  };
-
-  this.onToggle = (id) => {
-    const targetIndex = this.todos.findIndex((todo) => todo.id === id);
-    this.todos[targetIndex] = {
-      ...this.todos[targetIndex],
-      isCompleted: !this.todos[targetIndex].isCompleted,
-    };
-    this.setState(this.todos, this.filterStatus);
   };
 
   this.onEdit = (id, text) => {

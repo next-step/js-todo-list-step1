@@ -3,7 +3,7 @@ import { EVENT_NAME, SELECTOR, CLASS_NAME } from "../../utils/constants.js";
 import { todoItemHTMLTemplate } from "../../utils/template.js";
 
 export default function TodoList(props) {
-  const { onToggle, onEdit } = props;
+  const { onEdit } = props;
   if (new.target !== TodoList) {
     return new TodoList(props);
   }
@@ -25,7 +25,7 @@ export default function TodoList(props) {
       const li = target.closest("li");
       const { id } = li.dataset;
       if (target.classList.contains(CLASS_NAME.TOGGLE)) {
-        onToggle(Number(id));
+        TodoModel.toggle(Number(id));
         return;
       }
       if (target.classList.contains(CLASS_NAME.REMOVE)) {
