@@ -20,17 +20,21 @@ export default function TodoApp(props) {
     };
 
     const handleToggle = (id) => {
-        const newData = this.data.map(todo => {
-            if (todo.id === id) {
-                return Object.assign({}, todo, {isCompleted: !todo.isCompleted})
-            }
-            return todo;
-        });
+        const newData = this.data.map(todo =>
+            todo.id === id ? {...todo, isCompleted: !todo.isCompleted} : todo
+        );
         this.setState(newData);
     }
 
     const handleRemove = (id) => {
         const newData = this.data.filter(todo => (todo.id !== id));
+        this.setState(newData);
+    };
+
+    const handleEdit = (id, description) => {
+        const newData = this.data.map(todo =>
+            todo.id === id ? {...todo, description: description} : todo
+        );
         this.setState(newData);
     };
 
@@ -44,6 +48,7 @@ export default function TodoApp(props) {
         data: this.data,
         handleToggle,
         handleRemove,
+        handleEdit,
     });
 
     this.setState = (newData) => {
