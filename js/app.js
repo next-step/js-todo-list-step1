@@ -7,7 +7,7 @@ function App() {
     const $todoList = document.querySelector('#todo-list')
     const $todoCount = document.querySelector('.todo-count')
     const data = []
-
+    
     function addItem(text) {
         data.push({
             text,
