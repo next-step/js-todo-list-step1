@@ -1,3 +1,5 @@
+import config from '../config/config.js';
+
 import TodoHeader from './todo-header.js';
 import TodoList from './todo-list.js';
 import TodoInput from './todo-input.js';
@@ -9,7 +11,8 @@ export default class App {
       this.todos = this.getTodos();
       this.filterList = this.getTodoFilter();
       this.filteredTodos = this.filterTodos();
-      this.TodoHeaderComponent = new TodoHeader();
+
+      this.todoHeaderComponent = new TodoHeader();
       this.todoListComponent = new TodoList(
         this.filteredTodos,
         this.toggleTodo.bind(this),
@@ -19,7 +22,7 @@ export default class App {
       this.todoInputComponent = new TodoInput(this.addTodo.bind(this));
       this.todoInfo = new TodoInfo(
         this.filterList,
-        this.todos.length,
+        this.filteredTodos.length,
         this.selectFilter.bind(this)
       );
     } catch (err) {
@@ -28,12 +31,12 @@ export default class App {
   }
 
   getTodos() {
-    const todos = localStorage.getItem('TODOS');
+    const todos = localStorage.getItem(config.todos);
     return JSON.parse(todos) || [];
   }
 
   getTodoFilter() {
-    const todos = localStorage.getItem('TODOS_Filter');
+    const todos = localStorage.getItem(config.todoFilter);
     return (
       JSON.parse(todos) || [
         {
@@ -56,11 +59,11 @@ export default class App {
   }
 
   saveTodoFilter(filters) {
-    localStorage.setItem('TODOS_Filter', JSON.stringify(filters));
+    localStorage.setItem(config.todoFilter, JSON.stringify(filters));
   }
 
   saveTodos(todos) {
-    localStorage.setItem('TODOS', JSON.stringify(todos));
+    localStorage.setItem(config.todos, JSON.stringify(todos));
   }
 
   filterTodos() {
