@@ -1,12 +1,13 @@
 import TodoModel from "../model/todoModel.js";
 import { isEmpty, isEnter } from "../../utils/functions.js";
+import { SELECTOR } from "../../utils/constants.js";
 
-export default function TodoInput({ selector, onAddTodo }) {
+export default function TodoInput() {
   if (new.target !== TodoInput) {
-    return new TodoInput({ selector, onAddTodo });
+    return new TodoInput();
   }
   this.init = () => {
-    this.$target = document.querySelector(selector);
+    this.$target = document.querySelector(`.${SELECTOR.TODO_INPUT}`);
     this.bindEvent();
   };
 

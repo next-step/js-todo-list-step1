@@ -1,15 +1,20 @@
-export default function TodoCount({ selector, count }) {
+import TodoModel from "../model/todoModel.js";
+import { todoCountTemplate } from "../../utils/template.js";
+import { SELECTOR } from "../../utils/constants.js";
+
+export default function TodoCount() {
   if (new.target !== TodoCount) {
-    return new TodoCount({ selector, count });
+    return new TodoCount();
   }
 
   this.init = () => {
-    this.$target = document.querySelector(selector);
-    this.setState(count);
+    this.$target = document.querySelector(`.${SELECTOR.TODO_COUNT}`);
+    TodoModel.subscribe("todoChanged", this, this.render);
+    this.render(TodoModel.get());
   };
 
-  this.setState = (count) => {
-    this.$target.innerHTML = `총 <strong>${count}</strong> 개`;
+  this.render = (todos) => {
+    this.$target.innerHTML = todoCountTemplate(todos.length);
   };
 
   this.init();

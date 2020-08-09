@@ -23,14 +23,11 @@ function App() {
   }
 
   this.init = () => {
-    const { onAddTodo, onToggle, onDelete, onEdit, onFilter } = this;
-    this.todos = storage.get(STORAGE_KEY) || [];
+    const { onToggle, onDelete, onEdit, onFilter } = this;
     this.filterStatus = ALL;
 
-    new TodoInput({
-      selector: ".new-todo",
-      onAddTodo,
-    });
+    new TodoInput();
+    this.$todoCount = new TodoCount();
 
     this.$todoList = new TodoList({
       selector: ".todo-list",
@@ -40,10 +37,6 @@ function App() {
       onEdit,
     });
 
-    this.$todoCount = new TodoCount({
-      selector: ".todo-count",
-      count: this.todos.length,
-    });
     new TodoFilter({
       selector: ".filters",
       onFilter,
@@ -55,20 +48,6 @@ function App() {
     const renderTodos = getTodosByStatus(todos, this.filterStatus);
     this.$todoList.setState(renderTodos);
     this.$todoCount.setState(renderTodos.length);
-  };
-
-  this.onAddTodo = (text) => {
-    this.todos = [
-      ...this.todos,
-      {
-        id: this.todos.length
-          ? Math.max(...this.todos.map((todo) => todo.id)) + 1
-          : 0,
-        text,
-        isCompleted: false,
-      },
-    ];
-    this.setState(this.todos, this.filterStatus);
   };
 
   this.onToggle = (id) => {

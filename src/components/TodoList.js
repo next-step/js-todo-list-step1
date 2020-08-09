@@ -1,4 +1,5 @@
 import TodoModel from "../model/todoModel.js";
+import { EVENT_NAME } from "../../utils/constants.js";
 
 export default function TodoList(props) {
   const { selector, todos, onToggle, onDelete, onEdit } = props;
@@ -8,7 +9,7 @@ export default function TodoList(props) {
 
   this.init = () => {
     this.$target = document.querySelector(selector);
-    TodoModel.subscribe("todoChanged", this, this.render);
+    TodoModel.subscribe(EVENT_NAME.TODO_CHANGED, this, this.render);
     this.bindEvent();
     this.render(TodoModel.get());
   };
