@@ -17,8 +17,7 @@ function getTodosByStatus(todos, status) {
       throw new Error("Unhandled Case");
   }
 }
-
-export default function App() {
+function App() {
   if (new.target !== App) {
     return new App();
   }
@@ -33,7 +32,6 @@ export default function App() {
       onAddTodo,
     });
 
-    console.log(this.todos);
     this.$todoList = new TodoList({
       selector: ".todo-list",
       todos: this.todos,
@@ -100,3 +98,5 @@ export default function App() {
 
   this.init();
 }
+
+export default new App();

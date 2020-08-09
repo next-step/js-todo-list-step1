@@ -1,3 +1,6 @@
+import TodoModel from "../model/todoModel.js";
+import { isEmpty, isEnter } from "../../utils/functions.js";
+
 export default function TodoInput({ selector, onAddTodo }) {
   if (new.target !== TodoInput) {
     return new TodoInput({ selector, onAddTodo });
@@ -8,12 +11,16 @@ export default function TodoInput({ selector, onAddTodo }) {
   };
 
   this.bindEvent = () => {
-    this.$target.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" && e.target.value.trim()) {
-        onAddTodo(e.target.value);
-        e.target.value = "";
+    const onCreateTodoHandler = (e) => {
+      if (!isEnter(e.key) || isEmpty(e.target.value)) {
+        return;
       }
-    });
+      const { target } = e;
+      TodoModel.create(target.value);
+      target.value = "";
+    };
+
+    this.$target.addEventListener("keypress", onCreateTodoHandler);
   };
 
   this.init();

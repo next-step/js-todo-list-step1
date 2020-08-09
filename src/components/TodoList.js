@@ -1,3 +1,5 @@
+import TodoModel from "../model/todoModel.js";
+
 export default function TodoList(props) {
   const { selector, todos, onToggle, onDelete, onEdit } = props;
   if (new.target !== TodoList) {
@@ -6,9 +8,13 @@ export default function TodoList(props) {
 
   this.init = () => {
     this.$target = document.querySelector(selector);
-    this.todos = todos;
-    this.render();
+    TodoModel.subscribe("todoChanged", this, this.render);
     this.bindEvent();
+    this.render(TodoModel.get());
+  };
+
+  this.render = (todos) => {
+    this.$target.innerHTML = todos.map(todoItemHTMLTemplate).join();
   };
 
   this.bindEvent = () => {
@@ -76,11 +82,6 @@ export default function TodoList(props) {
           </div>
           <input class="edit" value=${text} />
       </li>`;
-  };
-
-  this.render = () => {
-    console.log("todos", this.todos);
-    this.$target.innerHTML = this.todos.map(todoItemHTMLTemplate).join();
   };
 
   this.setState = (nextTodos) => {
