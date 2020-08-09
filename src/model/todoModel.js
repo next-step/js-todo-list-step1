@@ -1,21 +1,45 @@
 import Observer from "./observer.js";
-import { STORAGE_KEY, EVENT_NAME } from "../../utils/constants.js";
+import {
+  STORAGE_KEY,
+  EVENT_NAME,
+  ALL,
+  ACTIVE,
+  COMPLETED,
+} from "../../utils/constants.js";
 import { storage } from "../../utils/storage.js";
 
 class TodoModel extends Observer {
   constructor() {
     super();
-    this.todos = storage.get(STORAGE_KEY) || []; // filter 하지 않은 전체 Todo
-    this.currentTodos = []; // 현재 렌더링하는 Todo
+    this.todos = storage.get(STORAGE_KEY) || []; // 그냥 전체 Todo
+    this.filterTodosByType(this.todos);
+
+    this.filterType = ALL;
+    this.currentTodos = this.todosByFilter.get(this.filterType); // 렌더해야하는 Todo > 초기 타입은 'ALL'
   }
 
-  setTodos(todos) {
-    this.currentTodos = todos; // filterStatus 아직 반영x
+  filterTodosByType(todos) {
+    this.todosByFilter = new Map();
+    this.todosByFilter.set(ALL, todos.concat()); // 불변성 유지를 위해 Array 다시 생성
+    this.todosByFilter.set(
+      ACTIVE,
+      todos.filter((todo) => !todo.isCompleted)
+    );
+
+    this.todosByFilter.set(
+      COMPLETED,
+      todos.filter((todo) => todo.isCompleted)
+    );
+  }
+
+  setTodos() {
+    storage.set(STORAGE_KEY, this.todos);
+    this.currentTodos = this.todosByFilter.get(this.filterType);
     this.notify(EVENT_NAME.TODO_CHANGED, this.currentTodos);
   }
 
-  get(filterStatus) {
-    return filterStatus ? this.currentTodos : this.todos;
+  get() {
+    return this.currentTodos;
   }
 
   create(text) {
@@ -29,8 +53,10 @@ class TodoModel extends Observer {
         isCompleted: false,
       },
     ];
-    this.setTodos(this.todos);
-  } // 불변성 유지를 위해 Array 다시 생성
+
+    this.filterTodosByType(this.todos);
+    this.setTodos();
+  }
 
   edit(id, text) {
     const targetIndex = this.todos.findIndex((todo) => todo.id === id);
@@ -42,12 +68,16 @@ class TodoModel extends Observer {
       },
       ...this.todos.slice(targetIndex + 1, this.todos.length),
     ];
-    this.setTodos(this.todos);
+
+    this.filterTodosByType(this.todos);
+    this.setTodos();
   }
 
   remove(id) {
     this.todos = this.todos.filter((todo) => todo.id !== id);
-    this.setTodos(this.todos);
+
+    this.filterTodosByType(this.todos);
+    this.setTodos();
   }
 
   toggle(id) {
@@ -60,7 +90,14 @@ class TodoModel extends Observer {
       },
       ...this.todos.slice(targetIndex + 1, this.todos.length),
     ];
-    this.setTodos(this.todos);
+
+    this.filterTodosByType(this.todos);
+    this.setTodos();
+  }
+
+  changeFilterType(type) {
+    this.filterType = type;
+    this.setTodos();
   }
 }
 

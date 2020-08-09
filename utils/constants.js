@@ -15,6 +15,7 @@ export const KEYBOARD = {
 // for model
 export const EVENT_NAME = {
   TODO_CHANGED: "todoChanged",
+  TODO_FILTER_CHANGED: "todoFilterChanged",
 };
 
 // SELECTOR
@@ -22,6 +23,7 @@ export const SELECTOR = {
   TODO_INPUT: "new-todo",
   TODO_COUNT: "todo-count",
   TODO_LIST: "todo-list",
+  TODO_FILTER: "filters",
 };
 
 // className
