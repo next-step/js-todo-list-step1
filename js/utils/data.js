@@ -1,14 +1,14 @@
 import { CLASS_NAME } from '../utils/constant.js';
 
+const initialState = {
+  todos: [],
+  selectedTab: CLASS_NAME.ALL,
+};
+
 export const fetchState = (key) => {
   try {
-    const defaultState = {
-      todos: [],
-      selectedTab: CLASS_NAME.ALL,
-    };
-
     const state = localStorage.getItem(key);
-    return state ? JSON.parse(state) : defaultState;
+    return state ? JSON.parse(state) : initialState;
   } catch (err) {
     console.error(err);
   }
