@@ -1,11 +1,13 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
+import TodoCount from "./TodoCount.js";
 import {loadTodos, saveTodos} from "../utils/localStorage.js";
 
 export default function TodoApp(props) {
     const {
         $todoInput,
         $todoList,
+        $todoCount,
     } = props;
     this.data = loadTodos() || [];
     this.nextId = this.data.length + 1;
@@ -51,16 +53,23 @@ export default function TodoApp(props) {
         handleEdit,
     });
 
+    this.todoCount = new TodoCount({
+        $target: $todoCount,
+        count: this.data.length,
+    })
+
     this.setState = (newData) => {
         this.data = newData;
 
         this.todoList.setState(this.data);
+        this.todoCount.setState(this.data.length);
         saveTodos(this.data);
         this.render();
     };
 
     this.render = () => {
         this.todoList.render();
+        this.todoCount.render();
     };
 
 };
