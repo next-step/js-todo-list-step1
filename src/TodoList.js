@@ -9,13 +9,13 @@ export default function TodoList(
     const $li = $target.closest("li");
 
     if ($target.classList.contains("toggle")) {
-      if ($target.checked) {
-        changeStatus($li.id, COMPLETED);
-      } else {
-        changeStatus($li.id, VIEW);
-      }
-    } else if ($target.classList.contains("destroy")) {
+      changeStatus($li.id, $target.checked ? COMPLETED : VIEW);
+      return;
+    }
+
+    if ($target.classList.contains("destroy")) {
       removeItem($li.id);
+      return;
     }
   });
 
@@ -33,7 +33,7 @@ export default function TodoList(
     const $target = event.target;
     const $li = $target.closest("li");
 
-    if ($target.classList.contains("edit")) {
+    const editKeydown = () => {
       if ($target.value && event.key === "Enter") {
         editItem($li.id, $target.value);
         changeStatus($li.id, VIEW);
@@ -43,6 +43,10 @@ export default function TodoList(
         changeStatus($li.id, VIEW);
         $target.value = $li.querySelector(".label").textContent;
       }
+    };
+
+    if ($target.classList.contains("edit")) {
+      editKeydown();
     }
   });
 
