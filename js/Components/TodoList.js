@@ -1,4 +1,5 @@
 import { NODE_NAME, CLASS_NAME, MESSAGE } from '../utils/constant.js';
+import { checkTarget, checkTypeFunction } from '../utils/validator.js';
 
 function TodoList({
   $target,
@@ -8,6 +9,11 @@ function TodoList({
   onEditTodo,
 }) {
   this.init = () => {
+    checkTarget($target);
+    checkTypeFunction(onToggleTodo);
+    checkTypeFunction(onRemoveTodo);
+    checkTypeFunction(onEditTodo);
+
     this.$target = $target;
     this.state = todoListState;
     this.isEditing = false;

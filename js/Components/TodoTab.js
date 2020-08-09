@@ -1,7 +1,11 @@
 import { CLASS_NAME, NODE_NAME } from '../utils/constant.js';
+import { checkTarget, checkTypeFunction } from '../utils/validator.js';
 
 function TodoTab({ $target, selectedTab, onChangeTab }) {
   this.init = () => {
+    checkTarget($target);
+    checkTypeFunction(onChangeTab);
+
     this.$target = $target;
     this.$tabs = this.$target.querySelectorAll('a');
     this.selectedTab = selectedTab;

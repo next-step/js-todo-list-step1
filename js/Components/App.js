@@ -5,11 +5,17 @@ import TodoTab from './TodoTab.js';
 
 import { SELECTOR, TODO_KEY } from '../utils/constant.js';
 import { fetchState, saveState } from '../utils/data.js';
+import { checkAppState, checkTarget } from '../utils/validator.js';
 
 function App($target) {
   this.init = () => {
+    const initialState = fetchState(TODO_KEY);
+
+    checkTarget($target);
+    checkAppState(initialState);
+
     this.$target = $target;
-    this.state = fetchState(TODO_KEY);
+    this.state = initialState;
 
     this.todoInput = new TodoInput({
       $target: document.querySelector(SELECTOR.TODO_INPUT),
@@ -105,6 +111,8 @@ function App($target) {
   };
 
   this.setState = (nextState) => {
+    checkAppState(nextState);
+
     this.state = nextState;
     saveState(TODO_KEY, this.state);
 

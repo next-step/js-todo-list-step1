@@ -1,7 +1,10 @@
 import { MESSAGE, CLASS_NAME } from '../utils/constant.js';
+import { checkTarget } from '../utils/validator.js';
 
 function TodoCount({ $target, todoCountState }) {
   this.init = () => {
+    checkTarget($target);
+
     this.$target = $target;
     this.state = todoCountState;
 

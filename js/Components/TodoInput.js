@@ -1,7 +1,11 @@
 import { MESSAGE } from '../utils/constant.js';
+import { checkTarget, checkTypeFunction } from '../utils/validator.js';
 
 function TodoInput({ $target, onAddTodo }) {
   this.init = () => {
+    checkTarget($target);
+    checkTypeFunction(onAddTodo);
+
     this.$target = $target;
 
     this.bindEvents();
@@ -16,7 +20,7 @@ function TodoInput({ $target, onAddTodo }) {
 
     const keyword = e.target.value.trim();
 
-    if (keyword.length === 0) {
+    if (!keyword.length) {
       alert(MESSAGE.NO_INPUT_KEYWORD);
       e.target.value = '';
       return;
