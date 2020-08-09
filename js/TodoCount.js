@@ -1,13 +1,13 @@
 export default function TodoCount(props) {
     const {$target} = props;
-    this.count = props.count || 0;
+    let count = props.count || 0;
 
-    this.setState = (count) => {
-        this.count = count;
+    this.setState = (newCount) => {
+        count = newCount;
     };
 
     this.render = () => {
-        $target.innerHTML = `총 ${this.count}개`;
+        $target.innerHTML = `총 ${count}개`;
     };
 
     this.render();

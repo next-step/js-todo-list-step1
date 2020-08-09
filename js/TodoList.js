@@ -5,15 +5,15 @@ export default function TodoList(props) {
         handleRemove: onRemove,
         handleEdit: onEdit,
     } = props;
-    this.data = props.data;
+    let data = props.data;
 
     this.onKeydown = (e) => {
         const $li = e.target.closest("li");
         const {id} = e.target.closest("li").dataset;
 
         if (e.key === "Escape") {
-            const index = this.data.findIndex(todo => (todo.id === Number(id)));
-            e.target.value = this.data[index].description;
+            const index = data.findIndex(todo => (todo.id === Number(id)));
+            e.target.value = data[index].description;
             $li.classList.toggle("editing");
         }
 
@@ -48,12 +48,12 @@ export default function TodoList(props) {
     });
 
     this.setState = (newData) => {
-        this.data = newData;
+        data = newData;
         this.render();
     };
 
     this.render = () => {
-        $target.innerHTML = this.data
+        $target.innerHTML = data
             .map((todo) => {
                 const contentHtmlAsString = `
                     <div class="view"> 
