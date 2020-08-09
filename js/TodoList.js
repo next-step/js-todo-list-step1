@@ -1,4 +1,6 @@
-function TodoList($todoList, data, removeItem) {
+import { ENTER_KEY, ESC_KEY } from "./constants.js";
+
+export default function TodoList($todoList, data, removeItem) {
     this.$todoList = $todoList
     this.data = data
 

@@ -1,4 +1,4 @@
-function TodoCount($todoCount, totalCount) {
+export default function TodoCount($todoCount, totalCount) {
     this.$todoCount = $todoCount
     this.totalCount = totalCount
 

@@ -1,4 +1,6 @@
-function TodoInput($todoInput, onAdd) {
+import { ENTER_KEY } from "./constants.js";
+
+export default function TodoInput($todoInput, onAdd) {
     // 더 상세한 validation?
     if (!$todoInput) {
         throw new Error('ERROR: Invalid object')

@@ -1,3 +1,7 @@
+import TodoCount from './TodoCount.js'
+import TodoList from './TodoList.js'
+import TodoInput from './TodoInput.js'
+
 function App() {
     const $todoInput = document.querySelector('#new-todo-title')
     const $todoList = document.querySelector('#todo-list')
