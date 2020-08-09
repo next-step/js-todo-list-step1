@@ -1,11 +1,8 @@
-import { checkSelector } from "../utils/validations.js";
-
 export default function TodoList(props) {
   const { selector, todos, onToggle, onDelete, onEdit } = props;
   if (new.target !== TodoList) {
     return new TodoList(props);
   }
-  checkSelector(selector);
 
   this.init = () => {
     this.$target = document.querySelector(selector);
