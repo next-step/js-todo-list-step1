@@ -1,17 +1,23 @@
-export const dummyTodos = [
-  {
-    id: 1,
-    title: '투두',
-    isCompleted: false,
-  },
-  {
-    id: 2,
-    title: '퉁둥',
-    isCompleted: true,
-  },
-  {
-    id: 3,
-    title: '툴둘',
-    isCompleted: false,
-  },
-];
+import { CLASS_NAME } from '../utils/constant.js';
+
+export const fetchState = (key) => {
+  try {
+    const defaultState = {
+      todos: [],
+      selectedTab: CLASS_NAME.ALL,
+    };
+
+    const state = localStorage.getItem(key);
+    return state ? JSON.parse(state) : defaultState;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const saveState = (key, state) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(state));
+  } catch (err) {
+    console.error(err);
+  }
+};

@@ -28,3 +28,5 @@ export const CLASS_NAME = {
   COMPLETED: 'completed',
   SELECTED: 'selected',
 };
+
+export const TODO_KEY = '2sooy';
