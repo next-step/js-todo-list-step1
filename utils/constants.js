@@ -15,4 +15,12 @@ export const EVENT_NAME = {
 export const SELECTOR = {
   TODO_INPUT: "new-todo",
   TODO_COUNT: "todo-count",
+  TODO_LIST: "todo-list",
+};
+
+// className
+
+export const CLASS_NAME = {
+  TOGGLE: "toggle",
+  REMOVE: "destroy",
 };

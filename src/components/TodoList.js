@@ -1,31 +1,35 @@
 import TodoModel from "../model/todoModel.js";
-import { EVENT_NAME } from "../../utils/constants.js";
+import { EVENT_NAME, SELECTOR, CLASS_NAME } from "../../utils/constants.js";
+import { todoItemHTMLTemplate } from "../../utils/template.js";
 
 export default function TodoList(props) {
-  const { selector, todos, onToggle, onDelete, onEdit } = props;
+  const { onToggle, onEdit } = props;
   if (new.target !== TodoList) {
     return new TodoList(props);
   }
 
   this.init = () => {
-    this.$target = document.querySelector(selector);
+    this.$target = document.querySelector(`.${SELECTOR.TODO_LIST}`);
     TodoModel.subscribe(EVENT_NAME.TODO_CHANGED, this, this.render);
     this.bindEvent();
     this.render(TodoModel.get());
   };
 
   this.render = (todos) => {
+    console.log("TODOLIST", todos);
     this.$target.innerHTML = todos.map(todoItemHTMLTemplate).join();
   };
 
   this.bindEvent = () => {
-    const clickEventHandler = (e) => {
-      const li = e.target.closest("li");
+    const clickEventHandler = ({ target }) => {
+      const li = target.closest("li");
       const { id } = li.dataset;
-      if (e.target.tagName === "INPUT" && e.target.className === "toggle") {
+      if (target.classList.contains(CLASS_NAME.TOGGLE)) {
         onToggle(Number(id));
-      } else if (e.target.tagName === "BUTTON") {
-        onDelete(Number(id));
+        return;
+      }
+      if (target.classList.contains(CLASS_NAME.REMOVE)) {
+        TodoModel.remove(Number(id));
       }
     };
     const dblclickEventHandler = (e) => {
@@ -69,20 +73,6 @@ export default function TodoList(props) {
     this.$target.addEventListener("keyup", keyUpEventHandler);
     this.$target.addEventListener("focusin", focusInEventHandler); // 맨 마지막 글자에 focus
     this.$target.addEventListener("focusout", focusOutEventHandler);
-  };
-
-  const todoItemHTMLTemplate = ({ id, text, isCompleted }, index) => {
-    return `
-      <li data-id=${id} data-index=${index} class=${
-      isCompleted ? "completed" : ""
-    }>
-          <div class="view">
-            <input class="toggle" type="checkbox" />
-            <label class="label">${text}</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value=${text} />
-      </li>`;
   };
 
   this.setState = (nextTodos) => {

@@ -1,5 +1,5 @@
 import Observer from "./observer.js";
-import { STORAGE_KEY } from "../../utils/constants.js";
+import { STORAGE_KEY, EVENT_NAME } from "../../utils/constants.js";
 import { storage } from "../../utils/storage.js";
 
 class TodoModel extends Observer {
@@ -10,8 +10,8 @@ class TodoModel extends Observer {
   }
 
   setTodos(todos) {
-    this.currentTodos = todos;
-    this.notify("todoChanged", this.currentTodos);
+    this.currentTodos = todos; // filterStatus 아직 반영x
+    this.notify(EVENT_NAME.TODO_CHANGED, this.currentTodos);
   }
 
   get(filterStatus) {
@@ -29,6 +29,11 @@ class TodoModel extends Observer {
         isCompleted: false,
       },
     ];
+    this.setTodos(this.todos);
+  }
+
+  remove(id) {
+    this.todos = this.todos.filter((todo) => todo.id !== id);
     this.setTodos(this.todos);
   }
 }
