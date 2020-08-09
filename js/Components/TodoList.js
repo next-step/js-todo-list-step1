@@ -1,6 +1,12 @@
 import { TAB, MESSAGE } from '../utils/constant.js';
 
-function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
+function TodoList({
+  $target,
+  todoListState,
+  onToggleTodo,
+  onRemoveTodo,
+  onEditTodo,
+}) {
   this.init = () => {
     this.$target = $target;
     this.state = todoListState;
@@ -11,6 +17,8 @@ function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
 
   this.bindEvents = () => {
     this.$target.addEventListener('click', this.onClick);
+    this.$target.addEventListener('dblclick', this.onDblClick);
+    this.$target.addEventListener('keydown', this.onKeypress);
   };
 
   this.onClick = (e) => {
@@ -30,9 +38,49 @@ function TodoList({ $target, todoListState, onToggleTodo, onRemoveTodo }) {
     }
   };
 
+  this.onDblClick = (e) => {
+    if (e.target.nodeName !== 'LABEL') return;
+
+    const todoItem = e.target.closest('li');
+    todoItem.classList.add('editing');
+
+    const inputElem = document.createElement('input');
+    inputElem.className = 'edit';
+    inputElem.value = e.target.innerText;
+    todoItem.appendChild(inputElem);
+    inputElem.focus();
+  };
+
+  this.onKeypress = (e) => {
+    const key = e.key;
+    if (key !== 'Enter' && key != 'Escape') return;
+
+    const todoItem = e.target.closest('li');
+    const editContent = e.target.value.trim();
+
+    switch (key) {
+      case 'Enter':
+        if (!editContent.length) {
+          alert('할 일을 입력해주세요');
+          return;
+        }
+        onEditTodo(parseInt(todoItem.id), editContent);
+        return;
+
+      case 'Escape':
+        todoItem.classList.remove('editing');
+        todoItem.removeChild(e.target);
+        return;
+
+      default:
+        console.error(`${e.key} : 등록되지 않은 KEY 입력입니다.`);
+        break;
+    }
+  };
+
   this.createTodoItemHTML = (todo) => {
     return `
-    <li id=${todo.id}>
+    <li id=${todo.id} class=${todo.isCompleted ? 'completed' : ''}>
       <div class="view">
         <input class="toggle" type="checkbox" 
         ${todo.isCompleted ? 'checked' : ''} 

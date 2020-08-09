@@ -24,6 +24,7 @@ function App($target) {
       todoListState: this.state,
       onToggleTodo: this.onToggleTodo,
       onRemoveTodo: this.onRemoveTodo,
+      onEditTodo: this.onEditTodo,
     });
 
     this.todoTab = new TodoTab({
@@ -70,6 +71,24 @@ function App($target) {
 
   this.onRemoveTodo = (todoId) => {
     const newTodos = this.state.todos.filter(({ id }) => todoId !== id);
+
+    const nextState = {
+      ...this.state,
+      todos: newTodos,
+    };
+
+    this.setState(nextState);
+  };
+
+  this.onEditTodo = (todoId, content) => {
+    const newTodos = this.state.todos.map((todo) =>
+      todo.id === todoId
+        ? {
+            ...todo,
+            title: content,
+          }
+        : todo,
+    );
 
     const nextState = {
       ...this.state,
