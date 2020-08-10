@@ -20,10 +20,10 @@ export const checkTypeFunction = (func) => {
 
 export const checkAppState = (state) => {
   if (!state.hasOwnProperty(APP_STATE.TODOS)) {
-    throw new Error(`Error : ${func} - ${MESSAGE.NOT_TYPE_FUNCTION}`);
+    throw new Error(`Error : ${MESSAGE.NO_TODOS_PROPERTY}`);
   }
 
   if (!state.hasOwnProperty(APP_STATE.SELECTED_TAB)) {
-    throw new Error(`Error : ${func} - ${MESSAGE.NOT_TYPE_FUNCTION}`);
+    throw new Error(`Error : ${MESSAGE.NO_SELECTED_TAB_PROPERTY}`);
   }
 };
