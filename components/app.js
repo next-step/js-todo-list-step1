@@ -1,4 +1,5 @@
 import config from '../config/config.js';
+import { todoApi } from '../api/api.js';
 
 import TodoHeader from './todo-header.js';
 import TodoList from './todo-list.js';
@@ -7,9 +8,26 @@ import TodoInfo from './todo-info.js';
 
 export default class App {
   constructor() {
+    const todosFilters = [
+      {
+        state: 'all',
+        title: '전체보기',
+        selected: true,
+      },
+      {
+        state: 'active',
+        title: '해야할 일',
+        selected: false,
+      },
+      {
+        state: 'completed',
+        title: '완료한 일',
+        selected: false,
+      },
+    ];
     try {
-      this.todos = this.getTodos();
-      this.filterList = this.getTodoFilter();
+      this.todos = todoApi.get(config.todos);
+      this.filterList = todoApi.get(config.todoFilter, todosFilters);
       this.filteredTodos = this.filterTodos();
 
       this.todoHeaderComponent = new TodoHeader();
@@ -28,42 +46,6 @@ export default class App {
     } catch (err) {
       console.error(err.message);
     }
-  }
-
-  getTodos() {
-    const todos = localStorage.getItem(config.todos);
-    return JSON.parse(todos) || [];
-  }
-
-  getTodoFilter() {
-    const todos = localStorage.getItem(config.todoFilter);
-    return (
-      JSON.parse(todos) || [
-        {
-          state: 'all',
-          title: '전체보기',
-          selected: true,
-        },
-        {
-          state: 'active',
-          title: '해야할 일',
-          selected: false,
-        },
-        {
-          state: 'completed',
-          title: '완료한 일',
-          selected: false,
-        },
-      ]
-    );
-  }
-
-  saveTodoFilter(filters) {
-    localStorage.setItem(config.todoFilter, JSON.stringify(filters));
-  }
-
-  saveTodos(todos) {
-    localStorage.setItem(config.todos, JSON.stringify(todos));
   }
 
   filterTodos() {
@@ -86,13 +68,13 @@ export default class App {
 
   setTodoState(todos) {
     this.todos = todos;
-    this.saveTodos(todos);
+    todoApi.set(config.todos, todos);
     this.render();
   }
 
   setFilterState(filterList) {
     this.filterList = filterList;
-    this.saveTodoFilter(filterList);
+    todoApi.set(config.todoFilter, filterList);
     this.render();
   }
 
@@ -129,7 +111,7 @@ export default class App {
   }
 
   selectFilter(clickedFilter) {
-    const newfilterList = this.filterList.map((filter) => {
+    const newFilterList = this.filterList.map((filter) => {
       if (clickedFilter.includes(filter.state)) {
         filter.selected = true;
         location.hash = `#${filter.state}`;
@@ -138,6 +120,6 @@ export default class App {
       }
       return filter;
     });
-    this.setFilterState(newfilterList);
+    this.setFilterState(newFilterList);
   }
 }
