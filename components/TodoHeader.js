@@ -1,7 +1,11 @@
-function TodoHeader() {
+function TodoHeader({$target}) {
     this.init = () => {
-        let $target = document.querySelector("#todo-app-header");
-        $target.innerHTML = `<h1>Roki's TODOS</h1>`;
+        this.$target = $target;
+        this.render();
+    }
+
+    this.render = () => {
+        this.$target.innerHTML = `<h1>Roki's TODOS</h1>`;
     }
 
     this.init();
