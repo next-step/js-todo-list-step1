@@ -5,8 +5,6 @@ export default function TodoFilter(props) {
         handleFilter: onFilter
     } = props;
 
-    console.log(filter);
-
     $target.addEventListener(
         "click",
         (e) => {

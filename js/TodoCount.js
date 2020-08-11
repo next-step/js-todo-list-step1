@@ -7,7 +7,7 @@ export default function TodoCount(props) {
     };
 
     this.render = () => {
-        $target.innerHTML = `총 ${count}개`;
+        $target.textContent = `총 ${count}개`;
     };
 
     this.render();

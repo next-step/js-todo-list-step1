@@ -74,17 +74,16 @@ export default function TodoApp(props) {
     this.setState = (data, filter) => {
         this.data = data;
         this.filter = filter;
-        let filteringData = this.data;
+        let filteredData = this.data;
 
-
-        if (this.filter === "active") {
-            filteringData = this.data.filter(todo => !todo.isCompleted)
-        } else if(this.filter === "completed") {
-            filteringData = this.data.filter(todo => todo.isCompleted)
+        if (this.filter !== "all") {
+            filteredData = this.data.filter(todo => this.filter === "active"
+                ? !todo.isCompleted
+                : todo.isCompleted);
         }
 
-        this.todoList.setState(filteringData);
-        this.todoCount.setState(filteringData.length);
+        this.todoList.setState(filteredData);
+        this.todoCount.setState(filteredData.length);
         saveTodos(this.data);
         this.render();
     };
