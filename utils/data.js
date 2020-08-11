@@ -4,6 +4,7 @@ export const todoListId = "todo-list";
 export const todoInputId = "new-todo-title";
 export const todoCountId = "todo-count";
 export const todoFilterId = "filters";
+export const TODOS = "todoList";
 export const goalList = [
   {
     id: `${createUniqueID()}0`,

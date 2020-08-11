@@ -5,7 +5,7 @@ import {
   todoFilterId,
   goalList,
 } from "../utils/data.js";
-import { createUniqueID } from "../utils/util.js";
+import { createUniqueID, getTodosFromLS, setTodosLS } from "../utils/util.js";
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
 import TodoCount from "./TodoCount.js";
@@ -14,15 +14,15 @@ import TodoFilter from "./TodoFilter.js";
 export default function App() {
   this.init = () => {
     this.state = {
-      todoList: goalList,
-      todoCount: goalList.length,
+      todoList: getTodosFromLS(),
+      todoCount: getTodosFromLS().length,
     };
     this.todoInput = new TodoInput({
       elementId: todoInputId,
       addTodos: this.addTodo,
     });
     this.todoList = new TodoList({
-      todoList: goalList,
+      todoList: this.state.todoList,
       elementId: todoListId,
       deleteTodo: this.deleteTodo,
       toggleTodo: this.toggleTodo,
@@ -90,6 +90,7 @@ export default function App() {
   this.setState = (todoList) => {
     this.state.todoList = todoList;
     this.state.todoCount = this.state.todoList.length;
+    setTodosLS(todoList);
     this.render();
   };
   this.render = (
