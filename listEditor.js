@@ -4,7 +4,7 @@ class listEditor {
         this.todoList = document.createElement("ul");
         this.todoList.id = 'todo-list';
         this.todoList.className = 'todo-list';
-        document.querySelector(".todoapp").appendChild(this.todoList);
+        document.querySelector(".new-todo").after(this.todoList);
 
         this.allList = [];
         this.currentList = this.allList;
