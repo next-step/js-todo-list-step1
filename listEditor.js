@@ -1,6 +1,6 @@
 class listEditor {
    
-    constructor({addList, setState, render}){
+    constructor({addList, setState}){
         this.todoList = document.createElement("ul");
         this.todoList.id = 'todo-list';
         this.todoList.className = 'todo-list';
