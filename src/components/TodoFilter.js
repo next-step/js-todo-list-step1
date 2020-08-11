@@ -11,7 +11,7 @@ function convertClassNameToFilterType(className) {
     case "completed":
       return COMPLETED;
     default:
-      throw new Error("Unhandled Case");
+      throw ALL;
   }
 }
 
