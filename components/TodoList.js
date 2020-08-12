@@ -1,3 +1,5 @@
+import { COMPLETED, TOGGLE, EDIT, EDITING, ESC, ENTER } from "../utils/data.js";
+
 export default function TodoList({
   todoList,
   elementId,
@@ -20,15 +22,15 @@ export default function TodoList({
         ${this.todoList
           .map(
             ({ content, isCompleted, id }) => `
-              <li data-id=${id} class=${isCompleted ? "completed" : ""}>
+              <li data-id=${id} class=${isCompleted ? COMPLETED : ""}>
                   <div class="view">
-                      <input class="toggle" type="checkbox" ${
-                        isCompleted ? "checked" : ""
-                      } />
+                      <input class=${TOGGLE} type="checkbox" ${
+              isCompleted ? "checked" : ""
+            } />
                       <label class="label">${content}</label>
                       <button class="destroy"></button>
                   </div>
-                  <input class="edit" value="${content}" />
+                  <input class=${EDIT} value="${content}" />
               </li>
             `
           )
@@ -42,7 +44,7 @@ export default function TodoList({
   this.clickHandler = (evt) => {
     if (
       evt.target.tagName === "INPUT" &&
-      evt.target.classList.contains("toggle")
+      evt.target.classList.contains(TOGGLE)
     ) {
       this.toggleTodo({ id: evt.target.parentNode.parentNode.dataset.id });
     }
@@ -52,18 +54,18 @@ export default function TodoList({
   };
   this.dblClickHandler = (evt) => {
     if (evt.target.tagName === "LABEL") {
-      evt.target.parentNode.parentNode.classList.toggle("editing");
+      evt.target.parentNode.parentNode.classList.toggle(EDITING);
       evt.target.parentNode.parentNode.childNodes[3].focus();
     }
   };
   this.keydownHandler = (evt) => {
     if (
       evt.target.tagName === "INPUT" &&
-      evt.target.classList.contains("edit") &&
-      evt.key === "Escape"
+      evt.target.classList.contains(EDIT) &&
+      evt.key === ESC
     ) {
-      evt.target.parentNode.classList.toggle("editing");
-    } else if (evt.key === "Enter") {
+      evt.target.parentNode.classList.toggle(EDITING);
+    } else if (evt.key === ENTER) {
       this.editTodo({
         content: evt.target.value,
         id: evt.target.parentNode.dataset.id,

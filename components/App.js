@@ -1,9 +1,10 @@
 import {
-  todoListId,
-  todoInputId,
-  todoCountId,
-  todoFilterId,
-  goalList,
+  TODO_LIST_ID,
+  TODO_INPUT_ID,
+  TODO_COUNT_ID,
+  TODO_FILTER_ID,
+  ALL,
+  COMPLETED,
 } from "../utils/data.js";
 import { createUniqueID, getTodosFromLS, setTodosLS } from "../utils/util.js";
 import TodoList from "./TodoList.js";
@@ -16,41 +17,45 @@ export default function App() {
     this.state = {
       todoList: getTodosFromLS(),
       todoCount: getTodosFromLS().length,
+      todoFilter: ALL,
     };
     this.todoInput = new TodoInput({
-      elementId: todoInputId,
+      elementId: TODO_INPUT_ID,
       addTodos: this.addTodo,
     });
     this.todoList = new TodoList({
       todoList: this.state.todoList,
-      elementId: todoListId,
+      elementId: TODO_LIST_ID,
       deleteTodo: this.deleteTodo,
       toggleTodo: this.toggleTodo,
       editTodo: this.editTodo,
     });
     this.todoCount = new TodoCount({
-      elementId: todoCountId,
+      elementId: TODO_COUNT_ID,
       todoCount: this.state.todoCount,
     });
     this.todoFilter = new TodoFilter({
-      elementId: todoFilterId,
+      elementId: TODO_FILTER_ID,
+      filterType: this.state.todoFilter,
       filterTodo: this.filterTodo,
     });
   };
   this.filterTodo = ({ type }) => {
-    if (type === "all") {
+    if (type === ALL) {
       this.render();
-    } else if (type === "completed") {
+    } else if (type === COMPLETED) {
       this.render({
         todoList: this.state.todoList.filter((todo) => todo.isCompleted),
         todoCount: this.state.todoList.filter((todo) => todo.isCompleted)
           .length,
+        todoFilter: type,
       });
     } else {
       this.render({
         todoList: this.state.todoList.filter((todo) => !todo.isCompleted),
         todoCount: this.state.todoList.filter((todo) => !todo.isCompleted)
           .length,
+        todoFilter: type,
       });
     }
   };
@@ -94,13 +99,15 @@ export default function App() {
     this.render();
   };
   this.render = (
-    { todoList: todoList, todoCount: todoCount } = {
+    { todoList: todoList, todoCount: todoCount, todoFilter: todoFilter } = {
       todoList: this.state.todoList,
       todoCount: this.state.todoCount,
+      todoFilter: this.state.todoFilter,
     }
   ) => {
     this.todoList.setState(todoList);
     this.todoCount.setState(todoCount);
+    this.todoFilter.setState(todoFilter);
   };
   try {
     if (!(this instanceof App)) {

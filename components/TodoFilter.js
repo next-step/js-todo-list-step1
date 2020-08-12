@@ -1,45 +1,62 @@
-export default function TodoFilter({ elementId, filterTodo }) {
+import { ALL, COMPLETED, ACTIVE, SELECTED } from "../utils/data.js";
+
+export default function TodoFilter({ elementId, filterType, filterTodo }) {
   this.init = () => {
     if (!(this instanceof TodoFilter)) {
       throw new Error(`Invalid function call ${this}`);
     }
+    this.state = {
+      filterType: filterType,
+    };
     this.$todoFilter = document.querySelector(`.${elementId}`);
     this.filterTodo = filterTodo;
   };
-  this.switchFilter = (filter) => {
-    if (filter === "#active") {
+  this.switchFilter = (type) => {
+    if (type === `#${ACTIVE}`) {
       this.filterTodo({
-        type: "active",
+        type: ACTIVE,
       });
-    } else if (filter === "#completed") {
+    } else if (type === `#${COMPLETED}`) {
       this.filterTodo({
-        type: "completed",
+        type: COMPLETED,
       });
     } else {
       this.filterTodo({
-        type: "all",
+        type: ALL,
       });
     }
   };
+  this.render = () => {
+    [...this.$todoFilter.childNodes].forEach((el) => {
+      if (
+        el.tagName === "LI" &&
+        !el.childNodes[1].classList.contains(this.state.filterType)
+      ) {
+        el.childNodes[1].classList.remove(SELECTED);
+      } else if (
+        el.tagName === "LI" &&
+        el.childNodes[1].classList.contains(this.state.filterType) &&
+        !el.childNodes[1].classList.contains(SELECTED)
+      ) {
+        el.childNodes[1].classList.add(SELECTED);
+      }
+    });
+  };
   this.clickHandler = (evt) => {
     if (
-      evt.target.tagName !== "LI" &&
-      evt.target.tagName !== "UL" &&
-      !evt.target.classList.contains("selected")
+      evt.target.tagName === "A" &&
+      !evt.target.classList.contains(SELECTED)
     ) {
-      [...evt.target.parentNode.parentNode.childNodes].forEach((el) => {
-        if (el.tagName === "LI") {
-          el.childNodes[1].classList.remove("selected");
-        }
-      });
-      evt.target.classList.add("selected");
       this.switchFilter(evt.target.hash);
     }
   };
   this.bindEventListener = () => {
     this.$todoFilter.addEventListener("click", this.clickHandler);
   };
+  this.setState = (type) => {
+    this.state.filterType = type;
+    this.render();
+  };
   this.init();
   this.bindEventListener();
-  this.setCurrFilter();
 }
