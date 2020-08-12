@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <div class="todoapp">
+  <div class="todoapp">
       <h1>TODOS</h1>
       <input
         id="new-todo-title"
@@ -34,5 +34,121 @@
         </div>
       </main>
     </div>
+  <script>
+    const $todoList = document.querySelector("#todo-list");
+    const $todoInput = document.querySelector("#new-todo-title");
+    const $countContainer = document.querySelector(".count-container");
+    var data = [];
+
+    // input
+    function todoInput(onAdd) {
+      $todoInput.addEventListener("keyup", event => {
+        if (event.key === "Enter" && $todoInput.value.trim() !== "") {
+          onAdd($todoInput.value);
+          $todoInput.value = "";
+        }
+      })
+    }
+
+    function addItem(title) {
+      data.push({
+        title: title,
+        complete:false,
+      });
+    }
+
+    function delItem(index) {
+      data.splice(index, 1);
+    }
+
+    // list
+    function renderTodoCounter(dataCount) {
+      document.querySelector(".todo-count strong").innerText = dataCount;
+    }
+
+    function makeListToDom(data) {
+      const dom = data.map((value, index) => {
+
+        let tagComplete = value.complete == true ? {checkbox : "checked", li : "completed"} : {checkbox : "", li : ""};
+        return `
+        <li data-index=${index} class=${tagComplete.li}>
+           <div class="view">
+           <input class="toggle" type="checkbox" ${tagComplete.checkbox}>
+           <label class="label">${value.title}</label>
+           <button class="destroy"></button>
+           </div>
+           <input class="edit" value="새로운 타이틀">
+        </li>
+        `
+      })
+      return dom;
+    }
+
+    function renderList(dom){
+      const d = dom.join('');
+      $todoList.innerHTML = d;
+    }
+
+    function render(data) {
+      const itemListDom = makeListToDom(data);
+
+      renderList(itemListDom);
+      renderTodoCounter(data.length);
+    }
+
+    this.bindEvent = () => {
+      $todoList.addEventListener("click", evt => {
+        let index = evt.target.closest("li").dataset.index;
+        if (evt.target.nodeName == "INPUT" && evt.target.type === "checkbox") {
+          let liClass = evt.target.closest("li").classList[0];
+          if (liClass == "completed") {
+            evt.target.closest("li").classList.remove("completed");
+            evt.target.classList.remove("checked");
+          } else {
+            evt.target.closest("li").classList.add("completed");
+            evt.target.classList.add("checked");
+
+          }
+          this.data[index].complete = !this.data[index].complete;
+        } else if (evt.target.nodeName == "BUTTON") {
+          delItem(index);
+          render(this.data);
+        }
+      })
+
+      $todoList.addEventListener("dblclick", evt => {
+        evt.target.closest("li").classList.add("editing");
+      })
+
+      $todoList.addEventListener("keyup", evt => {
+        if (evt.key === "Escape") {
+          evt.target.closest("li").classList.remove("editing");
+        }
+      })
+    }
+    //
+
+    //countContainer
+    $countContainer.addEventListener("click", evt => {
+      var filterClass = evt.target.classList[0];
+      let filterData = data;
+      switch (filterClass) {
+        case "active" : filterData = data.filter(value => value.complete == false); break;
+        case "completed" : filterData = data.filter(value => value.complete == true); break;
+      }
+      render(filterData);
+
+    })
+
+    function todoApp() {
+      todoInput((text) => {
+        addItem(text)
+        render(data);
+      });
+
+      bindEvent();
+    }
+    new todoApp();
+  </script>
   </body>
 </html>
