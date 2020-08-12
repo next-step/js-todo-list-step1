@@ -2,6 +2,7 @@ function TodoList() {
   this.data = [];
   const $TODO_LIST = document.getElementById('todo-list');
   const $NEW_TODO_TITLE = document.getElementById('new-todo-title');
+  const $TODO_COUNT = document.querySelector('.todo-count > strong');
 
   // list click 이벤트 리스너 등록
   $TODO_LIST.addEventListener('click', (e) => {
@@ -124,6 +125,7 @@ function TodoList() {
 
   this.render = function () {
     $TODO_LIST.innerHTML = this.createTodoHTMLString();
+    $TODO_COUNT.innerHTML = this.data.length.toString();
   };
 
   this.render();
