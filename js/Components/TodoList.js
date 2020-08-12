@@ -1,11 +1,15 @@
-import { isValidTodoItems } from "../utils.js";
+import { isValidTodoItems, isFunction } from "../utils.js";
 
 function TodoList($target, todoItems, eventHandler) {
   if (!this instanceof TodoList) {
     throw new Error("Create instance with 'new'");
   }
 
-  if (!isValidTodoItems(todoItems)) {
+  if (
+    !isValidTodoItems(todoItems) ||
+    !isFunction(eventHandler.toggleTodoById) ||
+    !isFunction(eventHandler.deleteTodoById)
+  ) {
     throw new Error("wrong data");
   }
 
@@ -23,15 +27,41 @@ function TodoList($target, todoItems, eventHandler) {
     this.render();
   };
 
+  this.bindEvent = () => {
+    $target.addEventListener("change", (event) => {
+      if (event.target.nodeName === "INPUT") {
+        const id = event.target.closest("li").id;
+        eventHandler.toggleTodoById(id);
+      }
+    });
+
+    $target.addEventListener("click", (event) => {
+      if (event.target.nodeName === "BUTTON") {
+        const id = event.target.closest("li").id;
+        eventHandler.deleteTodoById(id);
+      }
+    });
+  };
+
   this.render = () => {
     const todoItemsHTML = this.todoItems
-      .map(({ content, isCompleted }) =>
+      .map(({ content, isCompleted, _id }) =>
         isCompleted
-          ? `<li class="completed"> 
-                <label>${content}</label> 
+          ? `<li id="${_id}" class="completed"> 
+                <div class="view">
+                  <input class="toggle" type="checkbox" checked/>
+                  <label>${content}</label> 
+                  <button class="destroy"></button>
+                </div>
+                <input class="edit" value="${content}" />
              </li>`
-          : `<li>
-                <label>${content}</label>
+          : `<li id="${_id}"}>
+                <div class="view">
+                  <input class="toggle" type="checkbox"/>
+                  <label>${content}</label>
+                  <button class="destroy"></button>
+                </div>
+                <input class="edit" value="${content}" />
             </li>`
       )
       .join(" ");
@@ -44,6 +74,7 @@ function TodoList($target, todoItems, eventHandler) {
   };
 
   this.render();
+  this.bindEvent();
 }
 
 export default TodoList;

@@ -1,21 +1,24 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
-import { isValidTodoItems } from "../utils.js";
+import { isValidTodoItems, createUniqueId } from "../utils.js";
 
 function App() {
   const $target = document.querySelector("#todoapp");
   this.todoItems = [
     {
-      content: "JS study",
-      isCompleted: false,
-    },
-    {
       content: "Hello",
       isCompleted: false,
+      _id: createUniqueId(),
     },
     {
       content: "World",
+      isCompleted: false,
+      _id: createUniqueId(),
+    },
+    {
+      content: "JS",
       isCompleted: true,
+      _id: createUniqueId(),
     },
   ];
 
@@ -28,8 +31,31 @@ function App() {
   };
 
   this.addTodo = (contentText) => {
-    console.log("addTodo...", contentText);
-    this.todoItems.push({ content: contentText, isCompleted: false });
+    this.todoItems.push({
+      _id: createUniqueId(),
+      content: contentText,
+      isCompleted: false,
+    });
+    this.todoList.setState(this.todoItems);
+  };
+
+  this.deleteTodoById = (id) => {
+    const todoItemIdx = this.todoItems.findIndex(({ _id }) => _id === id);
+    if (todoItemIdx === -1) {
+      console.log(`Can't find todoItem with id : ${id}`);
+      return;
+    }
+    this.todoItems.splice(todoItemIdx, 1);
+    this.todoList.setState(this.todoItems);
+  };
+
+  this.toggleTodoById = (id) => {
+    const todoItem = this.todoItems.find(({ _id }) => _id === id);
+    if (!todoItem) {
+      console.log(`Can't find todoItem with id : ${id}`);
+      return;
+    }
+    todoItem.isCompleted = !todoItem.isCompleted;
     this.todoList.setState(this.todoItems);
   };
 
@@ -51,7 +77,10 @@ function App() {
     this.todoList = new TodoList(
       document.getElementById("todo-list"),
       this.todoItems,
-      {}
+      {
+        deleteTodoById: (id) => this.deleteTodoById(id),
+        toggleTodoById: (id) => this.toggleTodoById(id),
+      }
     );
   };
 

@@ -10,6 +10,8 @@ export function isValidTodoItems(todoItems) {
 export function isValidTodoItem(todoItem) {
   if (
     todoItem &&
+    "_id" in todoItem &&
+    typeof todoItem._id === "string" &&
     "content" in todoItem &&
     typeof todoItem.content === "string" &&
     "isCompleted" in todoItem &&
@@ -18,4 +20,8 @@ export function isValidTodoItem(todoItem) {
     return true;
 
   return false;
+}
+
+export function createUniqueId() {
+  return Date.now().valueOf().toString() + Math.floor(Math.random() * 1000);
 }
