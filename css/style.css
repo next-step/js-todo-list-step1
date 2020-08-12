@@ -244,6 +244,13 @@ main {
     text-align: center;
     border-top: 1px solid #e6e6e6;
 }
+.count-list-container{
+    color: #777;
+    padding: 10px 15px;
+    height: auto;
+    text-align: center;
+    border-top: 1px solid #e6e6e6;
+}
 
 .count-container:before {
     content: '';
@@ -331,4 +338,9 @@ main {
 
 .info a:hover {
     text-decoration: underline;
+}
+.delete-btn {
+    width: 50px;
+    margin-left: 20px;
+    cursor: pointer;
 }
