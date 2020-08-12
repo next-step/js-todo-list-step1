@@ -5,13 +5,17 @@ function TodoList($target, todoItems, eventHandler) {
     throw new Error("Create instance with 'new'");
   }
 
+  if (!isValidTodoItems(todoItems)) {
+    throw new Error("wrong data");
+  }
+
   if (
-    !isValidTodoItems(todoItems) ||
+    !eventHandler ||
     !isFunction(eventHandler.toggleTodoById) ||
     !isFunction(eventHandler.deleteTodoById) ||
     !isFunction(eventHandler.editTodoById)
   ) {
-    throw new Error("wrong data");
+    throw new Error("Wrong eventHandler");
   }
 
   this.todoItems = todoItems;

@@ -1,6 +1,7 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 import { isValidTodoItems, createUniqueId } from "../utils.js";
+import TodoCount from "./TodoCount.js";
 
 function App() {
   const $target = document.querySelector("#todoapp");
@@ -37,6 +38,7 @@ function App() {
       isCompleted: false,
     });
     this.todoList.setState(this.todoItems);
+    this.todoCount.setState(this.todoItems.length);
   };
 
   this.deleteTodoById = (id) => {
@@ -47,6 +49,7 @@ function App() {
     }
     this.todoItems.splice(todoItemIdx, 1);
     this.todoList.setState(this.todoItems);
+    this.todoCount.setState(this.todoItems.length);
   };
 
   this.toggleTodoById = (id) => {
@@ -77,6 +80,9 @@ function App() {
       <div id="todo-input"></div>
       <main>
         <div id="todo-list"></div>
+        <div class="count-container">
+          <div id="todo-count"></div>
+        </div>
       </main>
     `;
   };
@@ -94,6 +100,10 @@ function App() {
         toggleTodoById: (id) => this.toggleTodoById(id),
         editTodoById: (id, content) => this.editTodoById(id, content),
       }
+    );
+    this.todoCount = new TodoCount(
+      document.getElementById("todo-count"),
+      this.todoItems.length
     );
   };
 
