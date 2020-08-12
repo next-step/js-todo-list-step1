@@ -12,6 +12,10 @@ function TodoList () {
     if ($TARGET.classList.contains('toggle')) {
       this.setIsCompletedTodo($CLICKED_ITEM_ID);
     }
+    // 삭제 버튼 클릭할 경우
+    else if ($TARGET.classList.contains('destroy')) {
+      this.deleteItem($CLICKED_ITEM_ID);
+    }
   });
 
   // input keyup 이벤트 리스너 등록
@@ -27,6 +31,13 @@ function TodoList () {
     }
   });
 
+  // 새 할 일 생성
+  this.createTodo = function (newTodo) {
+    this.data.push(newTodo);
+    this.initInput();
+    this.render();
+  };
+
   // 할 일 완료/취소 처리
   this.setIsCompletedTodo = function (clickedItemId) {
     this.data.forEach(todoItem => {
@@ -37,10 +48,13 @@ function TodoList () {
     this.render();
   };
 
-  // 새 할 일 생성
-  this.createTodo = function (newTodo) {
-    this.data.push(newTodo);
-    this.initInput();
+  // 할 일 삭제
+  this.deleteItem = function (clickedItemId) {
+    this.data.forEach((todoItem, index) => {
+      if (todoItem.id === clickedItemId) {
+        this.data.splice(index, 1);
+      }
+    });
     this.render();
   };
 
