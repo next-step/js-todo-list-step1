@@ -1,9 +1,16 @@
 const toDoForm = document.querySelector(".toDoForm");
 const toDoInput = document.querySelector(".new-todo");
 const toDoList = document.querySelector(".todo-list");
+let count = document.querySelector("strong");
 
 let toDos = [];
 let toDoId = 0;
+
+// toDoList.addEventListener("dblclick",function(event){
+//     //li tag에 editing class추가
+//     //ESC키를 누르면 다시 view로 복귀
+//     const
+// })
 
 function doneToDo(event) {
   const btn = event.target;
@@ -11,16 +18,20 @@ function doneToDo(event) {
   const list = selectli.parentNode;
   list.classList.add("completed");
   btn.setAttribute("checked", true);
+  count.innerText = toDos.length;
 }
+
 function deleteToDo(event) {
   const btn = event.target;
   const selectli = btn.parentNode;
   const list = selectli.parentNode;
-  list.removeChild(selectli);
+  const ul = document.getElementById("todo-list");
+  ul.removeChild(list);
   const cleanToDos = toDos.filter(function (toDo) {
     return toDo.id !== parseInt(list.id);
   });
   toDos = cleanToDos;
+  count.innerText = toDos.length;
 }
 
 function AddToDo(inputVal) {
@@ -44,9 +55,11 @@ function AddToDo(inputVal) {
   };
   toDoInput.value = "";
   toDos.push(toDoObj);
+  count.innerText = toDos.length;
 
   const toggleBtn = document.querySelector(".toggle");
   toggleBtn.addEventListener("click", doneToDo);
+
   const destroyBtn = document.querySelector(".destroy");
   destroyBtn.addEventListener("click", deleteToDo);
 }
