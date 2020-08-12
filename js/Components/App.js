@@ -2,6 +2,7 @@ import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 import { isValidTodoItems, createUniqueId } from "../utils.js";
 import TodoCount from "./TodoCount.js";
+import TodoFilter from "./Todofilter.js";
 
 function App() {
   const $target = document.querySelector("#todoapp");
@@ -22,6 +23,8 @@ function App() {
       _id: createUniqueId(),
     },
   ];
+
+  this.filterType = "all";
 
   this.setState = (newTodoItems) => {
     if (!isValidTodoItems(newTodoItems)) {
@@ -82,6 +85,7 @@ function App() {
         <div id="todo-list"></div>
         <div class="count-container">
           <div id="todo-count"></div>
+          <div id="todo-filter"></div>
         </div>
       </main>
     `;
@@ -104,6 +108,10 @@ function App() {
     this.todoCount = new TodoCount(
       document.getElementById("todo-count"),
       this.todoItems.length
+    );
+    this.todoFilter = new TodoFilter(
+      document.getElementById("todo-filter"),
+      this.filterType
     );
   };
 
