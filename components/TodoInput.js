@@ -1,4 +1,4 @@
-import {MESSAGE} from "../utils/constant.js";
+import {MESSAGE, KEYBOARD, LOCAL_VALUE, VALUE} from "../utils/constant.js";
 
 function TodoInput({$target, addTodoItem}) {
     this.init = () => {
@@ -9,11 +9,11 @@ function TodoInput({$target, addTodoItem}) {
     };
 
     this.addEvent = () => {
-        this.$target.addEventListener('keydown', this.createNewTodo);
+        this.$target.addEventListener(KEYBOARD.KEYDOWN_EVENT, this.createNewTodo);
     };
 
     this.createNewTodo = (e) => {
-        if (e.key !== "Enter") {
+        if (e.key !== KEYBOARD.ENTER) {
             return;
         }
 
@@ -23,15 +23,24 @@ function TodoInput({$target, addTodoItem}) {
             alert(MESSAGE.NOT_ACCESS_EMPTY_TITLE);
             return;
         }
-        let newTodo = {
-            // id: todo: id를 count하면서 저장해주는.. 방법 찾기
+
+        const id = getId();
+        const newTodo = {
+            id: JSON.parse(id),
             title: newTitle,
             isCompleted: false
         }
 
         addTodoItem(newTodo);
-        e.target.value = "";
+        e.target.value = VALUE.CLEAR;
     };
+
+    function getId() {
+        const id = JSON.parse(localStorage.getItem(LOCAL_VALUE.CURRENT_ID) || 1);
+        const nextId = parseInt(id) + 1;
+        localStorage.setItem(LOCAL_VALUE.CURRENT_ID, nextId.toString());
+        return JSON.parse(id);
+    }
 
     this.render = () => {
         this.$target.innerHTML = `<input

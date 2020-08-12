@@ -1,6 +1,8 @@
+import {LOCAL_VALUE, TARGET_COMPONENT} from "../utils/constant.js";
+
 import TodoHeader from "./TodoHeader.js";
 import TodoInput from "./TodoInput.js";
-
+import TodoList from "./TodoList.js";
 
 class App {
     constructor() {
@@ -8,13 +10,18 @@ class App {
             this.todos = this.getTodos();
 
             this.todoHeader = new TodoHeader({
-                    $target: document.querySelector("#todo-app-header")
+                    $target: document.querySelector(TARGET_COMPONENT.TODO_HEADER)
                 }
             );
 
             this.todoInput = new TodoInput({
-                $target: document.querySelector("#todo-input"),
+                $target: document.querySelector(TARGET_COMPONENT.TODO_INPUT),
                 addTodoItem: this.addTodoItem.bind(this)
+            });
+
+            this.todoList = new TodoList({
+                $target: document.querySelector(TARGET_COMPONENT.TODO_LIST),
+                todos: this.todos,
             });
 
         } catch (e) {
@@ -23,27 +30,23 @@ class App {
     }
 
     getTodos() {
-        const todos = localStorage.getItem("todos");
+        const todos = localStorage.getItem(LOCAL_VALUE.TODOS);
         return JSON.parse(todos) || [];
     }
 
     setState(todos) {
         this.todos = todos;
         this.saveTodos(todos);
-        this.render();
+        this.todoList.setState(todos);
     }
 
     saveTodos(todos) {
-        localStorage.setItem("todos", JSON.stringify(todos));
+        localStorage.setItem(LOCAL_VALUE.TODOS, JSON.stringify(todos));
     }
 
     addTodoItem(todo) {
         this.setState([...this.todos, todo]);
     };
-
-    render() {
-        // todoList 조회 (선택 혹은 default 조회 : 여기는 동일하게 설정하고 추후 선택에 따라 선택적으로 값을 보여주면 될 듯!)
-    }
 }
 
 export default App;
