@@ -46,16 +46,16 @@ export default function TodoList({
       evt.target.tagName === "INPUT" &&
       evt.target.classList.contains(TOGGLE)
     ) {
-      this.toggleTodo({ id: evt.target.parentNode.parentNode.dataset.id });
+      this.toggleTodo({ id: evt.target.closest("li").dataset.id });
     }
     if (evt.target.tagName === "BUTTON") {
-      this.deleteTodo({ id: evt.target.parentNode.parentNode.dataset.id });
+      this.deleteTodo({ id: evt.target.closest("li").dataset.id });
     }
   };
   this.dblClickHandler = (evt) => {
     if (evt.target.tagName === "LABEL") {
-      evt.target.parentNode.parentNode.classList.toggle(EDITING);
-      evt.target.parentNode.parentNode.childNodes[3].focus();
+      evt.target.closest("li").classList.toggle(EDITING);
+      evt.target.closest("li").childNodes[3].focus();
     }
   };
   this.keydownHandler = (evt) => {
