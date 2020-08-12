@@ -59,6 +59,18 @@ function App() {
     this.todoList.setState(this.todoItems);
   };
 
+  this.editTodoById = (id, content) => {
+    const todoItem = this.todoItems.find(({ _id }) => _id === id);
+    if (!todoItem) {
+      console.log(`Can't find todoItem with id : ${id}`);
+      return;
+    }
+    if (content !== "") {
+      todoItem.content = content;
+    }
+    this.todoList.setState(this.todoItems);
+  };
+
   this.render = () => {
     $target.innerHTML = `
       <h1>TODOS</h1>
@@ -80,6 +92,7 @@ function App() {
       {
         deleteTodoById: (id) => this.deleteTodoById(id),
         toggleTodoById: (id) => this.toggleTodoById(id),
+        editTodoById: (id, content) => this.editTodoById(id, content),
       }
     );
   };

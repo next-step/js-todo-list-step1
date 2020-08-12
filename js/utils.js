@@ -25,3 +25,5 @@ export function isValidTodoItem(todoItem) {
 export function createUniqueId() {
   return Date.now().valueOf().toString() + Math.floor(Math.random() * 1000);
 }
+
+export const ESC_KEY = "Escape";

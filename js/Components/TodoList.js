@@ -1,4 +1,4 @@
-import { isValidTodoItems, isFunction } from "../utils.js";
+import { isValidTodoItems, isFunction, ESC_KEY } from "../utils.js";
 
 function TodoList($target, todoItems, eventHandler) {
   if (!this instanceof TodoList) {
@@ -8,7 +8,8 @@ function TodoList($target, todoItems, eventHandler) {
   if (
     !isValidTodoItems(todoItems) ||
     !isFunction(eventHandler.toggleTodoById) ||
-    !isFunction(eventHandler.deleteTodoById)
+    !isFunction(eventHandler.deleteTodoById) ||
+    !isFunction(eventHandler.editTodoById)
   ) {
     throw new Error("wrong data");
   }
@@ -29,9 +30,15 @@ function TodoList($target, todoItems, eventHandler) {
 
   this.bindEvent = () => {
     $target.addEventListener("change", (event) => {
-      if (event.target.nodeName === "INPUT") {
+      if (event.target.className === "toggle") {
         const id = event.target.closest("li").id;
         eventHandler.toggleTodoById(id);
+      }
+
+      if (event.target.className === "edit") {
+        const id = event.target.closest("li").id;
+        const content = event.target.value;
+        eventHandler.editTodoById(id, content);
       }
     });
 
@@ -40,6 +47,37 @@ function TodoList($target, todoItems, eventHandler) {
         const id = event.target.closest("li").id;
         eventHandler.deleteTodoById(id);
       }
+    });
+
+    $target.addEventListener("keydown", (event) => {
+      if (event.key === ESC_KEY) {
+        this.stopEditing();
+      }
+    });
+
+    $target.addEventListener("dblclick", (event) => {
+      const itemElem = event.target.closest("li");
+      if (!itemElem) {
+        return;
+      }
+      this.stopEditing();
+      itemElem.classList.add("editing");
+      const editElem = itemElem.querySelector(".edit");
+      editElem.focus();
+      editElem.selectionStart = editElem.selectionEnd = editElem.value.length;
+    });
+  };
+
+  this.stopEditing = () => {
+    const editingItems = $target.querySelectorAll(".editing");
+    if (!editingItems) {
+      return;
+    }
+    editingItems.forEach((itemElem) => {
+      const prevContent = itemElem.querySelector("label").innerText;
+      const editElem = itemElem.querySelector(".edit");
+      editElem.value = prevContent;
+      itemElem.classList.remove("editing");
     });
   };
 
