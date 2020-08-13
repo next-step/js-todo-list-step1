@@ -1,23 +1,40 @@
-function TodoList({$target, todos, removeTodo}) {
+function TodoList({$target, todos, removeTodo, toggleTodo}) {
     this.init = () => {
         this.$target = $target;
         this.todos = todos;
 
         this.render();
-        this.addEvent();
+        this.addEvents();
     }
 
-    this.addEvent = () => {
-        this.$target.addEventListener("click", this.removeTodoItem);
+    this.addEvents = () => {
+        this.$target.addEventListener("click", this.clickEvent);
     }
 
-    this.removeTodoItem = $event => {
-        if ($event.target.className !== "destroy") {
+    this.clickEvent = $event => {
+        const clickedClassName = $event.target.className;
+        if (clickedClassName !== "destroy" && clickedClassName !== "toggle") {
             return;
         }
+        const clickedTodoId = parseInt($event.target.offsetParent.id);
 
-        const todoListItem = $event.target.offsetParent;
-        removeTodo(todoListItem.id);
+        if (clickedClassName === "destroy") {
+            this.removeTodoItem(clickedTodoId);
+        }
+
+        if (clickedClassName === "toggle") {
+            this.toggleTodoItem(clickedTodoId);
+        }
+
+
+    }
+
+    this.toggleTodoItem = todoId => {
+        toggleTodo(todoId);
+    }
+
+    this.removeTodoItem = todoId => {
+        removeTodo(todoId);
     }
 
     this.render = () => {
@@ -34,7 +51,7 @@ function TodoList({$target, todos, removeTodo}) {
     }
 
     this.todoListTemplate = (todo) => {
-        return `<li id="${todo.id}">
+        return `<li id="${todo.id}" class="${todo.isCompleted ? "completed" : ""}">
       <div class="view">
         <input class="toggle" type="checkbox" ${todo.isCompleted ? "checked" : ""}/>
         <label class="label">${todo.title}</label>

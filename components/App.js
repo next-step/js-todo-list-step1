@@ -22,7 +22,8 @@ class App {
             this.todoList = new TodoList({
                 $target: document.querySelector(TARGET_COMPONENT.TODO_LIST),
                 todos: this.todos,
-                removeTodo: this.removeTodo.bind(this)
+                removeTodo: this.removeTodo.bind(this),
+                toggleTodo: this.toggleTodo.bind(this),
             });
 
         } catch (e) {
@@ -30,8 +31,25 @@ class App {
         }
     }
 
+    toggleTodo(targetId) {
+        console.table(this.todos);
+
+        const changedTodos = this.todos.map(todo => {
+            if (todo.id !== targetId) {
+                return todo;
+            }
+
+            return {
+                ...todo,
+                isCompleted: !todo.isCompleted
+            };
+        });
+
+        this.setState(changedTodos);
+    }
+
     removeTodo(targetId) {
-        const removedTodos = this.todos.filter((todo) => JSON.stringify(todo.id) !== targetId);
+        const removedTodos = this.todos.filter((todo) => todo.id !== targetId);
 
         this.setState(removedTodos);
     }
