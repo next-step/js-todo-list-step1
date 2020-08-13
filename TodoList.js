@@ -7,39 +7,37 @@ function TodoList() {
     this.$todoList = document.createElement("ul");
     this.$todoList.id = 'todo-list';
     this.$todoList.className = 'todo-list';
+    
     document.querySelector(".new-todo").after(this.$todoList);
 
-    document.querySelector(".all-selected").addEventListener("click", () => {
-        this.setState("all");
-    });
-    document.querySelector(".active").addEventListener("click", () => {
-        thsi.setState("active");
-    });
-    document.querySelector(".completed").addEventListener("click", () => {
-        this.setState("completed");
-    });
+    this.addItem = newItem => {
+        this.todoItems.push(newItem);
+        this.setState(this.state);
+    };
 
-    this.setState = updatedTodoItems => {
+    this.setState = newState => {
+        this.state = newState;
+        let showItems = [];
         if(this.state === "all"){
-            this.todoItems = updatedTodoItems;
+            showItems = this.todoItems;
         }
         else if(this.state === "active"){
-            this.todoItems = [];
-            updatedTodoItems.forEach($item => {
+            showItems = [];
+            this.todoItems.forEach($item => {
                 if($item.querySelector(".toggle").checked === false){
-                    this.todoItems.push($item);
+                    showItems.push($item);
                 }
             });
         }
         else if(this.state === "completed"){
-            this.todoItems = [];
-            updatedTodoItems.forEach($item => {
+            showItems = [];
+            this.todoItems.forEach($item => {
                 if($item.querySelector(".toggle").checked === true){
-                    this.todoItems.push($item);
+                    showItems.push($item);
                 }
             });
         }
-        this.render(this.todoItems);
+        this.render(showItems);
     };
   
     this.render = items => {
@@ -50,16 +48,22 @@ function TodoList() {
 
         this.$todoList.addEventListener("click", e => {
             document.querySelectorAll(".toggle").forEach($item => {
-                if($item.checked === true){
-                    $item.parentNode.parentNode.classList.add("completed");
-                }
-                else{
-                    $item.parentNode.parentNode.classList.remove("completed");
+                if($item.contains(e.target)){
+                    if($item.checked === true){
+                        $item.parentNode.parentNode.classList.add("completed");
+                    }
+                    else{
+                        $item.parentNode.parentNode.classList.remove("completed");
+                    }
                 }
             });
+        });
+
+        this.$todoList.addEventListener("click", e => {
             document.querySelectorAll(".destroy").forEach($item => {
                 if($item.contains(e.target)){
-                    $item.parentNode.parentNode.remove();
+                    this.todoItems.splice(this.todoItems.indexOf($item.parentNode.parentNode), 1);
+                    this.setState(this.state);
                 }
             });
         });
