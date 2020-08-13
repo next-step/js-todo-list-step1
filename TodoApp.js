@@ -19,7 +19,7 @@ function TodoApp() {
 
     new TodoInput({
       onAdd: contents => {
-        const newTodoItem = new TodoItem(contents);
+        const newTodoItem = new TodoItem(contents, false);
         this.todoList.addItem(newTodoItem);
       }
     });

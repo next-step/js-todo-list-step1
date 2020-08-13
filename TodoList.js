@@ -4,10 +4,12 @@ function TodoList() {
     this.todoItems = [];
     this.state = "all";
 
+    this.todoStorage = new TodoStorage();
+    this.todoItems = this.todoStorage.init();
+
     this.$todoList = document.createElement("ul");
     this.$todoList.id = 'todo-list';
     this.$todoList.className = 'todo-list';
-    
     document.querySelector(".new-todo").after(this.$todoList);
 
     this.addItem = newItem => {
@@ -16,8 +18,12 @@ function TodoList() {
     };
 
     this.setState = newState => {
+        
+        this.todoStorage.update(this.todoItems);
+
         this.state = newState;
         let showItems = [];
+
         if(this.state === "all"){
             showItems = this.todoItems;
         }
@@ -41,9 +47,10 @@ function TodoList() {
     };
   
     this.render = items => {
+
         this.$todoList.innerHTML = ``;
         items.forEach($item => {
-            this.$todoList.appendChild($item);
+            this.$todoList.append($item);
         });
 
         this.$todoList.addEventListener("click", e => {
@@ -83,4 +90,6 @@ function TodoList() {
             `총 <strong>${document.querySelectorAll(".label").length}</strong> 개`;
         
     };
+
+    this.setState(this.state);
 }
