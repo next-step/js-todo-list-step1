@@ -22,11 +22,18 @@ class App {
             this.todoList = new TodoList({
                 $target: document.querySelector(TARGET_COMPONENT.TODO_LIST),
                 todos: this.todos,
+                removeTodo: this.removeTodo.bind(this)
             });
 
         } catch (e) {
             console.error(e.error);
         }
+    }
+
+    removeTodo(targetId) {
+        const removedTodos = this.todos.filter((todo) => JSON.stringify(todo.id) !== targetId);
+
+        this.setState(removedTodos);
     }
 
     getTodos() {
