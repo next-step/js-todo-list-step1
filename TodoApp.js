@@ -9,6 +9,7 @@ function TodoApp() {
       this.todoList.setState(this.todoItems);
     };
   
+    console.log("haha");
     new TodoInput({
       onAdd: contents => {
         const newTodoItem = new TodoItem(contents);

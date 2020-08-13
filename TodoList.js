@@ -48,29 +48,19 @@ function TodoList() {
             this.$todoList.appendChild($item);
         });
 
-        document.querySelectorAll(".toggle").forEach($item => {
-            $item.addEventListener("click", () => {
+        this.$todoList.addEventListener("click", e => {
+            document.querySelectorAll(".toggle").forEach($item => {
                 if($item.checked === true){
                     $item.parentNode.parentNode.classList.add("completed");
                 }
                 else{
                     $item.parentNode.parentNode.classList.remove("completed");
                 }
-            })
-        });
-
-        document.querySelectorAll(".destroy").forEach($item => {
-            $item.addEventListener("click", () => {
-                let pos = -1;
-                for(let i = 0; i < this.listEditor.allList.length; i++){
-                    if(this.listEditor.allList[i].querySelector(".label").innerText === $item.parentNode.querySelector(".label").innerText){
-                        pos = i; break;
-                    }
+            });
+            document.querySelectorAll(".destroy").forEach($item => {
+                if($item.contains(e.target)){
+                    $item.parentNode.parentNode.remove();
                 }
-                if(pos >= 0){
-                    this.todoItems.splice(pos, 1);
-                }
-                this.setState();
             });
         });
 
