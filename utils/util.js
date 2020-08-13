@@ -4,7 +4,7 @@ export function createUniqueID() {
   return Date.now();
 }
 
-export function getTodosFromLS() {
+export function getTodosFromLocalStorage() {
   try {
     const todos = localStorage.getItem(TODOS)
       ? JSON.parse(localStorage.getItem(TODOS))
@@ -13,6 +13,6 @@ export function getTodosFromLS() {
   } catch {}
 }
 
-export function setTodosLS(todoList) {
+export function setTodosLocalStorage(todoList) {
   localStorage.setItem(TODOS, JSON.stringify(todoList));
 }

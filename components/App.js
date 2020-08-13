@@ -6,7 +6,11 @@ import {
   ALL,
   COMPLETED,
 } from "../utils/data.js";
-import { createUniqueID, getTodosFromLS, setTodosLS } from "../utils/util.js";
+import {
+  createUniqueID,
+  getTodosFromLocalStorage,
+  setTodosLocalStorage,
+} from "../utils/util.js";
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
 import TodoCount from "./TodoCount.js";
@@ -15,8 +19,8 @@ import TodoFilter from "./TodoFilter.js";
 export default function App() {
   this.init = () => {
     this.state = {
-      todoList: getTodosFromLS(),
-      todoCount: getTodosFromLS().length,
+      todoList: getTodosFromLocalStorage(),
+      todoCount: getTodosFromLocalStorage().length,
       todoFilter: ALL,
     };
     this.todoInput = new TodoInput({
@@ -95,7 +99,7 @@ export default function App() {
   this.setState = (todoList) => {
     this.state.todoList = todoList;
     this.state.todoCount = this.state.todoList.length;
-    setTodosLS(todoList);
+    setTodosLocalStorage(todoList);
     this.render();
   };
   this.render = (

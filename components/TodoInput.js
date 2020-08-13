@@ -1,3 +1,5 @@
+import { ENTER, KEYDOWN } from "../utils/data";
+
 export default function TodoInput({ elementId, addTodos }) {
   this.init = () => {
     if (!(this instanceof TodoInput)) {
@@ -7,7 +9,7 @@ export default function TodoInput({ elementId, addTodos }) {
     this.addTodos = addTodos;
   };
   this.enterHandler = (evt) => {
-    if (evt.key === "Enter") {
+    if (evt.key === ENTER) {
       this.addTodos({
         content: evt.target.value,
       });
@@ -16,7 +18,7 @@ export default function TodoInput({ elementId, addTodos }) {
     }
   };
   this.bindEventListener = () => {
-    this.$todoInput.addEventListener("keydown", this.enterHandler);
+    this.$todoInput.addEventListener(KEYDOWN, this.enterHandler);
   };
   this.init();
   this.bindEventListener();
