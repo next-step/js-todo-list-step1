@@ -44,8 +44,9 @@ function App($target) {
       content: contentText,
       isCompleted: false,
     });
-    this.todoList.setState(this.todoItems);
-    this.todoCount.setState(this.todoItems.length);
+    const filteredTodoItems = this.getFilteredTodoItems();
+    this.todoList.setState(filteredTodoItems);
+    this.todoCount.setState(filteredTodoItems.length);
   };
 
   this.deleteTodoById = (id) => {
@@ -55,8 +56,9 @@ function App($target) {
       return;
     }
     this.todoItems.splice(todoItemIdx, 1);
-    this.todoList.setState(this.todoItems);
-    this.todoCount.setState(this.todoItems.length);
+    const filteredTodoItems = this.getFilteredTodoItems();
+    this.todoList.setState(filteredTodoItems);
+    this.todoCount.setState(filteredTodoItems.length);
   };
 
   this.toggleTodoById = (id) => {
@@ -66,7 +68,8 @@ function App($target) {
       return;
     }
     todoItem.isCompleted = !todoItem.isCompleted;
-    this.todoList.setState(this.todoItems);
+    const filteredTodoItems = this.getFilteredTodoItems();
+    this.todoList.setState(filteredTodoItems);
   };
 
   this.editTodoById = (id, content) => {
@@ -78,7 +81,30 @@ function App($target) {
     if (content !== "") {
       todoItem.content = content;
     }
-    this.todoList.setState(this.todoItems);
+    const filteredTodoItems = this.getFilteredTodoItems();
+    this.todoList.setState(filteredTodoItems);
+  };
+
+  this.setFilterType = (newFilterType) => {
+    if (this.filterType === newFilterType) {
+      return;
+    }
+    this.filterType = newFilterType;
+    this.todoFilter.setState(this.filterType);
+    const filteredTodoItems = this.getFilteredTodoItems();
+    this.todoList.setState(filteredTodoItems);
+    this.todoCount.setState(filteredTodoItems.length);
+  };
+
+  this.getFilteredTodoItems = () => {
+    switch (this.filterType) {
+      case FilterType.ACTIVE:
+        return this.todoItems.filter(({ isCompleted }) => !isCompleted);
+      case FilterType.COMPLETED:
+        return this.todoItems.filter(({ isCompleted }) => isCompleted);
+      default:
+        return this.todoItems;
+    }
   };
 
   this.render = () => {
@@ -115,7 +141,8 @@ function App($target) {
     );
     this.todoFilter = new TodoFilter(
       document.getElementById("todo-filter"),
-      this.filterType
+      this.filterType,
+      { onChangeType: (newFilterType) => this.setFilterType(newFilterType) }
     );
   };
 

@@ -20,10 +20,6 @@ function TodoList($target, todoItems, eventHandler) {
 
   this.todoItems = todoItems;
 
-  if (!eventHandler) {
-    throw new Error("Wrong eventHandler");
-  }
-
   this.setState = (newTodoItems) => {
     if (!isValidTodoItems(newTodoItems)) {
       throw new Error("wrong data");
