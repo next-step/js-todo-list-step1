@@ -1,7 +1,7 @@
 import { isFunction } from "../utils.js";
 
 function TodoInput($target, eventHandler) {
-  if (!this instanceof TodoInput) {
+  if (!new.target) {
     throw new Error("Create instance with 'new'");
   }
 

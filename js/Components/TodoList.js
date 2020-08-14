@@ -1,7 +1,7 @@
 import { isValidTodoItems, isFunction, ESC_KEY } from "../utils.js";
 
 function TodoList($target, todoItems, eventHandler) {
-  if (!this instanceof TodoList) {
+  if (!new.target) {
     throw new Error("Create instance with 'new'");
   }
 
@@ -34,12 +34,12 @@ function TodoList($target, todoItems, eventHandler) {
 
   this.bindEvent = () => {
     $target.addEventListener("change", (event) => {
-      if (event.target.className === "toggle") {
+      if (event.target.classList.contains("toggle")) {
         const id = event.target.closest("li").id;
         eventHandler.toggleTodoById(id);
       }
 
-      if (event.target.className === "edit") {
+      if (event.target.classList.contains("edit")) {
         const id = event.target.closest("li").id;
         const content = event.target.value;
         eventHandler.editTodoById(id, content);
@@ -47,7 +47,7 @@ function TodoList($target, todoItems, eventHandler) {
     });
 
     $target.addEventListener("click", (event) => {
-      if (event.target.nodeName === "BUTTON") {
+      if (event.target.classList.contains("destroy")) {
         const id = event.target.closest("li").id;
         eventHandler.deleteTodoById(id);
       }
@@ -97,7 +97,7 @@ function TodoList($target, todoItems, eventHandler) {
                 </div>
                 <input class="edit" value="${content}" />
              </li>`
-          : `<li id="${_id}"}>
+          : `<li id="${_id}">
                 <div class="view">
                   <input class="toggle" type="checkbox"/>
                   <label>${content}</label>
