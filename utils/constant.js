@@ -18,6 +18,7 @@ export const TARGET_COMPONENT = {
     TODO_INPUT: "#todo-input",
     TODO_LIST: "#todo-list",
     TODO_TAB: ".filters",
+    TODO_COUNTER: ".todo-counter",
 }
 
 export const VALUE = {

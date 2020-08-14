@@ -4,6 +4,7 @@ import TodoHeader from "./TodoHeader.js";
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 import TodoTab from "./TodoTab.js";
+import TodoCounter from "./TodoCounter.js";
 
 class App {
     constructor() {
@@ -35,6 +36,11 @@ class App {
                 $target: document.querySelector(TARGET_COMPONENT.TODO_TAB),
                 selectedTab: this.state.selectedTab,
                 selectTodoTab: this.selectTodoTab.bind(this),
+            });
+
+            this.todoCounter = new TodoCounter({
+                $target: document.querySelector(TARGET_COMPONENT.TODO_COUNTER),
+                todoCounterState: this.state,
             });
 
         } catch (e) {
@@ -103,6 +109,7 @@ class App {
         this.saveTodos(changedState);
         this.todoList.setState(changedState);
         this.todoTab.setState(changedState.selectedTab);
+        this.todoCounter.setState(changedState);
     }
 
     saveTodos(state) {
