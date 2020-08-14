@@ -4,30 +4,17 @@ import { isValidTodoItems, createUniqueId } from "../utils.js";
 import TodoCount from "./TodoCount.js";
 import TodoFilter from "./Todofilter.js";
 import { FilterType } from "../constants.js";
+import {
+  fetchTodoItmesFromLocalStorage,
+  saveTodoItmes2LocalStorage,
+} from "../todoLocalStorage.js";
 
 function App($target) {
   if (!new.target) {
     throw new Error("Create instance with 'new'");
   }
 
-  this.todoItems = [
-    {
-      content: "Hello",
-      isCompleted: false,
-      _id: createUniqueId(),
-    },
-    {
-      content: "World",
-      isCompleted: false,
-      _id: createUniqueId(),
-    },
-    {
-      content: "JS",
-      isCompleted: true,
-      _id: createUniqueId(),
-    },
-  ];
-
+  this.todoItems = fetchTodoItmesFromLocalStorage();
   this.filterType = FilterType.ALL;
 
   this.setState = (newTodoItems) => {
@@ -47,6 +34,7 @@ function App($target) {
     const filteredTodoItems = this.getFilteredTodoItems();
     this.todoList.setState(filteredTodoItems);
     this.todoCount.setState(filteredTodoItems.length);
+    saveTodoItmes2LocalStorage(this.todoItems);
   };
 
   this.deleteTodoById = (id) => {
@@ -59,6 +47,7 @@ function App($target) {
     const filteredTodoItems = this.getFilteredTodoItems();
     this.todoList.setState(filteredTodoItems);
     this.todoCount.setState(filteredTodoItems.length);
+    saveTodoItmes2LocalStorage(this.todoItems);
   };
 
   this.toggleTodoById = (id) => {
@@ -70,6 +59,7 @@ function App($target) {
     todoItem.isCompleted = !todoItem.isCompleted;
     const filteredTodoItems = this.getFilteredTodoItems();
     this.todoList.setState(filteredTodoItems);
+    saveTodoItmes2LocalStorage(this.todoItems);
   };
 
   this.editTodoById = (id, content) => {
@@ -83,6 +73,7 @@ function App($target) {
     }
     const filteredTodoItems = this.getFilteredTodoItems();
     this.todoList.setState(filteredTodoItems);
+    saveTodoItmes2LocalStorage(this.todoItems);
   };
 
   this.setFilterType = (newFilterType) => {
