@@ -1,52 +1,33 @@
+# TodoList CRUD 1주차 미션 [김경록 / Roki]
+> 진행사항은 Notion으로 정리해봤습니다. 2페이지나 있는 이유는, 
+> 처음 설계와 최종 설계가 달랐기 때문입니다.
 
-# ☕️ 코드리뷰 모임 - Black Coffee
-<br>
+[1주차 미션 개발기...1탄](https://www.notion.so/rok93/1-C-R-U-D-4690f001a4ea48e5aa6257ad35f6be5f)    
+[1주차 미션 개발기...2탄](https://www.notion.so/rok93/1-2-8b624729fbce4174b8b583efb10c3200)
 
-> '훌륭한 의사소통은 블랙커피처럼 자극적이며, 후에 잠들기가 어렵다'. <br> A.M. 린드버그(미국의 작가, 수필가) -
+### 📌 필수 요구사항 (All Clear)
+---
+-[x] todo list에 todoItem을 키보드로 입력하여 추가하기
+-[x] todo list의 체크박스를 클릭하여 complete 상태로 변경. (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
+-[x] todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
+-[x] todo list를 더블클릭했을 때 input 모드로 변경. (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
+-[x] todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
+-[x] todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
+### 📌📌심화 요구사항 (All Clear)
+-[x] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
+---
+## Bug Reporter 🐞 
+새로운 Todo를 입력할 때, 한글로 끝나는(마지막 글자) Todo Title을 입력하면, 새로운 Todo Item이 2개 중복되서 입력되는 현상이 발생 함. <br>
+--> 인코딩 관련 문제가 아닐까 추측, 관련 오류 찾아보고 수정하기 
 
-<br>
+## 미션을 수행하면서....
+Java로 주로 웹 백엔드의 작업만 주구장창하다가, js로 모든 처리를 해야한다는 상황이 낯설게 느껴졌습니다. <br>
+처음 미션을 수행한 방식(위 링크 1탄 페이지 참고)은 백엔드 단에서 모든 작업을 처리해서 데이터를 가져다 주고, js는 <br>
+단순히 view에 받아온 값을 집어넣는 수단(거의 ajax때만 사용한 것 같습니다)으로만 사용했는데, js만으로 상태를 관리하는<br>
+코드를 짜는 것이 많이 힘들게 느껴졌습니다. 참고자료['상태관리']를 봐도 전체적인 그림이 그려지지 않아, 답답함만 생겼는데, <br> 
+다른 스터디원들의 코드를 보며 코드 구조를 파악해보려고 했는데, 이것도 쉽지가 않았습니다. 결국 무작정 '클론코딩' 해보자는 생각으로 <br>
+일단 따라 쳐봤습니다. 치면서 다른분들이 어떤식으로 **상태관리** 를 하는지 조금씩 감이 왔었고, 그 덕분에 제가 직접 코드를 짜서 지금 <br>
+PR까지 진행할 수 있었던 것 같습니다. (다른분들의 코드도 많이봤지만, JSKim님과 이수연님의 코드를 많이 참조했었던 것 같습니다. 다시한번 감사하다는 말씀 드리고 싶습니다. ) <br>
 
-블랙커피처럼 서로를 자극해주고, 동기부여 해주며, 그 성장과정으로 인해 의미있는 가치를 만들어내고자 하는   
-**프론트엔드 코드리뷰 모임** ☕️ **Black Coffee**입니다.
-
-<br>
-
-## ⚙️ Before Started
-
-#### <img alt="Tip" src="https://img.shields.io/static/v1.svg?label=&message=Tip&style=flat-square&color=673ab8"> 로컬에서 서버 띄워서 손쉽게 static resources 변경 및 확인하는 방법
-
-로컬에서 웹서버를 띄워 html, css, js 등을 실시간으로 손쉽게 테스트해 볼 수 있습니다. 이를 위해서는 우선 npm이 설치되어 있어야 합니다. 구글에 `npm install` 이란 키워드로 각자의 운영체제에 맞게끔 npm을 설치해주세요. 이후 아래의 명령어를 통해 실시간으로 웹페이지를 테스트해볼 수 있습니다.
-
-```
-npm install -g live-server
-```
-
-실행은 아래의 커맨드로 할 수 있습니다.
-
-```
-live-server 폴더명
-```
-
-<br>
-
-## 👨‍💻 Code Review 👩‍💻
-아래 링크들에 있는 리뷰 가이드를 보고, 좋은 코드 리뷰 문화를 만들어 나가려고 합니다.  
-- [코드리뷰 가이드1](https://edykim.com/ko/post/code-review-guide/)
-- [코드리뷰 가이드2](https://wiki.lucashan.space/code-review/01.intro.html#_1-code%EB%A5%BC-%EB%A6%AC%EB%B7%B0%ED%95%98%EB%8A%94-%EC%82%AC%EB%9E%8C%EB%93%A4%EC%9D%80-%EC%96%B4%EB%96%A4%EA%B2%83%EC%9D%84-%EC%A4%91%EC%A0%90%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%82%B4%ED%8E%B4%EC%95%BC%ED%95%98%EB%8A%94%EA%B0%80)
-
-<br>
-
-## 👏 Contributing
-만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요. 
-
-<br>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/EastjunDev/frontend/issues) 에 등록 후 @eastjun에게 dm을 보내주세요.
-
-<br>
-
-## 📝 License
-
-This project is [MIT](https://github.com/next-step/js-todo-list/blob/master/LICENSE) licensed.
+코드 리뷰는 자유롭게 부탁드립니다. 어떤 사소한 것도 좋습니다. <br>
+감사합니다. 
