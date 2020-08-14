@@ -60,9 +60,9 @@ export default function TodoList($todoList, data, removeItem) {
     this.render = () => {
         let result = ''
         this.data.map(({ text }, index) => {
-            result += `<li class="todo-item ${data[index].isCompleted == true? 'completed' : ''}" data-index="${index}">
+            result += `<li class="todo-item ${data[index].isCompleted? 'completed' : ''}" data-index="${index}">
             <div class="view">
-            <input class="toggle" type="checkbox" />
+            <input class="toggle" type="checkbox" ${data[index].isCompleted? 'checked' : ''} />
             <label class="label">${text}</label>
             <button class="destroy"></button>
             </div>
