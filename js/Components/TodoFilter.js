@@ -1,5 +1,7 @@
+import { FilterType } from "../constants.js";
+
 function TodoFilter($target, type) {
-  if (!this instanceof TodoFilter) {
+  if (!new.target) {
     throw new Error("Create instance with 'new'");
   }
 
@@ -10,17 +12,17 @@ function TodoFilter($target, type) {
         <ul class="filters">
             <li>
                 <a class="all ${
-                  this.type === "all" ? "selected" : ""
+                  this.type === FilterType.ALL ? "selected" : ""
                 }" href="/#">전체보기</a>
             </li>
             <li>
                 <a class="active ${
-                  this.type === "active" ? "selected" : ""
+                  this.type === FilterType.ACTIVE ? "selected" : ""
                 }" href="#active">해야할 일</a>
             </li>
             <li>
                 <a class="completed ${
-                  this.type === "completed" ? "selected" : ""
+                  this.type === FilterType.COMPLETED ? "selected" : ""
                 }" href="#completed">완료한 일</a>
             </li>
         </ul>;

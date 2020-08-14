@@ -3,9 +3,13 @@ import TodoList from "./TodoList.js";
 import { isValidTodoItems, createUniqueId } from "../utils.js";
 import TodoCount from "./TodoCount.js";
 import TodoFilter from "./Todofilter.js";
+import { FilterType } from "../constants.js";
 
-function App() {
-  const $target = document.querySelector("#todoapp");
+function App($target) {
+  if (!new.target) {
+    throw new Error("Create instance with 'new'");
+  }
+
   this.todoItems = [
     {
       content: "Hello",
@@ -24,7 +28,7 @@ function App() {
     },
   ];
 
-  this.filterType = "all";
+  this.filterType = FilterType.ALL;
 
   this.setState = (newTodoItems) => {
     if (!isValidTodoItems(newTodoItems)) {

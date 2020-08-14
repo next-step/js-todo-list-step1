@@ -1,5 +1,5 @@
 function TodoCount($target, count) {
-  if (!this instanceof TodoCount) {
+  if (!new.target) {
     throw new Error("Create instance with 'new'");
   }
 
