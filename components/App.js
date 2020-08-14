@@ -8,7 +8,10 @@ import TodoTab from "./TodoTab.js";
 class App {
     constructor() {
         try {
-            this.todos = this.getTodos();
+            this.state = {
+                todos: this.getTodos(),
+                selectedTab: TODO_TAB_STATUS.DEFAULT_SELECTED_ALL,
+            }
 
             this.todoHeader = new TodoHeader({
                     $target: document.querySelector(TARGET_COMPONENT.TODO_HEADER)
@@ -22,7 +25,7 @@ class App {
 
             this.todoList = new TodoList({
                 $target: document.querySelector(TARGET_COMPONENT.TODO_LIST),
-                todos: this.todos,
+                todoListState: this.state,
                 removeTodo: this.removeTodo.bind(this),
                 toggleTodo: this.toggleTodo.bind(this),
                 editTodo: this.editTodo.bind(this),
@@ -30,6 +33,7 @@ class App {
 
             this.todoTab = new TodoTab({
                 $target: document.querySelector(TARGET_COMPONENT.TODO_TAB),
+                selectedTab: this.state.selectedTab,
                 selectTodoTab: this.selectTodoTab.bind(this),
             });
 
@@ -38,36 +42,13 @@ class App {
         }
     }
 
-    selectTodoTab(selectedHash) {
-        if (selectedHash === HASH_LOCATION.ALL) {
-            this.getFilteredTodos(TODO_TAB_STATUS.ALL);
-            return;
-        }
+    selectTodoTab(clickedTab) {
+        const changedState = {
+            ...this.state,
+            selectedTab: clickedTab,
+        };
 
-        if (selectedHash === HASH_LOCATION.ACTIVE) {
-            this.getFilteredTodos(TODO_TAB_STATUS.TODO);
-            return;
-        }
-
-        if (selectedHash === HASH_LOCATION.COMPLETED) {
-            this.getFilteredTodos(TODO_TAB_STATUS.DONE);
-        }
-    }
-
-    getFilteredTodos(filterType) {
-        if (filterType === TODO_TAB_STATUS.ALL) {
-            this.todoList.setState(this.todos);
-            return;
-        }
-
-        if (filterType === TODO_TAB_STATUS.DONE) {
-            this.todoList.setState(this.todos.filter(todo => todo.isCompleted));
-            return;
-        }
-
-        if (filterType === TODO_TAB_STATUS.TODO) {
-            this.todoList.setState(this.todos.filter(todo => !todo.isCompleted));
-        }
+        this.setState(changedState);
     }
 
     editTodo(targetId, context) {
@@ -86,7 +67,7 @@ class App {
     }
 
     toggleTodo(targetId) {
-        const changedTodos = this.todos.map(todo => {
+        const changedTodos = this.state.todos.map(todo => {
             if (todo.id !== targetId) {
                 return todo;
             }
@@ -97,13 +78,19 @@ class App {
             };
         });
 
-        this.setState(changedTodos);
+        this.setState({
+            ...this.state,
+            todos: changedTodos,
+        });
     }
 
     removeTodo(targetId) {
-        const removedTodos = this.todos.filter((todo) => todo.id !== targetId);
+        const removedTodos = this.state.todos.filter((todo) => todo.id !== targetId);
 
-        this.setState(removedTodos);
+        this.setState({
+            ...this.state,
+            todos: removedTodos,
+        });
     }
 
     getTodos() {
@@ -111,18 +98,24 @@ class App {
         return JSON.parse(todos) || [];
     }
 
-    setState(todos) {
-        this.todos = todos;
-        this.saveTodos(todos);
-        this.todoList.setState(todos);
+    setState(changedState) {
+        this.state = changedState;
+        this.saveTodos(changedState);
+        this.todoList.setState(changedState);
+        this.todoTab.setState(changedState.selectedTab);
     }
 
-    saveTodos(todos) {
-        localStorage.setItem(LOCAL_VALUE.TODOS, JSON.stringify(todos));
+    saveTodos(state) {
+        localStorage.setItem(LOCAL_VALUE.SELECTED_TAB, JSON.stringify(state.selectedTab));
+        localStorage.setItem(LOCAL_VALUE.TODOS, JSON.stringify(state.todos));
     }
 
     addTodoItem(todo) {
-        this.setState([...this.todos, todo]);
+        this.setState({
+            ...this.state,
+            todos: [...this.state.todos, todo],
+        })
+        ;
     };
 }
 

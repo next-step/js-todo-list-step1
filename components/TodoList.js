@@ -1,9 +1,9 @@
-import {TODO_STATUS, KEYBOARD, TOGGLE_STATUS} from "../utils/constant.js";
+import {TODO_STATUS, KEYBOARD, TOGGLE_STATUS, TODO_TAB_STATUS} from "../utils/constant.js";
 
-function TodoList({$target, todos, removeTodo, toggleTodo, editTodo}) {
+function TodoList({$target, todoListState, removeTodo, toggleTodo, editTodo}) {
     this.init = () => {
         this.$target = $target;
-        this.todos = todos;
+        this.state = todoListState;
 
         this.isEditing = false;
 
@@ -66,11 +66,28 @@ function TodoList({$target, todos, removeTodo, toggleTodo, editTodo}) {
     }
 
     this.render = () => {
-        this.$target.innerHTML = this.todos.map(this.todoListTemplate);
+        this.$target.innerHTML = this.filterTodos()
+            .map(this.todoListTemplate);
     }
 
-    this.setState = (updatedTodos) => {
-        this.todos = updatedTodos;
+    this.filterTodos = () => {
+        const selectedTab = this.state.selectedTab;
+        if (selectedTab === TODO_TAB_STATUS.ALL) {
+            return this.state.todos;
+        }
+
+        if (selectedTab === TODO_TAB_STATUS.DONE) {
+            return this.state.todos.filter(todo => todo.isCompleted);
+        }
+
+        if (selectedTab === TODO_TAB_STATUS.TODO) {
+            return this.state.todos.filter(todo => !todo.isCompleted);
+        }
+    }
+
+    this.setState = (updatedState) => {
+        this.state = updatedState;
+
         this.render();
     }
 

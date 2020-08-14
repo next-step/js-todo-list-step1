@@ -9,7 +9,8 @@ export const KEYBOARD = {
 
 export const LOCAL_VALUE = {
     CURRENT_ID: "currentId",
-    TODOS: "todos"
+    TODOS: "todos",
+    SELECTED_TAB: "selectedTab",
 }
 
 export const TARGET_COMPONENT = {
@@ -40,6 +41,7 @@ export const TODO_TAB_STATUS = {
     ALL: "all",
     DONE: "completed",
     TODO: "",
+    DEFAULT_SELECTED_ALL: "all",
 }
 
 export const HASH_LOCATION = {
