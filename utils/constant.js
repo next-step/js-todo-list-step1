@@ -16,6 +16,7 @@ export const TARGET_COMPONENT = {
     TODO_HEADER: "#todo-app-header",
     TODO_INPUT: "#todo-input",
     TODO_LIST: "#todo-list",
+    TODO_TAB: ".filters",
 }
 
 export const VALUE = {
@@ -33,3 +34,18 @@ export const TOGGLE_STATUS = {
     CHECKED: "checked",
     UNCHECKED: "",
 }
+
+export const TODO_TAB_STATUS = {
+    SELECTED: "selected",
+    ALL: "all",
+    DONE: "completed",
+    TODO: "",
+}
+
+export const HASH_LOCATION = {
+    ALL: "",
+    ACTIVE: "#active",
+    COMPLETED: "#completed",
+}
+
+

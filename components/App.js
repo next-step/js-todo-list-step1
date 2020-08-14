@@ -1,8 +1,9 @@
-import {LOCAL_VALUE, TARGET_COMPONENT} from "../utils/constant.js";
+import {LOCAL_VALUE, TARGET_COMPONENT, HASH_LOCATION, TODO_TAB_STATUS} from "../utils/constant.js";
 
 import TodoHeader from "./TodoHeader.js";
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
+import TodoTab from "./TodoTab.js";
 
 class App {
     constructor() {
@@ -27,8 +28,45 @@ class App {
                 editTodo: this.editTodo.bind(this),
             });
 
+            this.todoTab = new TodoTab({
+                $target: document.querySelector(TARGET_COMPONENT.TODO_TAB),
+                selectTodoTab: this.selectTodoTab.bind(this),
+            });
+
         } catch (e) {
             console.error(e.error);
+        }
+    }
+
+    selectTodoTab(selectedHash) {
+        if (selectedHash === HASH_LOCATION.ALL) {
+            this.getFilteredTodos(TODO_TAB_STATUS.ALL);
+            return;
+        }
+
+        if (selectedHash === HASH_LOCATION.ACTIVE) {
+            this.getFilteredTodos(TODO_TAB_STATUS.TODO);
+            return;
+        }
+
+        if (selectedHash === HASH_LOCATION.COMPLETED) {
+            this.getFilteredTodos(TODO_TAB_STATUS.DONE);
+        }
+    }
+
+    getFilteredTodos(filterType) {
+        if (filterType === TODO_TAB_STATUS.ALL) {
+            this.todoList.setState(this.todos);
+            return;
+        }
+
+        if (filterType === TODO_TAB_STATUS.DONE) {
+            this.todoList.setState(this.todos.filter(todo => todo.isCompleted));
+            return;
+        }
+
+        if (filterType === TODO_TAB_STATUS.TODO) {
+            this.todoList.setState(this.todos.filter(todo => !todo.isCompleted));
         }
     }
 
