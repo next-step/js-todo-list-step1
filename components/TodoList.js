@@ -23,19 +23,28 @@ function TodoList({$target, todoListState, removeTodo, toggleTodo, editTodo}) {
         }
 
         this.isEditing = true;
-        todoItem.setAttribute("class", TODO_STATUS.EDITING);
+        todoItem.classList.add(TODO_STATUS.EDITING);
         todoItem.addEventListener(KEYBOARD.KEYDOWN_EVENT, this.editTitle);
     }
 
     this.editTitle = $event => {
+        const dbclickedTodoItem = $event.target.offsetParent;
+        if ($event.key === KEYBOARD.ESC) {
+            this.completeEditingTodoTitle(dbclickedTodoItem);
+            return;
+        }
+
         if ($event.key !== KEYBOARD.ENTER) {
             return;
         }
 
-        const dbclickedTodoItem = $event.target.offsetParent;
         const dbclickedTodoId = parseInt(dbclickedTodoItem.id);
         const editTodoTitle = $event.target.value;
         editTodo(dbclickedTodoId, editTodoTitle);
+        this.completeEditingTodoTitle(dbclickedTodoItem);
+    }
+
+    this.completeEditingTodoTitle = (dbclickedTodoItem) => {
         dbclickedTodoItem.classList.remove("editing");
         this.isEditing = false;
     }
@@ -66,7 +75,9 @@ function TodoList({$target, todoListState, removeTodo, toggleTodo, editTodo}) {
     }
 
     this.render = () => {
-        this.$target.innerHTML = this.filterTodos()
+        const undefined = this.filterTodos();
+        console.table(undefined);
+        this.$target.innerHTML = undefined
             .map(this.todoListTemplate);
     }
 

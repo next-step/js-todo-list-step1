@@ -24,7 +24,7 @@ function TodoInput({$target, addTodoItem}) {
             return;
         }
 
-        const id = getId();
+        const id = this.getId();
         const newTodo = {
             id: JSON.parse(id),
             title: newTitle,
@@ -35,7 +35,7 @@ function TodoInput({$target, addTodoItem}) {
         e.target.value = VALUE.CLEAR;
     };
 
-    function getId() {
+    this.getId = () => {
         const id = JSON.parse(localStorage.getItem(LOCAL_VALUE.CURRENT_ID) || 1);
         const nextId = parseInt(id) + 1;
         localStorage.setItem(LOCAL_VALUE.CURRENT_ID, nextId.toString());

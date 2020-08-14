@@ -5,6 +5,7 @@ export const MESSAGE = {
 export const KEYBOARD = {
     ENTER: "Enter",
     KEYDOWN_EVENT: "keydown",
+    ESC: "Escape",
 }
 
 export const LOCAL_VALUE = {

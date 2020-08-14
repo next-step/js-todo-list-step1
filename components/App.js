@@ -58,7 +58,7 @@ class App {
     }
 
     editTodo(targetId, context) {
-        const changedTodos = this.todos.map(todo => {
+        const changedTodos = this.state.todos.map(todo => {
             if (todo.id !== targetId) {
                 return todo;
             }
@@ -69,7 +69,10 @@ class App {
             }
         });
 
-        this.setState(changedTodos);
+        this.setState({
+            ...this.state,
+            todos: changedTodos
+        });
     }
 
     toggleTodo(targetId) {
@@ -121,9 +124,8 @@ class App {
         this.setState({
             ...this.state,
             todos: [...this.state.todos, todo],
-        })
-        ;
-    };
+        });
+    }
 }
 
 export default App;
