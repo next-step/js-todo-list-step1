@@ -24,6 +24,7 @@ class App {
                 todos: this.todos,
                 removeTodo: this.removeTodo.bind(this),
                 toggleTodo: this.toggleTodo.bind(this),
+                editTodo: this.editTodo.bind(this),
             });
 
         } catch (e) {
@@ -31,9 +32,22 @@ class App {
         }
     }
 
-    toggleTodo(targetId) {
-        console.table(this.todos);
+    editTodo(targetId, context) {
+        const changedTodos = this.todos.map(todo => {
+            if (todo.id !== targetId) {
+                return todo;
+            }
 
+            return {
+                ...todo,
+                title: context,
+            }
+        });
+
+        this.setState(changedTodos);
+    }
+
+    toggleTodo(targetId) {
         const changedTodos = this.todos.map(todo => {
             if (todo.id !== targetId) {
                 return todo;

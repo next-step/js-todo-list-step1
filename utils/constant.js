@@ -22,3 +22,14 @@ export const VALUE = {
     EMPTY: "",
     CLEAR: "",
 }
+
+export const TODO_STATUS = {
+    TODO: "",
+    DONE: "completed",
+    EDITING: "editing",
+}
+
+export const TOGGLE_STATUS = {
+    CHECKED: "checked",
+    UNCHECKED: "",
+}

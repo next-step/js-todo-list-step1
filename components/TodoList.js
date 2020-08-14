@@ -1,7 +1,11 @@
-function TodoList({$target, todos, removeTodo, toggleTodo}) {
+import {TODO_STATUS, KEYBOARD, TOGGLE_STATUS} from "../utils/constant.js";
+
+function TodoList({$target, todos, removeTodo, toggleTodo, editTodo}) {
     this.init = () => {
         this.$target = $target;
         this.todos = todos;
+
+        this.isEditing = false;
 
         this.render();
         this.addEvents();
@@ -9,6 +13,31 @@ function TodoList({$target, todos, removeTodo, toggleTodo}) {
 
     this.addEvents = () => {
         this.$target.addEventListener("click", this.clickEvent);
+        this.$target.addEventListener("dblclick", this.editTodo);
+    }
+
+    this.editTodo = $event => {
+        const todoItem = $event.target.offsetParent;
+        if (todoItem.className === TODO_STATUS.DONE || this.isEditing) {
+            return;
+        }
+
+        this.isEditing = true;
+        todoItem.setAttribute("class", TODO_STATUS.EDITING);
+        todoItem.addEventListener(KEYBOARD.KEYDOWN_EVENT, this.editTitle);
+    }
+
+    this.editTitle = $event => {
+        if ($event.key !== KEYBOARD.ENTER) {
+            return;
+        }
+
+        const dbclickedTodoItem = $event.target.offsetParent;
+        const dbclickedTodoId = parseInt(dbclickedTodoItem.id);
+        const editTodoTitle = $event.target.value;
+        editTodo(dbclickedTodoId, editTodoTitle);
+        dbclickedTodoItem.classList.remove("editing");
+        this.isEditing = false;
     }
 
     this.clickEvent = $event => {
@@ -16,17 +45,16 @@ function TodoList({$target, todos, removeTodo, toggleTodo}) {
         if (clickedClassName !== "destroy" && clickedClassName !== "toggle") {
             return;
         }
-        const clickedTodoId = parseInt($event.target.offsetParent.id);
 
+        const clickedTodoId = parseInt($event.target.offsetParent.id);
         if (clickedClassName === "destroy") {
             this.removeTodoItem(clickedTodoId);
+            return;
         }
 
         if (clickedClassName === "toggle") {
             this.toggleTodoItem(clickedTodoId);
         }
-
-
     }
 
     this.toggleTodoItem = todoId => {
@@ -51,9 +79,9 @@ function TodoList({$target, todos, removeTodo, toggleTodo}) {
     }
 
     this.todoListTemplate = (todo) => {
-        return `<li id="${todo.id}" class="${todo.isCompleted ? "completed" : ""}">
+        return `<li id="${todo.id}" class="${todo.isCompleted ? TODO_STATUS.DONE : TODO_STATUS.TODO}">
       <div class="view">
-        <input class="toggle" type="checkbox" ${todo.isCompleted ? "checked" : ""}/>
+        <input class="toggle" type="checkbox" ${todo.isCompleted ? TOGGLE_STATUS.CHECKED : TOGGLE_STATUS.UNCHECKED}/>
         <label class="label">${todo.title}</label>
         <button class="destroy"></button>
       </div>

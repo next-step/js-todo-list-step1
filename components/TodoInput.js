@@ -19,7 +19,7 @@ function TodoInput({$target, addTodoItem}) {
 
         const newTitle = e.target.value;
 
-        if (newTitle === "") {
+        if (newTitle === VALUE.EMPTY) {
             alert(MESSAGE.NOT_ACCESS_EMPTY_TITLE);
             return;
         }
