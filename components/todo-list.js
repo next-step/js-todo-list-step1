@@ -11,7 +11,7 @@ export default class TodoList {
     if (todosValidation(todos)) {
       this.todos = todos;
       this.render();
-      this.todoToggleEvent();
+      this.applyTodoEvents();
     }
   }
 
@@ -29,7 +29,24 @@ export default class TodoList {
     return this.todos.find((todo) => todo.id === targetId);
   }
 
-  todoToggleEvent() {
+  editEvent(todoId) {
+    const targetTodo = this.findTodoItem(todoId);
+    let changeValue = '';
+    if (targetTodo.editMode) {
+      changeValue = this.findEditText(todoId);
+    }
+    this.editTodo(todoId, changeValue);
+  }
+
+  todoDbClickEvent() {
+    this.todoListElement.addEventListener('dblclick', ($event) => {
+      const target = $event.target;
+      let todoId = target.closest('li').id;
+      this.editEvent(todoId);
+    });
+  }
+
+  todoControlEvent() {
     this.todoListElement.addEventListener('click', ($event) => {
       const target = $event.target;
       let todoId = target.closest('li').id;
@@ -37,26 +54,40 @@ export default class TodoList {
       if (target.className === 'destroy') {
         this.removeTodo(todoId);
       } else if (target.className === 'edit') {
-        const targetTodo = this.findTodoItem(todoId);
-        let changeValue = '';
-        if (targetTodo.editMode) {
-          changeValue = this.findEditText(todoId);
-        }
-        this.editTodo(todoId, changeValue);
+        this.editEvent(todoId);
       } else if (target.className === 'toggle') {
         this.toggleTodo(todoId);
       }
     });
   }
 
+  todoInputKeyEnterEvent() {
+    this.todoListElement.addEventListener('keypress', ($event) => {
+      if ($event.key !== 'Enter') {
+        return;
+      }
+      const target = $event.target;
+      this.editEvent(target.closest('li').id);
+    });
+  }
+
+  applyTodoEvents() {
+    this.todoDbClickEvent();
+    this.todoControlEvent();
+    this.todoInputKeyEnterEvent();
+  }
+
   changeEditMode(todoId, todoText, editMode) {
     if (editMode) {
       return `
-        <label for="toggle"></label>
+        <label class="hidden" for="toggle"></label>
         <input id="edit-${todoId}" class="edit-todo-input" type="text" value="${todoText}">
       `;
     } else {
-      return `<label for="toggle-${todoId}" class="view">${todoText}</label>`;
+      return `
+        <label for="toggle-${todoId}" class="view">${todoText}</label>
+        <input id="edit-${todoId}" class="edit-todo-input hidden" type="text">
+      `;
     }
   }
 
