@@ -9,8 +9,8 @@ export default class TodoInput {
   }
 
   addEvent() {
-    this.todoInputElement.addEventListener('keyup', ($event) => {
-      if ($event.code !== 'Enter') {
+    this.todoInputElement.addEventListener('keypress', ($event) => {
+      if ($event.key !== 'Enter') {
         return;
       }
 
