@@ -31,13 +31,8 @@ export default class TodoList {
 
   todoToggleEvent() {
     this.todoListElement.addEventListener('click', ($event) => {
-      let todoId = '';
       const target = $event.target;
-      if (['P', 'INPUT', 'LABEL', 'DIV'].includes(target.tagName)) {
-        todoId = target.parentElement.id;
-      } else {
-        todoId = target.id;
-      }
+      let todoId = target.closest('li').id;
 
       if (target.className === 'destroy') {
         this.removeTodo(todoId);

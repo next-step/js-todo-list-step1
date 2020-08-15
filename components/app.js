@@ -4,30 +4,13 @@ import { todoApi } from '../api/api.js';
 import TodoHeader from './todo-header.js';
 import TodoList from './todo-list.js';
 import TodoInput from './todo-input.js';
-import TodoInfo from './todo-info.js';
+import TodoFilter from './todo-filter.js';
 
 export default class App {
   constructor() {
-    const todosFilters = [
-      {
-        state: 'all',
-        title: '전체보기',
-        selected: true,
-      },
-      {
-        state: 'active',
-        title: '해야할 일',
-        selected: false,
-      },
-      {
-        state: 'completed',
-        title: '완료한 일',
-        selected: false,
-      },
-    ];
     try {
       this.todos = todoApi.get(config.todos);
-      this.filterList = todoApi.get(config.todoFilter, todosFilters);
+      this.filterState = todoApi.get(config.todoFilter, 'all');
       this.filteredTodos = this.filterTodos();
 
       this.todoHeaderComponent = new TodoHeader();
@@ -38,10 +21,9 @@ export default class App {
         this.removeTodo.bind(this)
       );
       this.todoInputComponent = new TodoInput(this.addTodo.bind(this));
-      this.todoInfo = new TodoInfo(
-        this.filterList,
+      this.todoFilter = new TodoFilter(
         this.filteredTodos.length,
-        this.selectFilter.bind(this)
+        this.setFilterState.bind(this)
       );
     } catch (err) {
       console.error(err.message);
@@ -63,7 +45,7 @@ export default class App {
   render() {
     this.filteredTodos = this.filterTodos();
     this.todoListComponent.setState(this.filteredTodos);
-    this.todoInfo.setState(this.filterList, this.filteredTodos.length);
+    this.todoFilter.setState(this.filteredTodos.length);
   }
 
   setTodoState(todos) {
@@ -72,9 +54,10 @@ export default class App {
     this.render();
   }
 
-  setFilterState(filterList) {
-    this.filterList = filterList;
-    todoApi.set(config.todoFilter, filterList);
+  setFilterState(filterState) {
+    location.hash = `#${filterState}`;
+    this.filterState = filterState;
+    todoApi.set(config.todoFilter, filterState);
     this.render();
   }
 
@@ -108,18 +91,5 @@ export default class App {
   removeTodo(targetId) {
     const newTodos = this.todos.filter((todo) => todo.id !== targetId);
     this.setTodoState(newTodos);
-  }
-
-  selectFilter(clickedFilter) {
-    const newFilterList = this.filterList.map((filter) => {
-      if (clickedFilter.includes(filter.state)) {
-        filter.selected = true;
-        location.hash = `#${filter.state}`;
-      } else {
-        filter.selected = false;
-      }
-      return filter;
-    });
-    this.setFilterState(newFilterList);
   }
 }
