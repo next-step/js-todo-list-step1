@@ -1,7 +1,7 @@
 import TodoModel from "../model/todoModel.js";
-import { EVENT_NAME, SELECTOR, CLASS_NAME } from "../../utils/constants.js";
-import { todoItemHTMLTemplate } from "../../utils/template.js";
-import { isESC, isEnter } from "../../utils/functions.js";
+import { EVENT_NAME, SELECTOR, CLASS_NAME } from "../utils/constants.js";
+import { todoItemHTMLTemplate } from "../utils/template.js";
+import { isESC, isEnter } from "../utils/functions.js";
 
 export default function TodoList() {
   if (new.target !== TodoList) {
@@ -17,7 +17,7 @@ export default function TodoList() {
 
   this.render = (todos) => {
     console.log("TODOLIST", todos);
-    this.$target.innerHTML = todos.map(todoItemHTMLTemplate).join();
+    this.$target.innerHTML = todos.map(todoItemHTMLTemplate).join("");
   };
 
   this.bindEvent = () => {

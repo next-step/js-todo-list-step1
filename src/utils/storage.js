@@ -7,6 +7,10 @@ export const storage = {
     }
   },
   set: (KEY, value) => {
-    window.localStorage.setItem(KEY, JSON.stringify(value));
+    try {
+      window.localStorage.setItem(KEY, JSON.stringify(value));
+    } catch (e) {
+      console.error(e);
+    }
   },
 };

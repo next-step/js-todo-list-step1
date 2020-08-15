@@ -11,6 +11,11 @@ class Observer {
       context,
       callback,
     });
+
+    // this.list = {
+    //   'todoChanged': [{ context: TodoList, callback: TodoList.render}]
+    // }
+
     console.log(`somebody subscribed for '${eventName}' event`);
     console.log(this.list);
   }

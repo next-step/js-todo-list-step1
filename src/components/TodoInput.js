@@ -1,6 +1,6 @@
 import TodoModel from "../model/todoModel.js";
-import { isEmpty, isEnter } from "../../utils/functions.js";
-import { SELECTOR } from "../../utils/constants.js";
+import { isEmpty, isEnter } from "../utils/functions.js";
+import { SELECTOR } from "../utils/constants.js";
 
 export default function TodoInput() {
   if (new.target !== TodoInput) {

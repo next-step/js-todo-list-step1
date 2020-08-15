@@ -12,17 +12,21 @@ class TodoModel extends Observer {
   constructor() {
     super();
     this.todos = storage.get(STORAGE_KEY) || []; // 그냥 전체 Todo
-    this.filterTodosByType(this.todos);
+    this.filterTodosByType(this.todos); // default this.todosByFilter 설정
 
     this.filterType = ALL;
     this.currentTodos = this.todosByFilter.get(this.filterType); // 렌더해야하는 Todo > 초기 타입은 'ALL'
+  }
+
+  get() {
+    return this.currentTodos;
   }
 
   filterTodosByType(todos) {
     this.todosByFilter = new Map();
     this.todosByFilter.set(ALL, todos.concat()); // 불변성 유지를 위해 Array 다시 생성
     this.todosByFilter.set(
-      ACTIVE,
+      ACTIVE, // 해야할 일
       todos.filter((todo) => !todo.isCompleted)
     );
 
@@ -36,10 +40,6 @@ class TodoModel extends Observer {
     storage.set(STORAGE_KEY, this.todos);
     this.currentTodos = this.todosByFilter.get(this.filterType);
     this.notify(EVENT_NAME.TODO_CHANGED, this.currentTodos);
-  }
-
-  get() {
-    return this.currentTodos;
   }
 
   create(text) {

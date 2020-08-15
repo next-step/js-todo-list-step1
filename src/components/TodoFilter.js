@@ -4,14 +4,12 @@ import { SELECTOR } from "../../utils/constants.js";
 
 function convertClassNameToFilterType(className) {
   switch (className) {
-    case "all selected":
-      return ALL;
     case "active":
       return ACTIVE;
     case "completed":
       return COMPLETED;
     default:
-      throw ALL;
+      return ALL;
   }
 }
 
