@@ -11,7 +11,7 @@ function TodoList({data}){
     ${this.data.map((text, index) =>
     `<label><input type="checkbox" name="todo" value="${text}">
         ${text}
-        <button class="delete-btn">X</button>
+        <button id='todo-${index}' class="delete-btn">X</button>
     </br>
     </label>`
     ).join('')}
