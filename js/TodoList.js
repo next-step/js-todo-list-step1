@@ -36,9 +36,9 @@ function TodoList() {
     const $TODO_ITEM_ID = Number($TARGET.closest('li').id);
 
     if ($TARGET.classList.contains('edit')) {
-      if (e.keyCode === 13) { // enter key
+      if (e.key === 'Enter') {
         this.editTodoText($TODO_ITEM_ID, $TARGET.value);
-      } else if (e.keyCode === 27) { // esc key
+      } else if (e.key === 'Escape') {
         this.changeEditMode($TODO_ITEM_ID);
       }
     }
@@ -46,7 +46,7 @@ function TodoList() {
 
   // input keyup 이벤트 리스너 등록
   $NEW_TODO_TITLE.addEventListener('keyup', (e) => {
-    if (e.keyCode === 13 && $NEW_TODO_TITLE.value) {
+    if (e.key === 'Enter' && $NEW_TODO_TITLE.value) {
       const newTodo = {
         id: this.data.length + 1,
         text: $NEW_TODO_TITLE.value,
