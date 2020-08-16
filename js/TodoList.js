@@ -59,7 +59,7 @@ function TodoList() {
 
   // 새 할 일 생성
   this.createTodo = function (newTodo) {
-    this.data.push(newTodo);
+    this.data.concat(newTodo);
     this.initInput();
     this.render();
   };
