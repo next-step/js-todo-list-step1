@@ -19,6 +19,37 @@ const onDeleteButtonPress = e => {
     targetElement.style.display = 'none';
 }
 
+const onContentEditCompleted = e => {
+    if(e.key === 'Enter') {
+        e.target.style.display = 'none';
+
+        let newRow = document.importNode(document.querySelector('#item-new').content, true);
+        newRow.querySelector('.toggle').addEventListener('click', onCheckButtonPress);
+        newRow.querySelector('.destroy').addEventListener('click', onDeleteButtonPress);
+        newRow.querySelector('.view').addEventListener('dblclick', onItemDoubleClick);
+        let targetListSection = document.querySelector('#todo-list');
+
+        newRow.getElementById('item-label').innerHTML = e.target.value;
+
+        targetListSection.appendChild(newRow);
+    }
+}
+
+const onItemDoubleClick = e => {
+    console.log('double click detected');
+    
+    let targetElement = e.target;
+    let targetElementParent = e.target.parentNode;
+    
+    let editingRow = document.importNode(document.querySelector('#item-editing').content, true);
+    editingRow.querySelector('.edit').addEventListener('keydown', onContentEditCompleted);
+    editingRow.querySelector('.edit').value = targetElement.innerHTML;
+
+
+    targetElement.style.display = 'none'
+    targetElementParent.appendChild(editingRow);
+}
+
 const onNewItemSubmit = e => {
     if(e.key === 'Enter') {
         let inputSection = document.getElementById('new-todo-title');
@@ -31,6 +62,7 @@ const onNewItemSubmit = e => {
         let newRow = document.importNode(document.querySelector('#item-new').content, true);
         newRow.querySelector('.toggle').addEventListener('click', onCheckButtonPress);
         newRow.querySelector('.destroy').addEventListener('click', onDeleteButtonPress);
+        newRow.querySelector('.view').addEventListener('dblclick', onItemDoubleClick);
         let targetListSection = document.querySelector('#todo-list');
 
         newRow.getElementById('item-label').innerHTML = itemTitle;
