@@ -14,7 +14,6 @@
         class="new-todo"
         placeholder="할일을 추가해주세요"
         autofocus
-        onekeypress="onNewItemSubmit"
       />
       <main>
         <input class="toggle-all" type="checkbox" />
@@ -41,7 +40,7 @@
     <li>
       <div class="view">
         <input class="toggle" type="checkbox"/>
-        <label class="label">새로운 타이틀</label>
+        <label class="label" id="item-label">새로운 타이틀</label>
         <button class="destroy"></button>
       </div>
       <input class="edit" value="새로운 타이틀" />
@@ -51,7 +50,7 @@
     <li class="editing">
       <div class="view">
         <input class="toggle" type="checkbox" />
-        <label class="label">완료된 타이틀</label>
+        <label class="label" id="item-label">완료된 타이틀</label>
         <button class="destroy"></button>
       </div>
       <input class="edit" value="완료된 타이틀" />
@@ -61,7 +60,7 @@
     <li class="completed">
       <div class="view">
         <input class="toggle" type="checkbox" checked/>
-        <label class="label">완료된 타이틀</label>
+        <label class="label" id="item-label">완료된 타이틀</label>
         <button class="destroy"></button>
       </div>
       <input class="edit" value="완료된 타이틀" />
