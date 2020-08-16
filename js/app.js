@@ -14,6 +14,11 @@ const onCheckButtonPress = e => {
     targetElement.className = 'completed';
 }
 
+const onDeleteButtonPress = e => {
+    let targetElement = e.target.parentNode;
+    targetElement.style.display = 'none';
+}
+
 const onNewItemSubmit = e => {
     if(e.key === 'Enter') {
         let inputSection = document.getElementById('new-todo-title');
@@ -25,6 +30,7 @@ const onNewItemSubmit = e => {
         
         let newRow = document.importNode(document.querySelector('#item-new').content, true);
         newRow.querySelector('.toggle').addEventListener('click', onCheckButtonPress);
+        newRow.querySelector('.destroy').addEventListener('click', onDeleteButtonPress);
         let targetListSection = document.querySelector('#todo-list');
 
         newRow.getElementById('item-label').innerHTML = itemTitle;
