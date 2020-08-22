@@ -1,7 +1,8 @@
 import TodoCount from './TodoCount.js';
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
-import {fetchUsers} from './api.js';
+import Users from './Users.js';
+import {fetchUsers,userTodoList,addTodoList,removeTodoList,toggleTodoList,modifyTodoList} from './api.js';
 function App(){
     this.data=[];
     this.allData = [];
@@ -12,7 +13,6 @@ function App(){
     const $allBtn =document.querySelector('.all');
     const $todoList = document.querySelector('#todo-list-board');
     this.setState=async(nextData)=>{
-        let data = await fetchUsers();
         this.data = nextData;
         this.todoList.setState(this.data);
         this.todoCount.setState(this.data);
@@ -31,6 +31,7 @@ function App(){
         }
     });
     this.todoList = new TodoList({});
+    this.userList = new Users({});
     this.todoCount = new TodoCount(this.data);
     $allBtn.addEventListener('click', (e) => {
         this.setState(this.allData);
@@ -89,6 +90,11 @@ function App(){
         ))
         this.setState(activeTodo);
     });
+    this.init=async()=>{
+        this.user = await userTodoList();
+        this.userList.render(this.user);
+    }
+    this.init();
 }
 new App();
 //href="/#"
