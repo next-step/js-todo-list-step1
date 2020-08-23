@@ -2,23 +2,24 @@ import TodoCount from './TodoCount.js';
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import Users from './Users.js';
-import {fetchUsers,userTodoList,addTodoList,removeTodoList,toggleTodoList,modifyTodoList} from './api.js';
+import {fetchUsers,userTodoList,addTodo,deleteTodo,toggleTodoList,modifyTodoList} from './api.js';
 function App(){
     this.data=[];
     this.allData = [];
     this.checkData = [];
     let that = this;
+    that.username = 'doraemong'
     const $completedBtn = document.querySelector('.completed');
     const $activeBtn =document.querySelector('.active');
     const $allBtn =document.querySelector('.all');
     const $todoList = document.querySelector('#todo-list-board');
-    this.setState=async(nextData)=>{
-        this.data = nextData;
-        this.todoList.setState(this.data);
-        this.todoCount.setState(this.data);
+    this.setState=async(userName)=>{
+        let data = await fetchUsers(userName);
+        this.todoList.setState(data.todoList);
+        this.todoCount.setState(data.todoList);
     };
     this.todoInput = new TodoInput({
-        onAddTodo:(text)=>{
+        onAddTodo:async(text)=>{
             const nextData = [
                 ...this.data,
                 text
@@ -27,10 +28,16 @@ function App(){
                 ...this.data,
                 text
             ]
-            this.setState(nextData);
+            let data= await addTodo('doraemong',text);
+            this.setState('doraemong');
         }
     });
-    this.todoList = new TodoList({});
+    this.todoList = new TodoList({
+        onRemove: async function(id) {
+        await deleteTodo(that.username,id);
+        that.setState(that.username)
+        }
+    });
     this.userList = new Users({});
     this.todoCount = new TodoCount(this.data);
     $allBtn.addEventListener('click', (e) => {
@@ -51,14 +58,6 @@ function App(){
         }else{
             this.setState(this.checkData);
         }  
-    });
-    $todoList.addEventListener('click',e=>{
-        const index = e.target.id.split('-')[1];
-        const nextData = [...this.allData];
-        if(e.target.tagName === 'BUTTON'){
-            nextData.splice(index, 1);
-            this.setState(nextData);
-        }
     });
     $todoList.addEventListener('dblclick',e=>{
         document.querySelector('input[name=todo]').disabled=false
