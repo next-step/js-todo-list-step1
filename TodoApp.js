@@ -3,76 +3,61 @@ function TodoApp() {
 
     this.todoItems = [];
     this.showCondition = "all";
-    this.count = this.todoItems.length;
+    this.checkedOfItems = [];
 
     new TodoInput({
       onAdd: contents => {
-        const newTodoItem = new TodoItem(contents, false);
-        this.todoItems.push(newTodoItem);
-        this.todoList.setState(this.todoItems, this.showCondition);
+        this.todoItems.push(contents);
+        this.checkedOfItems.push(false);
+        this.todoList.setState(this.todoItems, this.checkedOfItems, this.showCondition);
       }
     });
 
     this.todoList = new TodoList({
-      render : showItems => {
-
-        this.todoList.$todoList.innerHTML = ``;
-        showItems.forEach($item => {
-            this.todoList.$todoList.append($item);
-        });
-
-        this.todoList.$todoList.addEventListener("click", e => {
-            document.querySelectorAll(".toggle").forEach($item => {
-                if($item.contains(e.target)){
-                    if($item.checked === true){
-                        $item.parentNode.parentNode.classList.add("completed");
-                    }
-                    else{
-                        $item.parentNode.parentNode.classList.remove("completed");
-                    }
-                }
-            });
-        });
-
-        this.todoList.$todoList.addEventListener("click", e => {
-            document.querySelectorAll(".destroy").forEach($item => {
-                if($item.contains(e.target)){
-                  this.todoItems.splice(this.todoItems.indexOf($item.parentNode.parentNode), 1);
-                    this.todoList.setState(this.todoItems, this.showCondition);
-                }
-            });
-        });
-
-        document.querySelectorAll(".label").forEach($item => {
-            $item.addEventListener("dblclick", () => {
-                $item.parentNode.parentNode.classList.add("editing");
-                $item.parentNode.parentNode.addEventListener("keyup", e => {
-                    if(e.key === 'Escape'){
-                        $item.parentNode.parentNode.classList.remove("editing");
-                    }
-                })
-            })
-        });
-
-        document.querySelector(".todo-count").innerHTML = 
-            `총 <strong>${document.querySelectorAll(".label").length}</strong> 개`;
-        
+      updateChecked: contents => {
+        var index = this.todoItems.indexOf(contents);
+        if(this.checkedOfItems[index]){
+          this.checkedOfItems[index] = false;
+        }
+        else{
+          this.checkedOfItems[index] = true;
+        }
+        this.todoStorage.update(this.todoItems, this.checkedOfItems);
+      },
+      onDelete: $item => {
+        var index = this.todoItems.indexOf($item.parentNode.querySelector(".label").innerText);
+        this.todoItems.splice(index, 1);
+        this.checkedOfItems.splice(index, 1);
+        this.todoList.setState(this.todoItems, this.checkedOfItems, this.showCondition);
+      },
+      updateLocalStorage: (todoItems, checkedOfItems) => {
+        this.todoStorage.update(todoItems, checkedOfItems);
       }
     });
 
-    // this.todoStorage = new TodoStorage();
-    // this.todoItems = this.todoStorage.init();
+    //localStorage.clear();
 
-    this.todoList.setState(this.todoItems, this.showCondition);
+    this.todoStorage = new TodoStorage({
+      loadLocalStorage: (todoItems, checkedOfItems) => {
+        this.todoItems = todoItems;
+        this.checkedOfItems = checkedOfItems;
+      }
+    });
+
+    this.todoList.setState(this.todoItems, this.checkedOfItems, this.showCondition);
 
     document.querySelector(".all-selected").addEventListener("click", () => {
-      this.todoList.setState(this.todoItems, "all");
+      console.log("all");
+      this.todoList.setState(this.todoItems, this.checkedOfItems, "all");
     });
     document.querySelector(".active").addEventListener("click", () => {
-      this.todoList.setState(this.todoItems, "active");
+      this.todoList.setState(this.todoItems, this.checkedOfItems, "active");
     });
     document.querySelector(".completed").addEventListener("click", () => {
-      this.todoList.setState(this.todoItems, "completed");
+      console.log("completed");
+      this.todoList.setState(this.todoItems, this.checkedOfItems, "completed");
     });
 
 }
+
+new TodoApp();

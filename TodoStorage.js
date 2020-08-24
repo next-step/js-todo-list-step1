@@ -1,33 +1,40 @@
-function TodoStorage(){
+function TodoStorage({ loadLocalStorage }){
 
-    this.$todoStorage = [];
-    this.$checked = [];
+    this.todoStorage = [];
+    this.checked = [];
 
-    this.init = () => {
+    try{
+        this.todoStorage = JSON.parse(localStorage.getItem("todolist"));
+        this.checked = JSON.parse(localStorage.getItem("checked"));
 
-        this.$todoStorage = JSON.parse(localStorage.getItem("todolist"));
-        this.$checked = JSON.parse(localStorage.getItem("checked"));
-
-        if(this.$todoStorage == null) return [];
-
-        let todoItems = [];
-
-        for(let i = 0; i < this.$todoStorage.length; i++){
-            todoItems.push(new TodoItem(this.$todoStorage[i], this.$checked[i]));
+        if(this.todoStorage == null) {
+            this.todoStorage = [];
+            this.checked = [];
         }
-
-        return todoItems;
+    }
+    catch(exception){
+        this.todoStorage = [];
+        this.checked = [];
     }
 
-    this.update = myStorage => {
-        this.$todoStorage = [];
-        this.$checked = [];
+    loadLocalStorage(this.todoStorage, this.checked);
 
-        myStorage.forEach($item => {
-            this.$todoStorage.push($item.querySelector(".label").innerText);
-            this.$checked.push($item.querySelector(".toggle").checked);
-        });
-        localStorage.setItem("todolist", JSON.stringify(this.$todoStorage));
-        localStorage.setItem("checked", JSON.stringify(this.$checked));
+    this.update = (newStorage, newChecked) => {
+        this.todoStorage = [];
+        this.checked = [];
+        try{
+            newStorage.forEach($item => {
+                this.todoStorage.push($item);
+            });
+            newChecked.forEach($item => {
+                this.checked.push($item);
+            });
+        }
+        catch(exception){
+            this.todoStorage = [];
+            this.checked = [];
+        }
+        localStorage.setItem("todolist", JSON.stringify(this.todoStorage));
+        localStorage.setItem("checked", JSON.stringify(this.checked));
     }
 }
