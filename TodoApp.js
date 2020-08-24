@@ -47,15 +47,16 @@ function TodoApp() {
     this.todoList.setState(this.todoItems, this.checkedOfItems, this.showCondition);
 
     document.querySelector(".all-selected").addEventListener("click", () => {
-      console.log("all");
-      this.todoList.setState(this.todoItems, this.checkedOfItems, "all");
+      this.showCondition = "all";
+      this.todoList.setState(this.todoItems, this.checkedOfItems, this.showCondition);
     });
     document.querySelector(".active").addEventListener("click", () => {
-      this.todoList.setState(this.todoItems, this.checkedOfItems, "active");
+      this.showCondition = "active";
+      this.todoList.setState(this.todoItems, this.checkedOfItems, this.showCondition);
     });
-    document.querySelector(".completed").addEventListener("click", () => {
-      console.log("completed");
-      this.todoList.setState(this.todoItems, this.checkedOfItems, "completed");
+    document.querySelector(".complete").addEventListener("click", () => {
+      this.showCondition = "completed";
+      this.todoList.setState(this.todoItems, this.checkedOfItems, this.showCondition);
     });
 
 }
