@@ -1,38 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>이벤트 - TODOS</title>
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
-  <body>
-    <div class="todoapp">
-      <h1>TODOS</h1>
-      <input
-        id="new-todo-title"
-        class="new-todo"
-        placeholder="할일을 추가해주세요"
-        autofocus
-      />
-      <main>
-        <input class="toggle-all" type="checkbox" />
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<div class="todoapp">
+    <h1>TODOS</h1>
+    <input
+            id="new-todo-title"
+            class="new-todo"
+            placeholder="할일을 추가해주세요"
+            autofocus
+    />
+    <main>
+        <input class="toggle-all" type="checkbox"/>
         <ul id="todo-list" class="todo-list"></ul>
         <div class="count-container">
-          <span class="todo-count">총 <strong>0</strong> 개</span>
-          <ul class="filters">
-            <li>
-              <a class="all selected" href="/#">전체보기</a>
-            </li>
-            <li>
-              <a class="active" href="#active">해야할 일</a>
-            </li>
-            <li>
-              <a class="completed" href="#completed">완료한 일</a>
-            </li>
-          </ul>
+            <span class="todo-count">총 <strong>0</strong> 개</span>
+            <ul class="filters">
+                <li>
+                    <a class="all selected" href="#">전체보기</a>
+                </li>
+                <li>
+                    <a class="active" href="#active">해야할 일</a>
+                </li>
+                <li>
+                    <a class="completed" href="#completed">완료한 일</a>
+                </li>
+            </ul>
         </div>
-      </main>
-    </div>
-  </body>
+    </main>
+</div>
+</body>
 </html>
+<script>
+    class Todo {
+        id = 0;
+        title = '';
+        status = '';
+
+        constructor(id, title, status = 'active') {
+            this.id = id;
+            this.title = title;
+            this.status = status;
+        }
+
+        toggleStatus() {
+            if (this.status === 'active') {
+                this.status = 'completed';
+            } else {
+                this.status = 'active';
+            }
+        }
+    }
+
+    let todos = [];
+    let todoId = 0;
+
+    const $newTodoInput = document.getElementById('new-todo-title');
+    const $todoList = document.getElementById('todo-list');
+    const $todoFilters = document.querySelector('.filters')
+
+    $newTodoInput.addEventListener('keyup', onAddTodoItem);
+    $todoList.addEventListener('click', onClickTodoItem);
+    $todoList.addEventListener('dblclick', onEditTodoItem);
+    $todoFilters.addEventListener('click', filterTodos);
+
+
+    function onAddTodoItem({key, target}) {
+        if (key === 'Enter') {
+            const todo = new Todo(todoId++, target.value);
+            target.value = '';
+            todos.push(todo);
+            render(todos);
+        }
+    }
+
+    function onClickTodoItem({target}) {
+        const todoId = parseInt(target.parentElement.parentElement.id);
+        const todo = todos.find(todo => todo.id === todoId);
+        if (target.classList.contains('toggle')) {
+            todo.toggleStatus();
+            render(todos);
+        } else if (target.classList.contains('destroy')) {
+            todos.splice(todos.indexOf(todo), 1);
+            render(todos);
+        }
+    }
+
+    function onEditTodoItem({target}) {
+        if (target.classList.contains('edit')) return;
+
+        const label = target
+        const editInput = target.parentNode.nextElementSibling;
+        const li = label.closest('li');
+        const oldValue = editInput.getAttribute('value');
+        li.classList.add('editing');
+
+        editInput.addEventListener('keyup', event => {
+            const newValue = event.target.value;
+
+            if (event.key === 'Enter') {
+                label.textContent = newValue;
+                editInput.setAttribute('value', newValue);
+                editInput.value = newValue;
+                label.closest('li').classList.remove('editing')
+            } else if (event.key === 'Escape') {
+                label.textContent = oldValue;
+                editInput.setAttribute('value', oldValue);
+                editInput.value = oldValue;
+                label.closest('li').classList.remove('editing')
+            }
+        })
+    }
+
+    function filterTodos({target}) {
+        if (target.classList.contains('all')) {
+            render(todos);
+            return;
+        }
+        const status = target.className;
+        const filterResult = todos.filter(todo => todo.status === status);
+        render(filterResult);
+    }
+
+    function render(todos) {
+        $todoList.innerHTML = '';
+        const count = document.querySelector('.todo-count > strong');
+        todos.map(todo => $todoList.insertAdjacentHTML('beforeend', renderTodoItemTemplate(todo)))
+        count.textContent = todos.length.toString();
+    }
+
+    function renderTodoItemTemplate(todo) {
+        return `<li id=${todo.id} class=${todo.status}>
+                <div class="view">
+                    <input class="toggle" type="checkbox" ${todo.status === 'completed' ? 'checked' : ''}/>
+                    <label class="label">${todo.title}</label>
+                    <button class="destroy"></button>
+                </div>
+                <input class="edit" value=${todo.title} />
+            </li>`
+    }
+</script>
