@@ -1,3 +1,5 @@
+import {ToDoItemService} from "../services";
+
 const getToDoItemClass = (completed, editing) =>
   editing   ? 'class="editing"'   :
   completed ? 'class="completed"' :
@@ -13,7 +15,7 @@ export const ToDoList = class {
     this.#target = target;
     this.#props = props;
     this.#setState({
-      items: [],
+      items: ToDoItemService.fetchAll(),
       editingIndex: -1,
       type: 'all'
     })
@@ -119,6 +121,9 @@ export const ToDoList = class {
 
   #setState (payload) {
     this.#state = { ...this.#state, ...payload };
+    if (payload.items !== undefined) {
+      ToDoItemService.put(payload.items);
+    }
     this.#render();
     this.#initEventListener();
     requestAnimationFrame(() => this.#props.countUpdate());
