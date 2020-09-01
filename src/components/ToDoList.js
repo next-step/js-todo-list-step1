@@ -6,8 +6,8 @@ const getToDoItemClass = (completed, editing) =>
 export const ToDoList = class {
 
   #state;
-  #props;
   #target;
+  #props;
 
   constructor (target, props) {
     this.#target = target;
@@ -101,11 +101,15 @@ export const ToDoList = class {
     })
   }
 
+  count () {
+    return this.#state.items.length;
+  }
+
   #setState (payload) {
     this.#state = { ...this.#state, ...payload };
-    this.#props.emitItems(this.#state.items);
     this.#render();
     this.#initEventListener();
+    requestAnimationFrame(() => this.#props.countUpdate());
   }
 
   addItem (itemTitle) {
@@ -116,5 +120,4 @@ export const ToDoList = class {
       ],
     });
   }
-
 }

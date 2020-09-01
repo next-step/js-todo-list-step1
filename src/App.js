@@ -1,4 +1,4 @@
-import { ToDoInput, ToDoList } from "./components";
+import { ToDoInput, ToDoList, CountContainer } from "./components";
 
 const App = class {
 
@@ -8,19 +8,14 @@ const App = class {
     const toDoInputTarget = document.querySelector('#new-todo-title');
     const toDoListTarget = document.querySelector('#todo-list');
     const countContainerTarget = document.querySelector('.count-container');
-    this.#countContainer = {
-      target: countContainerTarget,
-      countText: countContainerTarget.querySelector('.todo-count strong'),
-      buttons: countContainerTarget.querySelector('.filters a'),
-      allButton: countContainerTarget.querySelector('.all'),
-      activeButton: countContainerTarget.querySelector('.active'),
-      completedButton: countContainerTarget.querySelector('.completed'),
-    };
     this.#toDoInput = new ToDoInput(toDoInputTarget, {
       addToDoItem: itemTitle => this.#addToDoItem(itemTitle)
     });
     this.#toDoList = new ToDoList(toDoListTarget, {
-      emitItems: items => this.#resetStatus(items)
+      countUpdate: () => this.#countUpdate(),
+    });
+    this.#countContainer = new CountContainer(countContainerTarget, {
+      getItemCount: () => this.#getItemCount()
     });
   }
 
@@ -28,8 +23,12 @@ const App = class {
     this.#toDoList.addItem(itemTitle);
   }
 
-  #resetStatus (items) {
-    this.#countContainer.countText.innerHTML = items.length;
+  #countUpdate () {
+    this.#countContainer.render();
+  }
+
+  #getItemCount () {
+    return this.#toDoList.count();
   }
 
 }
