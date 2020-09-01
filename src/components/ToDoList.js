@@ -40,9 +40,9 @@ export const ToDoList = class {
   }
 
   #addToggleEvent () {
-    const toggleElements = this.#target.querySelectorAll('.toggle');
+    const toggleButtons = this.#target.querySelectorAll('.toggle');
     const { items } = this.#state;
-    toggleElements.forEach((v, key) => v.addEventListener('change', ({ target }) => {
+    toggleButtons.forEach((v, key) => v.addEventListener('change', ({ target }) => {
       const todoItem = items[key];
       todoItem.state = target.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO;
       items[key] = { ...todoItem };
@@ -51,7 +51,12 @@ export const ToDoList = class {
   }
 
   #addRemoveEvent () {
-
+    const destroyButtons = this.#target.querySelectorAll('.destroy');
+    const { items } = this.#state;
+    destroyButtons.forEach((v, key) => v.addEventListener('click', ({ target }) => {
+      items.splice(key, 1);
+      this.#setState({ items: [ ...items ] });
+    }))
   }
 
   #setState (payload) {
