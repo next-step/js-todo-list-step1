@@ -44,10 +44,10 @@ export const ToDoList = class {
   #addToggleEvent () {
     const toggleButtons = this.#target.querySelectorAll('.toggle');
     const { items } = this.#state;
-    toggleButtons.forEach((v, key) => v.addEventListener('change', ({ target }) => {
-      const todoItem = items[key];
+    toggleButtons.forEach((v, index) => v.addEventListener('change', ({ target }) => {
+      const todoItem = items[index];
       todoItem.state = target.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO;
-      items[key] = { ...todoItem };
+      items[index] = { ...todoItem };
       this.#setState({ items: [ ...items ] });
     }))
   }
@@ -55,8 +55,8 @@ export const ToDoList = class {
   #addRemoveEvent () {
     const destroyButtons = this.#target.querySelectorAll('.destroy');
     const { items } = this.#state;
-    destroyButtons.forEach((v, key) => v.addEventListener('click', ({ target }) => {
-      items.splice(key, 1);
+    destroyButtons.forEach((v, index) => v.addEventListener('click', ({ target }) => {
+      items.splice(index, 1);
       this.#setState({ items: [ ...items ] });
     }))
   }
@@ -64,28 +64,33 @@ export const ToDoList = class {
   #addEditingEvent () {
     const labels = this.#target.querySelectorAll('.label');
     const { items } = this.#state;
-    labels.forEach((v, key) => v.addEventListener('dblclick', ({ target }) => {
-      const todoItem = items[key];
+    labels.forEach((v, index) => v.addEventListener('dblclick', ({ target }) => {
+      const todoItem = items[index];
       todoItem.state = TODO_STATE.EDITING;
-      items[key] = { ...todoItem };
+      items[index] = { ...todoItem };
       this.#setState({
         items: [ ...items ],
-        editing: key
+        editing: index
       });
     }))
   }
 
   #addEditedEvent () {
     const editors = this.#target.querySelectorAll('.edit');
-    const { editing } = this.#state;
+    const { editing, items } = this.#state;
 
     editors.forEach(v => {
       const index = Number(v.dataset.index);
+      if (editing === index) v.focus();
+
       v.addEventListener('keydown', ({ target, key }) => {
         switch (key) {
           case 'Enter':
             break;
           case 'Esc':
+            this.#setState({
+
+            });
             break;
         }
       })
@@ -102,7 +107,7 @@ export const ToDoList = class {
     this.#setState({
       items: [
         ...this.#state.items,
-        { title: itemTitle, state: TODO_STATE.TODO }
+        { title: itemTitle, completed: false, editing: false }
       ],
     });
   }
