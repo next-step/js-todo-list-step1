@@ -15,7 +15,8 @@ const App = class {
       countUpdate: () => this.#countUpdate(),
     });
     this.#countContainer = new CountContainer(countContainerTarget, {
-      getItemCount: () => this.#getItemCount()
+      getItemCount: () => this.#getItemCount(),
+      selectToDoListType: type => this.#selectType(type),
     });
   }
 
@@ -29,6 +30,10 @@ const App = class {
 
   #getItemCount () {
     return this.#toDoList.count();
+  }
+
+  #selectType () {
+
   }
 
 }
