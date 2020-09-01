@@ -1,1 +1,0 @@
-const todoList = new TodoList();
