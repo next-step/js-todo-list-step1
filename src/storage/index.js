@@ -1,4 +1,4 @@
-export const storage = Object.freeze({
+export default Object.freeze({
   get (key) {
     return JSON.parse(localStorage.getItem(key) || 'null');
   },
