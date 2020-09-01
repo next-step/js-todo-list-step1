@@ -1,4 +1,8 @@
-function App(){
+import TodoCount from './TodoCount.js'
+import TodoList from './TodoList.js'
+import TodoInput from './TodoInput.js'
+
+function App() {
     const $todoInput = document.querySelector('#new-todo-title')
     const $todoList = document.querySelector('#todo-list')
     const $todoCount = document.querySelector('.todo-count')
@@ -28,7 +32,6 @@ function App(){
         addItem(text)
     })
     const todoCount = new TodoCount($todoCount, data.length)
-    
 }
 
-new App();
+new App()
