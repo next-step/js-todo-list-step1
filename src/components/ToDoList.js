@@ -26,8 +26,7 @@ export const ToDoList = class {
           <label class="label">${title}</label>
           <button class="destroy"></button>
         </div>
-        ${ state === TODO_STATE.EDITING &&
-          `<input class="edit" value="${title}" />` }
+        ${ state === TODO_STATE.EDITING ? `<input class="edit" value="${title}" />` : '' }
       </li>
     `).join('');
   }
@@ -42,9 +41,12 @@ export const ToDoList = class {
     this.#initEventListener();
   }
 
-  addItem (item) {
+  addItem (itemTitle) {
     this.#setState({
-      items: [ ...this.#state.items, item ],
+      items: [
+        ...this.#state.items,
+        { title: itemTitle, state: TODO_STATE.TODO }
+      ],
     });
   }
 

@@ -8,13 +8,13 @@ const App = class {
     const toDoInputTarget = document.querySelector('#new-todo-title');
     const toDoListTarget = document.querySelector('#todo-list');
     this.#toDoInput = new ToDoInput(toDoInputTarget, {
-      addToDoItem: item => this.addToDoItem(item)
+      addToDoItem: itemTitle => this.addToDoItem(itemTitle)
     });
     this.#toDoList = new ToDoList(toDoListTarget);
   }
 
-  addToDoItem (item) {
-    this.#toDoList.addItem(item);
+  addToDoItem (itemTitle) {
+    this.#toDoList.addItem(itemTitle);
   }
 
 
