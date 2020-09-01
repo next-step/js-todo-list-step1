@@ -15,23 +15,30 @@ export const ToDoList = class {
     this.#setState({
       items: [],
       editingIndex: -1,
+      type: 'all'
     })
   }
 
   #render () {
-    const { items } = this.#state;
-    this.#target.innerHTML = items.map(({ title, completed, editing }, key) => `
-      <li ${ getToDoItemClass(completed, editing) }>
-        <div class="view">
-          <input class="toggle"
-                 type="checkbox"
-                 ${completed ? 'checked' : '' } />
-          <label class="label">${title}</label>
-          <button class="destroy"></button>
-        </div>
-        ${ editing ? `<input class="edit" value="${title}" data-index="${key}" />` : '' }
-      </li>
-    `).join('');
+    const { items, type } = this.#state;
+    this.#target.innerHTML =
+      Object.entries(items)
+        .filter(entry => {
+          const completed = entry[1].completed;
+
+        })
+        .map(([ index, { title, completed, editing } ]) => `
+          <li ${ getToDoItemClass(completed, editing) }>
+            <div class="view">
+              <input class="toggle"
+                     type="checkbox"
+                     ${completed ? 'checked' : '' } />
+              <label class="label">${title}</label>
+              <button class="destroy"></button>
+            </div>
+            ${ editing ? `<input class="edit" value="${title}" data-index="${index}" />` : '' }
+          </li>
+        `).join('');
   }
 
   #initEventListener () {
@@ -119,5 +126,9 @@ export const ToDoList = class {
         { title: itemTitle, completed: false, editing: false }
       ],
     });
+  }
+
+  selectType (type) {
+    this.#setState({ type });
   }
 }

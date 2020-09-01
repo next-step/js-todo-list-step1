@@ -32,8 +32,8 @@ const App = class {
     return this.#toDoList.count();
   }
 
-  #selectType () {
-
+  #selectType (type) {
+    this.#toDoList.selectType(type);
   }
 
 }
