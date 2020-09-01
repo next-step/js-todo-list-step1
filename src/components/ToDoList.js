@@ -1,4 +1,4 @@
-export const ToDoInput = class {
+export const ToDoList = class {
 
   #state; #target;
 

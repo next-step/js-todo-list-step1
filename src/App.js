@@ -1,11 +1,12 @@
-import { ToDoInput } from "./components";
+import { ToDoInput, ToDoList } from "./components";
 
 const App = class {
 
-  #todoInput;
+  #toDoInput; #toDoList;
 
   constructor() {
     this.#toDoInput = new ToDoInput();
+    this.#toDoList = new ToDoList();
   }
 
 }
