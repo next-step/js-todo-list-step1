@@ -2,7 +2,8 @@ export const ToDoList = class {
 
   #state; #target;
 
-  constructor () {
+  constructor (target) {
+    this.#target = target;
   }
 
   #render () {

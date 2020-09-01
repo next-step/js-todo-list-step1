@@ -2,7 +2,8 @@ export const ToDoInput = class {
 
   #state; #target;
 
-  constructor () {
+  constructor (target) {
+    this.#target = target;
   }
 
   #render () {

@@ -5,8 +5,10 @@ const App = class {
   #toDoInput; #toDoList;
 
   constructor() {
-    this.#toDoInput = new ToDoInput();
-    this.#toDoList = new ToDoList();
+    const toDoInputTarget = document.querySelector('#new-todo-title');
+    const toDoListTarget = document.createElement('div');
+    this.#toDoInput = new ToDoInput(toDoInputTarget);
+    this.#toDoList = new ToDoList(toDoListTarget);
   }
 
 }
