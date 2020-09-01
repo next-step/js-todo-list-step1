@@ -6,10 +6,12 @@ const getToDoItemClass = (completed, editing) =>
 export const ToDoList = class {
 
   #state;
+  #props;
   #target;
 
-  constructor (target) {
+  constructor (target, props) {
     this.#target = target;
+    this.#props = props;
     this.#setState({
       items: [],
       editingIndex: -1,
@@ -101,6 +103,7 @@ export const ToDoList = class {
 
   #setState (payload) {
     this.#state = { ...this.#state, ...payload };
+    this.#props.emitItems(this.#state.items);
     this.#render();
     this.#initEventListener();
   }
