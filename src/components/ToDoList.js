@@ -1,8 +1,6 @@
-import { TODO_STATE } from "../domain";
-
-const getStateClass = state =>
-  state === TODO_STATE.COMPLETED ? 'class="completed"' :
-  state === TODO_STATE.EDITING   ? 'class="editing"'   :
+const getToDoItemClass = (completed, editing) =>
+  editing   ? 'class="editing"'   :
+  completed ? 'class="completed"' :
   '';
 
 export const ToDoList = class {
@@ -14,22 +12,22 @@ export const ToDoList = class {
     this.#target = target;
     this.#setState({
       items: [],
-      editing: -1,
+      editingIndex: -1,
     })
   }
 
   #render () {
     const { items } = this.#state;
-    this.#target.innerHTML = items.map(({ state, title }, key) => `
-      <li ${ getStateClass(state) }>
+    this.#target.innerHTML = items.map(({ title, completed, editing }, key) => `
+      <li ${ getToDoItemClass(completed, editing) }>
         <div class="view">
           <input class="toggle"
                  type="checkbox"
-                 ${state === TODO_STATE.COMPLETED ? 'checked' : '' } />
+                 ${completed ? 'checked' : '' } />
           <label class="label">${title}</label>
           <button class="destroy"></button>
         </div>
-        ${ state === TODO_STATE.EDITING ? `<input class="edit" value="${title}" data-index="${key}" />` : '' }
+        ${ editing ? `<input class="edit" value="${title}" data-index="${key}" />` : '' }
       </li>
     `).join('');
   }
@@ -46,7 +44,7 @@ export const ToDoList = class {
     const { items } = this.#state;
     toggleButtons.forEach((v, index) => v.addEventListener('change', ({ target }) => {
       const todoItem = items[index];
-      todoItem.state = target.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO;
+      todoItem.completed = target.checked;
       items[index] = { ...todoItem };
       this.#setState({ items: [ ...items ] });
     }))
@@ -66,30 +64,34 @@ export const ToDoList = class {
     const { items } = this.#state;
     labels.forEach((v, index) => v.addEventListener('dblclick', ({ target }) => {
       const todoItem = items[index];
-      todoItem.state = TODO_STATE.EDITING;
+      todoItem.editing = true;
       items[index] = { ...todoItem };
       this.#setState({
         items: [ ...items ],
-        editing: index
+        editingIndex: index
       });
     }))
   }
 
   #addEditedEvent () {
     const editors = this.#target.querySelectorAll('.edit');
-    const { editing, items } = this.#state;
+    const { editingIndex, items } = this.#state;
 
     editors.forEach(v => {
       const index = Number(v.dataset.index);
-      if (editing === index) v.focus();
+      if (editingIndex === index) v.focus();
 
       v.addEventListener('keydown', ({ target, key }) => {
+        const todoItem = items[index];
         switch (key) {
           case 'Enter':
-            break;
-          case 'Esc':
+            todoItem.title = target.value;
+          case 'Escape':
+            todoItem.editing = false;
+            items[index] = { ...todoItem };
             this.#setState({
-
+              items: [ ...items ],
+              editingIndex: -1
             });
             break;
         }
