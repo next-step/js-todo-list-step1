@@ -41,7 +41,7 @@ body {
     display: none;
 }
 
-.todoapp {
+.todo-app {
     background: #fff;
     margin: 130px 0 40px 0;
     position: relative;
@@ -49,13 +49,13 @@ body {
     0 25px 50px 0 rgba(0, 0, 0, 0.1);
 }
 
-.todoapp input::-webkit-input-placeholder {
+.todo-app input::-webkit-input-placeholder {
     font-style: italic;
     font-weight: 300;
     color: #e6e6e6;
 }
 
-.todoapp h1 {
+.todo-app h1 {
     position: absolute;
     top: -125px;
     width: 100%;
