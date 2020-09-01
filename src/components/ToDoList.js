@@ -25,11 +25,13 @@ export const ToDoList = class {
       Object.entries(items)
         .filter(entry => {
           const completed = entry[1].completed;
-
+          return (type === 'all') ||
+                 (type === 'completed' && completed) ||
+                 (type === 'active' && !completed);
         })
         .map(([ index, { title, completed, editing } ]) => `
           <li ${ getToDoItemClass(completed, editing) }>
-            <div class="view">
+            <div class="view" data-index="${index}">
               <input class="toggle"
                      type="checkbox"
                      ${completed ? 'checked' : '' } />
@@ -51,7 +53,8 @@ export const ToDoList = class {
   #addToggleEvent () {
     const toggleButtons = this.#target.querySelectorAll('.toggle');
     const { items } = this.#state;
-    toggleButtons.forEach((v, index) => v.addEventListener('change', ({ target }) => {
+    toggleButtons.forEach(v => v.addEventListener('change', ({ target }) => {
+      const index = Number(target.parentNode.dataset.index);
       const todoItem = items[index];
       todoItem.completed = target.checked;
       items[index] = { ...todoItem };
@@ -62,7 +65,8 @@ export const ToDoList = class {
   #addRemoveEvent () {
     const destroyButtons = this.#target.querySelectorAll('.destroy');
     const { items } = this.#state;
-    destroyButtons.forEach((v, index) => v.addEventListener('click', ({ target }) => {
+    destroyButtons.forEach(v => v.addEventListener('click', ({ target }) => {
+      const index = Number(target.parentNode.dataset.index);
       items.splice(index, 1);
       this.#setState({ items: [ ...items ] });
     }))
@@ -71,7 +75,8 @@ export const ToDoList = class {
   #addEditingEvent () {
     const labels = this.#target.querySelectorAll('.label');
     const { items } = this.#state;
-    labels.forEach((v, index) => v.addEventListener('dblclick', ({ target }) => {
+    labels.forEach(v => v.addEventListener('dblclick', ({ target }) => {
+      const index = Number(target.parentNode.dataset.index);
       const todoItem = items[index];
       todoItem.editing = true;
       items[index] = { ...todoItem };
