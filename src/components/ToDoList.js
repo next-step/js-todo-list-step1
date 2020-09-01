@@ -34,14 +34,24 @@ export const ToDoList = class {
   }
 
   #initEventListener () {
+
+    this.#addToggleEvent();
+    this.#addRemoveEvent();
+  }
+
+  #addToggleEvent () {
     const toggleElements = this.#target.querySelectorAll('.toggle');
     const { items } = this.#state;
     toggleElements.forEach((v, key) => v.addEventListener('change', ({ target }) => {
       const todoItem = items[key];
-      todoItem.state = v.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO;
+      todoItem.state = target.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO;
       items[key] = { ...todoItem };
       this.#setState({ items: [ ...items ] });
     }))
+  }
+
+  #addRemoveEvent () {
+
   }
 
   #setState (payload) {
