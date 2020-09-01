@@ -1,21 +1,31 @@
 export const ToDoInput = class {
 
-  #state; #target;
+  #state;
+  #target;
+  #props;
 
-  constructor (target) {
+  constructor (target, props) {
     this.#target = target;
-  }
-
-  #render () {
-
+    this.#props = props;
+    this.#state = {
+      toDoItem: ''
+    };
+    this.#initEventListener();
   }
 
   #initEventListener () {
-
+    this.#target.addEventListener('input', ({ target }) => {
+      this.#setState({ toDoItem: target.value });
+    })
+    this.#target.addEventListener('keydown', ({ key }) => {
+      if (key === 'Enter') {
+        this.#props.addToDoItem(this.#state.toDoItem);
+      }
+    })
   }
 
-  #setState () {
-
+  #setState (payload) {
+    this.#state = { ...this.#state, ...payload };
   }
 
 }
