@@ -1,6 +1,6 @@
-import {Component} from "../_core";
-import {debounceOf} from "../utils";
-import {toDoStore} from "../store";
+import {Component} from "../_core/index.js";
+import {debounceOf} from "../utils/index.js";
+import {toDoStore} from "../store/index.js";
 
 export const ToDoInput = class extends Component{
 

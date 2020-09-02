@@ -1,4 +1,4 @@
-import {debounceOf} from "../utils";
+import {debounceOf} from "../utils/index.js";
 
 export const Component = class {
   $state; $target; $props;

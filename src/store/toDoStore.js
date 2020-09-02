@@ -1,5 +1,5 @@
-import {Store} from "../_core";
-import {ToDoItemService} from "../services";
+import { Store } from "../_core/index.js";
+import { ToDoItemService } from "../services/index.js";
 
 export const toDoStore = new Store({
 

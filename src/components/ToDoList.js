@@ -1,6 +1,5 @@
-import {ToDoItemService} from "../services";
-import {Component} from "../_core";
-import {toDoStore} from "../store";
+import {Component} from "../_core/index.js";
+import {toDoStore} from "../store/index.js";
 
 const getToDoItemClass = (completed, editing) =>
   editing   ? 'class="editing"'   :

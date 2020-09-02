@@ -1,4 +1,4 @@
-import storage from '../storage';
+import storage from '../storage/index.js';
 
 const STORE_KEY = 'todoItems'
 

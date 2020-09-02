@@ -1,5 +1,5 @@
-import { ToDoInput, ToDoList, CountContainer } from "./components";
-import { toDoStore } from "./store";
+import { ToDoInput, ToDoList, CountContainer } from "./components/index.js";
+import { toDoStore } from "./store/index.js";
 
 const App = class {
 
