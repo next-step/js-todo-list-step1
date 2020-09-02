@@ -5,40 +5,52 @@ export const CountContainer = class {
   #state;
 
   constructor (target, props) {
-    this.#target = {
-      wrapper: target,
-      countText: target.querySelector('.todo-count strong'),
-      buttons: target.querySelectorAll('.filters a'),
-    };
+    this.#target = target;
     this.#props = props;
     this.#setState({
-      selected: target.querySelector('.filters a.all')
+      filters: [
+        { type: 'all', text: '전체보기' },
+        { type: 'active', text: '해야할 일' },
+        { type: 'completed', text: '완료한 일' },
+      ],
+      selectedIndex: 0
     })
     this.render();
     this.#initEventListener();
   }
 
+  get #selectedType () {
+    const { filters, selectedIndex } = this.#state;
+    return filters[selectedIndex].type;
+  }
+
   render () {
-    const { countText, buttons } = this.#target;
-    const { selected } = this.#state;
-    countText.innerHTML = this.#props.getItemCount();
-    buttons.forEach(button => {
-      button.classList.remove('selected');
-      if (button === selected) {
-        button.classList.add('selected')
-      }
-    })
+    const { filters, selectedIndex } = this.#state;
+    this.#target.innerHTML = `
+      <span class="todo-count">총 <strong>${this.#props.getItemCount()}</strong> 개</span>
+      <ul class="filters">
+        ${filters.map(({ type, text }, index) => `
+          <li>
+            <a class="${type} ${index === selectedIndex ? 'selected' : ''}"
+               href="#"
+               data-index="${index}">
+              ${text}
+            </a>
+          </li>
+        `).join('')}
+      </ul>
+    `;
   }
 
   #initEventListener () {
-    const { buttons, wrapper } = this.#target;
-    const buttonList = [ ...buttons ];
-    wrapper.addEventListener('click', e => {
+    this.#target.addEventListener('click', e => {
       e.preventDefault();
       const { target } = e;
-      if (!buttonList.includes(target)) return;
-      this.#setState({ selected: target });
-      this.#props.selectToDoListType(target.className.replace('selected', '').trim())
+      if (target.tagName === 'A') {
+        const selectedIndex = Number(target.dataset.index)
+        this.#setState({ selectedIndex });
+        this.#props.selectToDoListType(this.#selectedType);
+      }
     })
   }
 
