@@ -9,7 +9,7 @@ class TodoList {
       this.handleClick(e, deleteTodo, completeTodo)
     );
     this.$todoList.addEventListener('dblclick', (e) =>
-      this.handleDbClick(e, editTodo)
+      this.handleDblClick(e, editTodo)
     );
   }
 
@@ -27,7 +27,7 @@ class TodoList {
     }
   };
 
-  handleDbClick = (e, editTodo) => {
+  handleDblClick = (e, editTodo) => {
     if (e.target.parentElement.parentElement.nodeName === 'LI') {
       const $li = e.target.parentElement.parentElement;
       if (e.target.className === 'label') editTodo($li);
