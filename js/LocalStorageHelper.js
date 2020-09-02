@@ -38,14 +38,14 @@ class LocalStorageHelper {
 
     getAll = () => {
         let newList = [];
-        lsg.keys().forEach(key => newList.push(lsg.get(key)));
+        this.keys().forEach(key => newList.push(this.get(key)));
         return newList;
     };
 
     keys = () => (Object.getOwnPropertyNames(localStorage));
 
     remove = name => {
-        if (!!lsg.get(name))
+        if (!!this.get(name))
             localStorage.removeItem(name);
     };
     /**
@@ -54,19 +54,19 @@ class LocalStorageHelper {
      */
     removeAll = bool => {
         if (bool)
-            lsg.keys().forEach(key => (lsg.remove(key)));
+            this.keys().forEach(key => (this.remove(key)));
         else
             throw "If you really want to delete the entire file, give true as a parameter.";
     };
 
     removeExpiredItems = () => {
-        const keys = lsg.keys();
+        const keys = this.keys();
         const today = new Date().getTime();
         keys.forEach(key => {
             let item = JSON.parse(localStorage.getItem(key));
             let expiredDate = item.expires;
             if (today > expiredDate)
-                lsg.remove(key);
+                this.remove(key);
         });
     };
 }
