@@ -1,11 +1,12 @@
 class TodoItem {
-  constructor($ul, todo) {
+  constructor($ul, { id, text }) {
     this.$ul = $ul;
-    this.todo = todo;
+    this.id = id;
+    this.text = text;
     this.render();
   }
 
-  createTodoTemplete = ({ text }) => `
+  createTodoTemplete = (text) => `
 		<div class="view">
 			<input class="toggle" type="checkbox"/>
 			<label class="label">${text}</label>
@@ -16,7 +17,7 @@ class TodoItem {
 
   render() {
     const $li = document.createElement('li');
-    $li.innerHTML = this.createTodoTemplete(this.todo);
+    $li.innerHTML = this.createTodoTemplete(this.text);
     this.$ul.appendChild($li);
   }
 }
