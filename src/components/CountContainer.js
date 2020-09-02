@@ -1,9 +1,10 @@
 import {Component} from "../_core";
+import {toDoStore} from "../store";
 
 export const CountContainer = class extends Component {
 
-  constructor (target, props) {
-    super(target, props, {
+  constructor (target) {
+    super(target, {
       filters: [
         { type: 'all', text: '전체보기' },
         { type: 'active', text: '해야할 일' },
@@ -18,10 +19,14 @@ export const CountContainer = class extends Component {
     return filters[selectedIndex].type;
   }
 
+  get filteredItemsCount () {
+    return toDoStore.$getters.filteredItems.length;
+  }
+
   render () {
     const { filters, selectedIndex } = this.$state;
     this.$target.innerHTML = `
-      <span class="todo-count">총 <strong>${this.$props.getItemCount()}</strong> 개</span>
+      <span class="todo-count">총 <strong>${this.filteredItemsCount}</strong> 개</span>
       <ul class="filters">
         ${filters.map(({ type, text }, index) => `
           <li>
@@ -42,9 +47,13 @@ export const CountContainer = class extends Component {
       const { target } = e;
       if (target.tagName === 'A') {
         const selectedIndex = Number(target.dataset.index)
-        this.setState({ selectedIndex });
-        this.$props.selectToDoListType(this.#selectedType);
+        super.setState({ selectedIndex });
+        this.#selectType(this.#selectedType);
       }
     })
+  }
+
+  #selectType (type) {
+    toDoStore.commit('SET_TYPE', type);
   }
 }
