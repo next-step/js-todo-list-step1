@@ -19,9 +19,16 @@ export const ToDoList = class extends Component{
   get filteredItems () {
     const { items, type } = this.$state;
     return Object.entries(items)
-                 .filter(([, { completed }]) => (type === 'all') ||
-                                                (type === 'completed' && completed) ||
-                                                (type === 'active' && !completed));
+      .filter(([, { completed }]) => (type === 'all') ||
+        (type === 'completed' && completed) ||
+        (type === 'active' && !completed));
+  }
+
+  _setState (payload) {
+    if (payload.items !== undefined) {
+      ToDoItemService.put(payload.items);
+    }
+    requestAnimationFrame(() => this.$props.countUpdate());
   }
 
   _render () {
@@ -103,13 +110,6 @@ export const ToDoList = class extends Component{
 
   count () {
     return this.filteredItems.length;
-  }
-
-  _setState (payload) {
-    if (payload.items !== undefined) {
-      ToDoItemService.put(payload.items);
-    }
-    requestAnimationFrame(() => this.$props.countUpdate());
   }
 
   addItem (itemTitle) {
