@@ -1,4 +1,4 @@
-import {Store} from "../_core/Store";
+import {Store} from "../_core";
 import {ToDoItemService} from "../services";
 
 export const toDoStore = new Store({
@@ -10,10 +10,30 @@ export const toDoStore = new Store({
   },
 
   mutations: {
-    setItems (state, items) {
-      state.items = items;
-      ToDoItemService.put(items);
+
+    SET_ITEMS (state, payload) {
+      state.items = payload;
+      ToDoItemService.put(payload);
     },
+
+    SET_EDITING_INDEX (state, payload) {
+      state.editingIndex = payload;
+    },
+
+    SET_TYPE (state, payload) {
+      state.type = payload;
+    }
+
   },
 
+  getters: {
+
+    filteredItems ({ items, type }) {
+      return Object.entries(items)
+                   .filter(([, { completed }]) => (type === 'all') ||
+                                                  (type === 'completed' && completed) ||
+                                                  (type === 'active' && !completed));
+    },
+
+  }
 })
