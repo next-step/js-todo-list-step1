@@ -17,6 +17,7 @@ class TodoItem {
 
   render() {
     const $li = document.createElement('li');
+    $li.setAttribute('data-key', this.id);
     $li.innerHTML = this.createTodoTemplete(this.text);
     this.$ul.appendChild($li);
   }

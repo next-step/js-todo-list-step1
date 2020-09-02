@@ -18,8 +18,12 @@ class App {
     this.setTodos([...this.todos, newTodo]);
   };
 
+  deleteTodo = (targetId) => {
+    this.setTodos(this.todos.filter((todo) => todo.id !== targetId));
+  };
+
   todoInput = new TodoInput(this.addTodos);
-  todoList = new TodoList(this.todos);
+  todoList = new TodoList(this.todos, this.deleteTodo);
 }
 
 export default App;

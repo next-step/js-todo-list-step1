@@ -2,10 +2,12 @@ import TodoItem from './TodoItem';
 
 class TodoList {
   $todoList = document.querySelector('#todo-list');
-  constructor(todos) {
+  constructor(todos, deleteTodo) {
     this.todos = todos;
     this.render();
-    this.$todoList.addEventListener('click', this.completeTodo);
+    this.$todoList.addEventListener('click', (e) =>
+      this.handleClick(e, deleteTodo)
+    );
   }
 
   setTodos = (todos) => {
@@ -13,11 +15,17 @@ class TodoList {
     this.render();
   };
 
-  completeTodo = (e) => {
-    if (e.target.nodeName === 'INPUT' && e.target.parentElement.parentElement) {
-      e.target.toggleAttribute('checked');
-      e.target.parentElement.parentElement.classList.toggle('completed');
+  handleClick = (e, deleteTodo) => {
+    if (e.target.parentElement.parentElement) {
+      if (e.target.className === 'toggle') this.completeTodo(e);
+      else if (e.target.className === 'destroy')
+        deleteTodo(parseInt(e.target.parentElement.parentElement.dataset.key));
     }
+  };
+
+  completeTodo = (e) => {
+    e.target.toggleAttribute('checked');
+    e.target.parentElement.parentElement.classList.toggle('completed');
   };
 
   render() {
