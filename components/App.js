@@ -27,8 +27,18 @@ class App {
     $li.classList.toggle('completed');
   };
 
+  editTodo = ($li) => {
+    $li.classList.add('editing');
+    console.log($li.dataset.key);
+  };
+
   todoInput = new TodoInput(this.addTodos);
-  todoList = new TodoList(this.todos, this.deleteTodo, this.completeTodo);
+  todoList = new TodoList(
+    this.todos,
+    this.deleteTodo,
+    this.completeTodo,
+    this.editTodo
+  );
 }
 
 export default App;
