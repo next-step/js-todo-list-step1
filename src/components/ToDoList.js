@@ -16,28 +16,28 @@ export const ToDoList = class extends Component{
     });
   }
 
+  get filteredItems () {
+    const { items, type } = this.$state;
+    return Object.entries(items)
+                 .filter(([, { completed }]) => (type === 'all') ||
+                                                (type === 'completed' && completed) ||
+                                                (type === 'active' && !completed));
+  }
+
   _render () {
-    const { items, type, editingIndex } = this.$state;
-    this.$target.innerHTML =
-      Object.entries(items)
-        .filter(entry => {
-          const completed = entry[1].completed;
-          return (type === 'all') ||
-                 (type === 'completed' && completed) ||
-                 (type === 'active' && !completed);
-        })
-        .map(([ index, { title, completed, editing } ]) => `
-          <li ${ getToDoItemClass(completed, editing) }>
-            <div class="view" data-index="${index}">
-              <input class="toggle"
-                     type="checkbox"
-                     ${completed ? 'checked' : '' } />
-              <label class="label">${title}</label>
-              <button class="destroy"></button>
-            </div>
-            ${ editing ? `<input class="edit" value="${title}" data-index="${index}" />` : '' }
-          </li>
-        `).join('');
+    const { editingIndex } = this.$state;
+    this.$target.innerHTML = this.filteredItems.map(([ index, { title, completed, editing } ]) => `
+      <li ${ getToDoItemClass(completed, editing) }>
+        <div class="view" data-index="${index}">
+          <input class="toggle"
+                 type="checkbox"
+                 ${completed ? 'checked' : '' } />
+          <label class="label">${title}</label>
+          <button class="destroy"></button>
+        </div>
+        ${ editing ? `<input class="edit" value="${title}" data-index="${index}" />` : '' }
+      </li>
+    `).join('');
 
     if (editingIndex !== -1) {
       this.$target.querySelector(`.edit[data-index="${editingIndex}"]`).focus();
@@ -102,7 +102,7 @@ export const ToDoList = class extends Component{
   }
 
   count () {
-    return this.$state.items.length;
+    return this.filteredItems.length;
   }
 
   _setState (payload) {
