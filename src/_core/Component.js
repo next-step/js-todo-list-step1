@@ -1,9 +1,10 @@
 export const Component = class {
   $state; $target; $props;
 
-  constructor(target, props) {
+  constructor(target, props, state) {
     this.$target = target;
     this.$props = props;
+    if (state) this.setState(state);
     this.initEventListener();
   }
 

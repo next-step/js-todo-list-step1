@@ -9,12 +9,11 @@ const getToDoItemClass = (completed, editing) =>
 export const ToDoList = class extends Component{
 
   constructor (target, props) {
-    super(target, props);
-    super.setState({
+    super(target, props, {
       items: ToDoItemService.fetchAll(),
       editingIndex: -1,
       type: 'all'
-    })
+    });
   }
 
   _render () {

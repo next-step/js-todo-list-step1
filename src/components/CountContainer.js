@@ -3,15 +3,14 @@ import {Component} from "../_core";
 export const CountContainer = class extends Component {
 
   constructor (target, props) {
-    super(target, props);
-    super.setState({
+    super(target, props, {
       filters: [
         { type: 'all', text: '전체보기' },
         { type: 'active', text: '해야할 일' },
         { type: 'completed', text: '완료한 일' },
       ],
       selectedIndex: 0
-    })
+    });
   }
 
   get #selectedType () {
