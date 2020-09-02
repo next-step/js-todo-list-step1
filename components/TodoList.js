@@ -1,8 +1,9 @@
 import TodoItem from './TodoItem'
 
 class TodoList {
+	$todoList = document.querySelector('#todo-list');
 	constructor(todos) {
-		this.todos = todos || [];
+		this.todos = todos;
 		this.render();
 	}
 
@@ -12,7 +13,10 @@ class TodoList {
 	};
 
 	render() {
-
+		this.$todoList.innerHTML = '';
+		this.todos.forEach(todo => {
+			new TodoItem(this.$todoList, todo);
+		})
 	}
 }
 
