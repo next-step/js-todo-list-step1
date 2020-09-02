@@ -8,17 +8,17 @@ export const Store = class {
     this.$observing = new Set();
   }
 
-  addObserver (component) {
-    this.$observing.add(component);
+  addObserver (...components) {
+    components.forEach(component => this.$observing.add(component));
   }
 
   commit (mutationKey, payload) {
     const newState = { ...this.$state };
     this.$mutations[mutationKey](newState, payload);
-    this.setState(newState);
+    this.#setState(newState);
   }
 
-  setState (newState) {
+  #setState (newState) {
     this.$state = { ...this.$state };
     this.$observing.forEach(component => component.render());
   }

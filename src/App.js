@@ -1,4 +1,5 @@
 import { ToDoInput, ToDoList, CountContainer } from "./components";
+import { toDoStore } from "./store";
 
 const App = class {
 
@@ -8,16 +9,25 @@ const App = class {
     const toDoInputTarget = document.querySelector('#new-todo-title');
     const toDoListTarget = document.querySelector('#todo-list');
     const countContainerTarget = document.querySelector('.count-container');
+
     this.#toDoInput = new ToDoInput(toDoInputTarget, {
       addToDoItem: itemTitle => this.#addToDoItem(itemTitle)
     });
+
     this.#toDoList = new ToDoList(toDoListTarget, {
       countUpdate: () => this.#countUpdate(),
     });
+
     this.#countContainer = new CountContainer(countContainerTarget, {
       getItemCount: () => this.#getItemCount(),
       selectToDoListType: type => this.#selectType(type),
     });
+
+    toDoStore.addObserver(
+      this.#toDoInput,
+      this.#toDoList,
+      this.#countContainer
+    );
   }
 
   #addToDoItem (itemTitle) {
