@@ -1,6 +1,7 @@
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
 import Count from './Count';
+import Filter from './Filter';
 
 class App {
   todos = [];
@@ -32,9 +33,18 @@ class App {
     );
   };
 
+  filterAllTodo = () => {};
+  filterActiveTodo = () => {};
+  filterCompletedTodo = () => {};
+
   todoInput = new TodoInput(this.addTodos);
   todoList = new TodoList(this.todos, this.deleteTodo, this.editTodo);
   count = new Count(this.todos.length);
+  filter = new Filter(
+    this.filterAllTodo,
+    this.filterActiveTodo,
+    this.filterCompletedTodo
+  );
 }
 
 export default App;

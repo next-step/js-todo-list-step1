@@ -1,20 +1,17 @@
 class Count {
-  $countContainer = document.querySelector('.count-container');
+  $count = document.querySelector('.todo-count');
   constructor(count) {
     this.count = count;
     this.render();
   }
 
   setCount = (count) => {
-    console.log('hi');
     this.count = count;
     this.render();
   };
 
   render = () => {
-    this.$countContainer.querySelector(
-      '.todo-count>strong'
-    ).innerText = this.count;
+    this.$count.querySelector('strong').innerText = this.count;
   };
 }
 
