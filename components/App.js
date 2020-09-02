@@ -22,23 +22,16 @@ class App {
     this.setTodos(this.todos.filter((todo) => todo.id !== targetId));
   };
 
-  completeTodo = ($checkbox, $li) => {
-    $checkbox.toggleAttribute('checked');
-    $li.classList.toggle('completed');
-  };
-
-  editTodo = ($li) => {
-    $li.classList.add('editing');
-    console.log($li.dataset.key);
+  editTodo = (targetId, newText) => {
+    this.setTodos(
+      this.todos.map((todo) =>
+        todo.id === targetId ? { ...todo, text: newText } : todo
+      )
+    );
   };
 
   todoInput = new TodoInput(this.addTodos);
-  todoList = new TodoList(
-    this.todos,
-    this.deleteTodo,
-    this.completeTodo,
-    this.editTodo
-  );
+  todoList = new TodoList(this.todos, this.deleteTodo, this.editTodo);
 }
 
 export default App;
