@@ -5,11 +5,19 @@ class TodoList {
   constructor(todos) {
     this.todos = todos;
     this.render();
+    this.$todoList.addEventListener('click', this.completeTodo);
   }
 
   setTodos = (todos) => {
     this.todos = todos;
     this.render();
+  };
+
+  completeTodo = (e) => {
+    if (e.target.nodeName === 'INPUT' && e.target.parentElement.parentElement) {
+      e.target.toggleAttribute('checked');
+      e.target.parentElement.parentElement.classList.toggle('completed');
+    }
   };
 
   render() {
