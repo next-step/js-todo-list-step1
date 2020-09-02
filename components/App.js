@@ -22,8 +22,13 @@ class App {
     this.setTodos(this.todos.filter((todo) => todo.id !== targetId));
   };
 
+  completeTodo = ($checkbox, $li) => {
+    $checkbox.toggleAttribute('checked');
+    $li.classList.toggle('completed');
+  };
+
   todoInput = new TodoInput(this.addTodos);
-  todoList = new TodoList(this.todos, this.deleteTodo);
+  todoList = new TodoList(this.todos, this.deleteTodo, this.completeTodo);
 }
 
 export default App;
