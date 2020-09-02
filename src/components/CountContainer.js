@@ -1,13 +1,10 @@
-export const CountContainer = class {
+import {Component} from "../_core";
 
-  #target;
-  #props;
-  #state;
+export const CountContainer = class extends Component {
 
   constructor (target, props) {
-    this.#target = target;
-    this.#props = props;
-    this.#setState({
+    super(target, props);
+    super.setState({
       filters: [
         { type: 'all', text: '전체보기' },
         { type: 'active', text: '해야할 일' },
@@ -15,19 +12,17 @@ export const CountContainer = class {
       ],
       selectedIndex: 0
     })
-    this.render();
-    this.#initEventListener();
   }
 
   get #selectedType () {
-    const { filters, selectedIndex } = this.#state;
+    const { filters, selectedIndex } = this.$state;
     return filters[selectedIndex].type;
   }
 
   render () {
-    const { filters, selectedIndex } = this.#state;
-    this.#target.innerHTML = `
-      <span class="todo-count">총 <strong>${this.#props.getItemCount()}</strong> 개</span>
+    const { filters, selectedIndex } = this.$state;
+    this.$target.innerHTML = `
+      <span class="todo-count">총 <strong>${this.$props.getItemCount()}</strong> 개</span>
       <ul class="filters">
         ${filters.map(({ type, text }, index) => `
           <li>
@@ -42,20 +37,15 @@ export const CountContainer = class {
     `;
   }
 
-  #initEventListener () {
-    this.#target.addEventListener('click', e => {
+  _initEventListener () {
+    this.$target.addEventListener('click', e => {
       e.preventDefault();
       const { target } = e;
       if (target.tagName === 'A') {
         const selectedIndex = Number(target.dataset.index)
-        this.#setState({ selectedIndex });
-        this.#props.selectToDoListType(this.#selectedType);
+        this.setState({ selectedIndex });
+        this.$props.selectToDoListType(this.#selectedType);
       }
     })
-  }
-
-  #setState (payload) {
-    this.#state = { ...this.#state, ...payload }
-    this.render();
   }
 }
