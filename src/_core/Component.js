@@ -3,9 +3,9 @@ import {debounceOf} from "../utils";
 export const Component = class {
   $state; $target; $props;
 
-  constructor(target, state, props) {
+  constructor(target, state = {}, props = {}) {
     this.$target = target;
-    if (props) this.$props = props;
+    this.$props = props;
     this.debounceRender = debounceOf(() => this._render());
     this.setState(state);
     this.initEventListener();

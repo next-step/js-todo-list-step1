@@ -48,12 +48,8 @@ export const CountContainer = class extends Component {
       if (target.tagName === 'A') {
         const selectedIndex = Number(target.dataset.index)
         super.setState({ selectedIndex });
-        this.#selectType(this.#selectedType);
+        toDoStore.commit('SET_TYPE', this.#selectedType);
       }
     })
-  }
-
-  #selectType (type) {
-    toDoStore.commit('SET_TYPE', type);
   }
 }

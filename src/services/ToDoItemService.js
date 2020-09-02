@@ -1,6 +1,5 @@
 import storage from '../storage';
 
-
 const STORE_KEY = 'todoItems'
 
 export default Object.freeze({

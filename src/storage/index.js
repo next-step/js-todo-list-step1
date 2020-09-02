@@ -1,4 +1,5 @@
 export default Object.freeze({
+
   get (key) {
     return JSON.parse(localStorage.getItem(key) || 'null');
   },
@@ -6,4 +7,5 @@ export default Object.freeze({
   set (key, value) {
     return localStorage.setItem(key, JSON.stringify(value));
   }
+
 });
