@@ -9,13 +9,10 @@ export const CountContainer = class {
       wrapper: target,
       countText: target.querySelector('.todo-count strong'),
       buttons: target.querySelectorAll('.filters a'),
-      allButton: target.querySelector('.all'),
-      activeButton: target.querySelector('.active'),
-      completedButton: target.querySelector('.completed'),
     };
     this.#props = props;
     this.#setState({
-      selected: this.#target.allButton
+      selected: target.querySelector('.filters a.all')
     })
     this.render();
     this.#initEventListener();
@@ -34,21 +31,14 @@ export const CountContainer = class {
   }
 
   #initEventListener () {
-    const { allButton, activeButton, completedButton } = this.#target;
-    allButton.addEventListener('click', e => {
+    const { buttons, wrapper } = this.#target;
+    const buttonList = [ ...buttons ];
+    wrapper.addEventListener('click', e => {
       e.preventDefault();
-      this.#setState({ selected: allButton });
-      this.#props.selectToDoListType('all');
-    })
-    activeButton.addEventListener('click', e => {
-      e.preventDefault();
-      this.#setState({ selected: activeButton });
-      this.#props.selectToDoListType('active');
-    })
-    completedButton.addEventListener('click', e => {
-      e.preventDefault();
-      this.#setState({ selected: completedButton });
-      this.#props.selectToDoListType('completed');
+      const { target } = e;
+      if (!buttonList.includes(target)) return;
+      this.#setState({ selected: target });
+      this.#props.selectToDoListType(target.className.replace('selected', '').trim())
     })
   }
 
