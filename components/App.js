@@ -2,14 +2,18 @@ import TodoList from './TodoList'
 import TodoInput from './TodoInput';
 
 class App {
-	// todos = [];
-	todos = ['test1', 'test2'];
+	todos = [];
+
 	setTodos = (todos) => {
 		this.todos = todos;
 		this.todoList.setTodos(this.todos);
 	};
 
-	todoInput = new TodoInput();
+	addTodos = (newTodo) => {
+		this.setTodos([...this.todos, newTodo]);
+	}
+
+	todoInput = new TodoInput(this.addTodos);
 	todoList = new TodoList(this.todos);
 }
 
