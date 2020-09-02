@@ -1,5 +1,6 @@
 import {ToDoItemService} from "../services";
 import {Component} from "../_core";
+import {toDoStore} from "../store";
 
 const getToDoItemClass = (completed, editing) =>
   editing   ? 'class="editing"'   :
@@ -8,32 +9,14 @@ const getToDoItemClass = (completed, editing) =>
 
 export const ToDoList = class extends Component{
 
-  constructor (target, props) {
-    super(target, props, {
-      items: ToDoItemService.fetchAll(),
-      editingIndex: -1,
-      type: 'all'
-    });
-  }
-
-  get filteredItems () {
-    const { items, type } = this.$state;
-    return Object.entries(items)
-                 .filter(([, { completed }]) => (type === 'all') ||
-                                                (type === 'completed' && completed) ||
-                                                (type === 'active' && !completed));
-  }
-
-  _setState (payload) {
-    if (payload.items !== undefined) {
-      ToDoItemService.put(payload.items);
-    }
-    requestAnimationFrame(() => this.$props.countUpdate());
+  constructor (target) {
+    super(target, {});
   }
 
   _render () {
-    const { editingIndex } = this.$state;
-    this.$target.innerHTML = this.filteredItems.map(([ index, { title, completed, editing } ]) => `
+    const { editingIndex } = toDoStore.$state;
+    const filteredItems = toDoStore.$getters.filteredItems;
+    this.$target.innerHTML = filteredItems.map(([ index, { title, completed, editing } ]) => `
       <li ${ getToDoItemClass(completed, editing) }>
         <div class="view" data-index="${index}">
           <input class="toggle"
@@ -45,7 +28,6 @@ export const ToDoList = class extends Component{
         ${ editing ? `<input class="edit" value="${title}" data-index="${index}" />` : '' }
       </li>
     `).join('');
-
     if (editingIndex !== -1) {
       this.$target.querySelector(`.edit[data-index="${editingIndex}"]`).focus();
     }
@@ -68,33 +50,34 @@ export const ToDoList = class extends Component{
   }
 
   #toggle (target) {
-    const { items } = this.$state;
+    const { items } = toDoStore.$state;
     const index = Number(target.parentNode.dataset.index);
     const todoItem = items[index];
     todoItem.completed = target.checked;
     items[index] = { ...todoItem };
-    super.setState({ items: [ ...items ] });
+    toDoStore.commit('SET_ITEMS', [ ...items ]);
   }
 
   #remove (target) {
-    const { items } = this.$state;
+    const { items } = toDoStore.$state;
     const index = Number(target.parentNode.dataset.index);
     items.splice(index, 1);
-    super.setState({ items: [ ...items ] });
+    toDoStore.commit('SET_ITEMS', [ ...items ]);
   }
 
   #editing (target) {
-    const { items } = this.$state;
+    const { items } = toDoStore.$state;
     const index = Number(target.parentNode.dataset.index);
     const todoItem = items[index];
     todoItem.editing = true;
     items[index] = { ...todoItem };
-    super.setState({ items: [ ...items ], editingIndex: index });
+    toDoStore.commit('SET_ITEMS', [ ...items ]);
+    toDoStore.commit('SET_EDITING_INDEX', index);
   }
 
   #edited (target, key) {
     if (!['Enter', 'Escape'].includes(key)) return;
-    const { items } = this.$state;
+    const { items } = toDoStore.$state;
     const index = Number(target.dataset.index);
     const todoItem = items[index];
     if (key === 'Enter') {
@@ -102,26 +85,7 @@ export const ToDoList = class extends Component{
     }
     todoItem.editing = false;
     items[index] = { ...todoItem };
-    super.setState({
-      items: [ ...items ],
-      editingIndex: -1
-    });
-  }
-
-  count () {
-    return this.filteredItems.length;
-  }
-
-  addItem (itemTitle) {
-    super.setState({
-      items: [
-        ...this.$state.items,
-        { title: itemTitle, completed: false, editing: false }
-      ],
-    });
-  }
-
-  selectType (type) {
-    super.setState({ type });
+    toDoStore.commit('SET_ITEMS', [ ...items ]);
+    toDoStore.commit('SET_EDITING_INDEX', -1);
   }
 }
