@@ -23,7 +23,7 @@ export const ToDoList = class {
   }
 
   #render () {
-    const { items, type } = this.#state;
+    const { items, type, editingIndex } = this.#state;
     this.#target.innerHTML =
       Object.entries(items)
         .filter(entry => {
@@ -44,6 +44,10 @@ export const ToDoList = class {
             ${ editing ? `<input class="edit" value="${title}" data-index="${index}" />` : '' }
           </li>
         `).join('');
+
+    if (editingIndex !== -1) {
+      this.#target.querySelector(`.edit[data-index="${editingIndex}"]`).focus();
+    }
   }
 
   #initEventListener () {
@@ -56,7 +60,9 @@ export const ToDoList = class {
     this.#target.addEventListener('dblclick', ({ target }) => {
       if (target.classList.contains('label')) this.#editing(target)
     })
-    this.#addEditedEvent();
+    this.#target.addEventListener('keydown', ({ target, key }) => {
+      if (target.classList.contains('edit')) this.#edited(target, key)
+    })
   }
 
   #toggle (target) {
@@ -81,36 +87,24 @@ export const ToDoList = class {
     const todoItem = items[index];
     todoItem.editing = true;
     items[index] = { ...todoItem };
-    this.#setState({
-      items: [ ...items ],
-      editingIndex: index
-    });
+    this.#setState({ items: [ ...items ], editingIndex: index });
   }
 
-  #addEditedEvent () {
-    const editors = this.#target.querySelectorAll('.edit');
-    const { editingIndex, items } = this.#state;
-
-    editors.forEach(v => {
-      const index = Number(v.dataset.index);
-      if (editingIndex === index) v.focus();
-
-      v.addEventListener('keydown', ({ target, key }) => {
-        const todoItem = items[index];
-        switch (key) {
-          case 'Enter':
-            todoItem.title = target.value;
-          case 'Escape':
-            todoItem.editing = false;
-            items[index] = { ...todoItem };
-            this.#setState({
-              items: [ ...items ],
-              editingIndex: -1
-            });
-            break;
-        }
-      })
-    })
+  #edited (target, key) {
+    const { items } = this.#state;
+    const index = Number(target.dataset.index);
+    const todoItem = items[index];
+    if (key === 'Enter') {
+      todoItem.title = target.value;
+    }
+    if (['Enter', 'Escape'].includes(key)) {
+      todoItem.editing = false;
+      items[index] = { ...todoItem };
+      this.#setState({
+        items: [ ...items ],
+        editingIndex: -1
+      });
+    }
   }
 
   count () {
