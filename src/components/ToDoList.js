@@ -53,7 +53,9 @@ export const ToDoList = class {
     this.#target.addEventListener('click', ({ target }) => {
       if (target.classList.contains('destroy')) this.#remove(target)
     })
-    this.#addEditingEvent();
+    this.#target.addEventListener('dblclick', ({ target }) => {
+      if (target.classList.contains('label')) this.#editing(target)
+    })
     this.#addEditedEvent();
   }
 
@@ -73,19 +75,16 @@ export const ToDoList = class {
     this.#setState({ items: [ ...items ] });
   }
 
-  #addEditingEvent () {
-    const labels = this.#target.querySelectorAll('.label');
+  #editing (target) {
     const { items } = this.#state;
-    labels.forEach(v => v.addEventListener('dblclick', ({ target }) => {
-      const index = Number(target.parentNode.dataset.index);
-      const todoItem = items[index];
-      todoItem.editing = true;
-      items[index] = { ...todoItem };
-      this.#setState({
-        items: [ ...items ],
-        editingIndex: index
-      });
-    }))
+    const index = Number(target.parentNode.dataset.index);
+    const todoItem = items[index];
+    todoItem.editing = true;
+    items[index] = { ...todoItem };
+    this.#setState({
+      items: [ ...items ],
+      editingIndex: index
+    });
   }
 
   #addEditedEvent () {
