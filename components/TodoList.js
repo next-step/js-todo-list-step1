@@ -2,16 +2,16 @@ import TodoItem from './TodoItem';
 
 class TodoList {
   $todoList = document.querySelector('#todo-list');
-  constructor(todos, deleteTodo, editTodo) {
+  constructor(todos, deleteTodo, editTodo, toggleActiveTodo) {
     this.todos = todos;
-    this.render();
     this.$todoList.addEventListener('click', (e) =>
-      this.handleClick(e, deleteTodo)
+      this.handleClick(e, deleteTodo, toggleActiveTodo)
     );
     this.$todoList.addEventListener('dblclick', this.handleDblClick);
     this.$todoList.addEventListener('keyup', (e) =>
       this.handleKeyUp(e, editTodo)
     );
+    this.render();
   }
 
   setTodos = (todos) => {
@@ -19,10 +19,11 @@ class TodoList {
     this.render();
   };
 
-  handleClick = (e, deleteTodo) => {
+  handleClick = (e, deleteTodo, toggleActiveTodo) => {
     if (e.target.parentElement.parentElement.nodeName === 'LI') {
       const $li = e.target.parentElement.parentElement;
-      if (e.target.className === 'toggle') this.completeTodo(e.target, $li);
+      if (e.target.className === 'toggle')
+        this.completeTodo($li, toggleActiveTodo);
       else if (e.target.className === 'destroy')
         deleteTodo(parseInt($li.dataset.key));
     }
@@ -52,16 +53,14 @@ class TodoList {
     $label.parentElement.nextSibling.nextSibling.focus();
   };
 
-  completeTodo = ($checkbox, $li) => {
-    $checkbox.toggleAttribute('checked');
+  completeTodo = ($li, toggleActiveTodo) => {
     $li.classList.toggle('completed');
+    setTimeout(() => toggleActiveTodo(parseInt($li.dataset.key)), 200);
   };
 
   render() {
     this.$todoList.innerHTML = '';
-    this.todos.forEach((todo) => {
-      new TodoItem(this.$todoList, todo);
-    });
+    for (let todo of this.todos) new TodoItem(this.$todoList, todo);
   }
 }
 

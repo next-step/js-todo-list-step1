@@ -5,11 +5,30 @@ import Filter from './Filter';
 
 class App {
   todos = [];
+  todosVisible = [];
+  whatToShow = 'all';
 
   setTodos = (todos) => {
     this.todos = todos;
-    this.todoList.setTodos(this.todos);
-    this.count.setCount(this.todos.length);
+    this.setTodosVisible();
+  };
+
+  setWhatToShow = (whatToShow) => {
+    this.whatToShow = whatToShow;
+    this.setTodosVisible();
+  };
+
+  setTodosVisible = () => {
+    this.todosVisible = this.todos.filter((todo) => {
+      if (
+        this.whatToShow === 'all' ||
+        (this.whatToShow == 'active' && todo.isActive) ||
+        (this.whatToShow == 'completed' && !todo.isActive)
+      )
+        return todo;
+    });
+    this.todoList.setTodos(this.todosVisible);
+    this.count.setCount(this.todosVisible.length);
   };
 
   addTodos = (newTodoText) => {
@@ -17,6 +36,7 @@ class App {
     const newTodo = {
       id: lastTodo ? lastTodo.id + 1 : 0,
       text: newTodoText,
+      isActive: true,
     };
     this.setTodos([...this.todos, newTodo]);
   };
@@ -33,18 +53,23 @@ class App {
     );
   };
 
-  filterAllTodo = () => {};
-  filterActiveTodo = () => {};
-  filterCompletedTodo = () => {};
+  toggleActiveTodo = (targetId) => {
+    this.setTodos(
+      this.todos.map((todo) =>
+        todo.id === targetId ? { ...todo, isActive: !todo.isActive } : todo
+      )
+    );
+  };
 
   todoInput = new TodoInput(this.addTodos);
-  todoList = new TodoList(this.todos, this.deleteTodo, this.editTodo);
-  count = new Count(this.todos.length);
-  filter = new Filter(
-    this.filterAllTodo,
-    this.filterActiveTodo,
-    this.filterCompletedTodo
+  todoList = new TodoList(
+    this.todosVisible,
+    this.deleteTodo,
+    this.editTodo,
+    this.toggleActiveTodo
   );
+  count = new Count();
+  filter = new Filter(this.setWhatToShow);
 }
 
 export default App;
