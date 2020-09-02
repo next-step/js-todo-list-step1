@@ -19,6 +19,7 @@ export const ToDoList = class {
       editingIndex: -1,
       type: 'all'
     })
+    this.#initEventListener();
   }
 
   #render () {
@@ -46,22 +47,21 @@ export const ToDoList = class {
   }
 
   #initEventListener () {
-    this.#addToggleEvent();
+    this.#target.addEventListener('change', ({ target }) => {
+      if (target.classList.contains('toggle')) this.#toggle(target)
+    })
     this.#addRemoveEvent();
     this.#addEditingEvent();
     this.#addEditedEvent();
   }
 
-  #addToggleEvent () {
-    const toggleButtons = this.#target.querySelectorAll('.toggle');
+  #toggle (target) {
     const { items } = this.#state;
-    toggleButtons.forEach(v => v.addEventListener('change', ({ target }) => {
-      const index = Number(target.parentNode.dataset.index);
-      const todoItem = items[index];
-      todoItem.completed = target.checked;
-      items[index] = { ...todoItem };
-      this.#setState({ items: [ ...items ] });
-    }))
+    const index = Number(target.parentNode.dataset.index);
+    const todoItem = items[index];
+    todoItem.completed = target.checked;
+    items[index] = { ...todoItem };
+    this.#setState({ items: [ ...items ] });
   }
 
   #addRemoveEvent () {
@@ -125,7 +125,6 @@ export const ToDoList = class {
       ToDoItemService.put(payload.items);
     }
     this.#render();
-    this.#initEventListener();
     requestAnimationFrame(() => this.#props.countUpdate());
   }
 

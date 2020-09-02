@@ -17,7 +17,7 @@ export const ToDoInput = class {
     this.#target.addEventListener('input', ({ target }) => {
       this.#setState({ toDoItem: target.value });
     })
-    this.#target.addEventListener('keydown', ({ key, target }) => {
+    this.#target.addEventListener('keydown', ({ key }) => {
       if (key === 'Enter') {
         this.#props.addToDoItem(this.#state.toDoItem);
         this.#reset();
