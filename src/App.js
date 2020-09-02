@@ -10,40 +10,15 @@ const App = class {
     const toDoListTarget = document.querySelector('#todo-list');
     const countContainerTarget = document.querySelector('.count-container');
 
-    this.#toDoInput = new ToDoInput(toDoInputTarget, {
-      addToDoItem: itemTitle => this.#addToDoItem(itemTitle)
-    });
-
-    this.#toDoList = new ToDoList(toDoListTarget, {
-      countUpdate: () => this.#countUpdate(),
-    });
-
-    this.#countContainer = new CountContainer(countContainerTarget, {
-      getItemCount: () => this.#getItemCount(),
-      selectToDoListType: type => this.#selectType(type),
-    });
+    this.#toDoInput = new ToDoInput(toDoInputTarget);
+    this.#toDoList = new ToDoList(toDoListTarget);
+    this.#countContainer = new CountContainer(countContainerTarget);
 
     toDoStore.addObserver(
       this.#toDoInput,
       this.#toDoList,
       this.#countContainer
     );
-  }
-
-  #addToDoItem (itemTitle) {
-    this.#toDoList.addItem(itemTitle);
-  }
-
-  #countUpdate () {
-    this.#countContainer.render();
-  }
-
-  #getItemCount () {
-    return this.#toDoList.count();
-  }
-
-  #selectType (type) {
-    this.#toDoList.selectType(type);
   }
 
 }
