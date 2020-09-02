@@ -19,9 +19,9 @@ export const ToDoList = class extends Component{
   get filteredItems () {
     const { items, type } = this.$state;
     return Object.entries(items)
-      .filter(([, { completed }]) => (type === 'all') ||
-        (type === 'completed' && completed) ||
-        (type === 'active' && !completed));
+                 .filter(([, { completed }]) => (type === 'all') ||
+                                                (type === 'completed' && completed) ||
+                                                (type === 'active' && !completed));
   }
 
   _setState (payload) {

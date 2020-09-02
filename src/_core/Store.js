@@ -12,8 +12,14 @@ export const Store = class {
     this.$observing.add(component);
   }
 
-  setState (payload) {
-    this.$state = { ...this.$state, ...payload };
+  commit (mutationKey, payload) {
+    const newState = { ...this.$state };
+    this.$mutations[mutationKey](newState, payload);
+    this.setState(newState);
+  }
+
+  setState (newState) {
+    this.$state = { ...this.$state };
     this.$observing.forEach(component => component.render());
   }
 
