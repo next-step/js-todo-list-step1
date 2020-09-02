@@ -9,7 +9,12 @@ class App {
     this.todoList.setTodos(this.todos);
   };
 
-  addTodos = (newTodo) => {
+  addTodos = (newTodoText) => {
+    let lastTodo = this.todos[this.todos.length - 1];
+    const newTodo = {
+      id: lastTodo ? lastTodo.id + 1 : 0,
+      text: newTodoText,
+    };
     this.setTodos([...this.todos, newTodo]);
   };
 

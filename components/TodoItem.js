@@ -5,13 +5,13 @@ class TodoItem {
     this.render();
   }
 
-  createTodoTemplete = (todo) => `
+  createTodoTemplete = ({ text }) => `
 		<div class="view">
 			<input class="toggle" type="checkbox"/>
-			<label class="label">${todo}</label>
+			<label class="label">${text}</label>
 			<button class="destroy"></button>
 		</div>
-		<input class="edit" value="${todo}" />
+		<input class="edit" value="${text}" />
 	`;
 
   render() {
