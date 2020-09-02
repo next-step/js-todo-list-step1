@@ -2,18 +2,19 @@ import TodoList from './TodoList';
 import TodoInput from './TodoInput';
 import Count from './Count';
 import Filter from './Filter';
+import { TODOS, ALL, ACTIVE, COMPLETED } from '../lib/constants';
 
 class App {
   todosVisible = [];
-  whatToShow = 'all';
+  whatToShow = ALL;
 
   constructor() {
-    this.setTodos(JSON.parse(localStorage.getItem('todos')) || []);
+    this.setTodos(JSON.parse(localStorage.getItem(TODOS)) || []);
   }
 
   setTodos = (todos) => {
     this.todos = todos;
-    localStorage.setItem('todos', JSON.stringify(todos));
+    localStorage.setItem(TODOS, JSON.stringify(todos));
     this.setTodosVisible();
   };
 
@@ -25,9 +26,9 @@ class App {
   setTodosVisible = () => {
     this.todosVisible = this.todos.filter((todo) => {
       if (
-        this.whatToShow === 'all' ||
-        (this.whatToShow == 'active' && todo.isActive) ||
-        (this.whatToShow == 'completed' && !todo.isActive)
+        this.whatToShow === ALL ||
+        (this.whatToShow == ACTIVE && todo.isActive) ||
+        (this.whatToShow == COMPLETED && !todo.isActive)
       )
         return todo;
     });

@@ -1,6 +1,4 @@
-const ALL = 'all';
-const ACTIVE = 'active';
-const COMPLETED = 'completed';
+import { ALL, ACTIVE, COMPLETED } from '../lib/constants';
 
 class Filter {
   $filters = document.querySelector('.filters');

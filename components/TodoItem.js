@@ -7,9 +7,6 @@ class TodoItem {
     this.render();
   }
 
-  // $checkbox.toggleAttribute('checked');
-  //   $li.classList.toggle('completed');
-
   createTodoTemplete = (text, isActive) => `
 		<div class="view">
 			<input class="toggle" type="checkbox" ${!isActive && 'checked'}/>
