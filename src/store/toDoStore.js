@@ -1,4 +1,4 @@
-import { Store } from "../_core/index.js";
+import { Store } from "../core/index.js";
 import { ToDoItemService } from "../services/index.js";
 
 export const toDoStore = new Store({
