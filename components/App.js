@@ -1,5 +1,6 @@
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
+import Count from './Count';
 
 class App {
   todos = [];
@@ -7,6 +8,7 @@ class App {
   setTodos = (todos) => {
     this.todos = todos;
     this.todoList.setTodos(this.todos);
+    this.count.setCount(this.todos.length);
   };
 
   addTodos = (newTodoText) => {
@@ -32,6 +34,7 @@ class App {
 
   todoInput = new TodoInput(this.addTodos);
   todoList = new TodoList(this.todos, this.deleteTodo, this.editTodo);
+  count = new Count(this.todos.length);
 }
 
 export default App;
