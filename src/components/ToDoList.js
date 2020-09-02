@@ -50,7 +50,9 @@ export const ToDoList = class {
     this.#target.addEventListener('change', ({ target }) => {
       if (target.classList.contains('toggle')) this.#toggle(target)
     })
-    this.#addRemoveEvent();
+    this.#target.addEventListener('click', ({ target }) => {
+      if (target.classList.contains('destroy')) this.#remove(target)
+    })
     this.#addEditingEvent();
     this.#addEditedEvent();
   }
@@ -64,14 +66,11 @@ export const ToDoList = class {
     this.#setState({ items: [ ...items ] });
   }
 
-  #addRemoveEvent () {
-    const destroyButtons = this.#target.querySelectorAll('.destroy');
+  #remove (target) {
     const { items } = this.#state;
-    destroyButtons.forEach(v => v.addEventListener('click', ({ target }) => {
-      const index = Number(target.parentNode.dataset.index);
-      items.splice(index, 1);
-      this.#setState({ items: [ ...items ] });
-    }))
+    const index = Number(target.parentNode.dataset.index);
+    items.splice(index, 1);
+    this.#setState({ items: [ ...items ] });
   }
 
   #addEditingEvent () {
