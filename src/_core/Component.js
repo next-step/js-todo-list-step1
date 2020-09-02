@@ -1,10 +1,13 @@
+import {debounceOf} from "../utils";
+
 export const Component = class {
   $state; $target; $props;
 
-  constructor(target, props, state) {
+  constructor(target, state, props) {
     this.$target = target;
-    this.$props = props;
-    if (state) this.setState(state);
+    if (props) this.$props = props;
+    this.debounceRender = debounceOf(() => this._render());
+    this.setState(state);
     this.initEventListener();
   }
 
@@ -15,7 +18,9 @@ export const Component = class {
   }
   _setState(payload) {}
 
-  render () { this._render(); }
+  render () {
+    this.debounceRender(1000 / 60);
+  }
   _render () {}
   initEventListener () { this._initEventListener(); }
   _initEventListener () { }
