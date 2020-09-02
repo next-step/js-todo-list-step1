@@ -4,12 +4,16 @@ import Count from './Count';
 import Filter from './Filter';
 
 class App {
-  todos = [];
   todosVisible = [];
   whatToShow = 'all';
 
+  constructor() {
+    this.setTodos(JSON.parse(localStorage.getItem('todos')) || []);
+  }
+
   setTodos = (todos) => {
     this.todos = todos;
+    localStorage.setItem('todos', JSON.stringify(todos));
     this.setTodosVisible();
   };
 
