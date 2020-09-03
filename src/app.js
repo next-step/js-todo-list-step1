@@ -31,7 +31,13 @@ class TodoApp {
             }
         );
 
-        this.$todoList = new TodoList(document.getElementById('todo-list'));
+        this.$todoList = new TodoList(document.getElementById('todo-list'), {
+            toggle: (index) => {
+                const completed = !this.state.todoItem[index].completed;
+                this.state.todoItem[index].completed = completed;
+                this.$todoList.render(this.state.todoItem);
+            }
+        });
     }
 
     // todoItem state 변경
