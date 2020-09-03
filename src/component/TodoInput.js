@@ -1,3 +1,5 @@
+import {debounceFrameOf} from "../utils";
+
 export const TodoInput = class {
 
   #target; #props;
@@ -10,10 +12,15 @@ export const TodoInput = class {
   }
 
   #setEvent () {
-    this.#target.addEventListener('keydown', ({ key, target }) => {
+    const target = this.#target;
+    const debounceEnter = debounceFrameOf(() => {
+      if (target.value.length === 0) return;
+      this.#props.onAdd(target.value);
+      target.value = '';
+    });
+    target.addEventListener('keydown', ({ key }) => {
       if (key === 'Enter') {
-        this.#props.onAdd(target.value);
-        target.value = '';
+        debounceEnter();
       }
     })
   }
