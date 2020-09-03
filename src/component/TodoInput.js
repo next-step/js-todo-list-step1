@@ -9,6 +9,7 @@ export const TodoInput = class {
     target.addEventListener('keydown', ({ key, target }) => {
       if (key === 'Enter') {
         this.props.onAdd(target.value);
+        target.value = '';
       }
     })
   }

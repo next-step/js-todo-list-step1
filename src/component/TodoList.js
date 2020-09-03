@@ -7,7 +7,7 @@ export const TodoList = class {
 
   target; props;
 
-  constructor(target, props) {
+  constructor(target, props = {}) {
     this.target = target;
     this.props = props;
   }
@@ -22,6 +22,6 @@ export const TodoList = class {
         </div>
         <input class="edit" value="${contents}" />
       </li>
-    `)
+    `).join('');
   }
 }
