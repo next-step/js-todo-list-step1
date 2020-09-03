@@ -22,12 +22,8 @@ function addItem() {
     let $ul = document.getElementById('todo-list');
     $ul.append(make({text:todoText, checked: false}));
     $todoInput.value = '';
+
+
+
+
 }
-
-
-
-
-window.addEventListener("DOMContentLoaded", ()=>{
-
-
-});
