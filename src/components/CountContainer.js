@@ -20,14 +20,14 @@ export const CountContainer = class extends Component {
     return filters[selectedIndex].type;
   }
 
-  get filteredItemsCount () {
+  get #filteredItemsCount () {
     return toDoStore.$getters.filteredItems.length;
   }
 
-  render () {
+  _render () {
     const { filters, selectedIndex } = this.$state;
     this.$target.innerHTML = `
-      <span class="todo-count">총 <strong>${this.filteredItemsCount}</strong> 개</span>
+      <span class="todo-count">총 <strong>${this.#filteredItemsCount}</strong> 개</span>
       <ul class="filters">
         ${filters.map(({ type, text }, index) => `
           <li>
