@@ -1,19 +1,41 @@
+
+import { TodoInput } from "./component/TodoInput";
+
 class TodoApp {
+
+    state;
+
     constructor () {
+
         this.state = {
             todoItem: [],
         }
+
+        // TODO: todo list에 todoItem을 키보드로 입력하여 추가하기
+        new TodoInput(
+          // target
+          document.getElementById('new-todo-title'),
+
+          // props
+          {
+                onAdd: (contents, completed = false) => {
+                    this.setState({
+                        todoItem: [
+                          ...this.state.todoItem,
+                            { completed, contents }
+                        ]
+                    });
+                }
+            }
+        );
     }
+
     // todoItem state 변경
-    setState (updatedItems) {
-        this.state.todoItem = updatedItems;
-        // todoItems 가 변화하면 영향을 받아야 하는 것들 추가적으로 작성
+    setState (payload) {
+        this.state = {
+            ...this.state,
+            ...payload,
+        }
     }
 
 };
-const todoApp = new TodoApp();
-
-const $input = document.getElementById('new-todo-title');
-$input.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {}
-});
