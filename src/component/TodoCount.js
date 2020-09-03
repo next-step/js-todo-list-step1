@@ -1,7 +1,11 @@
 export class TodoCount {
+    target;
+
+    constructor(target) {
+        this.target = target;
+    }
+
     render(count) {
-        const $count = document.querySelector('.todo-count').innerHTML = `
-            총 <strong>${count}</strong> 개
-        `;
+        this.target.innerHTML = `총 <strong>${count}</strong> 개`;
     }
 }
