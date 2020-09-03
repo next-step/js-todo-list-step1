@@ -31,9 +31,14 @@ class TodoApp {
         );
 
         this.$todoList = new TodoList(document.getElementById('todo-list'), {
-            toggle: (index) => {
+            toggle: index => {
                 const todoItem = [ ...this.state.todoItem ];
                 todoItem[index].completed = !todoItem[index].completed;
+                this.setState({ todoItem });
+            },
+            remove: index => {
+                const todoItem = [ ...this.state.todoItem ];
+                todoItem.splice(index, 1);
                 this.setState({ todoItem });
             }
         });
