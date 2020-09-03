@@ -1,14 +1,18 @@
 export const TodoInput = class {
 
-  target; props;
+  #target; #props;
 
   constructor(target, props) {
-    this.target = target;
-    this.props = props;
+    this.#target = target;
+    this.#props = props;
 
-    target.addEventListener('keydown', ({ key, target }) => {
+    this.#setEvent();
+  }
+
+  #setEvent () {
+    this.#target.addEventListener('keydown', ({ key, target }) => {
       if (key === 'Enter') {
-        this.props.onAdd(target.value);
+        this.#props.onAdd(target.value);
         target.value = '';
       }
     })
