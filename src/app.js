@@ -43,6 +43,7 @@ class TodoApp {
                 this.setState({ todoItem });
             },
             editing: editingIndex => this.setState({ editingIndex }),
+            cancel: () => this.setState({ editingIndex: -1 }),
         });
     }
 

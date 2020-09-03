@@ -34,21 +34,27 @@ export const TodoList = class {
         const index = Number(target.parentNode.dataset.index);
         this.props.toggle(index);
       }
-    })
+    });
 
     this.target.addEventListener('click', ({ target }) => {
       if (target.classList.contains('destroy')) {
         const index = Number(target.parentNode.dataset.index);
         this.props.remove(index);
       }
-    })
+    });
 
     this.target.addEventListener('dblclick', ({ target }) => {
       if (target.classList.contains('label')) {
         const index = Number(target.parentNode.dataset.index);
         this.props.editing(index);
       }
-    })
+    });
+
+    this.target.addEventListener('keydown', ({ key, target }) => {
+      if (target.classList.contains('edit') && key === 'Escape') {
+        this.props.cancel();
+      }
+    });
 
   }
 }
