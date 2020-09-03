@@ -1,16 +1,21 @@
-export default function TodoInput({ onAdd }) {
-    this.addTodoItem = event => {
+class TodoInput{
+
+    constructor({ onAdd }) {
+        this.onAdd = onAdd;
+        this.$todoInput = document.getElementById("new-todo-title");
+        this.$todoInput.addEventListener('keyup', event=>this.addTodoItem(event));
+    }
+
+    addTodoItem = event =>{
         const $newTodoTarget = event.target;
-        if(this.isValid(event, $newTodoTarget.value)) {
-            onAdd($newTodoTarget.value);
+        if (this.isValid(event, $newTodoTarget.value)) {
+            this.onAdd($newTodoTarget.value);
             $newTodoTarget.value = "";
         }
     }
 
-    let $todoInput = document.getElementById("new-todo-title");
-    $todoInput.addEventListener('keyup', this.addTodoItem);
-
-    this.isValid = ({target, key }, targetValue) => {
+    isValid = ({ target, key }, targetValue) => {
         return (target && key === "Enter" && targetValue !== "");
-    }
-};
+    };
+}
+export default TodoInput;

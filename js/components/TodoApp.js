@@ -1,24 +1,24 @@
-import todoInput from "./TodoInput.js";
-import todoList from "./TodoList.js";
-import todoFooter from "./TodoFooter.js";
+import TodoInput from "./TodoInput.js";
+import TodoList from "./TodoList.js";
 import TodoItem from "./TodoItem.js";
 
 class TodoApp{
     constructor(todoItems) {
         this.todoItems = todoItems || [];
+        this.todoList = new TodoList();
 
-        todoInput({
+        new TodoInput({
             onAdd: contents => {
                 let todoItem = new TodoItem(contents);
                 this.todoItems.push(todoItem);
                 this.setState(this.todoItems);
             }
-        })
+        });
     }
 
     setState(updateItems) {
         this.todoItems = updateItems;
-        todoList.setState(this.todoItems);
+        this.todoList.setState(this.todoItems);
     }
 }
 

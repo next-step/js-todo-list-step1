@@ -16,6 +16,14 @@ class TodoItem{
         $div.innerHTML = frame;
         return $div.firstElementChild;
     }
+
+    setState(){
+
+    }
+
+    render(){
+
+    }
 }
 
 export default TodoItem;
