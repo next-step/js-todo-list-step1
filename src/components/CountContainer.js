@@ -1,5 +1,6 @@
 import { Component } from "../core/index.js";
 import { toDoStore } from "../store/index.js";
+import { SET_TYPE } from "../store/toDoStore/index.js";
 
 export const CountContainer = class extends Component {
 
@@ -48,7 +49,7 @@ export const CountContainer = class extends Component {
       if (target.tagName === 'A') {
         const selectedIndex = Number(target.dataset.index)
         super.setState({ selectedIndex });
-        toDoStore.commit('SET_TYPE', this.#selectedType);
+        toDoStore.commit(SET_TYPE, this.#selectedType);
       }
     })
   }

@@ -1,6 +1,10 @@
 import { Store } from "../core/index.js";
 import { ToDoItemService } from "../services/index.js";
 
+export const SET_ITEMS = 'SET_ITEMS';
+export const SET_EDITING_INDEX = 'SET_EDITING_INDEX';
+export const SET_TYPE = 'SET_TYPE';
+
 export const toDoStore = new Store({
 
   state: {
@@ -11,16 +15,16 @@ export const toDoStore = new Store({
 
   mutations: {
 
-    SET_ITEMS (state, payload) {
+    [SET_ITEMS] (state, payload) {
       state.items = payload;
       ToDoItemService.put(payload);
     },
 
-    SET_EDITING_INDEX (state, payload) {
+    [SET_EDITING_INDEX] (state, payload) {
       state.editingIndex = payload;
     },
 
-    SET_TYPE (state, payload) {
+    [SET_TYPE] (state, payload) {
       state.type = payload;
     }
 

@@ -1,5 +1,6 @@
 import { Component } from "../core/index.js";
 import { toDoStore } from "../store/index.js";
+import { SET_EDITING_INDEX, SET_ITEMS } from "../store/toDoStore/index.js";
 
 const getToDoItemClass = (completed, editing) =>
   editing   ? 'class="editing"'   :
@@ -54,14 +55,14 @@ export const ToDoList = class extends Component{
     const todoItem = items[index];
     todoItem.completed = target.checked;
     items[index] = { ...todoItem };
-    toDoStore.commit('SET_ITEMS', [ ...items ]);
+    toDoStore.commit(SET_ITEMS, [ ...items ]);
   }
 
   #remove (target) {
     const { items } = toDoStore.$state;
     const index = Number(target.parentNode.dataset.index);
     items.splice(index, 1);
-    toDoStore.commit('SET_ITEMS', [ ...items ]);
+    toDoStore.commit(SET_ITEMS, [ ...items ]);
   }
 
   #editing (target) {
@@ -70,8 +71,8 @@ export const ToDoList = class extends Component{
     const todoItem = items[index];
     todoItem.editing = true;
     items[index] = { ...todoItem };
-    toDoStore.commit('SET_ITEMS', [ ...items ]);
-    toDoStore.commit('SET_EDITING_INDEX', index);
+    toDoStore.commit(SET_ITEMS, [ ...items ]);
+    toDoStore.commit(SET_EDITING_INDEX, index);
   }
 
   #edited (target, key) {
@@ -84,7 +85,7 @@ export const ToDoList = class extends Component{
     }
     todoItem.editing = false;
     items[index] = { ...todoItem };
-    toDoStore.commit('SET_ITEMS', [ ...items ]);
-    toDoStore.commit('SET_EDITING_INDEX', -1);
+    toDoStore.commit(SET_ITEMS, [ ...items ]);
+    toDoStore.commit(SET_EDITING_INDEX, -1);
   }
 }
