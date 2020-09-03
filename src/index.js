@@ -1,5 +1,3 @@
-
-
 // 전역 변수
 const todoItem = `
 <div class="view">
@@ -133,3 +131,13 @@ function Initialize() {
 // onload 이벤트
 // load시 초기화함수 Initialize를 실행시킨다.
 window.addEventListener("load", Initialize);
+=======
+const inputNewTodo = document.getElementById('new-todo-title');
+
+const handleInput = (e) => {
+  if (e.key === 'Enter') {
+    //
+  }
+};
+
+inputNewTodo.addEventListener('keypress', handleInput);
