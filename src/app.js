@@ -26,16 +26,15 @@ class TodoApp {
                             { completed, contents }
                         ]
                     });
-                    this.$todoList.render(this.state.todoItem);
                 }
             }
         );
 
         this.$todoList = new TodoList(document.getElementById('todo-list'), {
             toggle: (index) => {
-                const completed = !this.state.todoItem[index].completed;
-                this.state.todoItem[index].completed = completed;
-                this.$todoList.render(this.state.todoItem);
+                const todoItem = [ ...this.state.todoItem ];
+                todoItem[index].completed = !todoItem[index].completed;
+                this.setState({ todoItem });
             }
         });
     }
@@ -46,6 +45,7 @@ class TodoApp {
             ...this.state,
             ...payload,
         }
+        this.$todoList.render(this.state.todoItem);
     }
 
 };
