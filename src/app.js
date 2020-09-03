@@ -71,12 +71,10 @@ class TodoApp {
       ...this.state,
       ...payload,
     };
-    this.$todoList.render(
-      this.state.todoItem,
-      this.state.editingIndex,
-      this.state.filterType,
-    );
-    this.$todoCount.render(this.state.todoItem.length);
+    const { todoItem, editingIndex, filterType } = this.state;
+    this.$todoList.render(todoItem, editingIndex, filterType);
+    this.$todoCount.render(todoItem.length);
+    this.$todoFilter.render(filterType);
   }
 
 };
