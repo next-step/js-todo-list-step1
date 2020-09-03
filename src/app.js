@@ -10,6 +10,7 @@ class TodoApp {
 
         this.state = {
             todoItem: [],
+            editingIndex: -1,
         }
 
         this.$todoInput = new TodoInput(
@@ -40,7 +41,8 @@ class TodoApp {
                 const todoItem = [ ...this.state.todoItem ];
                 todoItem.splice(index, 1);
                 this.setState({ todoItem });
-            }
+            },
+            editing: editingIndex => this.setState({ editingIndex }),
         });
     }
 
@@ -50,7 +52,10 @@ class TodoApp {
             ...this.state,
             ...payload,
         }
-        this.$todoList.render(this.state.todoItem);
+        this.$todoList.render(
+          this.state.todoItem,
+          this.state.editingIndex
+        );
     }
 
 };

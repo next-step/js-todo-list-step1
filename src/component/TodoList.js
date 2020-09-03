@@ -31,15 +31,22 @@ export const TodoList = class {
 
     this.target.addEventListener('change', ({ target }) => {
       if (target.classList.contains('toggle')) {
-        const index = target.parentNode.dataset.index;
+        const index = Number(target.parentNode.dataset.index);
         this.props.toggle(index);
       }
     })
 
     this.target.addEventListener('click', ({ target }) => {
       if (target.classList.contains('destroy')) {
-        const index = target.parentNode.dataset.index;
+        const index = Number(target.parentNode.dataset.index);
         this.props.remove(index);
+      }
+    })
+
+    this.target.addEventListener('dblclick', ({ target }) => {
+      if (target.classList.contains('label')) {
+        const index = Number(target.parentNode.dataset.index);
+        this.props.editing(index);
       }
     })
 
