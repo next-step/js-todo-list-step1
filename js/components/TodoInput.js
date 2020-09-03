@@ -1,7 +1,4 @@
 export default function TodoInput({ onAdd }) {
-    let $todoInput = document.getElementById("#new-todo-title");
-    $todoInput.addEventListener('keyup', this.addTodoItem);
-
     this.addTodoItem = event => {
         const $newTodoTarget = event.target;
         if(this.isValid(event, $newTodoTarget.value)) {
@@ -10,7 +7,10 @@ export default function TodoInput({ onAdd }) {
         }
     }
 
-    this.isValid = (event, targetValue) => {
-        return (event.keyCode === 13 && targetValue != "");
+    let $todoInput = document.getElementById("new-todo-title");
+    $todoInput.addEventListener('keyup', this.addTodoItem);
+
+    this.isValid = ({target, key }, targetValue) => {
+        return (target && key === "Enter" && targetValue !== "");
     }
 };
