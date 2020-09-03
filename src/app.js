@@ -44,6 +44,11 @@ class TodoApp {
             },
             editing: editingIndex => this.setState({ editingIndex }),
             cancel: () => this.setState({ editingIndex: -1 }),
+            edited: (index, contents) => {
+                const todoItem = [ ...this.state.todoItem ];
+                todoItem[index].contents = contents;
+                this.setState({ todoItem, editingIndex: -1 });
+            }
         });
     }
 
@@ -52,7 +57,7 @@ class TodoApp {
         this.state = {
             ...this.state,
             ...payload,
-        }
+        };
         this.$todoList.render(
           this.state.todoItem,
           this.state.editingIndex
