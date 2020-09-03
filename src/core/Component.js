@@ -1,4 +1,5 @@
-import {debounceOf} from "../utils/index.js";
+import { debounceOf } from "../utils/index.js";
+import { ONE_FRAME } from "../constant/index.js";
 
 export const Component = class {
   $state; $target; $props;
@@ -19,7 +20,7 @@ export const Component = class {
   _setState(payload) {}
 
   render () {
-    this.debounceRender(1000 / 60);
+    this.debounceRender(ONE_FRAME);
   }
   _render () {}
   initEventListener () { this._initEventListener(); }

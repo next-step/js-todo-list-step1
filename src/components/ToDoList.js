@@ -1,5 +1,5 @@
-import {Component} from "../core/index.js";
-import {toDoStore} from "../store/index.js";
+import { Component } from "../core/index.js";
+import { toDoStore } from "../store/index.js";
 
 const getToDoItemClass = (completed, editing) =>
   editing   ? 'class="editing"'   :

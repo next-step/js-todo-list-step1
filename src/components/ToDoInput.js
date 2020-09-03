@@ -1,6 +1,7 @@
-import {Component} from "../core/index.js";
-import {debounceOf} from "../utils/index.js";
-import {toDoStore} from "../store/index.js";
+import { Component } from "../core/index.js";
+import { debounceOf } from "../utils/index.js";
+import { toDoStore } from "../store/index.js";
+import { ONE_FRAME } from "../constant/index.js";
 
 export const ToDoInput = class extends Component{
 
@@ -15,7 +16,7 @@ export const ToDoInput = class extends Component{
       $target.value = '';
     });
     $target.addEventListener('keydown', ({ key }) => {
-      if (key === 'Enter') callback(1000 / 60);
+      if (key === 'Enter') callback(ONE_FRAME);
     })
   }
 
