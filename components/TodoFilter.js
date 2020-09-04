@@ -1,8 +1,8 @@
 class TodoFilter {
-  $filterContainer = document.querySelector('.filters');
-  filters = document.querySelectorAll('.filters>li>*');
-
   constructor(setWhatToShow) {
+    this.$filterContainer = document.querySelector('.filters');
+    this.filters = document.querySelectorAll('.filters>li>*');
+
     this.$filterContainer.addEventListener('click', (e) =>
       this.handleClick(e, setWhatToShow)
     );

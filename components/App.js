@@ -1,21 +1,29 @@
 import TodoList from './TodoList';
 import TodoInput from './TodoInput';
-import Count from './Count';
-import Filter from './Filter';
-import { TODOS, ALL, ACTIVE, COMPLETED } from '../lib/constants';
+import TodoCount from './TodoCount';
+import TodoFilter from './TodoFilter';
+import { TODOS, ALL, ACTIVE, COMPLETED } from '../constants';
 
 class App {
-  todosVisible = [];
-  whatToShow = ALL;
-
   constructor() {
-    this.setTodos(JSON.parse(localStorage.getItem(TODOS)) || []);
+    this.todos = [];
+    this.todosVisible = [];
+    this.whatToShow = ALL;
+    this.loadTodos();
   }
 
   setTodos = (todos) => {
     this.todos = todos;
     localStorage.setItem(TODOS, JSON.stringify(todos));
     this.setTodosVisible();
+  };
+
+  loadTodos = () => {
+    let data = localStorage.getItem(TODOS);
+    if (data) {
+      data = JSON.parse(data);
+      this.setTodos(data);
+    }
   };
 
   setWhatToShow = (whatToShow) => {
@@ -33,7 +41,7 @@ class App {
         return todo;
     });
     this.todoList.setTodos(this.todosVisible);
-    this.count.setCount(this.todosVisible.length);
+    this.todoCount.setCount(this.todosVisible.length || 0);
   };
 
   addTodos = (newTodoText) => {
@@ -68,13 +76,12 @@ class App {
 
   todoInput = new TodoInput(this.addTodos);
   todoList = new TodoList(
-    this.todosVisible,
     this.deleteTodo,
     this.editTodo,
     this.toggleActiveTodo
   );
-  count = new Count();
-  filter = new Filter(this.setWhatToShow);
+  todoCount = new TodoCount();
+  todoFilter = new TodoFilter(this.setWhatToShow);
 }
 
 export default App;

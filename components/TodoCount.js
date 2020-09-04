@@ -1,6 +1,8 @@
-class Count {
-  $count = document.querySelector('.todo-count');
-  count = 0;
+class TodoCount {
+  constructor() {
+    this.$count = document.querySelector('.todo-count');
+    this.count = 0;
+  }
 
   setCount = (count) => {
     this.count = count;
@@ -12,4 +14,4 @@ class Count {
   };
 }
 
-export default Count;
+export default TodoCount;

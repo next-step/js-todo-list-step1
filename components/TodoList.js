@@ -1,18 +1,25 @@
 import TodoItem from './TodoItem';
 
 class TodoList {
-  $todoList = document.querySelector('#todo-list');
-  constructor(todos, deleteTodo, editTodo, toggleActiveTodo) {
-    this.todos = todos;
-    this.$todoList.addEventListener('click', (e) =>
+  constructor(deleteTodo, editTodo, toggleActiveTodo) {
+    this.$todoList = document.querySelector('#todo-list');
+    this.todos = [];
+
+    this.initAddEventListener(
+      this.$todoList,
+      deleteTodo,
+      editTodo,
+      toggleActiveTodo
+    );
+  }
+
+  initAddEventListener = ($target, deleteTodo, editTodo, toggleActiveTodo) => {
+    $target.addEventListener('click', (e) =>
       this.handleClick(e, deleteTodo, toggleActiveTodo)
     );
-    this.$todoList.addEventListener('dblclick', this.handleDblClick);
-    this.$todoList.addEventListener('keyup', (e) =>
-      this.handleKeyUp(e, editTodo)
-    );
-    this.render();
-  }
+    $target.addEventListener('dblclick', this.handleDblClick);
+    $target.addEventListener('keyup', (e) => this.handleKeyUp(e, editTodo));
+  };
 
   setTodos = (todos) => {
     this.todos = todos;

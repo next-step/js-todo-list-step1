@@ -4,6 +4,7 @@
   "description": "<br>",
   "main": "index.js",
   "dependencies": {
+    "live-server": "^1.2.1",
     "parcel-bundler": "^1.12.4",
     "prettier": "^2.1.1"
   },
