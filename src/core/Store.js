@@ -1,9 +1,16 @@
+import Storage from '../storage/index.js';
+
 export const Store = class {
 
-  $state; #mutations; #observing; #getters
+  $state;
+  #mutations;
+  #observing;
+  #getters;
+  #persistentKey;
 
-  constructor({ state, mutations, getters }) {
-    this.$state = state;
+  constructor({ state, mutations, getters, persistentKey = null }) {
+    this.$state = Storage.get(persistentKey, state);
+    this.#persistentKey = persistentKey;
     this.#mutations = mutations;
     this.#getters = getters;
     this.#observing = new Set();
@@ -29,7 +36,7 @@ export const Store = class {
 
   #setState (newState) {
     this.$state = { ...newState };
+    Storage.set(this.#persistentKey, this.$state);
     this.#observing.forEach(component => component.render());
   }
-
 }
