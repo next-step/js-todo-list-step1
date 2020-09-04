@@ -1,23 +1,19 @@
-import { ToDoInput, ToDoList, CountContainer } from "./components/index.js";
-import { toDoStore } from "./store/index.js";
+import { ToDoInput, ToDoList, ToDoCount, ToDoFilter } from "./components/index.js";
+import { toDoStore } from "./store/toDoStore.js";
 
 const App = class {
-
-  #toDoInput; #toDoList; #countContainer;
 
   constructor() {
     const toDoInputTarget = document.querySelector('#new-todo-title');
     const toDoListTarget = document.querySelector('#todo-list');
-    const countContainerTarget = document.querySelector('.count-container');
-
-    this.#toDoInput = new ToDoInput(toDoInputTarget);
-    this.#toDoList = new ToDoList(toDoListTarget);
-    this.#countContainer = new CountContainer(countContainerTarget);
+    const countTarget = document.querySelector('.todo-count');
+    const filterTarget = document.querySelector('.filters');
 
     toDoStore.addObserver(
-      this.#toDoInput,
-      this.#toDoList,
-      this.#countContainer
+      new ToDoInput(toDoInputTarget),
+      new ToDoList(toDoListTarget),
+      new ToDoCount(countTarget),
+      new ToDoFilter(filterTarget),
     );
   }
 
