@@ -16,8 +16,8 @@ class TodoFilter {
 
   changeSelected = (selected) => {
     this.filters.forEach(($filter) => {
-      $filter.classList.remove('selected');
       if ($filter.className === selected) $filter.classList.add('selected');
+      else $filter.classList.remove('selected');
     });
   };
 }
