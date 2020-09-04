@@ -1,42 +1,42 @@
 import { Store } from "../core/index.js";
-import { ToDoItemService } from "../services/index.js";
 
 export const SET_ITEMS = 'SET_ITEMS';
 export const SET_EDITING_INDEX = 'SET_EDITING_INDEX';
-export const SET_TYPE = 'SET_TYPE';
+export const SET_FILTER_TYPE = 'SET_FILTER_TYPE';
 
 export const toDoStore = new Store({
 
+  persistentKey: 'toDoStore',
+
   state: {
-    items: ToDoItemService.fetchAll(),
+    items: [],
     editingIndex: -1,
-    type: 'all'
+    filterType: 'all'
   },
 
   mutations: {
 
     [SET_ITEMS] (state, payload) {
       state.items = payload;
-      ToDoItemService.put(payload);
     },
 
     [SET_EDITING_INDEX] (state, payload) {
       state.editingIndex = payload;
     },
 
-    [SET_TYPE] (state, payload) {
-      state.type = payload;
+    [SET_FILTER_TYPE] (state, payload) {
+      state.filterType = payload;
     }
 
   },
 
   getters: {
 
-    filteredItems ({ items, type }) {
+    filteredItems ({ items, filterType }) {
       return Object.entries(items)
-                   .filter(([, { completed }]) => (type === 'all') ||
-                                                  (type === 'completed' && completed) ||
-                                                  (type === 'active' && !completed));
+                   .filter(([, { completed }]) => (filterType === 'all') ||
+                                                  (filterType === 'completed' && completed) ||
+                                                  (filterType === 'active' && !completed));
     },
 
   }
