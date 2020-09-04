@@ -1,6 +1,6 @@
 import { Component } from "../core/index.js";
 import { toDoStore } from "../store/index.js";
-import { SET_EDITING_INDEX, SET_ITEMS } from "../store/toDoStore/index.js";
+import { SET_EDITING_INDEX, SET_ITEMS } from "../store/toDoStore.js";
 
 const getToDoItemClass = (completed, editing) =>
   editing   ? 'class="editing"'   :

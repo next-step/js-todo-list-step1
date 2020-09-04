@@ -2,7 +2,7 @@ import { Component } from "../core/index.js";
 import { debounceOf } from "../utils/index.js";
 import { toDoStore } from "../store/index.js";
 import { ONE_FRAME } from "../constant/index.js";
-import { SET_ITEMS } from "../store/toDoStore/index.js";
+import { SET_ITEMS } from "../store/toDoStore.js";
 
 export const ToDoInput = class extends Component{
 
