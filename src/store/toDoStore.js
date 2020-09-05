@@ -1,4 +1,4 @@
-import { Store } from "../core/index.js";
+import { Store } from "../core/Store.js";
 
 export const SET_ITEMS = 'SET_ITEMS';
 export const SET_EDITING_INDEX = 'SET_EDITING_INDEX';

@@ -37,6 +37,6 @@ export const Store = class {
   #setState (newState) {
     this.$state = { ...newState };
     Storage.set(this.#persistentKey, this.$state);
-    this.#observing.forEach(component => component.render());
+    this.#observing.forEach(component => component.$render());
   }
 }

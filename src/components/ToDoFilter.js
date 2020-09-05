@@ -1,23 +1,20 @@
 import { Component } from "../core/Component.js";
 import { SET_FILTER_TYPE, toDoStore } from "../store/toDoStore.js";
+import FilterTypes from "../constants/FilterTypes.js";
 
 const filterButtons = [
-  { type: 'all', text: '전체보기' },
-  { type: 'active', text: '해야할 일' },
-  { type: 'completed', text: '완료한 일' },
+  { type: FilterTypes.ALL, text: '전체보기' },
+  { type: FilterTypes.ACTIVE, text: '해야할 일' },
+  { type: FilterTypes.COMPLETED, text: '완료한 일' },
 ];
 
 export const ToDoFilter = class extends Component {
 
-  constructor (target) {
-    super(target, {});
-  }
-
-  _render () {
+  render () {
     const { filterType } = toDoStore.$state;
-    this.$target.innerHTML = filterButtons.map(({ type, text }, index) => `
+    return filterButtons.map(({ type, text }, index) => `
       <li>
-        <a class="${type} ${type === filterType ? 'selected' : ''}"
+        <a class="filter-button ${type} ${type === filterType ? 'selected' : ''}"
            href="#"
            data-filter-type="${type}">
           ${text}
@@ -26,11 +23,11 @@ export const ToDoFilter = class extends Component {
     `).join('');
   }
 
-  _initEventListener () {
-    this.$target.addEventListener('click', e => {
+  setEvent (componentTarget) {
+    componentTarget.addEventListener('click', e => {
       e.preventDefault();
       const { target } = e;
-      if (target.tagName === 'A') {
+      if (target.classList.contains('filter-button')) {
         toDoStore.commit(SET_FILTER_TYPE, target.dataset.filterType);
       }
     })
