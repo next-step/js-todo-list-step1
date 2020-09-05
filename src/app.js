@@ -1,8 +1,8 @@
 const $inputTodoNewTitle = document.querySelector('#new-todo-title');
 const $ulTodoList = document.querySelector('#todo-list');
 
-const todoListAddTitle = (event) => {
-  if (event.key === 'Enter' && $inputTodoNewTitle.value.length !== 0) {
+const todoListAddTitle = ({key}) => {
+  if (key === 'Enter' && $inputTodoNewTitle.value.length !== 0) {
     $ulTodoList.insertAdjacentHTML(
       'beforeend',
       renderNewToDoTemplate($inputTodoNewTitle.value)
@@ -10,32 +10,40 @@ const todoListAddTitle = (event) => {
     $inputTodoNewTitle.value = '';
   }
 };
+const handleInputKey = ( target, key , temp ) => {
+  if (key === 'Escape') {
+    target.closest('li').classList.remove('editing');
+  } else if (key === 'Enter') {
+    target.closest('li').classList.remove('editing');
+    target.parents('label').textContent = target.value;
 
-const todoListOnToggle = (event) => {
-  if (event.target.nodeName === 'INPUT') {
-    event.target.closest('li').classList.toggle('completed');
-  } else if (event.target.nodeName === 'BUTTON') {
-    event.target.closest('li').remove();
   }
 };
-const todoListDoubleClickedOnToggle = (event) => {
-  const handleKey = ({ target, key }) => {
-    if (key === 'Escape') {
-      //
-    } else if (key === 'Enter') {
-      //
-    }
-  };
 
-  if (event.target.nodeName === 'LABEL') {
-    const temp = event.target.closest('label').textContent;
-    event.target.closest('li').classList.toggle('editing');
-    const $inputEdit = event.target.closest('.editing').querySelector('.edit');
+
+
+
+const todoListOnToggle = ({target}) => {
+  if (target.className === 'toggle') {
+    target.closest('li').classList.toggle('completed');
+  } else if (target.className === 'destroy') {
+    target.closest('li').remove();
+  }
+};
+
+const todoListDoubleClickedOnToggle = ({target}) => {
+
+  if (target.nodeName === 'LABEL') {
+    const temp = target.closest('label').textContent;
+    target.closest('li').classList.toggle('editing');
+    const $inputEdit = target.closest('.editing').querySelector('.edit');
     $inputEdit.value = temp;
-
-    $inputEdit.addEventListener('keyup', handleKey);
+    $inputEdit.addEventListener('keyup', (e) => {
+      handleInputKey(e.target , e.key, temp)
+    });
   }
 };
+
 
 const renderNewToDoTemplate = (title) => {
   return ` <li>
