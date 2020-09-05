@@ -18,6 +18,12 @@ const todoListOnToggle = (event) => {
     event.target.closest('li').remove();
   }
 };
+const todoListDoubleClickedOnToggle = (event) => {
+  if(event.target.nodeName === 'LABEL') {
+
+    event.target.closest('li').classList.toggle('editing');
+  }
+}
 
 const renderNewToDoTemplate = (title) => {
   return ` <li>
@@ -32,3 +38,4 @@ const renderNewToDoTemplate = (title) => {
 
 $inputTodoNewTitle.addEventListener('keypress', todoListAddTitle);
 $ulTodoList.addEventListener('click', todoListOnToggle);
+$ulTodoList.addEventListener('dblclick' , todoListDoubleClickedOnToggle);
