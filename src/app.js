@@ -15,18 +15,30 @@ class TodoApp {
     }
 
     initComponents() {
+        const { onAdd } = this;
+
         const newTodoTitle = document.getElementById('new-todo-title');
         const todoList = document.getElementById('todo-list');
         const todoCount = document.getElementsByClassName('todo-count');
         const filters = document.getElementsByClassName('filters');
 
         this.components = {
-            TodoInput: new NewTodoTitle(newTodoTitle, {}),
+            TodoInput: new NewTodoTitle(newTodoTitle, { onAdd }),
             TodoList: new TodoList(todoList, {}),
             TodoCount: new TodoCount(todoCount, {}),
             Filters: new Filters(filters, {}),
         };
     }
+
+    onAdd = (contents) => {
+        const { todoItems } = this.state;
+
+        const newTodoItems = [
+            ...todoItems,
+            { contents }
+        ];
+        this.setState({ todoItems: newTodoItems})
+    };
 
     setState (payload) {
         for (const key in payload)
@@ -38,7 +50,7 @@ class TodoApp {
     render() {
         const {components} = this;
         for (const key in components)
-            components[key].render();
+            components[key].render?.();
     }
 }
 

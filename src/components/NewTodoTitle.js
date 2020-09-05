@@ -1,8 +1,20 @@
 class NewTodoTitle {
-    constructor(target, props) {
+    $target;
+    props;
 
+    constructor(target, props) {
+        this.$target = target;
+        this.props = props;
+        this.setEvent();
     }
-    render () {
+    onAdd = (contents) => this.props.onAdd(contents);
+
+    setEvent() {
+        const { $target, onAdd } = this;
+        $target.addEventListener('keydown', ({ target, key }) => {
+            const contents = target.value;
+            contents !== '' && key === 'Enter' && onAdd(contents);
+        });
     }
 }
 export default NewTodoTitle;
