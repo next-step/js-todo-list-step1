@@ -24,6 +24,11 @@ class Filters {
 
         $target.addEventListener('click', clickFilter)
     }
+
+    render({ filter }) {
+        const { $target } = this;
+        $target.querySelector(`.${filter}`).classList.add('selected')
+    }
 }
 
 export default Filters;

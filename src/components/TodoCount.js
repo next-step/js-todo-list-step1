@@ -3,7 +3,7 @@ class TodoCount {
     constructor (target, props) {
         this.$target = target;
     }
-    render (todoItems) {
+    render ({todoItems}) {
         const { $target } = this;
         $target.innerHTML = todoItems.length;
     }

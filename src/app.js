@@ -8,11 +8,12 @@ class TodoApp {
     components;
 
     constructor () {
-        this.state = {
+        this.state = JSON.parse(localStorage.getItem('state')) || {
             todoItems: [],
             filter: 'all',
         };
         this.initComponents();
+        this.render();
     }
 
     initComponents () {
@@ -69,6 +70,8 @@ class TodoApp {
         for (const key in payload)
             this.state[key] = payload[key];
 
+        localStorage.setItem('state', JSON.stringify(this.state));
+
         this.render();
     };
 
@@ -81,11 +84,12 @@ class TodoApp {
         });
     };
 
+
     render () {
         const { filter } = this.state;
         const { components, renderFilteredItems } = this;
         for (const key in components)
-            components[key].render?.(renderFilteredItems(), filter);
+            components[key].render?.({ todoItems: renderFilteredItems(), filter });
     }
 }
 

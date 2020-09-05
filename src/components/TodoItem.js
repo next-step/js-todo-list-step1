@@ -17,7 +17,7 @@ class TodoItem {
         `
     }
 
-    render = (filter) => {
+    render = ({filter}) => {
         const { index, contents, complete, editing }= this.props;
         const { viewMode, editMode } = this;
 

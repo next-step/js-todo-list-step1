@@ -21,7 +21,7 @@ class TodoList {
         $target.addEventListener('click', ({ target }) => {
             const index = target.parentNode.dataset.index;
             if (target.classList.contains('toggle')) {
-                toggleComplete(index, { complete: target.checked});
+                toggleComplete(index, { complete: target.checked });
                 return;
             } else if (target.classList.contains('destroy')) {
                 deleteItem(index);
@@ -31,7 +31,7 @@ class TodoList {
         $target.addEventListener('dblclick', ({ target }) => {
             const index = target.parentNode.dataset.index;
             target.classList.contains('label') &&
-                toggleEditingItem(index, { editing: true });
+            toggleEditingItem(index, { editing: true });
         });
         $target.addEventListener('keydown', ({ target, key }) => {
             const index = target.parentNode.dataset.index;
@@ -44,7 +44,7 @@ class TodoList {
 
     }
 
-    render (todoItems, filter) {
+    render ({ todoItems, filter }) {
         const { $target } = this;
 
         $target.innerHTML = todoItems.map(({ contents, complete, editing }, index) =>
