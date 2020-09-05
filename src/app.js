@@ -1,11 +1,13 @@
 import TodoCount from './TodoCount.js';
 import TodoList from './TodoList.js';
 import TodoInput from './TodoInput.js';
+import TodoFilter from './TodoFilter.js';
 
 function App() {
   const $todoInput = document.querySelector('#new-todo-title');
   const $todoList = document.querySelector('#todo-list');
   const $todoCount = document.querySelector('.todo-count');
+  const $todoFilter = document.querySelector('.filters');
   this.data = [];
 
   this.addItem = (text) => {
@@ -32,6 +34,7 @@ function App() {
     this.addItem(text);
   });
   this.todoCount = new TodoCount($todoCount, this.data.length);
+  this.todoFilter = new TodoFilter($todoFilter, this.data);
 }
 
 new App();
