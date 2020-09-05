@@ -19,11 +19,23 @@ const todoListOnToggle = (event) => {
   }
 };
 const todoListDoubleClickedOnToggle = (event) => {
-  if(event.target.nodeName === 'LABEL') {
+  const handleKey = ({ target, key }) => {
+    if (key === 'Escape') {
+      //
+    } else if (key === 'Enter') {
+      //
+    }
+  };
 
+  if (event.target.nodeName === 'LABEL') {
+    const temp = event.target.closest('label').textContent;
     event.target.closest('li').classList.toggle('editing');
+    const $inputEdit = event.target.closest('.editing').querySelector('.edit');
+    $inputEdit.value = temp;
+
+    $inputEdit.addEventListener('keyup', handleKey);
   }
-}
+};
 
 const renderNewToDoTemplate = (title) => {
   return ` <li>
@@ -36,6 +48,6 @@ const renderNewToDoTemplate = (title) => {
                 </li>`;
 };
 
-$inputTodoNewTitle.addEventListener('keypress', todoListAddTitle);
+$inputTodoNewTitle.addEventListener('keyup', todoListAddTitle);
 $ulTodoList.addEventListener('click', todoListOnToggle);
-$ulTodoList.addEventListener('dblclick' , todoListDoubleClickedOnToggle);
+$ulTodoList.addEventListener('dblclick', todoListDoubleClickedOnToggle);
