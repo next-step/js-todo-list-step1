@@ -9,13 +9,23 @@ class TodoList {
     }
 
     toggleComplete = (index) => this.props.toggleComplete(index);
+    deleteItem = (index) => this.props.deleteItem(index);
 
     setEvent() {
-        const { $target, toggleComplete } = this;
+        const { $target, toggleComplete, deleteItem } = this;
 
-        $target.addEventListener('change', ({ target }) => {
-            toggleComplete(target.parentNode.dataset.index)
-        })
+        $target.addEventListener('click', ({ target }) => {
+            const index = target.parentNode.dataset.index;
+            if (target.classList.contains('toggle')) {
+                toggleComplete(index);
+                return;
+            }
+            else if (target.classList.contains('destroy')) {
+                deleteItem(index);
+                return;
+            }
+        });
+
     }
 
     render (todoItems) {
