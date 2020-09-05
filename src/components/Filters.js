@@ -2,17 +2,18 @@ import { setFilter } from '../store.js';
 
 const Filters = ($target) => {
 
-    const clickFilter = ({ target }) => {
+    const filterItem = ({ target }) => {
         const { classList } = target;
 
         if (classList.contains('selected')) return;
 
         $target.querySelector('.selected').classList.remove('selected');
-        setFilter(classList[0]);
+        const filterType = classList[0];
+        setFilter(filterType);
         classList.add('selected');
     };
 
-    $target.addEventListener('click', clickFilter);
+    $target.addEventListener('click', filterItem);
 };
 
 

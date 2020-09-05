@@ -18,9 +18,7 @@ const initComponents = () => {
 export const initRender = ({ todoItems, filter }) => {
     initComponents();
     $filters.querySelector(`.${ filter }`).classList.add('selected');
-
-    $todoList.innerHTML = components.TodoList({ todoItems });
-    $todoCount.innerHTML = todoItems.length;
+    render({ todoItems });
 };
 
 
