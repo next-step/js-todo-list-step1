@@ -1,16 +1,9 @@
-import { setFilter} from '../store.js';
+import { setFilter } from '../store.js';
 
-class Filters {
-    $target;
+const Filters = ($target) => {
 
-    constructor (target) {
-        this.$target = target;
-        this.setEvent();
-    }
-
-    clickFilter = ({ target }) => {
+    const clickFilter = ({ target }) => {
         const { classList } = target;
-        const { $target } = this;
 
         if (classList.contains('selected')) return;
 
@@ -19,10 +12,8 @@ class Filters {
         classList.add('selected');
     };
 
-    setEvent () {
-        const { $target, clickFilter } = this;
-        $target.addEventListener('click', clickFilter)
-    }
-}
+    $target.addEventListener('click', clickFilter);
+};
+
 
 export default Filters;

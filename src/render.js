@@ -10,22 +10,22 @@ const $filters = document.querySelector('.filters');
 const components = {};
 
 const initComponents = () => {
-    components.NewTodoTitle = new NewTodoTitle($newTodoTitle);
-    components.TodoList = new TodoList($todoList);
-    components.Filters = new Filters($filters);
+    components.NewTodoTitle = NewTodoTitle($newTodoTitle);
+    components.TodoList = TodoList($todoList);
+    components.Filters = Filters($filters);
 };
 
 export const initRender = ({ todoItems, filter }) => {
     initComponents();
     $filters.querySelector(`.${ filter }`).classList.add('selected');
 
-    $todoList.innerHTML = components.TodoList.render({ todoItems });
+    $todoList.innerHTML = components.TodoList({ todoItems });
     $todoCount.innerHTML = todoItems.length;
 };
 
 
 export const render = ({ todoItems }) => {
-    $todoList.innerHTML = components.TodoList.render({ todoItems });
+    $todoList.innerHTML = components.TodoList({ todoItems });
     $todoCount.innerHTML = todoItems.length;
 };
 

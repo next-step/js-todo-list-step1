@@ -1,51 +1,42 @@
 import TodoItem from './TodoItem.js';
 import { deleteItem, setItem } from '../store.js';
 
-class TodoList {
-    $target;
+const TodoList = ($target) => {
+    const toggleComplete = (index, payload) => setItem(index, payload);
+    const toggleEditingItem = (index, payload) => setItem(index, payload);
+    const editItem = (index, payload) => setItem(index, payload);
 
-    constructor (target) {
-        this.$target = target;
-        this.setEvent();
-    }
+    $target.addEventListener('click', ({ target }) => {
+        const index = target.parentNode.dataset.index;
+        if (target.classList.contains('toggle')) {
+            toggleComplete(index, { complete: target.checked });
+            return;
+        } else if (target.classList.contains('destroy')) {
+            deleteItem(index);
+            return;
+        }
+    });
 
-    toggleComplete = (index, payload) => setItem(index, payload);
-    toggleEditingItem = (index, payload) => setItem(index, payload);
-    editItem = (index, payload) => setItem(index, payload);
+    $target.addEventListener('dblclick', ({ target }) => {
+        const index = target.parentNode.dataset.index;
+        target.classList.contains('label') &&
+        toggleEditingItem(index, { editing: true });
+    });
 
-    setEvent () {
-        const { $target, toggleComplete, toggleEditingItem, editItem } = this;
+    $target.addEventListener('keydown', ({ target, key }) => {
+        const index = target.parentNode.dataset.index;
+        if (target.classList.contains('edit'))
+            if (key === 'Escape')
+                toggleEditingItem(index, { editing: false });
+            else if (key === 'Enter')
+                editItem(index, { contents: target.value, editing: false });
+    });
 
-        $target.addEventListener('click', ({ target }) => {
-            const index = target.parentNode.dataset.index;
-            if (target.classList.contains('toggle')) {
-                toggleComplete(index, { complete: target.checked });
-                return;
-            } else if (target.classList.contains('destroy')) {
-                deleteItem(index);
-                return;
-            }
-        });
-        $target.addEventListener('dblclick', ({ target }) => {
-            const index = target.parentNode.dataset.index;
-            target.classList.contains('label') &&
-            toggleEditingItem(index, { editing: true });
-        });
-        $target.addEventListener('keydown', ({ target, key }) => {
-            const index = target.parentNode.dataset.index;
-            if (target.classList.contains('edit'))
-                if (key === 'Escape')
-                    toggleEditingItem(index, { editing: false });
-                else if (key === 'Enter')
-                    editItem(index, { contents: target.value, editing: false });
-        });
 
-    }
-
-    render = ({ todoItems }) =>
+    return ({ todoItems }) =>
         todoItems?.map(({ contents, complete, editing }, index) =>
-            new TodoItem({ index, contents, complete, editing }).render(),
+            TodoItem({ index, contents, complete, editing }),
         ).join('') || '';
-}
+};
 
 export default TodoList;

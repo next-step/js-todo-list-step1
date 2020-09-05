@@ -1,16 +1,11 @@
 import { store, getItems } from './store.js';
 import { initRender } from './render.js';
 
-class TodoApp {
-    state;
+const TodoApp = () => {
+    initRender({ todoItems: getItems(), filter: store.filter });
+};
 
-    constructor () {
-        this.state = store;
-        initRender({ todoItems: getItems(), filter: store.filter });
-    }
-}
-
-new TodoApp();
+TodoApp();
 
 
 
