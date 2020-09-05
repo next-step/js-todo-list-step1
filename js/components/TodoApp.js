@@ -30,15 +30,34 @@ class TodoApp{
 		this.render();
 	}
 
+	removeTodo(id){
+		this.#todoList=this.#todoList.filter(todo=>todo.id!==(+id));
+		this.render();
+	}
+
 	toggleTodo(id){
 		this.#todoList=this.#todoList.map(todo=>todo.id===(+id)?{...todo, done:!todo.done}:todo);
 		this.render();
 	}
 
+	filterTodoList(){
+		return this.#todoList.filter(todo=>{
+			switch (this.#filter){
+				case 'completed':
+					return todo.done;
+				case 'active':
+					return !todo.done;
+				default:
+					return true;
+			}
+		})
+	}
+
 	render() {
-		this.#todoListDom.innerHTML = this.#todoList.map(todo=>TodoItem(todo)).join('')
+		const filteredList = this.filterTodoList();
+		this.#todoListDom.innerHTML = filteredList.map(todo=>TodoItem(todo)).join('')
 		this.#todoCountDom.innerHTML = `
-			<span class="todo-count">총 <strong>${this.#todoList.length}</strong> 개</span>
+			<span class="todo-count">총 <strong>${filteredList.length}</strong> 개</span>
 			<ul class="filters">
 				${TodoFilter(this.#filter)}
 			</ul>

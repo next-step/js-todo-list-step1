@@ -7,8 +7,9 @@ const todoApp = new TodoApp(todoListElement, todoCountElement, window.location.h
 
 todoInputElement.addEventListener('keyup', (event) => {
 	const {key, target:{value}} = event;
-    if (key === "Enter") {
-		todoApp.addTodo(value);
+	const trimValue = value.trim();
+    if (key === "Enter" && trimValue) {
+		todoApp.addTodo(trimValue);
 		event.target.value = '';
     }
 })
@@ -21,6 +22,13 @@ window.addEventListener('hashchange', ()=>{
 	todoApp.changeFilter(window.location.hash)
 })
 
-todoListElement.addEventListener('click',(event)=>{
-	todoApp.toggleTodo(event.target.dataset?.id)
+todoListElement.addEventListener('click',({target:{dataset:{id, role}}})=>{
+	switch (role){
+		case 'toggle':
+			todoApp.toggleTodo(id)
+			return;
+		case 'remove':
+			todoApp.removeTodo(id);
+			return;
+	}
 })
