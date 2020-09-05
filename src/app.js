@@ -24,7 +24,7 @@ class TodoApp {
 
         this.components = {
             TodoInput: new NewTodoTitle(newTodoTitle, { onAdd }),
-            TodoList: new TodoList(todoList, {}),
+            TodoList: new TodoList(todoList, { }),
             TodoCount: new TodoCount(todoCount, {}),
             Filters: new Filters(filters, {}),
         };
@@ -48,9 +48,10 @@ class TodoApp {
     };
 
     render() {
+        const { todoItems } = this.state;
         const {components} = this;
         for (const key in components)
-            components[key].render?.();
+            components[key].render?.(todoItems);
     }
 }
 
