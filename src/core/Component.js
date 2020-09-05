@@ -1,28 +1,22 @@
-import { debounceOf } from "../utils/index.js";
-import { ONE_FRAME } from "../constant/index.js";
+import { debounceOneFrame } from "../utils/index.js";
 
 export const Component = class {
-  $state; $target; $props;
+  $state = {}; $target; $props; $render;
 
   constructor(target, state = {}, props = {}) {
     this.$target = target;
     this.$props = props;
-    this.debounceRender = debounceOf(() => this._render());
+    this.$render = debounceOneFrame(() => {
+      target.innerHTML = this.render();
+    });
+    this.setEvent(target);
     this.setState(state);
-    this.initEventListener();
   }
 
   setState (payload) {
     this.$state = { ...this.$state, ...payload };
-    this._setState(payload);
-    this.render();
+    this.$render();
   }
-  _setState(payload) {}
-
-  render () {
-    this.debounceRender(ONE_FRAME);
-  }
-  _render () {}
-  initEventListener () { this._initEventListener(); }
-  _initEventListener () { }
+  render () { return '' }
+  setEvent (componentTarget) {  }
 }
