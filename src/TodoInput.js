@@ -1,6 +1,6 @@
 import {KEY} from './constants.js';
 
-export default function TodoInput($todoInput, onAdd) {
+export default function TodoInput($todoInput, addItem) {
   if (!$todoInput) {
     throw new Error('ERROR: Invalid object');
   }
@@ -14,7 +14,7 @@ export default function TodoInput($todoInput, onAdd) {
         return;
       }
 
-      onAdd(this.$todoInput.value);
+      addItem(this.$todoInput.value);
       this.$todoInput.value = '';
     }
   });

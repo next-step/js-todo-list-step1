@@ -6,32 +6,32 @@ function App() {
   const $todoInput = document.querySelector('#new-todo-title');
   const $todoList = document.querySelector('#todo-list');
   const $todoCount = document.querySelector('.todo-count');
-  const data = [];
+  this.data = [];
 
-  function addItem(text) {
-    data.push({
+  this.addItem = (text) => {
+    this.data.push({
       text,
       isCompleted: false,
     });
 
-    todoList.updateItem(data);
-    todoCount.render(data.length);
-  }
+    this.todoList.updateItem(this.data);
+    this.todoCount.render(this.data.length);
+  };
 
-  function removeItem(index) {
-    data.splice(index, 1);
+  this.removeItem = (index) => {
+    this.data.splice(index, 1);
 
-    todoList.updateItem(data);
-    todoCount.render(data.length);
-  }
+    this.todoList.updateItem(this.data);
+    this.todoCount.render(this.data.length);
+  };
 
-  const todoList = new TodoList($todoList, data, (index) => {
-    removeItem(index);
+  this.todoList = new TodoList($todoList, this.data, (index) => {
+    this.removeItem(index);
   });
-  const todoInput = new TodoInput($todoInput, (text) => {
-    addItem(text);
+  this.todoInput = new TodoInput($todoInput, (text) => {
+    this.addItem(text);
   });
-  const todoCount = new TodoCount($todoCount, data.length);
+  this.todoCount = new TodoCount($todoCount, this.data.length);
 }
 
 new App();

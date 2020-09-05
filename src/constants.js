@@ -1,4 +1,4 @@
 export const KEY = {
-    ENTER: 'Enter',
-    ESC: 'Escape'
-  }
+  ENTER: 'Enter',
+  ESC: 'Escape',
+};
