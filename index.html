@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>이벤트 - TODOS</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script src="./js/class/ToDo.js"></script>
   </head>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const _dom = document.querySelector('.todoapp');
+      const todo = new ToDo(_dom);
+    })
+  </script>
   <body>
     <div class="todoapp">
       <h1>TODOS</h1>
