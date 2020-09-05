@@ -1,3 +1,5 @@
+import TodoItem from './TodoItem.js';
+
 class TodoList {
     $target;
     props;
@@ -10,19 +12,33 @@ class TodoList {
 
     toggleComplete = (index) => this.props.toggleComplete(index);
     deleteItem = (index) => this.props.deleteItem(index);
+    toggleEditingItem = (index) => this.props.toggleEditingItem(index);
+    editItem = (index, payload) => this.props.setItem(index, payload);
 
-    setEvent() {
-        const { $target, toggleComplete, deleteItem } = this;
+    setEvent () {
+        const { $target, toggleComplete, deleteItem, toggleEditingItem, editItem } = this;
 
         $target.addEventListener('click', ({ target }) => {
             const index = target.parentNode.dataset.index;
             if (target.classList.contains('toggle')) {
                 toggleComplete(index);
                 return;
-            }
-            else if (target.classList.contains('destroy')) {
+            } else if (target.classList.contains('destroy')) {
                 deleteItem(index);
                 return;
+            }
+        });
+        $target.addEventListener('dblclick', ({ target }) => {
+            const index = target.parentNode.dataset.index;
+            if (target.classList.contains('label')) {
+                toggleEditingItem(index);
+            }
+        });
+        $target.addEventListener('keydown', ({ target, key }) => {
+            const index = target.parentNode.dataset.index;
+            if (target.classList.contains('edit')) {
+                if (key === 'Escape') toggleEditingItem(index);
+                if (key === 'Enter') editItem(index, { contents: target.value, editing: false });
             }
         });
 
@@ -31,13 +47,9 @@ class TodoList {
     render (todoItems) {
         const { $target } = this;
 
-        $target.innerHTML = todoItems.map(({ contents, complete }, index) => `
-        <li class="view ${complete && 'completed'}" data-index="${index}">
-            <input class="toggle" type="checkbox" ${ complete && 'checked' }/>
-            <label class="label">${ contents }</label>
-            <button class="destroy"></button>
-        </li>
-        `).join('');
+        $target.innerHTML = todoItems.map(({ contents, complete, editing }, index) =>
+            new TodoItem({ index, contents, complete, editing }).render(),
+        ).join('');
     }
 }
 
