@@ -1,22 +1,20 @@
 import TodoItem from './TodoItem.js';
+import { deleteItem, setItem } from '../store.js';
 
 class TodoList {
     $target;
-    props;
 
-    constructor (target, props) {
+    constructor (target) {
         this.$target = target;
-        this.props = props;
         this.setEvent();
     }
 
-    toggleComplete = (index, payload) => this.props.setItem(index, payload);
-    deleteItem = (index) => this.props.deleteItem(index);
-    toggleEditingItem = (index, payload) => this.props.setItem(index, payload);
-    editItem = (index, payload) => this.props.setItem(index, payload);
+    toggleComplete = (index, payload) => setItem(index, payload);
+    toggleEditingItem = (index, payload) => setItem(index, payload);
+    editItem = (index, payload) => setItem(index, payload);
 
     setEvent () {
-        const { $target, toggleComplete, deleteItem, toggleEditingItem, editItem } = this;
+        const { $target, toggleComplete, toggleEditingItem, editItem } = this;
 
         $target.addEventListener('click', ({ target }) => {
             const index = target.parentNode.dataset.index;
@@ -44,13 +42,10 @@ class TodoList {
 
     }
 
-    render ({ todoItems, filter }) {
-        const { $target } = this;
-
-        $target.innerHTML = todoItems.map(({ contents, complete, editing }, index) =>
-            new TodoItem({ index, contents, complete, editing }).render(filter),
-        ).join('');
-    }
+    render = ({ todoItems }) =>
+        todoItems?.map(({ contents, complete, editing }, index) =>
+            new TodoItem({ index, contents, complete, editing }).render(),
+        ).join('') || '';
 }
 
 export default TodoList;

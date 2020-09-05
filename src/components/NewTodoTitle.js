@@ -1,23 +1,23 @@
+import { addItem } from '../store.js';
+
 class NewTodoTitle {
     $target;
-    props;
 
-    constructor(target, props) {
+    constructor (target) {
         this.$target = target;
-        this.props = props;
         this.setEvent();
     }
-    addTodoItem = (contents) => this.props.addTodoItem(contents);
 
-    setEvent() {
-        const { $target, addTodoItem } = this;
+    setEvent () {
+        const { $target } = this;
         $target.addEventListener('keypress', ({ target, key }) => {
             const contents = target.value;
             if (contents !== '' && key === 'Enter') {
-                addTodoItem(contents);
+                addItem(contents);
                 target.value = '';
             }
         });
     }
 }
+
 export default NewTodoTitle;
