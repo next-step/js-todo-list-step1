@@ -1,22 +1,17 @@
 import TodoApp from "./components/TodoApp.js";
-const main = document.querySelector('main');
-const todoInputElement = document.getElementById('new-todo-title')
-const todoListElement = document.getElementById('todo-list')
+const todoInputElement = document.querySelector('#new-todo-title')
+const todoListElement = document.querySelector('#todo-list')
+const todoCountElement = document.querySelector('.count-container')
 
-const todoApp = new TodoApp(main, window.location.hash);
+const todoApp = new TodoApp(todoListElement, todoCountElement, window.location.hash);
 
 todoInputElement.addEventListener('keyup', (event) => {
 	const {key, target:{value}} = event;
     if (key === "Enter") {
-        let data = {
-            id: ID++,
-            context: value,// input value
-            complete: false
-        }
-		dataPush(data);
+		todoApp.addTodo(value);
+		event.target.value = '';
     }
 })
-
 
 todoListElement.addEventListener('dblclick', (event) => {
     // 입력된 값 수저하는 기능
@@ -24,4 +19,8 @@ todoListElement.addEventListener('dblclick', (event) => {
 
 window.addEventListener('hashchange', ()=>{
 	todoApp.changeFilter(window.location.hash)
+})
+
+todoListElement.addEventListener('click',(event)=>{
+	todoApp.toggleTodo(event.target.dataset?.id)
 })
