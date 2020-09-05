@@ -6,26 +6,22 @@ import Filters from './components/Filters.js';
 class TodoApp {
     state;
     components;
-    $target;
 
     constructor () {
         this.state = {
             todoItems: [],
         };
-        this.$target = {
-            newTodoTitle: document.getElementById('new-todo-title'),
-            todoList: document.getElementById('todo-list'),
-            todoCount: document.getElementsByClassName('todo-count'),
-            filters: document.getElementsByClassName('filters'),
-        };
-
         this.initComponents();
     }
 
     initComponents() {
-        const { input, todoList, todoCount, filters} = this.$target;
+        const newTodoTitle = document.getElementById('new-todo-title');
+        const todoList = document.getElementById('todo-list');
+        const todoCount = document.getElementsByClassName('todo-count');
+        const filters = document.getElementsByClassName('filters');
+
         this.components = {
-            TodoInput: new NewTodoTitle(input, {}),
+            TodoInput: new NewTodoTitle(newTodoTitle, {}),
             TodoList: new TodoList(todoList, {}),
             TodoCount: new TodoCount(todoCount, {}),
             Filters: new Filters(filters, {}),
