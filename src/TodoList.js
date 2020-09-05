@@ -1,4 +1,4 @@
-import {ENTER_KEY, ESC_KEY} from './constants.js';
+import {KEY} from './constants.js';
 
 export default function TodoList($todoList, data, removeItem) {
   this.$todoList = $todoList;
@@ -46,10 +46,10 @@ export default function TodoList($todoList, data, removeItem) {
 
         $todoItem.classList.add('editing');
         $todoItem.addEventListener('keyup', (e) => {
-          if (e.keyCode === ESC_KEY) {
+          if (e.key === KEY.ESC) {
             $todoItem.classList.remove('editing');
             e.target.value = oldValue;
-          } else if (e.keyCode === ENTER_KEY) {
+          } else if (e.key === KEY.ENTER) {
             this.editItem(index, e.target.value);
           }
         });

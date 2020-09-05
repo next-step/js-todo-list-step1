@@ -1,7 +1,6 @@
-import {ENTER_KEY} from './constants.js';
+import {KEY} from './constants.js';
 
 export default function TodoInput($todoInput, onAdd) {
-  // 더 상세한 validation?
   if (!$todoInput) {
     throw new Error('ERROR: Invalid object');
   }
@@ -9,14 +8,13 @@ export default function TodoInput($todoInput, onAdd) {
   this.$todoInput = $todoInput;
 
   this.$todoInput.addEventListener('keyup', (e) => {
-    if (e.keyCode === ENTER_KEY) {
-      if (!/\S/.test(this.$todoInput.value)) {
+    if (e.key === KEY.ENTER) {
+      if (!this.$todoInput.value) {
         alert('할일을 입력하세요!');
         return;
       }
 
       onAdd(this.$todoInput.value);
-
       this.$todoInput.value = '';
     }
   });
