@@ -21,14 +21,11 @@ class TodoItem {
         const { index, contents, complete, editing }= this.props;
         const { viewMode, editMode } = this;
 
-        return (filter === 'all') ||
-            (filter === 'active' && !complete) ||
-            (filter === 'completed' && complete) ?
-            `
+        return `
             <li class="view ${ editing && 'editing' || complete && 'completed' }" data-index="${ index }">
                  ${ editing ? editMode(contents) : viewMode(complete, contents) }
             </li> 
-        `: '';
+        `;
     }
 }
 

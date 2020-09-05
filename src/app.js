@@ -72,11 +72,20 @@ class TodoApp {
         this.render();
     };
 
-    render () {
+    renderFilteredItems = () => {
         const { todoItems, filter } = this.state;
-        const { components } = this;
+        return todoItems.filter(item => {
+            if (filter === 'all') return true;
+            if (filter === 'active') return !item.complete;
+            if (filter === 'completed') return item.complete;
+        });
+    };
+
+    render () {
+        const { filter } = this.state;
+        const { components, renderFilteredItems } = this;
         for (const key in components)
-            components[key].render?.(todoItems, filter);
+            components[key].render?.(renderFilteredItems(), filter);
     }
 }
 
