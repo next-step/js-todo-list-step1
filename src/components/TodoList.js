@@ -44,11 +44,11 @@ class TodoList {
 
     }
 
-    render (todoItems) {
+    render (todoItems, filter) {
         const { $target } = this;
 
         $target.innerHTML = todoItems.map(({ contents, complete, editing }, index) =>
-            new TodoItem({ index, contents, complete, editing }).render(),
+            new TodoItem({ index, contents, complete, editing }).render(filter),
         ).join('');
     }
 }

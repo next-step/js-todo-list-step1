@@ -10,12 +10,14 @@ class TodoApp {
     constructor () {
         this.state = {
             todoItems: [],
+            filter: 'all',
         };
         this.initComponents();
     }
 
-    initComponents() {
-        const { addTodoItem, deleteItem, setItem } = this;
+    initComponents () {
+        const { addTodoItem, deleteItem, setItem, setFilter } = this;
+        const { filter } = this.state;
 
         const newTodoTitle = document.getElementById('new-todo-title');
         const todoList = document.getElementById('todo-list');
@@ -26,7 +28,7 @@ class TodoApp {
             TodoInput: new NewTodoTitle(newTodoTitle, { addTodoItem }),
             TodoList: new TodoList(todoList, { deleteItem, setItem }),
             TodoCount: new TodoCount(todoCount, {}),
-            Filters: new Filters(filters, {}),
+            Filters: new Filters(filters, { setFilter, filter }),
         };
     }
 
@@ -35,9 +37,9 @@ class TodoApp {
 
         const newTodoItems = [
             ...todoItems,
-            { contents, complete: false, editing: false }
+            { contents, complete: false, editing: false },
         ];
-        this.setState({ todoItems: newTodoItems})
+        this.setState({ todoItems: newTodoItems });
     };
 
     deleteItem = (index) => {
@@ -53,9 +55,14 @@ class TodoApp {
         const newTodoItems = [...todoItems];
         newTodoItems[index] = {
             ...newTodoItems[index],
-            ...payload
+            ...payload,
         };
         this.setState({ todoItems: newTodoItems });
+    };
+
+    setFilter = (filter) => {
+        this.setState({ filter });
+        this.render();
     };
 
     setState (payload) {
@@ -65,11 +72,11 @@ class TodoApp {
         this.render();
     };
 
-    render() {
-        const { todoItems } = this.state;
-        const {components} = this;
+    render () {
+        const { todoItems, filter } = this.state;
+        const { components } = this;
         for (const key in components)
-            components[key].render?.(todoItems);
+            components[key].render?.(todoItems, filter);
     }
 }
 

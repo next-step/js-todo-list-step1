@@ -17,15 +17,18 @@ class TodoItem {
         `
     }
 
-    render = () => {
+    render = (filter) => {
         const { index, contents, complete, editing }= this.props;
         const { viewMode, editMode } = this;
 
-        return `
+        return (filter === 'all') ||
+            (filter === 'active' && !complete) ||
+            (filter === 'completed' && complete) ?
+            `
             <li class="view ${ editing && 'editing' || complete && 'completed' }" data-index="${ index }">
                  ${ editing ? editMode(contents) : viewMode(complete, contents) }
-            </li>
-        `
+            </li> 
+        `: '';
     }
 }
 
