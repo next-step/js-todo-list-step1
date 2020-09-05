@@ -19,8 +19,8 @@ class TodoApp {
 
         const newTodoTitle = document.getElementById('new-todo-title');
         const todoList = document.getElementById('todo-list');
-        const todoCount = document.getElementsByClassName('todo-count');
-        const filters = document.getElementsByClassName('filters');
+        const todoCount = document.querySelector('.todo-count strong');
+        const filters = document.querySelector('.filters');
 
         this.components = {
             TodoInput: new NewTodoTitle(newTodoTitle, { addTodoItem }),
