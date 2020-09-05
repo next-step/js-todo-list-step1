@@ -7,13 +7,13 @@ class NewTodoTitle {
         this.props = props;
         this.setEvent();
     }
-    onAdd = (contents) => this.props.onAdd(contents);
+    addTodoItem = (contents) => this.props.addTodoItem(contents);
 
     setEvent() {
-        const { $target, onAdd } = this;
+        const { $target, addTodoItem } = this;
         $target.addEventListener('keypress', ({ target, key }) => {
             const contents = target.value;
-            contents !== '' && key === 'Enter' && onAdd(contents);
+            contents !== '' && key === 'Enter' && addTodoItem(contents);
         });
     }
 }
