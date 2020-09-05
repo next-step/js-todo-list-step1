@@ -11,7 +11,7 @@ class NewTodoTitle {
 
     setEvent() {
         const { $target, onAdd } = this;
-        $target.addEventListener('keydown', ({ target, key }) => {
+        $target.addEventListener('keypress', ({ target, key }) => {
             const contents = target.value;
             contents !== '' && key === 'Enter' && onAdd(contents);
         });
