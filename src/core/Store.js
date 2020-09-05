@@ -3,16 +3,22 @@ import Storage from '../storage/index.js';
 export const Store = class {
 
   $state;
+  $getters;
   #mutations;
   #observing;
-  #getters;
   #persistentKey;
 
   constructor({ state, mutations, getters, persistentKey = null }) {
     this.$state = Storage.get(persistentKey, state);
     this.#persistentKey = persistentKey;
     this.#mutations = mutations;
-    this.#getters = getters;
+    this.$getters = Object.entries(getters)
+                          .reduce((getters, [key, getter]) => {
+                            Object.defineProperty(getters, key, {
+                              get: () => getter(this.$state)
+                            })
+                            return getters;
+                          }, {});
     this.#observing = new Set();
   }
 
@@ -24,14 +30,6 @@ export const Store = class {
     const newState = { ...this.$state };
     this.#mutations[mutationKey](newState, payload);
     this.#setState(newState);
-  }
-
-  get $getters () {
-    return Object.entries(this.#getters)
-                 .reduce((getters, [key, getter]) => {
-                   getters[key] = getter(this.$state);
-                   return getters;
-                 }, {});
   }
 
   #setState (newState) {
