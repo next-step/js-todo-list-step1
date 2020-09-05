@@ -23,4 +23,19 @@
   4. .todo-list안에 들어갈 item 컴포넌트 작성 (완료버튼, 내용, 삭제버튼)
   5. 필요한 이벤트 목록 정리 
     - DOM이 다 불려지면 이벤트 할당하는 초기화 진입점 
-    - .new-todo
+      - .new-todo enter event 
+      - .new-todo click event 
+      - .filters click event 
+      - .todo-count click (done)
+      - .todo-count click (delete)
+      - .todo-count double-click (edit)
+      - .todo-count keyevent-ESC (cancel)
+  6. 작성할 로직
+    - item filter rendering
+    - item filter count
+    - localStorage SET (어느 이벤트에서 발생을 하게 할 것인가?) 
+    - localStorage GET
+    - 5번에 적어 놓은 이벤의 함수 
+  7. 데이터 저장 형식 
+    - 완료여부 / 본문 / ID
+    
