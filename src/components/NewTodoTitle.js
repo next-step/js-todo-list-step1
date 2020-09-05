@@ -13,7 +13,10 @@ class NewTodoTitle {
         const { $target, addTodoItem } = this;
         $target.addEventListener('keypress', ({ target, key }) => {
             const contents = target.value;
-            contents !== '' && key === 'Enter' && addTodoItem(contents);
+            if (contents !== '' && key === 'Enter') {
+                addTodoItem(contents);
+                target.value = '';
+            }
         });
     }
 }
