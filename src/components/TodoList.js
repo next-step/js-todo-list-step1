@@ -10,9 +10,9 @@ class TodoList {
         this.setEvent();
     }
 
-    toggleComplete = (index) => this.props.toggleComplete(index);
+    toggleComplete = (index, payload) => this.props.setItem(index, payload);
     deleteItem = (index) => this.props.deleteItem(index);
-    toggleEditingItem = (index) => this.props.toggleEditingItem(index);
+    toggleEditingItem = (index, payload) => this.props.setItem(index, payload);
     editItem = (index, payload) => this.props.setItem(index, payload);
 
     setEvent () {
@@ -21,7 +21,7 @@ class TodoList {
         $target.addEventListener('click', ({ target }) => {
             const index = target.parentNode.dataset.index;
             if (target.classList.contains('toggle')) {
-                toggleComplete(index);
+                toggleComplete(index, { complete: target.checked});
                 return;
             } else if (target.classList.contains('destroy')) {
                 deleteItem(index);
@@ -30,16 +30,16 @@ class TodoList {
         });
         $target.addEventListener('dblclick', ({ target }) => {
             const index = target.parentNode.dataset.index;
-            if (target.classList.contains('label')) {
-                toggleEditingItem(index);
-            }
+            target.classList.contains('label') &&
+                toggleEditingItem(index, { editing: true });
         });
         $target.addEventListener('keydown', ({ target, key }) => {
             const index = target.parentNode.dataset.index;
-            if (target.classList.contains('edit')) {
-                if (key === 'Escape') toggleEditingItem(index);
-                if (key === 'Enter') editItem(index, { contents: target.value, editing: false });
-            }
+            if (target.classList.contains('edit'))
+                if (key === 'Escape')
+                    toggleEditingItem(index, { editing: false });
+                else if (key === 'Enter')
+                    editItem(index, { contents: target.value, editing: false });
         });
 
     }
