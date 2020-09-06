@@ -1,6 +1,12 @@
 const $inputTodoNewTitle = document.querySelector('#new-todo-title');
 const $ulTodoList = document.querySelector('#todo-list');
 const $spanTodoCounter = document.querySelector('.todo-count');
+const $aTodoAllSelected = document.querySelector('all selected');
+const $aTodoActive = document.querySelector('active');
+const $aTodoComplete = document.querySelector('completed');
+
+const liTemplateList = [];
+
 
 const todoListCounter = () => {
   const count = $ulTodoList.querySelectorAll('li').length;
@@ -9,10 +15,12 @@ const todoListCounter = () => {
 
 const todoListAddTitle = ({ key }) => {
   if (key === 'Enter' && $inputTodoNewTitle.value.length !== 0) {
+    let template = renderNewToDoTemplate($inputTodoNewTitle.value);
+    liTemplateList.push(template);
     $ulTodoList.insertAdjacentHTML(
       'beforeend',
-      renderNewToDoTemplate($inputTodoNewTitle.value)
-    );
+        template
+      );
     $inputTodoNewTitle.value = '';
     todoListCounter();
   }
@@ -51,6 +59,9 @@ const todoListDoubleClickedOnToggle = ({ target }) => {
     });
   }
 };
+const getTodoFilter = ({target}) =>{
+
+}
 
 const renderNewToDoTemplate = (title) => {
   return ` <li>
@@ -66,3 +77,6 @@ const renderNewToDoTemplate = (title) => {
 $inputTodoNewTitle.addEventListener('keyup', todoListAddTitle);
 $ulTodoList.addEventListener('click', todoListOnToggle);
 $ulTodoList.addEventListener('dblclick', todoListDoubleClickedOnToggle);
+$aTodoAllSelected.addEventListener('click' ,getTodoFilter );
+$aTodoActive.addEventListener('click' ,getTodoFilter);
+$aTodoComplete.addEventListener('click' ,getTodoFilter )
