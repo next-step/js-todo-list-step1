@@ -2,9 +2,9 @@ function TodoApp() {
     this.todoItems = [];
     this.id = 0;
 
-    this.setState = updatedItems => {
+    this.setState = (updatedItems,viewMode) => {
         this.todoItems = updatedItems;
-        todoList.setState(this.todoItems);
+        todoList.setState(this.todoItems,viewMode);
       };
 
     new TodoInput({
@@ -38,7 +38,11 @@ function TodoApp() {
             });
         }
     });
-
+    new TodoCount({
+        onChangeView: contents => {
+            this.setState(this.todoItems,contents);
+        }
+    });
 }  
 
 function TodoInput({onAdd}){
@@ -113,8 +117,14 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
     }
 
     this.setState = (updatedTodoItems,viewMode) => {
-      this.todoItems = updatedTodoItems;
-      this.render(this.todoItems);
+        this.todoItems = updatedTodoItems;
+        if(viewMode == "active"){
+            this.todoItems = updatedTodoItems.filter((item)=> !item.completed);
+        }
+        else if(viewMode == "completed"){
+            this.todoItems = updatedTodoItems.filter((item)=> item.completed);
+        }
+        this.render(this.todoItems);
     };
   
     this.render = items => {
@@ -131,9 +141,25 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
                         </div>
                         <input class="edit" value="${title}">
                     </li>`;
-      }
-  }
+    }
+} 
   
+function TodoCount({onChangeView}){
+    const $todoFilter = document.querySelector(".filters");
+    const $todoFilters = document.querySelectorAll(".filters a");
+  
+    $todoFilter.addEventListener("click", event => this.changeView(event));
+    this.changeView = event => {
+        if(event.target && event.target.nodeName == "A"){
+            const $selectedMode = event.target.classList;
+            
+            onChangeView($selectedMode[0]);
+            $todoFilters.forEach((node)=>{ node.classList.remove("selected"); });
+            $selectedMode.add("selected");
+        }
+    }
+}
+
 function TodoItem(title,id){
     this.id = id;
     this.title = title;
