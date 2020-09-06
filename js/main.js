@@ -21,6 +21,15 @@ function TodoApp() {
                 if(item.id == contents) this.todoItems.splice(index,1);
             });
             this.setState(this.todoItems);
+        },
+        onChangeState: contents => {
+            this.todoItems.forEach((item,index)=>{
+                if(item.id == contents) {
+                    item.toggleState();
+                    console.log(item);
+                }
+            });
+            this.setState(this.todoItems);
         }
     });
 
@@ -45,13 +54,14 @@ function TodoInput({onAdd}){
     }
 }
 
-function TodoList({onRemove}) {
+function TodoList({onRemove,onChangeState}) {
     const $todoList = document.querySelector("#todo-list");
 
     $todoList.addEventListener("click", event => this.clickEvent(event));
 
     this.clickEvent = event => {
         if (event.target.classList == "destroy") this.removeItem(event);
+        if (event.target.classList == "toggle") this.changeItemState(event);
     }
 
     this.removeItem = event => {
@@ -61,10 +71,18 @@ function TodoList({onRemove}) {
           }
         }
     }
+    this.changeItemState = event => {
+        if(event.target && event.target.nodeName == "INPUT"){
+            console.log(event.target.closest("li"));
+            event.target.closest("li").classList.toggle("completed");
+            onChangeState(event.target.closest("li").dataset.id);
+        }
+    }
 
     this.setState = (updatedTodoItems,viewMode) => {
       this.todoItems = updatedTodoItems;
       this.render(this.todoItems);
+      console.log(this.todoItems);
     };
   
     this.render = items => {
@@ -72,10 +90,10 @@ function TodoList({onRemove}) {
        $todoList.innerHTML = template.join("");
     };
     
-    function todoItemTemplate({title,id}){
-        return ` <li data-id="${id}">
+    function todoItemTemplate({title,id,completed}){
+        return ` <li data-id="${id}" class=${completed?"completed" : ""}>
                         <div class="view">
-                            <input class="toggle" type="checkbox">
+                            <input class="toggle" type="checkbox" ${completed?"checked":""}>
                             <label class="label">${title}</label>
                             <button class="destroy"></button>
                         </div>
@@ -88,6 +106,10 @@ function TodoItem(title,id){
     this.id = id;
     this.title = title;
     this.completed = false;
+
+    this.toggleState = ()=>{
+        this.completed = !this.completed;
+    }
 }
 
 new TodoApp();
