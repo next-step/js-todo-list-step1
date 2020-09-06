@@ -1,6 +1,6 @@
 import TodoItem from './TodoItem.js';
 import { deleteItem, setItem } from '../store.js';
-import { addEventListener } from '../utils.js';
+import { addEventBubblingListener } from '../utils.js';
 
 const TodoList = ($target) => {
     const toggleComplete = ({ index, event: { target } }) =>
@@ -20,11 +20,12 @@ const TodoList = ($target) => {
             editing: false,
         });
 
-    addEventListener($target, 'click', 'toggle', toggleComplete);
-    addEventListener($target, 'click', 'destroy', deleteItem);
-    addEventListener($target, 'dblclick', 'label', editingItem);
-    addEventListener($target, 'keydown', 'edit', viewingItem);
-    addEventListener($target, 'keydown', 'edit', editItem);
+    addEventBubblingListener($target, 'click', 'toggle', toggleComplete);
+    addEventBubblingListener($target, 'click', 'destroy', deleteItem);
+    addEventBubblingListener($target, 'dblclick', 'label', editingItem);
+    addEventBubblingListener($target, 'keydown', 'edit', event => {
+        viewingItem(event); editItem(event);
+    });
 
     return ({ todoItems }) =>
         todoItems?.map((item, index) => TodoItem({ ...item, index })).join('') || '';

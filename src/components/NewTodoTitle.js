@@ -1,5 +1,5 @@
 import { addItem } from '../store.js';
-import { addEventListener } from '../utils.js';
+import { addEventBubblingListener } from '../utils.js';
 
 const NewTodoTitle = ($target) => {
     const _addItem = ({ event: { target, key } }) => {
@@ -10,7 +10,7 @@ const NewTodoTitle = ($target) => {
         }
     };
 
-    addEventListener($target, 'keypress', 'new-todo', _addItem);
+    addEventBubblingListener($target, 'keypress', 'new-todo', _addItem);
 };
 
 
