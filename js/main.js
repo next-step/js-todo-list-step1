@@ -36,6 +36,30 @@ document.getElementById("todo-list").addEventListener("focusout", function(e){
     }
 });
 
+document.querySelector(".filters").addEventListener("click", function(e){
+    if (e.target && e.target.nodeName == "A"){
+        document.querySelector(".filters .selected").classList.remove("selected");
+        e.target.classList.add("selected");
+        if (e.target.classList.contains("all")){
+            document.querySelectorAll(".todo-list li").forEach( e => {
+                e.style.display = "";
+            });
+        }
+        else if (e.target.classList.contains("active")){
+            document.querySelectorAll(".todo-list li").forEach( function(e){
+                if(e.closest("li").classList == "completed") e.style.display = "none";
+                else e.style.display = "";
+            });
+        }
+        else if (e.target.classList.contains("completed")){
+            document.querySelectorAll(".todo-list li").forEach(function(e){
+                if(e.closest("li").classList != "completed") e.style.display = "none";
+                else e.style.display = "";
+            });
+        }
+    }
+});
+
 function countList(){
     document.querySelector(".todo-count strong").innerText = 
       document.querySelector("#todo-list").childElementCount
