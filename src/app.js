@@ -37,11 +37,11 @@ function App() {
   this.filterItems = (type) => {
     this.selected = type;
 
-    if (type === 'all') {
+    if (type === FilterOptions.ALL.type) {
       this.filteredData = this.data;
-    } else if (type === 'active') {
+    } else if (type ===  FilterOptions.ACTIVE.type) {
       this.filteredData = this.data.filter((item) => !item.isCompleted);
-    } else if (type === 'completed') {
+    } else if (type ===  FilterOptions.COMPLETED.type) {
       this.filteredData = this.data.filter((item) => item.isCompleted);
     }
     this.todoList.updateItem(this.filteredData);

@@ -1,4 +1,4 @@
-import {FilterOptions} from './constants.js';
+import {FilterDetails} from './constants.js';
 
 export default function TodoFilter($todoFilter, data, selected, filterItems) {
   this.$todoFilter = $todoFilter;
@@ -12,7 +12,7 @@ export default function TodoFilter($todoFilter, data, selected, filterItems) {
 
   this.bind = () => {
     this.$todoFilter.addEventListener('click', ({target}) => {
-      FilterOptions.filter(({type}) => {
+      FilterDetails.filter(({type}) => {
         if (target.classList.contains(type)) {
           this.selected = type;
           filterItems(this.selected);
@@ -24,7 +24,7 @@ export default function TodoFilter($todoFilter, data, selected, filterItems) {
 
   this.render = () => {
     let result = '';
-    FilterOptions.map(({type, text}) => {
+    FilterDetails.map(({type, text}) => {
       result += `
         <li>
           <a class="${type} ${this.selected == type? 'selected': ''}" href="#${type}">${text}</a>
