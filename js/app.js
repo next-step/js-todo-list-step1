@@ -24,16 +24,36 @@ $todoInputElement.addEventListener('keyup', (event) => {
     }
 })
 // toggle change event 
+$todoListElement.addEventListener('change', (event) => {
+	console.log('change', event);
+	const target = event.target;
+})
 
 // button click event
+$todoListElement.addEventListener('click', (event) => {
+	console.log('click event', event);
+	const target = event.target
+
+	if (target === 'label') {
+
+	}
+})
 
 
 // 입력된 값 수저하는 기능
 $todoListElement.addEventListener('dblclick', (event) => {
+	console.log('double click event', event);
+	const target = event.target 
+
+	if (target === 'label') {
+
+	}
 })
 
 // filter click event
-
+$filtersElement.addEventListener('click', (event) => {
+	console.log('filters', event);
+})
 
 /**************** App logic ****************/
 const inputEvent = (newData) => {
