@@ -1,49 +1,56 @@
 const $inputTodoNewTitle = document.querySelector('#new-todo-title');
 const $ulTodoList = document.querySelector('#todo-list');
+const $spanTodoCounter = document.querySelector('.todo-count');
 
-const todoListAddTitle = ({key}) => {
+const todoListCounter = () => {
+  const count = $ulTodoList.querySelectorAll('li').length;
+  $spanTodoCounter.querySelector('strong').textContent = count;
+};
+
+const todoListAddTitle = ({ key }) => {
   if (key === 'Enter' && $inputTodoNewTitle.value.length !== 0) {
     $ulTodoList.insertAdjacentHTML(
       'beforeend',
       renderNewToDoTemplate($inputTodoNewTitle.value)
     );
     $inputTodoNewTitle.value = '';
+    todoListCounter();
   }
 };
-const handleInputKey = ( target, key , temp ) => {
+
+const removeClassList = (target) => {
+  target.closest('li').classList.remove('editing');
+};
+
+const handleInputKey = (target, key, temp) => {
   if (key === 'Escape') {
-    target.closest('li').classList.remove('editing');
+    removeClassList(target);
   } else if (key === 'Enter') {
-    target.closest('li').classList.remove('editing');
-    target.parents('label').textContent = target.value;
-
+    removeClassList(target);
+    target.parentNode.querySelector('label').textContent = target.value;
   }
 };
 
-
-
-
-const todoListOnToggle = ({target}) => {
+const todoListOnToggle = ({ target }) => {
   if (target.className === 'toggle') {
     target.closest('li').classList.toggle('completed');
   } else if (target.className === 'destroy') {
     target.closest('li').remove();
+    todoListCounter();
   }
 };
 
-const todoListDoubleClickedOnToggle = ({target}) => {
-
+const todoListDoubleClickedOnToggle = ({ target }) => {
   if (target.nodeName === 'LABEL') {
     const temp = target.closest('label').textContent;
     target.closest('li').classList.toggle('editing');
     const $inputEdit = target.closest('.editing').querySelector('.edit');
     $inputEdit.value = temp;
     $inputEdit.addEventListener('keyup', (e) => {
-      handleInputKey(e.target , e.key, temp)
+      handleInputKey(e.target, e.key, temp);
     });
   }
 };
-
 
 const renderNewToDoTemplate = (title) => {
   return ` <li>
