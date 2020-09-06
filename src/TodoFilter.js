@@ -1,13 +1,9 @@
-const FilterOptions = [
-  {type: 'all', text: '전체보기'},
-  {type: 'active', text: '해야할 일'},
-  {type: 'completed', text: '완료한 일'},
-];
+import {FilterOptions} from './constants.js';
 
-export default function TodoFilter($todoFilter, data) {
+export default function TodoFilter($todoFilter, data, selected, filterItems) {
   this.$todoFilter = $todoFilter;
   this.data = data;
-  this.selected = 'all';
+  this.selected = selected;
 
   this.init = () => {
     this.render();
@@ -16,13 +12,13 @@ export default function TodoFilter($todoFilter, data) {
 
   this.bind = () => {
     this.$todoFilter.addEventListener('click', ({target}) => {
-        FilterOptions.filter(({type}) => {
-            if (target.classList.contains(type)){
-                this.selected = type;
-            }
-        });
-
-        this.render();
+      FilterOptions.filter(({type}) => {
+        if (target.classList.contains(type)) {
+          this.selected = type;
+          filterItems(this.selected);
+        }
+      });
+      this.render();
     });
   };
 

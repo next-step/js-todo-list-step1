@@ -1,17 +1,11 @@
 import {KEY} from './constants.js';
 
-export default function TodoList($todoList, data, removeItem) {
+export default function TodoList($todoList, data, {removeItem, editItem}) {
   this.$todoList = $todoList;
   this.data = data;
 
   this.updateItem = (nextData) => {
     this.data = [...nextData];
-    this.render();
-    this.bindEvents();
-  };
-
-  this.editItem = (index, text) => {
-    this.data[index].text = text;
     this.render();
     this.bindEvents();
   };
@@ -51,7 +45,7 @@ export default function TodoList($todoList, data, removeItem) {
             target.value = oldValue;
             $todoItem.classList.remove('editing');
           } else if (key === KEY.ENTER) {
-            this.editItem(index, target.value);
+            editItem(index, target.value);
           }
         });
       });
@@ -64,11 +58,11 @@ export default function TodoList($todoList, data, removeItem) {
 
   this.render = () => {
     let result = '';
-    this.data.map(({text}, index) => {
+    this.data.map(({text, isCompleted}, index) => {
       result += `
-      <li class="todo-item ${data[index].isCompleted? 'completed' : ''}" data-index="${index}">
+      <li class="todo-item ${isCompleted? 'completed' : ''}" data-index="${index}">
         <div class="view">
-          <input class="toggle" type="checkbox" ${data[index].isCompleted? 'checked' : ''} />
+          <input class="toggle" type="checkbox" ${isCompleted? 'checked' : ''} />
           <label class="label">${text}</label>
           <button class="destroy"></button>
         </div>

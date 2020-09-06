@@ -22,7 +22,7 @@
 - [x] todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
 - [x]  todo list를 더블클릭했을 때 input 모드로 변경. (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
 - [x] todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
-- [ ] todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
+- [x] todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
 
 ## 🚀🚀 심화 요구사항
 
@@ -91,7 +91,15 @@ This project is [MIT](https://github.com/next-step/js-todo-list-step1/blob/maste
 - import&export 모듈화 적용
 
 ### 🙏 Feedback
-- https://github.com/next-step/js-todo-list-step1/pull/23#discussion_r470028606
+- [PR](https://github.com/next-step/js-todo-list-step1/pull/23)
 
 ## 3기
+### ✨ Updates
+- Filter 구현
+- editing item에 focus / focusout 적용
 
+### 🤔 고민
+- data를 직접 컨트롤하지 않도록 해야하나?
+
+### 🐞 버그
+- [ ] todo item을 필터링할 때 원 배열의 인덱스도 같이 넘기기
