@@ -125,6 +125,7 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
             this.todoItems = updatedTodoItems.filter((item)=> item.completed);
         }
         this.render(this.todoItems);
+        document.querySelector(".todo-count strong").innerText = this.todoItems.length;
     };
   
     this.render = items => {
