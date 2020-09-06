@@ -9,13 +9,20 @@ function TodoApp() {
 
     new TodoInput({
         onAdd: contents => {
-          const newTodoItem = new TodoItem(contents,this.id++);
-          this.todoItems.push(newTodoItem);
-          this.setState(this.todoItems);
+            const newTodoItem = new TodoItem(contents,this.id++);
+            this.todoItems.push(newTodoItem);
+            this.setState(this.todoItems);
         }
     });
     
-    const todoList = new TodoList();
+    const todoList = new TodoList({
+        onRemove: contents => {
+            this.todoItems.forEach((item,index)=>{
+                if(item.id == contents) this.todoItems.splice(index,1);
+            });
+            this.setState(this.todoItems);
+        }
+    });
 
 }  
 
@@ -38,8 +45,23 @@ function TodoInput({onAdd}){
     }
 }
 
-function TodoList() {
+function TodoList({onRemove}) {
     const $todoList = document.querySelector("#todo-list");
+
+    $todoList.addEventListener("click", event => this.clickEvent(event));
+
+    this.clickEvent = event => {
+        if (event.target.classList == "destroy") this.removeItem(event);
+    }
+
+    this.removeItem = event => {
+        if(event.target && event.target.nodeName == "BUTTON"){
+          if(confirm("정말로 삭제하시겠습니까?")){ 
+              onRemove(event.target.closest("li").dataset.id);
+          }
+        }
+    }
+
     this.setState = (updatedTodoItems,viewMode) => {
       this.todoItems = updatedTodoItems;
       this.render(this.todoItems);
