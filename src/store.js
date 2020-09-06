@@ -1,11 +1,13 @@
 import { render } from './render.js';
 
-export const store = JSON.parse(localStorage.getItem('state')) ||
+const store = JSON.parse(localStorage.getItem('state')) ||
     {
         todoItems: [],
         filter: 'all',
     };
 
+
+export const getFilter = () => store.filter;
 
 export const getItems = () => {
     const { todoItems, filter } = store;
