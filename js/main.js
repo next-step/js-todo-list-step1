@@ -10,6 +10,7 @@ document.getElementById("todo-list").addEventListener("click", function (e) {
     else if(e.target && e.target.nodeName == "BUTTON" && e.target.classList == "destroy"){
         if(confirm("정말로 삭제하시겠습니까?")){ 
             e.target.closest("li").remove();
+            countList();
         }
     }
 });
@@ -34,14 +35,20 @@ document.getElementById("todo-list").addEventListener("focusout", function(e){
         e.target.closest("li").classList.remove("editing");
     }
 });
-  
+
+function countList(){
+    document.querySelector(".todo-count strong").innerText = 
+      document.querySelector("#todo-list").childElementCount
+}
+
 function onAddTodoItem(event) {
-  const todoTitle = event.target.value;
-  const todoList = document.getElementById("todo-list");
-  if (event.key === "Enter" && todoTitle !== "") {
-    todoList.insertAdjacentHTML("beforeend", renderTodoItemTemplate(todoTitle));
-    event.target.value = "";
-  }
+    const todoTitle = event.target.value;
+    const todoList = document.getElementById("todo-list");
+    if (event.key === "Enter" && todoTitle !== "") {
+        todoList.insertAdjacentHTML("beforeend", renderTodoItemTemplate(todoTitle));
+        event.target.value = "";
+        countList();
+    }
 }
 
 function onToggleTodoItem(event) {
