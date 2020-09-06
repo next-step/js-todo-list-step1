@@ -14,6 +14,13 @@ document.getElementById("todo-list").addEventListener("click", function (e) {
     }
 });
 
+document.getElementById("todo-list").addEventListener("dblclick", function(e){
+    if (e.target && e.target.nodeName == "LABEL" && e.target.classList == "label"){
+        e.target.closest("li").classList.add("editing");
+        e.target.closest("li").lastElementChild.focus();
+    }
+});
+
 function onAddTodoItem(event) {
   const todoTitle = event.target.value;
   const todoList = document.getElementById("todo-list");
