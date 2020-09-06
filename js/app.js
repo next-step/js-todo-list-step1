@@ -23,11 +23,17 @@ $todoInputElement.addEventListener('keyup', (event) => {
 		$todoInputElement.value = '';
     }
 })
+// toggle change event 
+
+// button click event
 
 
+// 입력된 값 수저하는 기능
 $todoListElement.addEventListener('dblclick', (event) => {
-    // 입력된 값 수저하는 기능
 })
+
+// filter click event
+
 
 /**************** App logic ****************/
 const inputEvent = (newData) => {
