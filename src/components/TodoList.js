@@ -1,34 +1,30 @@
 import TodoItem from './TodoItem.js';
 import { deleteItem, setItem } from '../store.js';
+import { addEventListener } from '../utils.js';
 
 const TodoList = ($target) => {
-    const toggleComplete = (index, payload) => setItem(index, payload);
-    const toggleEditingItem = (index, payload) => setItem(index, payload);
-    const editItem = (index, payload) => setItem(index, payload);
+    const toggleComplete = ({ index, event: { target } }) =>
+        setItem(index, { complete: target.checked });
 
-    $target.addEventListener('click', ({ target }) => {
-        const index = target.parentNode.dataset.index;
-        if (target.classList.contains('toggle'))
-            return toggleComplete(index, { complete: target.checked });
-        if (target.classList.contains('destroy'))
-            return deleteItem(index);
-    });
+    const editingItem = ({ index }) =>
+        setItem(index, { editing: true });
 
-    $target.addEventListener('dblclick', ({ target }) => {
-        const index = target.parentNode.dataset.index;
-        target.classList.contains('label') &&
-        toggleEditingItem(index, { editing: true });
-    });
+    const viewingItem = ({ index, event: { key } }) =>
+        key === 'Escape' &&
+        setItem(index, { editing: false });
 
-    $target.addEventListener('keydown', ({ target, key }) => {
-        const index = target.parentNode.dataset.index;
-        if (!target.classList.contains('edit')) return;
-        if (key === 'Escape')
-            return toggleEditingItem(index, { editing: false });
-        if (key === 'Enter')
-            return editItem(index, { contents: target.value, editing: false });
-    });
+    const editItem = ({ index, event: { target, key } }) =>
+        key === 'Enter' &&
+        setItem(index, {
+            contents: target.value,
+            editing: false,
+        });
 
+    addEventListener($target, 'click', 'toggle', toggleComplete);
+    addEventListener($target, 'click', 'destroy', deleteItem);
+    addEventListener($target, 'dblclick', 'label', editingItem);
+    addEventListener($target, 'keydown', 'edit', viewingItem);
+    addEventListener($target, 'keydown', 'edit', editItem);
 
     return ({ todoItems }) =>
         todoItems?.map((item, index) => TodoItem({ ...item, index })).join('') || '';
