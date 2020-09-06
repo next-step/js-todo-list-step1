@@ -26,10 +26,16 @@ function TodoApp() {
             this.todoItems.forEach((item,index)=>{
                 if(item.id == contents) {
                     item.toggleState();
-                    console.log(item);
                 }
             });
             this.setState(this.todoItems);
+        },
+        onChangeTitle: (contents,title) => {
+            this.todoItems.forEach((item,index) => {
+                if(item.id == contents) {
+                    item.title = title;
+                }
+            });
         }
     });
 
@@ -54,10 +60,14 @@ function TodoInput({onAdd}){
     }
 }
 
-function TodoList({onRemove,onChangeState}) {
+function TodoList({onRemove,onChangeState,onChangeTitle}) {
     const $todoList = document.querySelector("#todo-list");
 
     $todoList.addEventListener("click", event => this.clickEvent(event));
+    $todoList.addEventListener("dblclick", event => this.editTitleMode(event));
+    $todoList.addEventListener("keyup", event => this.stopChangeTitle(event));
+    $todoList.addEventListener("focusout", event => this.changeTitle(event));
+
 
     this.clickEvent = event => {
         if (event.target.classList == "destroy") this.removeItem(event);
@@ -71,18 +81,40 @@ function TodoList({onRemove,onChangeState}) {
           }
         }
     }
+
     this.changeItemState = event => {
         if(event.target && event.target.nodeName == "INPUT"){
-            console.log(event.target.closest("li"));
             event.target.closest("li").classList.toggle("completed");
             onChangeState(event.target.closest("li").dataset.id);
+        }
+    }
+
+    this.editTitleMode = event => {
+        if (event.target && event.target.nodeName == "LABEL"){
+            event.target.closest("li").classList.add("editing");
+            event.target.closest("li").lastElementChild.focus();
+       }
+    }   
+
+    this.stopChangeTitle = event => {
+        if (event.target && event.target.nodeName == "INPUT" && event.target.classList == "edit" && event.key == "Escape"){
+            event.target.closest("li input").value = event.target.closest("li").querySelector("label").innerText;
+            event.target.closest("li").classList.remove("editing");
+        }
+      }
+
+    this.changeTitle = event => {
+        if (event.target && event.target.nodeName == "INPUT" && event.target.classList == "edit"){
+            event.target.closest("li").querySelector("label").innerText = event.target.closest("li input").value;
+            event.target.closest("li").classList.remove("editing");
+            onChangeTitle(event.target.closest("li").dataset.id,event.target.closest("li").querySelector("label").innerText);
+            
         }
     }
 
     this.setState = (updatedTodoItems,viewMode) => {
       this.todoItems = updatedTodoItems;
       this.render(this.todoItems);
-      console.log(this.todoItems);
     };
   
     this.render = items => {
