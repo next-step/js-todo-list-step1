@@ -1,3 +1,4 @@
+import todoItem from './todoItem.js';
 const DATA = []
 
 const todoInputElement = document.getElementById('new-todo-title')
@@ -8,7 +9,7 @@ todoInputElement.addEventListener('keyup', (event) => {
     if (key === "Enter") {
         let data = {
             id: DATA.length + 1,
-            context: ,// input value
+            context: 'test',// input value
             complete: false
         }
     }
@@ -18,4 +19,5 @@ todoInputElement.addEventListener('keyup', (event) => {
 todoListElement.addEventListener('dblclick', (event) => {
     // 입력된 값 수저하는 기능
 })
-
+console.log('app.js' );
+// todoItem();
