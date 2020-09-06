@@ -1,12 +1,9 @@
 const $inputTodoNewTitle = document.querySelector('#new-todo-title');
 const $ulTodoList = document.querySelector('#todo-list');
 const $spanTodoCounter = document.querySelector('.todo-count');
-const $aTodoAllSelected = document.querySelector('all selected');
-const $aTodoActive = document.querySelector('active');
-const $aTodoComplete = document.querySelector('completed');
+const $ulFilterList = document.querySelector('.filters');
 
 const liTemplateList = [];
-
 
 const todoListCounter = () => {
   const count = $ulTodoList.querySelectorAll('li').length;
@@ -15,12 +12,10 @@ const todoListCounter = () => {
 
 const todoListAddTitle = ({ key }) => {
   if (key === 'Enter' && $inputTodoNewTitle.value.length !== 0) {
-    let template = renderNewToDoTemplate($inputTodoNewTitle.value);
-    liTemplateList.push(template);
-    $ulTodoList.insertAdjacentHTML(
-      'beforeend',
-        template
-      );
+    let template = renderNewToDoTemplate($inputTodoNewTitle.value, false);
+    liTemplateList.push($inputTodoNewTitle.value);
+    console.log(liTemplateList);
+    $ulTodoList.insertAdjacentHTML('beforeend', template);
     $inputTodoNewTitle.value = '';
     todoListCounter();
   }
@@ -59,14 +54,24 @@ const todoListDoubleClickedOnToggle = ({ target }) => {
     });
   }
 };
-const getTodoFilter = ({target}) =>{
 
-}
+const getTodoFilter = ({ target }) => {
+  // console.log(target.className);
+  if (target.className === 'all selected') {
+    console.log(target.className);
+  } else if (target.className === 'active') {
+    console.log(target.className);
+  } else if (target.className === 'completed') {
+    console.log(target.className);
+  }
+};
 
-const renderNewToDoTemplate = (title) => {
-  return ` <li>
+const renderNewToDoTemplate = (title, status) => {
+  return ` <li class=${status ? 'completed' : ''}>
                     <div class="view">
-                        <input class="toggle" type="checkbox">
+                        <input class="toggle" type="checkbox" ${
+                          status ? 'checked' : ''
+                        }>
                         <label class="label">${title}</label>
                         <button class="destroy"></button>
                     </div>
@@ -77,6 +82,4 @@ const renderNewToDoTemplate = (title) => {
 $inputTodoNewTitle.addEventListener('keyup', todoListAddTitle);
 $ulTodoList.addEventListener('click', todoListOnToggle);
 $ulTodoList.addEventListener('dblclick', todoListDoubleClickedOnToggle);
-$aTodoAllSelected.addEventListener('click' ,getTodoFilter );
-$aTodoActive.addEventListener('click' ,getTodoFilter);
-$aTodoComplete.addEventListener('click' ,getTodoFilter )
+$ulFilterList.addEventListener('click', getTodoFilter);
