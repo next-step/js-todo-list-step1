@@ -19,7 +19,7 @@ const todoListTarget = document.getElementById("todo-list");
 // state.condition 에 따라 각각 다른 리스트를 보여준다.
 // 함수의 마지막에 localStorage에 저장하는 코드가 있음
 function reFlow(state) {
-    todoList.innerHTML = '';
+    todoListTarget.innerHTML = '';
     let rePaintList = [];
     if (state.condition === "all") rePaintList = [...state.items];
     if (state.condition === "active") rePaintList = [...state.items.filter(item=> item.completed === false)];
@@ -36,11 +36,11 @@ function reFlow(state) {
         li.querySelector(".label").textContent = item.todo;
         li.querySelector(".edit").value = item.todo;
         li.querySelector(".edit").addEventListener("keyup", onEdit);
-        li.querySelector(".toggle").addEventListener("change", onChangeCheckBox);
+        li.querySelector(".toggle").addEventListener("change", toggleCompleted);
         if (item.completed) li.querySelector(".toggle").setAttribute("checked", item.completed);
         li.querySelector(".destroy").addEventListener("click", onClickDestroy);
         li.addEventListener('dblclick',onDoubleClickTodoItem);
-        todoList.append(li);
+        todoListTarget.append(li);
     });
     document.querySelector("#new-todo-title").value = '';
     document.querySelector(".todo-count strong").textContent = state.items.length;
