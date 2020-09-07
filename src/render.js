@@ -17,12 +17,11 @@ const initComponents = () => {
 
 export const initRender = ({ todoItems, filter }) => {
     initComponents();
-    $filters.querySelector(`.${ filter }`).classList.add('selected');
-    render({ todoItems });
+    render({ todoItems, filter });
 };
 
-
-export const render = ({ todoItems }) => {
+export const render = ({ todoItems, filter}) => {
+    $filters.innerHTML = components.Filters(filter);
     $todoList.innerHTML = components.TodoList({ todoItems });
     $todoCount.innerHTML = todoItems.length;
 };
