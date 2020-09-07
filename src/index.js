@@ -13,7 +13,7 @@ let state = {
     condition: "all",
     items: [],
 };
-const todoList = document.getElementById("todo-list");
+const todoListTarget = document.getElementById("todo-list");
 
 // state객체의 상태에 따라 새로고침 해주는 메소드
 // state.condition 에 따라 각각 다른 리스트를 보여준다.
@@ -49,8 +49,8 @@ function reFlow(state) {
 
 // Events
 // 이벤트들은 전역객체 상태값을 변경하고, 함수의 마지막 부분에서 rePaint 함수를 실행시킨다.
-function onChangeCheckBox(e) {
-    const li = e.target.parentNode.parentNode;
+function toggleCompleted(e) {
+    const li = e.target.closest('li');
     const targetId = li.dataset.id;
     const origin = state.items[targetId];
     origin.completed = e.target.checked;
@@ -92,7 +92,6 @@ function onKeyUpEnter(e) {
         reFlow(state);
     };
 }
-
 // 초기화 함수
 // todoItem들을 제외한 요소들에 event를 등록한다.
 // localStorage에 기존에 저장된 상탯값이 있다면 그 것으로 state를 초기화한다.
