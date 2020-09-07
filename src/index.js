@@ -11,7 +11,7 @@ let state = {
     condition: "all",
     items: [],
 };
-const todoList = document.getElementById("todo-list");
+const todoListTarget = document.getElementById("todo-list");
 
 // state객체의 상태에 따라 새로고침 해주는 메소드
 // state.condition 에 따라 각각 다른 리스트를 보여준다.
