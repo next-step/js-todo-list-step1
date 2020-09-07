@@ -7,6 +7,8 @@ export default function TodoInput({onAdd}) {
     this.addTodoItem = event => {
         const valuableContent = event.target.value.length > 0 ? event.target.value.trim() : '';
 
+        console.log('event.key', event.key);
+
         if(event.key === 'Enter' && valuableContent.length > 0) {
             event.preventDefault();
             onAdd({

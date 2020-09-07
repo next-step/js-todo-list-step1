@@ -1,20 +1,21 @@
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
-import { ACTIVE, COMPLETED } from "../utils/constants.js";
-
+import { ACTIVE, EDITING, COMPLETED } from "../utils/constants.js";
 
 export default function TodoApp() {
     this.todoItems = [];
 
     this.todoList = new TodoList({
-        onHandleToggle: id => {
-            this.onHandleToggle(id);
-        }
+        onHandleToggle: id => this.onHandleToggle(id),
+        onEdit: (id, flag) => this.onEdit(id, flag),
+        onDelete: id => this.onDelete(id),
+        saveTodoItems: (targetId, todoContext) => this.saveTodoItems(targetId, todoContext)
     });
 
     this.setState = updatedItems => {
+        console.log('updatedItems', updatedItems);
         this.todoItems = updatedItems;
-        this.todoList.render(this.todoItems);
+        this.todoList.setState(this.todoItems);
 
     };
 
@@ -29,8 +30,35 @@ export default function TodoApp() {
         this.setState(updatedItems);
     };
 
-    this.onDelete = () => {
-        //TODO
+
+    this.saveTodoItems = (targetId, todoContext) => {
+        const $index =  this.todoItems.findIndex(item => item.id === Number(targetId));
+
+        let updatedItems = [ ...this.todoItems ];
+        updatedItems[$index] = {... updatedItems[$index],
+            status: ACTIVE,
+            title: todoContext
+        };
+        this.setState(updatedItems);
+    };
+
+    // editing
+    this.onEdit = (targetId ,flag) => {
+        const $index =  this.todoItems.findIndex(item => item.id === Number(targetId));
+
+        let updatedItems = [ ...this.todoItems ];
+        updatedItems[$index] = {... updatedItems[$index],
+            status: flag === true ? EDITING : ACTIVE
+            // status: updatedItems[$index].status === ACTIVE ? EDITING : ACTIVE,
+        };
+        this.setState(updatedItems);
+    };
+
+    this.onDelete = targetId => {
+        const $index =  this.todoItems.findIndex(item => item.id === Number(targetId));
+        let updatedItems = [ ...this.todoItems ];
+        if($index > -1) updatedItems.splice($index, 1);
+        this.setState(updatedItems);
     };
 
     new TodoInput({
