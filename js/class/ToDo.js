@@ -44,7 +44,6 @@ class ToDo{
         return filterList;
     }
     updateItem(updateId,updateText){
-        console.log(updateId,updateText);
         this.items.find( (item) =>{
             if(item.id == updateId) item.text = updateText;
         });
