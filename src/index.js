@@ -1,3 +1,5 @@
+
+
 // 전역 변수
 const todoItemTemplate = `
 <div class="view">
@@ -16,19 +18,19 @@ const todoList = document.getElementById("todo-list");
 // state객체의 상태에 따라 새로고침 해주는 메소드
 // state.condition 에 따라 각각 다른 리스트를 보여준다.
 // 함수의 마지막에 localStorage에 저장하는 코드가 있음
-function rePaint(state) {
+function reFlow(state) {
     todoList.innerHTML = '';
     let rePaintList = [];
-    if (state.condition === "all") rePaintList = state.items; 
-    if (state.condition === "active") rePaintList = state.items.filter(item=> item.completed === false);
-    if (state.condition === "completed") rePaintList = state.items.filter(item=> item.completed === true);
+    if (state.condition === "all") rePaintList = [...state.items];
+    if (state.condition === "active") rePaintList = [...state.items.filter(item=> item.completed === false)];
+    if (state.condition === "completed") rePaintList = [...state.items.filter(item=> item.completed === true)];
 
     rePaintList.forEach((item,i)=>{
         const classList = [];
         if (item.completed) classList.push("completed");
         if (item.editing) classList.push("editing");
         const li = document.createElement("li");
-        li.innerHTML = todoItem;
+        li.innerHTML = todoItemTemplate;
         li.setAttribute("class", classList.join(" "));
         li.dataset.id = i;
         li.querySelector(".label").textContent = item.todo;
@@ -37,7 +39,6 @@ function rePaint(state) {
         li.querySelector(".toggle").addEventListener("change", onChangeCheckBox);
         if (item.completed) li.querySelector(".toggle").setAttribute("checked", item.completed);
         li.querySelector(".destroy").addEventListener("click", onClickDestroy);
-
         li.addEventListener('dblclick',onDoubleClickTodoItem);
         todoList.append(li);
     });
@@ -53,49 +54,49 @@ function onChangeCheckBox(e) {
     const targetId = li.dataset.id;
     const origin = state.items[targetId];
     origin.completed = e.target.checked;
-    rePaint(state);
+    reFlow(state);
 }
 function onClickDestroy(e) {
     const li = e.target.parentNode.parentNode;
     const targetId = li.dataset.id;
     state.items.splice(targetId,1);
-    rePaint(state);
+    reFlow(state);
 }
 function onDoubleClickTodoItem(e) {
     const li = e.target.parentNode.parentNode;
     const targetId = li.dataset.id;
     const origin = state.items[targetId];
     origin.editing = true;
-    rePaint(state);
+    reFlow(state);
 }
 function onEdit(e) {
     const li = e.target.parentNode;
     const targetId = li.dataset.id;
     if(e.keyCode === 27) {
         state.items[targetId].editing = false;
-        rePaint(state);
+        reFlow(state);
     }
     if(e.keyCode === 13) {
         state.items[targetId] = {...state.items[targetId], todo: e.target.value, editing: false};
-        rePaint(state);
+        reFlow(state);
     }
 }
 function onKeyUpEnter(e) {
-    if(e.keyCode === 13) {
+    if(e.key=== "Enter") {
         const item = {
             todo: e.target.value,
             completed: false,
             editing: false
-        }
+        };
         state.items = [...state.items, item];
-        rePaint(state);
-    }
+        reFlow(state);
+    };
 }
 
 // 초기화 함수
 // todoItem들을 제외한 요소들에 event를 등록한다.
 // localStorage에 기존에 저장된 상탯값이 있다면 그 것으로 state를 초기화한다.
-// 함수의 마지막에 rePaint를 실행한다.
+// 함수의 마지막에 reFlow를 실행한다.
 function Initialize() {
     const localState = JSON.parse(localStorage.getItem("state"));
     if (localState) {
@@ -108,35 +109,21 @@ function Initialize() {
     const activeConditionBtn = document.querySelector("a.active");
     const completedConditionBtn = document.querySelector("a.completed");
     const allConditionBtn = document.querySelector("a.all");
-    allConditionBtn.addEventListener("click", (e)=>{
-        e.preventDefault();
-        state.condition = "all";
-        rePaint(state);
-    });
-    activeConditionBtn.addEventListener("click", (e)=>{
-        e.preventDefault();
-        state.condition = "active";
-        rePaint(state);
-    });
-    completedConditionBtn.addEventListener("click",(e)=>{
-        e.preventDefault();
-        state.condition = "completed";
-        rePaint(state);
-    });
+    
+    const setCondition = ({$target, condition}) => {
+        $target.addEventListener('click', (event) => {
+            event.preventDefault();
+            state.condition = condition;
+            reFlow(state);
+        })
+    }
 
-    rePaint(state);
+    setCondition({$target: allConditionBtn, condition: 'all'});
+    setCondition({ $target: activeConditionBtn, condition: 'active'});
+    setCondition({ $target: completedConditionBtn, condition: 'completed'});
+    reFlow(state);
 }
 
 // onload 이벤트
 // load시 초기화함수 Initialize를 실행시킨다.
 window.addEventListener("load", Initialize);
-=======
-const inputNewTodo = document.getElementById('new-todo-title');
-
-const handleInput = (e) => {
-  if (e.key === 'Enter') {
-    //
-  }
-};
-
-inputNewTodo.addEventListener('keypress', handleInput);
