@@ -12,9 +12,9 @@ const $filtersElement = document.querySelector('.filters');
 $todoInputElement.addEventListener('keyup', (event) => {
 	const key = event.key;
 	const valueTrim = $todoInputElement.value.trim()
-    if (key === "Enter") {
+    if (key === "Enter" && valueTrim) {
         let data = {
-            id: ID + 1,
+            id: ID++,
             context: valueTrim,// input value
             complete: false
 		}
@@ -27,17 +27,27 @@ $todoInputElement.addEventListener('keyup', (event) => {
 $todoListElement.addEventListener('change', (event) => {
 	console.log('change', event);
 	const target = event.target;
+	const targetId = target.parentElement.className
+	console.log('targetId', targetId);
+	// 몇번째 아이템인지 구별이 가는가? 
+	DATA.forEach((v, i, a) => {
+		if ( v.id === parseInt(targetId) ) {
+			v.complete = !v.complete;
+		}
+	})
+	console.log('after', DATA);
+	render();
 })
 
 // button click event
-$todoListElement.addEventListener('click', (event) => {
-	console.log('click event', event);
-	const target = event.target
+// $todoListElement.addEventListener('click', (event) => {
+// 	console.log('click event', event);
+// 	const target = event.target
+	
+// 	if (target === 'label') {
 
-	if (target === 'label') {
-
-	}
-})
+// 	}
+// })
 
 
 // 입력된 값 수저하는 기능

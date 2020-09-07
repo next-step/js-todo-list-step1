@@ -1,9 +1,9 @@
 const todoItem = ({id, context, complete}) => {
     return `
-    <li>
+    <li class="${id} ${(complete) ? 'completed' : ''}">
         <input type="text" class="edit" value="${context}">
-        <input type="checkbox" class="toggle" value="${complete}">
-        <label for="toggle" class="">${context}</label>
+        <input type="checkbox" id="toggle-${id}" class="toggle" value="${complete}" ${(complete) ? 'checked' : ''}>
+        <label for="toggle-${id}" class="">${context}</label>
         <button class="destroy"></button>
     </li>
     `
