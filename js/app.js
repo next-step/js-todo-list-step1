@@ -1,9 +1,9 @@
 import todoItem from './todoItem.js';
 import filterItem from './filterItem.js';
 let ID = 0;
-let DATA = [];
+let DATA = []; // {id, context, complete}
 let HASH = "all";
-// {id, context, complete}
+
 
 
 /************* element select & event setting ****************/ 
@@ -14,11 +14,12 @@ const $countElement = document.querySelector('.todo-count strong')
 
 $todoInputElement.addEventListener('keyup', (event) => {
 	const key = event.key;
-	const valueTrim = $todoInputElement.value.trim()
+	const valueTrim = event.target.value.trim()
+
     if (key === "Enter" && valueTrim) {
         let data = {
             id: ID++,
-            context: valueTrim,// input value
+            context: valueTrim,
             complete: false
 		}
 		inputEvent(data)
@@ -26,34 +27,46 @@ $todoInputElement.addEventListener('keyup', (event) => {
 		$todoInputElement.value = '';
     }
 })
+$todoListElement.addEventListener('keyup', (event) => {
+	const key = event.key;
+	const target = event.target;
+	const parent = target.parentElement;
+	const valueTrim = event.target.value.trim()
+	let labelElement = parent.querySelector('label')
+
+	if (key === 'Escape') {
+		parent.classList.remove('editing')
+		target.value = labelElement.innerHTML
+	} else if ( key === 'Enter' && valueTrim) {
+		let index = parent.id.split('-')[1]
+		DATA[index].context = valueTrim
+		render()
+	}
+
+})
 // toggle change event 
 $todoListElement.addEventListener('change', (event) => {
-	console.log('change', event);
 	const target = event.target;
 	const targetId = target.parentElement.id
-	console.log('targetId', targetId);
-	// 몇번째 아이템인지 구별이 가는가? 
-	DATA.forEach((v, i, a) => {
-		if ( `item-${v.id}` === targetId ) {
-			v.complete = !v.complete;
-		}
-	})
-	console.log('after', DATA);
-	render();
-})
 
+	if (target.id) {
+		DATA.forEach((v, i, a) => {
+			if ( `item-${v.id}` === targetId ) {
+				v.complete = !v.complete;
+			}
+		})
+		render();
+	}
+})
 // button click event
 $todoListElement.addEventListener('click', (event) => {
 	const target = event.target
 	const targetId = target.parentElement.id
-	// console.log('click event', event);
 	
 	if (target.className === 'destroy') {
-		console.log('click event', event);
 		DATA = DATA.filter((v) => {
 			return ( `item-${v.id}` === targetId ) ? false : true;
 		})
-		console.log('after', DATA);
 		render();
 	}
 })
@@ -61,30 +74,18 @@ $todoListElement.addEventListener('click', (event) => {
 
 // 입력된 값 수저하는 기능
 $todoListElement.addEventListener('dblclick', (event) => {
-	console.log('double click event', event);
 	const target = event.target 
-
-	if (target === 'label') {
-
-	}
+	const parent = target.parentElement
+	parent.classList.add('editing')
 })
-
-// filter click event
-// $filtersElement.addEventListener('click', (event) => {
-// 	console.log('filters', event);
-// })
-
 window.addEventListener('hashchange', (event) => {
-	console.log('hash', event);
 	HASH = event.newURL.split('#')[1] || 'all'
-	console.log('newHash', HASH);
 	render();
 })
 
 /**************** App logic ****************/
 const inputEvent = (newData) => {
 	DATA.push(newData)
-	console.log('inputEvent', newData, DATA);
 }
 const render =  () => {
 	let filteredData = DATA.filter((v) => {
@@ -96,7 +97,7 @@ const render =  () => {
 			return true
 		}
 	})
-	console.log('filteredData', filteredData);
+	
 	$todoListElement.innerHTML = filteredData.map( (item) => todoItem(item) ).join('')
 	$countElement.innerHTML = filteredData.length;
 	$filtersElement.innerHTML = filterItem(HASH)
