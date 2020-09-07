@@ -1,33 +1,53 @@
 class ToDo{
-    constructor(_dom){
-        this.init(_dom);
-        console.log(_dom);
+    constructor(repository = new ToDoRepository()){
+        this.items = [];
+        this.repository = repository;
+        this.init();
     }
-    init(_dom){
-        this.addTodoItem(_dom);
-    }
-    addTodoItem(){
-        
-    }
-    event(){
-        
-    }
-    setComplete(){
 
+    init(){
+        this.loadItems();
     }
-    deleteTodoItem(){
 
+    loadItems(){
+        this.items = this.repository.load();
     }
-    updateTodoItem(){
 
+    addItem(todoText){
+        const id = this.items.length +1;
+        const newItem = new ToDoItem(id,todoText);
+        this.items.push(newItem);
+        this.saveItems();
+        return newItem;
     }
-    itemCount(){
 
+    deleteItem(deletedId){
+        const deletedIndex= this.items.findIndex( (item) =>{
+            return item.id == deletedId;
+        });
+        this.items.splice(deletedIndex,1);
+        this.saveItems();
     }
-    showList(){
-
+    saveItems(){
+        this.repository.save(this.items);
     }
-    saveLocal(){
-
+    isCompleted(completedId,isCompleted){
+        this.items.find( (item) =>{
+            item.id == completedId ? item.isCompleted = isCompleted : false;
+        });
+        this.saveItems();
+    }
+    filterItem(filterName){
+        let filterList = this.items.filter(todo => {
+            return filterName == 'active' ? todo.isCompleted == false : todo.isCompleted == true;
+        })
+        return filterList;
+    }
+    updateItem(updateId,updateText){
+        console.log(updateId,updateText);
+        this.items.find( (item) =>{
+            if(item.id == updateId) item.text = updateText;
+        });
+        this.saveItems();
     }
 }
