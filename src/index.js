@@ -48,7 +48,7 @@ function rePaint(state) {
 
 // Events
 // 이벤트들은 전역객체 상태값을 변경하고, 함수의 마지막 부분에서 rePaint 함수를 실행시킨다.
-function onChangeCheckBox(e) {
+function toggleCompleted(e) {
     const li = e.target.parentNode.parentNode;
     const targetId = li.dataset.id;
     const origin = state.items[targetId];
