@@ -81,16 +81,16 @@ function onEdit(e) {
         rePaint(state);
     }
 }
-function onKeyUpEnter(e) {
-    if(e.keyCode === 13) {
-        const item = {
-            todo: e.target.value,
-            completed: false,
-            editing: false
-        }
-        state.items = [...state.items, item];
-        rePaint(state);
-    }
+function onKeyUpEnter({ target, key }) {
+  if(key === 'Enter') {
+    const item = {
+      todo: target.value,
+      completed: false,
+      editing: false
+    };
+    state.items = [...state.items, item];
+    rePaint(state);
+  }
 }
 
 // 초기화 함수
