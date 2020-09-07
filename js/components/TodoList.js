@@ -9,4 +9,8 @@ const TodoItem = ({id, text, done, edit}) => `
 	</li>
 `;
 
-export default TodoItem;
+const TodoList = ({list}) => `
+	${list.map(todo => TodoItem(todo)).join('')}
+`;
+
+export default TodoList;
