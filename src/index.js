@@ -68,7 +68,6 @@ function onDoubleClickTodoItem(e) {
     const targetId = li.dataset.id;
     const origin = state.items[targetId];
     origin.editing = true;
-    // li.querySelector(".edit").focus();
     rePaint(state);
 }
 function onEdit(e) {
