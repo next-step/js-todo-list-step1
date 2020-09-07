@@ -1,6 +1,6 @@
 import todoItem from './todoItem.js';
 let ID = 0;
-const DATA = [];
+let DATA = [];
 // {id, context, complete}
 
 
@@ -8,6 +8,7 @@ const DATA = [];
 const $todoInputElement = document.getElementById('new-todo-title');
 const $todoListElement = document.getElementById('todo-list');
 const $filtersElement = document.querySelector('.filters');
+const $countElement = document.querySelector('.todo-count strong')
 
 $todoInputElement.addEventListener('keyup', (event) => {
 	const key = event.key;
@@ -27,11 +28,11 @@ $todoInputElement.addEventListener('keyup', (event) => {
 $todoListElement.addEventListener('change', (event) => {
 	console.log('change', event);
 	const target = event.target;
-	const targetId = target.parentElement.className
+	const targetId = target.parentElement.id
 	console.log('targetId', targetId);
 	// 몇번째 아이템인지 구별이 가는가? 
 	DATA.forEach((v, i, a) => {
-		if ( v.id === parseInt(targetId) ) {
+		if ( `item-${v.id}` === targetId ) {
 			v.complete = !v.complete;
 		}
 	})
@@ -40,14 +41,20 @@ $todoListElement.addEventListener('change', (event) => {
 })
 
 // button click event
-// $todoListElement.addEventListener('click', (event) => {
-// 	console.log('click event', event);
-// 	const target = event.target
+$todoListElement.addEventListener('click', (event) => {
+	const target = event.target
+	const targetId = target.parentElement.id
+	// console.log('click event', event);
 	
-// 	if (target === 'label') {
-
-// 	}
-// })
+	if (target.className === 'destroy') {
+		console.log('click event', event);
+		DATA = DATA.filter((v) => {
+			return ( `item-${v.id}` === targetId ) ? false : true;
+		})
+		console.log('after', DATA);
+		render();
+	}
+})
 
 
 // 입력된 값 수저하는 기능
@@ -72,4 +79,5 @@ const inputEvent = (newData) => {
 }
 const render =  () => {
 	$todoListElement.innerHTML = DATA.map( (item) => todoItem(item) ).join('')
+	$countElement.innerHTML = DATA.length;
 }
