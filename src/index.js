@@ -1,7 +1,5 @@
-
-
 // 전역 변수
-const todoItem = `
+const todoItemTemplate = `
 <div class="view">
   <input class="toggle" type="checkbox"/>
   <label class="label">새로운 타이틀</label>
@@ -132,3 +130,13 @@ function Initialize() {
 // onload 이벤트
 // load시 초기화함수 Initialize를 실행시킨다.
 window.addEventListener("load", Initialize);
+=======
+const inputNewTodo = document.getElementById('new-todo-title');
+
+const handleInput = (e) => {
+  if (e.key === 'Enter') {
+    //
+  }
+};
+
+inputNewTodo.addEventListener('keypress', handleInput);
