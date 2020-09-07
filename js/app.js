@@ -1,6 +1,8 @@
 import todoItem from './todoItem.js';
+import filterItem from './filterItem.js';
 let ID = 0;
 let DATA = [];
+let HASH = "all";
 // {id, context, complete}
 
 
@@ -68,8 +70,15 @@ $todoListElement.addEventListener('dblclick', (event) => {
 })
 
 // filter click event
-$filtersElement.addEventListener('click', (event) => {
-	console.log('filters', event);
+// $filtersElement.addEventListener('click', (event) => {
+// 	console.log('filters', event);
+// })
+
+window.addEventListener('hashchange', (event) => {
+	console.log('hash', event);
+	HASH = event.newURL.split('#')[1] || 'all'
+	console.log('newHash', HASH);
+	render();
 })
 
 /**************** App logic ****************/
@@ -78,6 +87,17 @@ const inputEvent = (newData) => {
 	console.log('inputEvent', newData, DATA);
 }
 const render =  () => {
-	$todoListElement.innerHTML = DATA.map( (item) => todoItem(item) ).join('')
-	$countElement.innerHTML = DATA.length;
+	let filteredData = DATA.filter((v) => {
+		if (HASH === 'completed') {
+			return (v.complete) ? true : false
+		} else if (HASH === 'active') {
+			return !(v.complete) ? true : false
+		} else {
+			return true
+		}
+	})
+	console.log('filteredData', filteredData);
+	$todoListElement.innerHTML = filteredData.map( (item) => todoItem(item) ).join('')
+	$countElement.innerHTML = filteredData.length;
+	$filtersElement.innerHTML = filterItem(HASH)
 }
