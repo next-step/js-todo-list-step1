@@ -1,5 +1,5 @@
 // 전역 변수
-const todoItem = `
+const todoItemTemplate = `
 <div class="view">
   <input class="toggle" type="checkbox"/>
   <label class="label">새로운 타이틀</label>
