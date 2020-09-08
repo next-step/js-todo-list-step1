@@ -42,6 +42,9 @@ function onCancelEditTodoItem(event) {
     if (event.target.classList == "edit" && event.key == "Escape") {
         event.target.closest("li input").value = event.target.closest("li").querySelector("label").innerText;
         event.target.closest("li").classList.remove("editing");
+    } else if (event.target.classList == "edit" && event.key == "Enter") {
+        event.target.closest("li").querySelector("label").innerText = event.target.value;
+        event.target.closest("li").classList.remove("editing");
     }
 }
 
