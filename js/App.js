@@ -12,7 +12,7 @@ const renderNewToDoTemplate = (idx, title, completed) => {
 };
 let todoList = {
     todoItems: [],
-    status: 'all'
+    status: 'all selected'
 }
 
 const init = () => {
