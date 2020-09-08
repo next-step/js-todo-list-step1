@@ -24,7 +24,7 @@ function edited(text, li){
     else{
         PushToDos(text,"unchecked");
     }
-    saveToDo();dddd
+    saveToDo();
 }
 function count(Num){
     const toDocount = document.querySelector(".todo-count");
@@ -53,7 +53,7 @@ function removetoDosObj(text){
 function editing(closestLi){
     if( closestLi.classList.contains ("editing"))        
         closestLi.classList.remove("editing");    
-        else{
+    else{
         closestLi.classList.add("editing");
     }
 }
@@ -70,7 +70,7 @@ function completed(closestLi){
           closestLi.classList.add("completed");
         }
 }     
-function deletebtn(closestLi){
+function deleteTodoItem  (closestLi){
     const textlabel = closestLi.querySelector(".label");
     closestLi.remove();
     removetoDosObj(textlabel.innerText);
@@ -113,27 +113,24 @@ function Detecting(list,val){
         if(list.classList.contains("hidden")){
             list.classList.remove("hidden");
         }
-        else{
-
-        }
         return list;
     }   
 }
 function active(){
     const list = toDolist.getElementsByTagName("li");
-    for(var i=0; i<toDocountNum; i++) {
+    for(let i=0; i<toDocountNum; i++) {
         Detecting(list[i],"active");
     }
 }
 function completeAll(){
     const list = toDolist.getElementsByTagName("li");
-    for(var i=0; i<toDocountNum; i++) {
+    for(let i=0; i<toDocountNum; i++) {
         Detecting(list[i],"completed");
     }
 }
 function All(){
     const list = toDolist.getElementsByTagName("li");
-    for(var i=0; i<toDocountNum; i++) {
+    for(let i=0; i<toDocountNum; i++) {
         Detecting(list[i],"all");
     }
 }
@@ -196,7 +193,7 @@ function loadToDos() {
     });
     const liComplete = toDolist.querySelectorAll(".completed");
  
-    for(var i=0; i<liComplete.length; i++){
+    for(let i=0; i<liComplete.length; i++){
     let completeToggle = liComplete[i].querySelector(".toggle");
         completeToggle.checked = true; 
     }
