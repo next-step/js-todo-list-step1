@@ -29,20 +29,16 @@ class TodoList {
   };
 
   handleClick = (e, deleteTodo, toggleActiveTodo) => {
-    if (e.target.parentElement.parentElement.nodeName === 'LI') {
-      const $li = e.target.parentElement.parentElement;
-      if (e.target.className === 'toggle')
-        this.completeTodo($li, toggleActiveTodo);
-      else if (e.target.className === 'destroy')
-        deleteTodo(parseInt($li.dataset.key));
-    }
+    const $li = e.target.closest('li');
+    if (e.target.className === 'toggle')
+      this.completeTodo($li, toggleActiveTodo);
+    else if (e.target.className === 'destroy')
+      deleteTodo(parseInt($li.dataset.key));
   };
 
   handleDblClick = (e) => {
-    if (e.target.parentElement.parentElement.nodeName === 'LI') {
-      const $li = e.target.parentElement.parentElement;
-      if (e.target.className === 'label') this.startEditing(e.target, $li);
-    }
+    const $li = e.target.closest('li');
+    if (e.target.className === 'label') this.startEditing(e.target, $li);
   };
 
   handleKeyUp = (e, editTodo) => {
