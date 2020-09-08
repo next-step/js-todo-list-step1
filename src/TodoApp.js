@@ -13,7 +13,11 @@ function onAddTodoItem(event) {
 }
 
 function onToggleTodoItem(event) {
-    event.target.closest("li").classList.toggle("completed");
+    if (event.target.classList == "toggle")
+        event.target.closest("li").classList.toggle("completed");
+    else if (event.target.classList == "destroy") {
+        event.target.closest("li").remove();
+    }
 }
 
 function renderTodoItemTemplate(title) {
