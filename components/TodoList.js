@@ -43,7 +43,7 @@ class TodoList {
     if ($li && e.target.className === 'label') this.startEditing(e.target, $li);
   };
 
-  handleKeyUp = (e, editTodo) => {
+  handleKeyUp(e, editTodo) {
     if (e.target.parentElement.nodeName === 'LI') {
       const $li = e.target.parentElement;
       if (e.key === 'Enter') {
@@ -53,17 +53,17 @@ class TodoList {
         $li.classList.remove('editing');
       }
     }
-  };
+  }
 
-  startEditing = ($label, $li) => {
+  startEditing($label, $li) {
     $li.classList.add('editing');
     $label.parentElement.nextSibling.nextSibling.focus();
-  };
+  }
 
-  completeTodo = ($li, toggleActiveTodo) => {
+  completeTodo($li, toggleActiveTodo) {
     $li.classList.toggle('completed');
     setTimeout(() => toggleActiveTodo(parseInt($li.dataset.key)), 200);
-  };
+  }
 
   render() {
     this.$todoList.innerHTML = '';

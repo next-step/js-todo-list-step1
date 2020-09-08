@@ -1,5 +1,6 @@
 class TodoFilter {
   filters;
+
   constructor(setWhatToShow) {
     this.$filterContainer = document.querySelector('.filters');
     this.filters = document.querySelectorAll('.filters>li>*');
