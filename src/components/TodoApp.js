@@ -1,6 +1,7 @@
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
 import { ACTIVE, EDITING, COMPLETED } from "../utils/constants.js";
+import TodoCount from "./TodoCount.js";
 
 export default function TodoApp() {
     this.todoItems = [];
@@ -13,10 +14,12 @@ export default function TodoApp() {
     });
 
     this.setState = updatedItems => {
-        console.log('updatedItems', updatedItems);
         this.todoItems = updatedItems;
         this.todoList.setState(this.todoItems);
 
+        new TodoCount({
+            todoItems: this.todoItems
+        });
     };
 
     this.onHandleToggle = targetId => {
@@ -69,5 +72,7 @@ export default function TodoApp() {
             this.setState(this.todoItems);
         }
     });
+
+
 
 }

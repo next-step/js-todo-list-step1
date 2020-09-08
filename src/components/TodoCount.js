@@ -1,3 +1,4 @@
-export default function TodoCount() {
-    console.log(`TodoCount 진입 `);
+export default function TodoCount({ todoItems }) {
+    const $countSpan = document.querySelector('.todo-count');
+    $countSpan.innerHTML = `총 <strong>${todoItems.length}</strong> 개` ;
 }
