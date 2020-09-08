@@ -1,4 +1,4 @@
-import { createTodoTemplete } from '../templates';
+import { createTodoTemplete } from '../templates/index.js';
 
 class TodoItem {
   $ul;

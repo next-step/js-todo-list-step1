@@ -1,8 +1,8 @@
-import TodoList from './TodoList';
-import TodoInput from './TodoInput';
-import TodoCount from './TodoCount';
-import TodoFilter from './TodoFilter';
-import { TODOS, ALL, ACTIVE, COMPLETED } from '../constants';
+import TodoList from './TodoList.js';
+import TodoInput from './TodoInput.js';
+import TodoCount from './TodoCount.js';
+import TodoFilter from './TodoFilter.js';
+import { TODOS, ALL, ACTIVE, COMPLETED } from '../constants/index.js';
 
 class App {
   todos;
