@@ -14,21 +14,21 @@ class App {
     this.todosVisible = [];
     this.whatToShow = ALL;
 
-    this.$todoInput = document.querySelector('#new-todo-title');
-    this.$todoList = document.querySelector('#todo-list');
-    this.$todoCount = document.querySelector('.todo-count');
-    this.$todoFilter = document.querySelector('.filters');
+    const $todoInput = document.querySelector('#new-todo-title');
+    const $todoList = document.querySelector('#todo-list');
+    const $todoCount = document.querySelector('.todo-count');
+    const $todoFilter = document.querySelector('.filters');
 
-    this.todoInput = new TodoInput(this.$todoInput, {
+    this.todoInput = new TodoInput($todoInput, {
       addTodos: this.addTodos,
     });
-    this.todoList = new TodoList(this.$todoList, {
+    this.todoList = new TodoList($todoList, {
       deleteTodo: this.deleteTodo,
       editTodo: this.editTodo,
       toggleActiveTodo: this.toggleActiveTodo,
     });
-    this.todoCount = new TodoCount(this.$todoCount);
-    this.todoFilter = new TodoFilter(this.$todoFilter, {
+    this.todoCount = new TodoCount($todoCount);
+    this.todoFilter = new TodoFilter($todoFilter, {
       setWhatToShow: this.setWhatToShow,
     });
 
