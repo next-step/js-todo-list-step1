@@ -55,7 +55,7 @@ function editing(closestLi){
         closestLi.classList.remove("editing");    
         else{
         closestLi.classList.add("editing");
-    }dfsdfsf
+    }
 }
 function handledbclick(event){
     const target = event.target;
