@@ -12,11 +12,9 @@ export function TodoList({onRemove,onChangeState,onChangeTitle}) {
         }
     }
 
-    this.changeItemState = event => {
-        if(event.target && event.target.nodeName == "INPUT"){
-            event.target.closest("li").classList.toggle("completed");
-            onChangeState(Number(event.target.closest("li").dataset.id));
-        }
+    this.changeItemState = target => {
+            target.closest("li").classList.toggle("completed");
+            onChangeState(Number(target.closest("li").dataset.id));
     }
 
     this.editTitleMode = event => {
