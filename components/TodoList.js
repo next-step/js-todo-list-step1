@@ -3,19 +3,21 @@ import TodoItem from './TodoItem.js';
 class TodoList {
   todos;
 
-  constructor(deleteTodo, editTodo, toggleActiveTodo) {
-    this.$todoList = document.querySelector('#todo-list');
+  constructor($target, { deleteTodo, editTodo, toggleActiveTodo }) {
+    this.$todoList = $target;
     this.todos = [];
 
-    this.initAddEventListener(
-      this.$todoList,
+    this.initAddEventListener($target, {
       deleteTodo,
       editTodo,
-      toggleActiveTodo
-    );
+      toggleActiveTodo,
+    });
   }
 
-  initAddEventListener = ($target, deleteTodo, editTodo, toggleActiveTodo) => {
+  initAddEventListener = (
+    $target,
+    { deleteTodo, editTodo, toggleActiveTodo }
+  ) => {
     $target.addEventListener('click', (e) =>
       this.handleClick(e, deleteTodo, toggleActiveTodo)
     );

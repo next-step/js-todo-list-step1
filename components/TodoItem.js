@@ -1,13 +1,13 @@
 import { createTodoTemplete } from '../templates/index.js';
 
 class TodoItem {
-  $ul;
+  $targetUl;
   id;
   text;
   isActive;
 
-  constructor($ul, { id, text, isActive }) {
-    this.$ul = $ul;
+  constructor($targetUl, { id, text, isActive }) {
+    this.$targetUl = $targetUl;
     this.id = id;
     this.text = text;
     this.isActive = isActive;
@@ -15,11 +15,11 @@ class TodoItem {
   }
 
   render() {
-    const $li = document.createElement('li');
-    $li.setAttribute('data-key', this.id);
-    $li.innerHTML = createTodoTemplete(this.text, this.isActive);
-    if (!this.isActive) $li.classList.add('completed');
-    this.$ul.appendChild($li);
+    const $todoItem = document.createElement('li');
+    $todoItem.setAttribute('data-key', this.id);
+    $todoItem.innerHTML = createTodoTemplete(this.text, this.isActive);
+    if (!this.isActive) $todoItem.classList.add('completed');
+    this.$targetUl.appendChild($todoItem);
   }
 }
 

@@ -13,13 +13,32 @@ class App {
     this.todos = [];
     this.todosVisible = [];
     this.whatToShow = ALL;
+
+    this.$todoInput = document.querySelector('#new-todo-title');
+    this.$todoList = document.querySelector('#todo-list');
+    this.$todoCount = document.querySelector('.todo-count');
+    this.$todoFilter = document.querySelector('.filters');
+
+    this.todoInput = new TodoInput(this.$todoInput, {
+      addTodos: this.addTodos,
+    });
+    this.todoList = new TodoList(this.$todoList, {
+      deleteTodo: this.deleteTodo,
+      editTodo: this.editTodo,
+      toggleActiveTodo: this.toggleActiveTodo,
+    });
+    this.todoCount = new TodoCount(this.$todoCount);
+    this.todoFilter = new TodoFilter(this.$todoFilter, {
+      setWhatToShow: this.setWhatToShow,
+    });
+
     this.loadTodos();
   }
 
   setTodos = (todos) => {
     this.todos = todos;
     localStorage.setItem(TODOS, JSON.stringify(todos));
-    this.setTodosVisible();
+    this.setTodosVisible(this.todoList, this.todoCount);
   };
 
   loadTodos = () => {
@@ -32,10 +51,10 @@ class App {
 
   setWhatToShow = (whatToShow) => {
     this.whatToShow = whatToShow;
-    this.setTodosVisible();
+    this.setTodosVisible(this.todoList, this.todoCount);
   };
 
-  setTodosVisible = () => {
+  setTodosVisible = (todoList, todoCount) => {
     this.todosVisible = this.todos.filter((todo) => {
       if (
         this.whatToShow === ALL ||
@@ -44,8 +63,8 @@ class App {
       )
         return todo;
     });
-    this.todoList.setTodos(this.todosVisible);
-    this.todoCount.setCount(this.todosVisible.length || 0);
+    todoList.setTodos(this.todosVisible);
+    todoCount.setCount(this.todosVisible.length || 0);
   };
 
   addTodos = (newTodoText) => {
@@ -77,15 +96,6 @@ class App {
       )
     );
   };
-
-  todoInput = new TodoInput(this.addTodos);
-  todoList = new TodoList(
-    this.deleteTodo,
-    this.editTodo,
-    this.toggleActiveTodo
-  );
-  todoCount = new TodoCount();
-  todoFilter = new TodoFilter(this.setWhatToShow);
 }
 
 export default App;

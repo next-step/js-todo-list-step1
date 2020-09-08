@@ -1,10 +1,8 @@
 class TodoInput {
-  constructor(addTodos) {
-    this.$todoInput = document.querySelector('#new-todo-title');
+  constructor($target, { addTodos }) {
+    this.$todoInput = $target;
 
-    this.$todoInput.addEventListener('keyup', (e) =>
-      this.onSubmit(e, addTodos)
-    );
+    $target.addEventListener('keyup', (e) => this.onSubmit(e, addTodos));
   }
 
   onSubmit = (e, addTodos) => {
