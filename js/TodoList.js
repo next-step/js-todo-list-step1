@@ -17,10 +17,10 @@ export function TodoList({onRemove,onChangeState,onChangeTitle}) {
             onChangeState(Number(target.closest("li").dataset.id));
     }
 
-    this.editTitleMode = event => {
-        if (event.target && event.target.nodeName == "LABEL"){
-            event.target.closest("li").classList.add("editing");
-            event.target.closest("li").lastElementChild.focus();
+    this.editTitleMode = ({target}) => {
+        if (target.nodeName == "LABEL"){
+            target.closest("li").classList.add("editing");
+            target.closest("li").lastElementChild.focus();
        }
     }   
 
@@ -31,11 +31,11 @@ export function TodoList({onRemove,onChangeState,onChangeTitle}) {
         }
       }
 
-    this.changeTitle = event => {
-        if (event.target && event.target.nodeName == "INPUT" && event.target.classList == "edit"){
-            event.target.closest("li").querySelector("label").innerText = event.target.closest("li input").value;
-            event.target.closest("li").classList.remove("editing");
-            onChangeTitle(Number(event.target.closest("li").dataset.id),event.target.closest("li").querySelector("label").innerText);
+    this.changeTitle = ({target}) => {
+        if (target.nodeName == "INPUT" && target.classList == "edit"){
+            target.closest("li").querySelector("label").innerText = target.closest("li input").value;
+            target.closest("li").classList.remove("editing");
+            onChangeTitle(Number(target.closest("li").dataset.id),target.closest("li").querySelector("label").innerText);
             
         }
     }
