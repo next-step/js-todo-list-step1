@@ -1,6 +1,8 @@
 import TodoItem from './TodoItem';
 
 class TodoList {
+  todos;
+
   constructor(deleteTodo, editTodo, toggleActiveTodo) {
     this.$todoList = document.querySelector('#todo-list');
     this.todos = [];

@@ -5,6 +5,10 @@ import TodoFilter from './TodoFilter';
 import { TODOS, ALL, ACTIVE, COMPLETED } from '../constants';
 
 class App {
+  todos;
+  todosVisible;
+  whatToShow;
+
   constructor() {
     this.todos = [];
     this.todosVisible = [];

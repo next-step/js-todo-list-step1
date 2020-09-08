@@ -1,6 +1,11 @@
 import { createTodoTemplete } from '../templates';
 
 class TodoItem {
+  $ul;
+  id;
+  text;
+  isActive;
+
   constructor($ul, { id, text, isActive }) {
     this.$ul = $ul;
     this.id = id;
