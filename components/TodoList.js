@@ -30,15 +30,17 @@ class TodoList {
 
   handleClick = (e, deleteTodo, toggleActiveTodo) => {
     const $li = e.target.closest('li');
-    if (e.target.className === 'toggle')
-      this.completeTodo($li, toggleActiveTodo);
-    else if (e.target.className === 'destroy')
-      deleteTodo(parseInt($li.dataset.key));
+    if ($li) {
+      if (e.target.className === 'toggle')
+        this.completeTodo($li, toggleActiveTodo);
+      else if (e.target.className === 'destroy')
+        deleteTodo(parseInt($li.dataset.key));
+    }
   };
 
   handleDblClick = (e) => {
     const $li = e.target.closest('li');
-    if (e.target.className === 'label') this.startEditing(e.target, $li);
+    if ($li && e.target.className === 'label') this.startEditing(e.target, $li);
   };
 
   handleKeyUp = (e, editTodo) => {
