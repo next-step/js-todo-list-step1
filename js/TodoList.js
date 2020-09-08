@@ -1,16 +1,14 @@
 export function TodoList({onRemove,onChangeState,onChangeTitle}) {
     const $todoList = document.querySelector("#todo-list");
 
-    this.clickEvent = event => {
-        if (event.target.classList == "destroy") this.removeItem(event);
-        if (event.target.classList == "toggle") this.changeItemState(event);
+    this.clickEvent = ({target}) => {
+        if (target.classList == "destroy") this.removeItem(target);
+        if (target.classList == "toggle") this.changeItemState(target);
     }
 
-    this.removeItem = event => {
-        if(event.target && event.target.nodeName == "BUTTON"){
+    this.removeItem = target => {
           if(confirm("정말로 삭제하시겠습니까?")){ 
-              onRemove(Number(event.target.closest("li").dataset.id));
-          }
+              onRemove(Number(target.closest("li").dataset.id));
         }
     }
 
