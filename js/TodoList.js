@@ -1,12 +1,6 @@
 function TodoList({onRemove,onChangeState,onChangeTitle}) {
     const $todoList = document.querySelector("#todo-list");
 
-    $todoList.addEventListener("click", event => this.clickEvent(event));
-    $todoList.addEventListener("dblclick", event => this.editTitleMode(event));
-    $todoList.addEventListener("keyup", event => this.stopChangeTitle(event));
-    $todoList.addEventListener("focusout", event => this.changeTitle(event));
-
-
     this.clickEvent = event => {
         if (event.target.classList == "destroy") this.removeItem(event);
         if (event.target.classList == "toggle") this.changeItemState(event);
@@ -50,6 +44,12 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
         }
     }
 
+    $todoList.addEventListener("click", this.clickEvent);
+    $todoList.addEventListener("dblclick", this.editTitleMode);
+    $todoList.addEventListener("keyup", this.stopChangeTitle);
+    $todoList.addEventListener("focusout", this.changeTitle);
+
+
     this.setState = (updatedTodoItems,viewMode) => {
         this.todoItems = updatedTodoItems;
         if(viewMode == "active"){
@@ -68,7 +68,7 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
     };
     
     function todoItemTemplate({title,id,completed}){
-        return ` <li data-id="${id}" class=${completed?"completed" : ""}>
+        return ` <li data-id="${id}" ${completed ? ' class="completed"' : ''}>
                         <div class="view">
                             <input class="toggle" type="checkbox" ${completed?"checked":""}>
                             <label class="label">${title}</label>

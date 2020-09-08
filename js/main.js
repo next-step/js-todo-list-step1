@@ -18,13 +18,13 @@ function TodoApp() {
     const todoList = new TodoList({
         onRemove: contents => {
             this.todoItems.forEach((item,index)=>{
-                if(item.id == contents) this.todoItems.splice(index,1);
+                if(item.id === contents) this.todoItems.splice(index,1);
             });
             this.setState(this.todoItems);
         },
         onChangeState: contents => {
             this.todoItems.forEach((item,index)=>{
-                if(item.id == contents) {
+                if(item.id === contents) {
                     item.toggleState();
                 }
             });
