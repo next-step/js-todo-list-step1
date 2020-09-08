@@ -1,4 +1,4 @@
-function TodoItem(title,id,completed = false){
+export function TodoItem(title,id,completed = false){
     this.id = id;
     this.title = title;
     this.completed = completed;

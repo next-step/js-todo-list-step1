@@ -1,4 +1,4 @@
-function TodoCount({onChangeView}){
+export function TodoCount({onChangeView}){
     const $todoFilter = document.querySelector(".filters");
     const $todoFilters = document.querySelectorAll(".filters a");
   

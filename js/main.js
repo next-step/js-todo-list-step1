@@ -1,3 +1,8 @@
+import { TodoItem } from "./TodoItem.js"
+import { TodoInput } from "./TodoInput.js"
+import { TodoList } from "./TodoList.js"
+import { TodoCount } from "./TodoCount.js"
+
 function TodoApp() {
     this.todoItems = [];
     this.id = 0;

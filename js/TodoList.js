@@ -1,4 +1,4 @@
-function TodoList({onRemove,onChangeState,onChangeTitle}) {
+export function TodoList({onRemove,onChangeState,onChangeTitle}) {
     const $todoList = document.querySelector("#todo-list");
 
     this.clickEvent = event => {
@@ -9,7 +9,7 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
     this.removeItem = event => {
         if(event.target && event.target.nodeName == "BUTTON"){
           if(confirm("정말로 삭제하시겠습니까?")){ 
-              onRemove(event.target.closest("li").dataset.id);
+              onRemove(Number(event.target.closest("li").dataset.id));
           }
         }
     }
@@ -17,7 +17,7 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
     this.changeItemState = event => {
         if(event.target && event.target.nodeName == "INPUT"){
             event.target.closest("li").classList.toggle("completed");
-            onChangeState(event.target.closest("li").dataset.id);
+            onChangeState(Number(event.target.closest("li").dataset.id));
         }
     }
 
@@ -39,7 +39,7 @@ function TodoList({onRemove,onChangeState,onChangeTitle}) {
         if (event.target && event.target.nodeName == "INPUT" && event.target.classList == "edit"){
             event.target.closest("li").querySelector("label").innerText = event.target.closest("li input").value;
             event.target.closest("li").classList.remove("editing");
-            onChangeTitle(event.target.closest("li").dataset.id,event.target.closest("li").querySelector("label").innerText);
+            onChangeTitle(Number(event.target.closest("li").dataset.id),event.target.closest("li").querySelector("label").innerText);
             
         }
     }

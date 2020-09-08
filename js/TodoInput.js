@@ -1,4 +1,4 @@
-function TodoInput({onAdd}){
+export function TodoInput({onAdd}){
     const $todoInput = document.querySelector("#new-todo-title");
   
     this.addTodoItem = event => {
