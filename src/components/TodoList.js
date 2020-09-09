@@ -3,8 +3,8 @@ import { deleteItem, setItem } from '../store.js';
 import { addEventBubblingListener } from '../utils.js';
 
 const TodoList = ($target) => {
-    const toggleComplete = ({ index, event: { target } }) =>
-        setItem(index, { complete: target.checked });
+    const toggleComplete = ({ index, event: { target: { checked } } }) =>
+        setItem(index, { complete: checked });
 
     const editingItem = ({ index }) =>
         setItem(index, { editing: true });
@@ -24,7 +24,8 @@ const TodoList = ($target) => {
     addEventBubblingListener($target, 'click', 'destroy', deleteItem);
     addEventBubblingListener($target, 'dblclick', 'label', editingItem);
     addEventBubblingListener($target, 'keydown', 'edit', event => {
-        viewingItem(event); editItem(event);
+        viewingItem(event);
+        editItem(event);
     });
 
     return ({ todoItems }) =>
