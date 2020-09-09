@@ -1,6 +1,6 @@
 import TodoItem from './TodoItem.js';
 
-const TodoList = (todoItems) => {
+const TodoList = ({ todoItems }) => {
     return todoItems?.map((item, index) => TodoItem({ ...item, index })).join('') || '';
 };
 

@@ -1,4 +1,4 @@
-const TodoEditItem = (contents) => `
+const TodoEditItem = ({ contents }) => `
         <input class="edit" type="text" value="${ contents }">    
     `;
 
