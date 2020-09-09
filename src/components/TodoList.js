@@ -1,32 +1,6 @@
 import TodoItem from './TodoItem.js';
-import { deleteItem, setItem } from '../store.js';
-import { addEventBubblingListener } from '../utils.js';
 
-const TodoList = ($target) => {
-    const toggleComplete = ({ index, event: { target: { checked } } }) =>
-        setItem(index, { complete: checked });
-
-    const editingItem = ({ index }) =>
-        setItem(index, { editing: true });
-
-    const viewingItem = ({ index, event: { key } }) =>
-        key === 'Escape' &&
-        setItem(index, { editing: false });
-
-    const editItem = ({ index, event: { target, key } }) =>
-        key === 'Enter' &&
-        setItem(index, {
-            contents: target.value,
-            editing: false,
-        });
-
-    addEventBubblingListener($target, 'click', 'toggle', toggleComplete);
-    addEventBubblingListener($target, 'click', 'destroy', deleteItem);
-    addEventBubblingListener($target, 'dblclick', 'label', editingItem);
-    addEventBubblingListener($target, 'keydown', 'edit', event => {
-        viewingItem(event);
-        editItem(event);
-    });
+const TodoList = () => {
 
     return ({ todoItems }) =>
         todoItems?.map((item, index) => TodoItem({ ...item, index })).join('') || '';

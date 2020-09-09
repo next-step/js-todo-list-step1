@@ -1,24 +1,11 @@
-import { setFilter } from '../store.js';
-import { filterTypes } from '../globalConstant.js';
-import { getFilter } from '../store.js';
+import { filterTypes } from '../constant.js';
 
-const TodoFilters = ($target) => {
-
-    const filterItem = (event) => {
-        event.preventDefault();
-        const { target: { dataset } } = event;
-
-        if (getFilter() === dataset) return;
-        setFilter(dataset.type);
-    };
-
-    $target.addEventListener('click', filterItem);
-
+const TodoFilters = () => {
 
     return (filter) => filterTypes.map(({ type, text }) => `
-    <li>
-        <a class="${ type } ${ filter === type && 'selected' }" href="#" data-type="${ type }">${ text }</a>
-    </li>
+        <li>
+            <a class="${ type } ${ filter === type && 'selected' }" href="#" data-type="${ type }">${ text }</a>
+        </li>
     `).join('');
 };
 

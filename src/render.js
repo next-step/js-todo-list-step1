@@ -1,18 +1,13 @@
-import NewTodoTitle from './components/NewTodoTitle.js';
 import TodoList from './components/TodoList.js';
 import TodoFilters from './components/TodoFilters.js';
+import { $todoList, $todoCount, $todoFilters } from './dom.js';
 
-const $newTodoTitle = document.getElementById('new-todo-title');
-const $todoList = document.getElementById('todo-list');
-const $todoCount = document.querySelector('.todo-count strong');
-const $filters = document.querySelector('.filters');
 
 const components = {};
 
 const initComponents = () => {
-    components.NewTodoTitle = NewTodoTitle($newTodoTitle);
-    components.TodoList = TodoList($todoList);
-    components.TodoFilters = TodoFilters($filters);
+    components.TodoList = TodoList();
+    components.TodoFilters = TodoFilters();
 };
 
 export const initRender = ({ todoItems, filter }) => {
@@ -20,8 +15,8 @@ export const initRender = ({ todoItems, filter }) => {
     render({ todoItems, filter });
 };
 
-export const render = ({ todoItems, filter}) => {
-    $filters.innerHTML = components.TodoFilters(filter);
+export const render = ({ todoItems, filter }) => {
+    $todoFilters.innerHTML = components.TodoFilters(filter);
     $todoList.innerHTML = components.TodoList({ todoItems });
     $todoCount.innerHTML = todoItems.length;
 };
