@@ -52,17 +52,15 @@ export const setItem = (index, payload) => {
 
 export const setFilter = (filter) => {
     setStore({ filter });
-    render({ todoItems: getItems(), filter });
 };
 
 const setStore = (payload) => {
-    const { filter } = store;
     for (const key in payload)
         store[key] = payload[key];
 
     localStorage.setItem('state', JSON.stringify(store));
 
-    render({ todoItems: getItems(), filter });
+    render({ todoItems: getItems(), filter: getFilter() });
 };
 
 
