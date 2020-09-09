@@ -1,6 +1,6 @@
 import NewTodoTitle from './components/NewTodoTitle.js';
 import TodoList from './components/TodoList.js';
-import Filters from './components/Filters.js';
+import TodoFilters from './components/TodoFilters.js';
 
 const $newTodoTitle = document.getElementById('new-todo-title');
 const $todoList = document.getElementById('todo-list');
@@ -12,7 +12,7 @@ const components = {};
 const initComponents = () => {
     components.NewTodoTitle = NewTodoTitle($newTodoTitle);
     components.TodoList = TodoList($todoList);
-    components.Filters = Filters($filters);
+    components.TodoFilters = TodoFilters($filters);
 };
 
 export const initRender = ({ todoItems, filter }) => {
@@ -21,7 +21,7 @@ export const initRender = ({ todoItems, filter }) => {
 };
 
 export const render = ({ todoItems, filter}) => {
-    $filters.innerHTML = components.Filters(filter);
+    $filters.innerHTML = components.TodoFilters(filter);
     $todoList.innerHTML = components.TodoList({ todoItems });
     $todoCount.innerHTML = todoItems.length;
 };

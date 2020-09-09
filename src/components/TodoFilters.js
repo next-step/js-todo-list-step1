@@ -2,7 +2,7 @@ import { setFilter } from '../store.js';
 import { filterTypes } from '../globalConstant.js';
 import { getFilter } from '../store.js';
 
-const Filters = ($target) => {
+const TodoFilters = ($target) => {
 
     const filterItem = (event) => {
         event.preventDefault();
@@ -23,4 +23,4 @@ const Filters = ($target) => {
 };
 
 
-export default Filters;
+export default TodoFilters;
