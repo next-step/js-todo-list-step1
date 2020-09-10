@@ -41,6 +41,31 @@ live-server 폴더명
 
 <br>
 
+## Convention
+- Class, Method : CamelCase
+- Directory : CamelCase
+
+<br>
+
+## Directory Structure
+```
+components
+    App.js
+    TodoCount.js
+    TodoInput.js
+    TodoList.js
+    TodoTab.js
+utils
+    constant.js
+    validator.js
+domain
+    todo.js
+    todoService.js
+index.js
+``` 
+
+<br>
+
 ## 🐞 Bug Report
 
 버그를 발견한다면, [Issues](https://github.com/EastjunDev/frontend/issues) 에 등록 후 @eastjun에게 dm을 보내주세요.
