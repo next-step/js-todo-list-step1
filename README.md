@@ -42,9 +42,13 @@ live-server 폴더명
 <br>
 
 ## Convention
-- Class, Method : CamelCase
+- Class : CamelCase
 - Directory : CamelCase
 - Components : start with Uppercase
+- Method
+    - CamelCase
+    - DOM Method : use prefix "on"
+    - Other Methods : start with verb
 
 <br>
 

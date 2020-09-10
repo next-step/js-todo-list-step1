@@ -21,11 +21,6 @@ class Todos {
         const newTodo = [Todo.init()]
         return new Todos(newTodo, TAB.ALL);
     }
-
-    addTodo(todo) {
-        checkInstance(todo, Todo)
-        this.todos = [...this.todos, todo]
-    }
     
     setTodos(todos) {
         Object.assign(this, todos)
