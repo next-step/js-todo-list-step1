@@ -12,6 +12,18 @@ export const checkType = (target, type) => {
     }
 }
 
+export const checkInstance = (target, instance) => {
+    if(!target instanceof instance) {
+        throw new TypeError(`${target} : ${MESSAGE.INVALID_INSTANCE} - ${instance}`)
+    }
+}
+
+export const checkFunction = (func) => {
+    if(!func || checkType(func, TYPE.FUNCTION)) {
+        throw new TypeError(`${func} : ${MESSAGE.INVALID_TYPE}`)
+    }
+}
+
 export const checkArray = (target) => {
     if(!Array.isArray(target)) {
         throw new TypeError(`${target} : ${MESSAGE.INVALID_TYPE}`)

@@ -13,11 +13,15 @@ class Todo {
     }
 
     static init() {
-        return new Todo(Date.now(),"",false)
+        return new Todo(Date.now(), "", false)
     }
 
-    static of({id, title, content}) {
-        return new Todo(id, title, content);
+    static title(title) {
+        return new Todo(Date.now(), title, false)
+    }
+
+    static of({id, title, isComplete}) {
+        return new Todo(id, title, isComplete);
     }
 }
 
