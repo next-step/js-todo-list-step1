@@ -44,6 +44,7 @@ live-server 폴더명
 ## Convention
 - Class, Method : CamelCase
 - Directory : CamelCase
+- Components : start with Uppercase
 
 <br>
 
@@ -60,6 +61,7 @@ utils
     validator.js
 domain
     todo.js
+    todos.js
     todoService.js
 index.js
 ``` 
