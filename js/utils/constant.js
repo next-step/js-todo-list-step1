@@ -8,13 +8,25 @@ export const SELECTOR = {
 
 export const CLASS = {
     TOGGLE: "toggle",
-    DESTROY: "destroy"
+    DESTROY: "destroy",
+    EDITING: "editing",
+    EDIT: "edit",
+}
+
+export const NODE = {
+    LABEL: "LABEL"
 }
 
 export const EVENT = {
     DOM_LOADED : "DOMContentLoaded",
     KEY_DOWN : "keydown",
-    CLICK: "click"
+    CLICK: "click",
+    DOUBLE_CLICK : "dblclick",
+}
+
+export const KEY_EVENT = {
+    ENTER : "Enter",
+    ESCAPE : "Escape"
 }
 
 export const MESSAGE = {

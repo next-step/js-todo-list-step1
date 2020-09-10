@@ -22,15 +22,22 @@ class App {
             todos: this.state,
             onToggleTodo: this.onToggleTodo,
             onRemoveTodo: this.onRemoveTodo,
+            onEditTodo: this.onEditTodo,
         })
     }
 
     onAddTodo = (title) => {
         const todo = Todo.title(title);
-        this.setState({
-            ...this.state,
-            todos: [...this.state.todos, todo]
+        this.setTodos([...this.state.todos, todo])
+    }
+
+    onEditTodo = (id, newTitle) => {
+        const newTodos = this.state.todos.map((todo) => {
+            return (todo.id == id) 
+            ? { ...todo, title : newTitle }
+            : todo
         })
+        this.setTodos(newTodos)
     }
 
     onToggleTodo = (id) => {
@@ -39,22 +46,14 @@ class App {
             ? { ...todo, isCompleted: !todo.isCompleted}
             : todo
         })
-
-        this.setState({
-            ...this.state,
-            todos: newTodos
-        })
+        this.setTodos(newTodos)
     }
 
     onRemoveTodo = (id) => {
         const newTodos = this.state.todos.filter((todo) => {
             return todo.id != id
         })
-
-        this.setState({
-            ...this.state,
-            todos: newTodos
-        })
+        this.setTodos(newTodos)
     }
 
     setState = (newState) => {
@@ -62,6 +61,13 @@ class App {
         saveTodo(KEY, this.state)
 
         this.todoList.setState(this.state)
+    }
+
+    setTodos = (newTodos) => {
+        this.setState({
+            ...this.state,
+            todos:newTodos
+        })
     }
 }
 
