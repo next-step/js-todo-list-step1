@@ -18,8 +18,7 @@ class Todos {
     }
 
     static init() {
-        const newTodo = [Todo.init()]
-        return new Todos(newTodo, TAB.ALL);
+        return new Todos([], TAB.ALL);
     }
     
     setTodos(todos) {

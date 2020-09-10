@@ -3,11 +3,18 @@ export const KEY = "todo"
 export const SELECTOR = {
     TODO_APP : "#todo-app",
     TODO_INPUT : "#new-todo-title",
+    TODO_LIST: '#todo-list',
+}
+
+export const CLASS = {
+    TOGGLE: "toggle",
+    DESTROY: "destroy"
 }
 
 export const EVENT = {
     DOM_LOADED : "DOMContentLoaded",
-    KEY_DOWN : "keydown"
+    KEY_DOWN : "keydown",
+    CLICK: "click"
 }
 
 export const MESSAGE = {

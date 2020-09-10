@@ -3,6 +3,7 @@ import { KEY, SELECTOR } from "../utils/constant.js";
 import { fetchTodos, saveTodo } from "../domain/todoService.js";
 import TodoInput from "./TodoInput.js";
 import Todo from "../domain/todo.js";
+import TodoList from "./TodoList.js";
 
 class App {
     constructor($target) {
@@ -14,6 +15,13 @@ class App {
         this.todoInput = new TodoInput({
             $target: document.querySelector(SELECTOR.TODO_INPUT),
             onAddTodo: this.onAddTodo
+        });
+
+        this.todoList = new TodoList({
+            $target: document.querySelector(SELECTOR.TODO_LIST),
+            todos: this.state,
+            onToggleTodo: this.onToggleTodo,
+            onRemoveTodo: this.onRemoveTodo,
         })
     }
 
@@ -25,9 +33,35 @@ class App {
         })
     }
 
+    onToggleTodo = (id) => {
+        const newTodos = this.state.todos.map((todo) => {
+            return (todo.id == id) 
+            ? { ...todo, isCompleted: !todo.isCompleted}
+            : todo
+        })
+
+        this.setState({
+            ...this.state,
+            todos: newTodos
+        })
+    }
+
+    onRemoveTodo = (id) => {
+        const newTodos = this.state.todos.filter((todo) => {
+            return todo.id != id
+        })
+
+        this.setState({
+            ...this.state,
+            todos: newTodos
+        })
+    }
+
     setState = (newState) => {
         this.state.setTodos(newState)
         saveTodo(KEY, this.state)
+
+        this.todoList.setState(this.state)
     }
 }
 

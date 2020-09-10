@@ -29,8 +29,3 @@ export const checkArray = (target) => {
         throw new TypeError(`${target} : ${MESSAGE.INVALID_TYPE}`)
     }
 }
-
-export const checkString = (...target) => {
-    checkArray(target)
-    target.forEach(each => checkType(each, TYPE.STRING))
-}
