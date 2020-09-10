@@ -1,6 +1,6 @@
 import Todo from "./todo.js";
 import { TYPE, TAB } from "../utils/constant.js";
-import { checkArray, checkType, checkInstance } from "../utils/validator.js";
+import { checkArray, checkType } from "../utils/validator.js";
 
 
 class Todos {

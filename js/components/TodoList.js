@@ -1,7 +1,7 @@
 import { checkTarget, checkInstance, checkFunction } from "../utils/validator.js";
 import Todos from "../domain/todos.js";
 import { todoListDOM } from "../utils/templates.js";
-import { EVENT, CLASS, NODE, KEY_EVENT } from "../utils/constant.js";
+import { EVENT, CLASS, NODE, KEY_EVENT, TAB } from "../utils/constant.js";
 
 class TodoList {
     constructor({
@@ -90,6 +90,26 @@ class TodoList {
         }
     }
 
+    getSelectedTodos = (selectedTab) => {
+        const { todos } = this.state;
+    
+        switch (selectedTab) {
+          case TAB.ALL:
+            return todos;
+    
+          case TAB.ACTIVE:
+            return todos.filter(({ isCompleted }) => !isCompleted);
+    
+          case TAB.COMPLETED:
+            return todos.filter(({ isCompleted }) => isCompleted);
+    
+          default:
+            console.error(`TodoList Render Error : ${MESSAGE.UNDEFINED_TAB}`);
+            return;
+        }
+      };
+    
+
     createTodoListDOM = (todos) => {
         return todos.reduce((html, todo) => 
             html + todoListDOM(todo)
@@ -102,14 +122,9 @@ class TodoList {
     }
 
     render = () => {
+        this.getSelectedTodos(this.state.tab)
         this.$target.innerHTML = this.createTodoListDOM(this.state.todos);
     }
-
-
-
-    
-
-
 }
 
 export default TodoList;

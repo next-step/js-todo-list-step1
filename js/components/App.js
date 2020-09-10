@@ -4,6 +4,7 @@ import { fetchTodos, saveTodo } from "../domain/todoService.js";
 import TodoInput from "./TodoInput.js";
 import Todo from "../domain/todo.js";
 import TodoList from "./TodoList.js";
+import TodoTab from "./TodoTab.js";
 
 class App {
     constructor($target) {
@@ -23,6 +24,11 @@ class App {
             onToggleTodo: this.onToggleTodo,
             onRemoveTodo: this.onRemoveTodo,
             onEditTodo: this.onEditTodo,
+        })
+
+        this.todoTab = new TodoTab({
+            $target: document.querySelector(SELECTOR.TODO_TAB),
+            onChangeTab : this.onChangeTab
         })
     }
 
@@ -54,6 +60,12 @@ class App {
             return todo.id != id
         })
         this.setTodos(newTodos)
+    }
+
+    onChangeTab = (tab) => {
+        this.setState({
+            ...this.state, tab
+        })
     }
 
     setState = (newState) => {

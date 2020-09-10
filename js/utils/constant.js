@@ -4,6 +4,7 @@ export const SELECTOR = {
     TODO_APP : "#todo-app",
     TODO_INPUT : "#new-todo-title",
     TODO_LIST: '#todo-list',
+    TODO_TAB : ".filters"
 }
 
 export const CLASS = {
@@ -11,10 +12,12 @@ export const CLASS = {
     DESTROY: "destroy",
     EDITING: "editing",
     EDIT: "edit",
+    SELECTED: 'selected',
 }
 
 export const NODE = {
-    LABEL: "LABEL"
+    LABEL: "LABEL",
+    A : "A"
 }
 
 export const EVENT = {
@@ -44,5 +47,7 @@ export const TYPE = {
 }
 
 export const TAB = {
-    ALL: "all"
+    ALL: "all",
+    ACTIVE: "active",
+    COMPLETED: "completed"
 }
