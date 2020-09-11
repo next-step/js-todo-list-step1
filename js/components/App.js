@@ -35,49 +35,31 @@ class App {
 
     onAddTodo = (title) => {
         const todo = Todo.title(title);
-        this.setTodos([...this.state.todos, todo])
+        this.state.setTodo(todo);
+        this.setState()
     }
 
     onEditTodo = (id, newTitle) => {
-        const newTodos = this.state.todos.map((todo) => {
-            return (todo.id == id) 
-            ? { ...todo, title : newTitle }
-            : todo
-        })
-        this.setTodos(newTodos)
+        this.state.editTodo(id, newTitle);
+        this.setState()
     }
 
     onToggleTodo = (id) => {
-        const newTodos = this.state.todos.map((todo) => {
-            return (todo.id == id) 
-            ? { ...todo, isCompleted: !todo.isCompleted}
-            : todo
-        })
-        this.setTodos(newTodos)
+        this.state.toggleTodo(id);
+        this.setState()
     }
 
     onRemoveTodo = (id) => {
-        const newTodos = this.state.todos.filter((todo) => {
-            return todo.id != id
-        })
-        this.setTodos(newTodos)
+        this.state.removeTodo(id)
+        this.setState()
     }
 
-    onChangeTab = (tab) => {
-        this.setState({
-            ...this.state, tab
-        })
+    onChangeTab = (selectedTab) => {
+        this.state.changeTab(selectedTab);
+        this.setState();
     }
 
-    setTodos = (newTodos) => {
-        this.setState({
-            ...this.state,
-            todos:newTodos
-        })
-    }
-
-    setState = (newState) => {
-        this.state.setTodos(newState)
+    setState = () => {
         saveTodo(KEY, this.state)
 
         this.todoList.setState(this.state)
