@@ -1,8 +1,6 @@
-export function TodoItem(title,id,completed = false){
+export function TodoItem(id,title,completed = false,editing = false){
     this.id = id;
     this.title = title;
     this.completed = completed;
-}
-TodoItem.prototype.toggleState = function(){
-    this.completed = !this.completed;
+    this.editing = editing;
 }

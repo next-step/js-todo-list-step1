@@ -1,4 +1,4 @@
-export function TodoList({onRemove,onChangeState,onChangeTitle}) {
+export function TodoList(itemController,{onRemove,onChangeState,onChangeTitle}) {
     const $todoList = document.querySelector("#todo-list");
 
     this.clickEvent = ({target}) => {
@@ -6,63 +6,97 @@ export function TodoList({onRemove,onChangeState,onChangeTitle}) {
         if (target.classList == "toggle") this.changeItemState(target);
     }
 
+    this.keyEvent = (event) => {
+        if(event.target.classList == "edit"){
+            if(event.key == "Escape"){ this.stopChangeTitle(event); }
+            if(event.key == "Enter") { this.changeTitle(event); }
+        }
+    }
+
     this.removeItem = target => {
-          if(confirm("정말로 삭제하시겠습니까?")){ 
-              onRemove(Number(target.closest("li").dataset.id));
+        if(confirm("정말로 삭제하시겠습니까?")){
+            onRemove(getTarget.id(target));
         }
     }
 
     this.changeItemState = target => {
-            target.closest("li").classList.toggle("completed");
-            onChangeState(Number(target.closest("li").dataset.id));
+        onChangeState(getTarget.id(target),"completed");
     }
 
     this.editTitleMode = ({target}) => {
         if (target.nodeName == "LABEL"){
-            target.closest("li").classList.add("editing");
-            target.closest("li").lastElementChild.focus();
-       }
+            onChangeState(getTarget.id(target),"editing");
+        }
     }   
 
-    this.stopChangeTitle = event => {
-        if (event.target && event.target.nodeName == "INPUT" && event.target.classList == "edit" && event.key == "Escape"){
-            event.target.closest("li input").value = event.target.closest("li").querySelector("label").innerText;
-            event.target.closest("li").classList.remove("editing");
-        }
-      }
+    this.stopChangeTitle = ({target}) => {
+        getTarget.input(target).value = getTarget.label(target).innerText;
+        onChangeState(getTarget.id(target),"editing");
+    }
 
     this.changeTitle = ({target}) => {
-        if (target.nodeName == "INPUT" && target.classList == "edit"){
-            target.closest("li").querySelector("label").innerText = target.closest("li input").value;
-            target.closest("li").classList.remove("editing");
-            onChangeTitle(Number(target.closest("li").dataset.id),target.closest("li").querySelector("label").innerText);
-            
-        }
+        const value = getTarget.input(target).value.trim();
+        if(!value || value == getTarget.label(target).innerText) 
+            return this.stopChangeTitle({target:target});
+        onChangeTitle(getTarget.id(target),value);
     }
 
     $todoList.addEventListener("click", this.clickEvent);
     $todoList.addEventListener("dblclick", this.editTitleMode);
-    $todoList.addEventListener("keyup", this.stopChangeTitle);
-    $todoList.addEventListener("focusout", this.changeTitle);
+    $todoList.addEventListener("keydown", this.keyEvent);
+    // $todoList.addEventListener("focusout", this.changeTitle);
 
+    this._render = {
+        add : (item,viewMode) =>{
+            if(viewMode != "completed"){
+                const template = todoItemTemplate(item);
+                $todoList.insertAdjacentHTML("beforeend", template);
+            }
+        },
+        delete : id => {
+            getTarget.li(id).remove();
+        },
+        update : (id,target,value,viewMode) => {//정리필요
+            const $li = getTarget.li(id);
+            const item = itemController.getItemById(id);
 
-    this.setState = (updatedTodoItems,viewMode) => {
-        this.todoItems = updatedTodoItems;
-        if(viewMode == "active"){
-            this.todoItems = updatedTodoItems.filter((item)=> !item.completed);
+            if(target == "title") {
+                $li.outerHTML = todoItemTemplate({id:id,title:value,completed:item.completed});
+            }
+            else if(target == "state"){
+                if(value == "completed"){
+                    viewMode == "all" ? 
+                        $li.classList.toggle("completed") :
+                        $li.remove();
+                }
+                if(value == "editing"){
+                    $li.classList.toggle("editing");
+                    $li.lastElementChild.focus();
+                }
+            }
+        },
+        changeView : viewMode => {
+            const items = itemController.getItemsByState(viewMode);
+            const template = items.map(todoItemTemplate);
+            $todoList.innerHTML = template.join("");
         }
-        else if(viewMode == "completed"){
-            this.todoItems = updatedTodoItems.filter((item)=> item.completed);
+    }
+
+    const getTarget = {
+        id : (target) =>{
+            return Number(target.closest("li").dataset.id);
+        },
+        label : (target) =>{
+            return target.closest("li").querySelector("label");
+        },
+        input : (target) => {
+            return target.closest("li input");
+        },
+        li : (id) => {
+            return $todoList.querySelector(`li[data-id='${id}']`);
         }
-        this.render(this.todoItems);
-        document.querySelector(".todo-count strong").innerText = this.todoItems.length;
-    };
-  
-    this.render = items => {
-       const template = items.map(todoItemTemplate);
-       $todoList.innerHTML = template.join("");
-    };
-    
+    }
+
     function todoItemTemplate({title,id,completed}){
         return ` <li data-id="${id}" ${completed ? ' class="completed"' : ''}>
                         <div class="view">
@@ -73,5 +107,4 @@ export function TodoList({onRemove,onChangeState,onChangeTitle}) {
                         <input class="edit" value="${title}">
                     </li>`;
     }
-} 
-  
+}
