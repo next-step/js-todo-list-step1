@@ -23,6 +23,16 @@ class Todo {
     static of({id, title, isCompleted}) {
         return new Todo(id, title, isCompleted);
     }
+    
+    toggle() {
+        this.isCompleted = !this.isCompleted
+        return this;
+    }
+
+    setTitle(newTitle) {
+        this.title = newTitle
+        return this;
+    }
 }
 
 export default Todo;

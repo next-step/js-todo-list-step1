@@ -29,7 +29,7 @@ class Todos {
     editTodo(id, newTitle) {
         this.todos = this.todos.map((todo) => {
             return (todo.id == id) 
-            ? { ...todo, title : newTitle }
+            ? todo.setTitle(newTitle)
             : todo
         })
     }
@@ -37,7 +37,7 @@ class Todos {
     toggleTodo(id) {
         this.todos = this.todos.map((todo) => {
             return (todo.id == id) 
-            ? { ...todo, isCompleted: !todo.isCompleted}
+            ? todo.toggle()
             : todo
         })
     }

@@ -22,8 +22,6 @@ class TodoInput {
         this.onAddTodo(title);
         e.target.value = "";
     }
-
-
 }
 
 export default TodoInput
