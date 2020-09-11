@@ -90,26 +90,6 @@ class TodoList {
         }
     }
 
-    getSelectedTodos = (selectedTab) => {
-        const { todos } = this.state;
-    
-        switch (selectedTab) {
-          case TAB.ALL:
-            return todos;
-    
-          case TAB.ACTIVE:
-            return todos.filter(({ isCompleted }) => !isCompleted);
-    
-          case TAB.COMPLETED:
-            return todos.filter(({ isCompleted }) => isCompleted);
-          
-          default :
-            console.error(`Error : ${MESSAGE.INVALID_TAB}`)
-            return;
-        }
-      };
-    
-
     createTodoListDOM = (todos) => {
         return todos.reduce((html, todo) => 
             html + todoListDOM(todo)
@@ -122,7 +102,7 @@ class TodoList {
     }
 
     render = () => {
-        const selectedTodos = this.getSelectedTodos(this.state.tab)
+        const selectedTodos = this.state.getSelectedTodos();
         this.$target.innerHTML = this.createTodoListDOM(selectedTodos);
     }
 }

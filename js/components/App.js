@@ -5,6 +5,7 @@ import TodoInput from "./TodoInput.js";
 import Todo from "../domain/todo.js";
 import TodoList from "./TodoList.js";
 import TodoTab from "./TodoTab.js";
+import TodoCount from "./TodoCount.js";
 
 class App {
     constructor($target) {
@@ -30,6 +31,11 @@ class App {
             $target: document.querySelector(SELECTOR.TODO_TAB),
             selectedTab: this.state.tab,
             onChangeTab : this.onChangeTab
+        })
+
+        this.todoCount = new TodoCount({
+            $target: document.querySelector(SELECTOR.TODO_COUNT),
+            state: this.state
         })
     }
 
@@ -64,6 +70,7 @@ class App {
 
         this.todoList.setState(this.state)
         this.todoTab.setState(this.state.tab)
+        this.todoCount.setState(this.state)
     }
 }
 

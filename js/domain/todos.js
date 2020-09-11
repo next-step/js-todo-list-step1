@@ -48,12 +48,37 @@ class Todos {
         })
     }
 
+    countTodos() {
+        return this.getSelectedTodos().length;
+    }
+
+    getSelectedTodos = () => {
+        switch (this.tab) {
+          case TAB.ALL:
+            return this.todos;
+    
+          case TAB.ACTIVE:
+            return this.getActive();
+    
+          case TAB.COMPLETED:
+            return this.getCompleted();
+          
+          default :
+            console.error(`Error : ${MESSAGE.INVALID_TAB}`)
+            return;
+        }
+    };
+
     changeTab(selectedTab) {
         this.tab = selectedTab
     }
-    
-    setState(todos) {
-        Object.assign(this, todos)
+
+    getActive() {
+        return this.todos.filter(({ isCompleted }) => !isCompleted)
+    }
+
+    getCompleted() {
+        return this.todos.filter(({ isCompleted }) => isCompleted);
     }
 }
 
