@@ -36,7 +36,8 @@ export const MESSAGE = {
     INVALID_HTML_ELEMENT : "HTML Element가 아닙니다.",
     INVALID_INSTANCE : "올바른 instance 타입이 아닙니다.",
     INVALID_TYPE : "올바른 타입이 아닙니다.",
-    NOT_ARRAY : "배열이 아닙니다."
+    NOT_ARRAY : "배열이 아닙니다.",
+    INVALID_TAB : "올바른 tab이 아닙니다. all, active, completed 중 하나를 선택해주세요."
 }
 
 export const TYPE = {

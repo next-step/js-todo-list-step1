@@ -28,6 +28,7 @@ class App {
 
         this.todoTab = new TodoTab({
             $target: document.querySelector(SELECTOR.TODO_TAB),
+            selectedTab: this.state.tab,
             onChangeTab : this.onChangeTab
         })
     }
@@ -68,18 +69,19 @@ class App {
         })
     }
 
-    setState = (newState) => {
-        this.state.setTodos(newState)
-        saveTodo(KEY, this.state)
-
-        this.todoList.setState(this.state)
-    }
-
     setTodos = (newTodos) => {
         this.setState({
             ...this.state,
             todos:newTodos
         })
+    }
+
+    setState = (newState) => {
+        this.state.setTodos(newState)
+        saveTodo(KEY, this.state)
+
+        this.todoList.setState(this.state)
+        this.todoTab.setState(this.state.tab)
     }
 }
 

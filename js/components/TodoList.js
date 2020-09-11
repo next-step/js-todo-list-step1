@@ -1,7 +1,7 @@
 import { checkTarget, checkInstance, checkFunction } from "../utils/validator.js";
 import Todos from "../domain/todos.js";
 import { todoListDOM } from "../utils/templates.js";
-import { EVENT, CLASS, NODE, KEY_EVENT, TAB } from "../utils/constant.js";
+import { EVENT, CLASS, NODE, KEY_EVENT, TAB, MESSAGE } from "../utils/constant.js";
 
 class TodoList {
     constructor({
@@ -102,9 +102,9 @@ class TodoList {
     
           case TAB.COMPLETED:
             return todos.filter(({ isCompleted }) => isCompleted);
-    
-          default:
-            console.error(`TodoList Render Error : ${MESSAGE.UNDEFINED_TAB}`);
+          
+          default :
+            console.error(`Error : ${MESSAGE.INVALID_TAB}`)
             return;
         }
       };
@@ -122,8 +122,8 @@ class TodoList {
     }
 
     render = () => {
-        this.getSelectedTodos(this.state.tab)
-        this.$target.innerHTML = this.createTodoListDOM(this.state.todos);
+        const selectedTodos = this.getSelectedTodos(this.state.tab)
+        this.$target.innerHTML = this.createTodoListDOM(selectedTodos);
     }
 }
 

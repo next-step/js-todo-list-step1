@@ -2,12 +2,14 @@ import { checkTarget, checkFunction } from "../utils/validator.js"
 import { EVENT, CLASS, NODE } from "../utils/constant.js";
 
 class TodoTab {
-    constructor({$target, onChangeTab}) {
+    constructor({$target, selectedTab, onChangeTab}) {
         checkTarget($target);
         checkFunction(onChangeTab)
 
         this.$target = $target
+        this.$tabs = this.$target.querySelectorAll('a');
         this.onChangeTab = onChangeTab
+        this.selectedTab = selectedTab;
 
         this.bindEvents()
     }
@@ -21,8 +23,23 @@ class TodoTab {
         const clickedTab = e.target.className;
         if (clickedTab.includes(CLASS.SELECTED)) return;
 
-
         this.onChangeTab(clickedTab);
+    }
+
+    setState(tab) {
+        this.selectedTab = tab
+        this.render()
+    }
+
+    render() {
+        this.$tabs.forEach(tab => {
+            if(tab.classList.contains(CLASS.SELECTED)) {
+                tab.classList.remove(CLASS.SELECTED)
+            } 
+            if(tab.classList.contains(this.selectedTab)) {
+                tab.classList.add(CLASS.SELECTED)
+            }
+        });
     }
 }   
 
