@@ -45,10 +45,12 @@ live-server 폴더명
 - Class : CamelCase
 - Directory : CamelCase
 - Components : start with Uppercase
+- DOM variable : use prefix "$"
 - Method
     - CamelCase
     - DOM Method : use prefix "on"
     - Other Methods : start with verb
+
 
 <br>
 
