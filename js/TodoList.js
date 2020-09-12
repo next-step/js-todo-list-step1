@@ -1,104 +1,76 @@
-export function TodoList(itemController,{onRemove,onChangeState,onChangeTitle}) {
+import { TodoState } from "./TodoState.js"
+export function TodoList(itemController,state){
     const $todoList = document.querySelector("#todo-list");
 
-    this.clickEvent = ({target}) => {
-        if (target.classList == "destroy") this.removeItem(target);
-        if (target.classList == "toggle") this.changeItemState(target);
-    }
-
-    this.keyEvent = (event) => {
-        if(event.target.classList == "edit"){
-            if(event.key == "Escape"){ this.stopChangeTitle(event); }
-            if(event.key == "Enter") { this.changeTitle(event); }
-        }
-    }
-
-    this.removeItem = target => {
-        if(confirm("정말로 삭제하시겠습니까?")){
-            onRemove(getTarget.id(target));
-        }
-    }
-
-    this.changeItemState = target => {
-        onChangeState(getTarget.id(target),"completed");
-    }
-
-    this.editTitleMode = ({target}) => {
-        if (target.nodeName == "LABEL"){
-            onChangeState(getTarget.id(target),"editing");
-        }
-    }   
-
-    this.stopChangeTitle = ({target}) => {
-        getTarget.input(target).value = getTarget.label(target).innerText;
-        onChangeState(getTarget.id(target),"editing");
-    }
-
-    this.changeTitle = ({target}) => {
-        const value = getTarget.input(target).value.trim();
-        if(!value || value == getTarget.label(target).innerText) 
-            return this.stopChangeTitle({target:target});
-        onChangeTitle(getTarget.id(target),value);
-    }
-
-    $todoList.addEventListener("click", this.clickEvent);
-    $todoList.addEventListener("dblclick", this.editTitleMode);
-    $todoList.addEventListener("keydown", this.keyEvent);
-    // $todoList.addEventListener("focusout", this.changeTitle);
-
-    this._render = {
-        add : (item,viewMode) =>{
-            if(viewMode != "completed"){
-                const template = todoItemTemplate(item);
-                $todoList.insertAdjacentHTML("beforeend", template);
+    this.remove = ({target}) => {
+        if(target.classList.contains("destroy")){
+            if(confirm("정말로 삭제하시겠습니까?")){
+                const id = Number(target.closest("li").dataset.id);
+                itemController.deleteItem(id);
+                target.closest("li").remove();//this.render.remove(id); 
+                //todoCount.renderCount();
             }
-        },
-        delete : id => {
-            getTarget.li(id).remove();
-        },
-        update : (id,target,value,viewMode) => {//정리필요
-            const $li = getTarget.li(id);
-            const item = itemController.getItemById(id);
+        }
+    }
 
-            if(target == "title") {
-                $li.outerHTML = todoItemTemplate({id:id,title:value,completed:item.completed});
-            }
-            else if(target == "state"){
-                if(value == "completed"){
-                    viewMode == "all" ? 
-                        $li.classList.toggle("completed") :
-                        $li.remove();
+    this.toggle = (target,value) => {
+        const id = Number(target.closest("li").dataset.id);
+        itemController.toggleItem(id,value);
+        if(state.viewMode === "all" || value === "editing"){ 
+            target.closest("li").classList.toggle(value);
+            target.closest("li").lastElementChild.focus();
+        }
+        else {
+            target.closest("li").remove();
+            if(value === "completed") console.log("todoCount render()");//value == "completed" && console.log("todoCount"); //anti pattern
+        }
+    }
+
+    this.update = event => {
+        if(!['Enter','Escape'].includes(event.key)) return;
+        const id = Number(event.target.closest("li").dataset.id);
+        const newTitle = event.target.value;
+        itemController.toggleItem(id,"editing");
+        event.target.closest("li").classList.toggle("editing");//this.render.toggle("editing");
+
+        if(event.key === 'Enter' && !!newTitle.trim() &&
+            event.target.closest("li").querySelector("label").textContent != newTitle){
+            itemController.changeTitle(id,newTitle);
+            event.target.closest("li").querySelector("label").textContent = newTitle;//this.render.changeTitle(id,newTitle)
+        }
+        else {
+            event.target.value = event.target.closest("li").querySelector("label").textContent;//this.render.stopChangeTitle(id)
+        }
+    }
+
+    $todoList.addEventListener("click", this.remove);
+    $todoList.addEventListener("change", ({target}) => {
+        if(target.classList.contains("toggle")) this.toggle(target,"completed");
+    });
+    $todoList.addEventListener("dblclick", ({target}) => {
+        if(target.classList.contains("label")) this.toggle(target,"editing");
+    });
+    $todoList.addEventListener("keyup", this.update);
+
+    this.render = {
+        add : (item) => {
+                if(state.viewMode !== "completed"){
+                    const template = todoItemTemplate(item);
+                    $todoList.insertAdjacentHTML("beforeend", template);
                 }
-                if(value == "editing"){
-                    $li.classList.toggle("editing");
-                    $li.lastElementChild.focus();
-                }
-            }
         },
-        changeView : viewMode => {
-            const items = itemController.getItemsByState(viewMode);
-            const template = items.map(todoItemTemplate);
-            $todoList.innerHTML = template.join("");
-        }
+        view : (view) => {//view = "all, active, completed"
+                const items = itemController.getItemsByState(view);
+                const template = items.map(todoItemTemplate);
+                $todoList.innerHTML = template.join("");
+        },
+        clear : () => {
+                $todoList.innerHTML = "";
+        } 
     }
 
-    const getTarget = {
-        id : (target) =>{
-            return Number(target.closest("li").dataset.id);
-        },
-        label : (target) =>{
-            return target.closest("li").querySelector("label");
-        },
-        input : (target) => {
-            return target.closest("li input");
-        },
-        li : (id) => {
-            return $todoList.querySelector(`li[data-id='${id}']`);
-        }
-    }
-
-    function todoItemTemplate({title,id,completed}){
-        return ` <li data-id="${id}" ${completed ? ' class="completed"' : ''}>
+    function todoItemTemplate({title,id,completed,editing}){
+        return ` <li data-id="${id}" class="${completed ? 'completed':''}${ editing ? ' editing':''}">
                         <div class="view">
                             <input class="toggle" type="checkbox" ${completed?"checked":""}>
                             <label class="label">${title}</label>
