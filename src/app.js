@@ -10,8 +10,7 @@ function App() {
   const $todoCount = document.querySelector('.todo-count');
   const $todoFilter = document.querySelector('.filters');
   this.data = [];
-  this.filteredData = [];
-  this.selected = 'all';
+  this.activeFilterType = FilterOptions.ALL;
 
   this.addItem = (text) => {
     this.data.push({
@@ -19,44 +18,44 @@ function App() {
       isCompleted: false,
     });
 
-    this.filterItems(this.selected);
+    this.filterItems(this.activeFilterType);
   };
 
-  this.removeItem = (index) => {
+  this.removeItem = (filteredIndex) => {
+    const item = this.getFilteredItem()[filteredIndex];
+    const index = this.data.findIndex((v) => v === item);
     this.data.splice(index, 1);
-
-    this.filterItems(this.selected);
+    this.filterItems(this.activeFilterType);
   };
 
-  this.editItem = (index, text) => {
-      this.data[index].text = text;
-
-      this.todoList.updateItem(this.data);
-  }
+  this.editItem = (filteredIndex, text) => {
+    const item = this.getFilteredItem()[filteredIndex];
+    const index = this.data.findIndex((v) => v === item);
+    this.data[index].text = text;
+    this.filterItems(this.activeFilterType);
+  };
 
   this.filterItems = (type) => {
-    this.selected = type;
-
-    if (type === FilterOptions.ALL.type) {
-      this.filteredData = this.data;
-    } else if (type ===  FilterOptions.ACTIVE.type) {
-      this.filteredData = this.data.filter((item) => !item.isCompleted);
-    } else if (type ===  FilterOptions.COMPLETED.type) {
-      this.filteredData = this.data.filter((item) => item.isCompleted);
-    }
-    this.todoList.updateItem(this.filteredData);
-    this.todoCount.render(this.filteredData.length);
+    this.activeFilterType = type;
+    this.todoList.updateItem(this.getFilteredItem());
+    this.todoCount.render(this.getFilteredItem().length);
   };
+
+  this.getFilteredItem = () =>
+    this.data.filter(({isCompleted}) =>
+      (this.activeFilterType === FilterOptions.ALL) ||
+      (this.activeFilterType === FilterOptions.COMPLETED && isCompleted) ||
+      (this.activeFilterType === FilterOptions.ACTIVE && !isCompleted));
 
   this.todoList = new TodoList($todoList, this.data, {
     removeItem: (index) => this.removeItem(index),
-    editItem: (index, text) => this.editItem(index, text)
+    editItem: (index, text) => this.editItem(index, text),
   });
   this.todoInput = new TodoInput($todoInput, (text) => {
     this.addItem(text);
   });
   this.todoCount = new TodoCount($todoCount, this.data.length);
-  this.todoFilter = new TodoFilter($todoFilter, this.data, this.selected, (type) => {
+  this.todoFilter = new TodoFilter($todoFilter, this.data, this.activeFilterType, (type) => {
     this.filterItems(type);
   });
 }

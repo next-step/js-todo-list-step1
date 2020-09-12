@@ -1,9 +1,9 @@
 import {FilterDetails} from './constants.js';
 
-export default function TodoFilter($todoFilter, data, selected, filterItems) {
+export default function TodoFilter($todoFilter, data, activeFilterType, filterItems) {
   this.$todoFilter = $todoFilter;
   this.data = data;
-  this.selected = selected;
+  this.activeFilterType = activeFilterType;
 
   this.init = () => {
     this.render();
@@ -14,8 +14,8 @@ export default function TodoFilter($todoFilter, data, selected, filterItems) {
     this.$todoFilter.addEventListener('click', ({target}) => {
       FilterDetails.filter(({type}) => {
         if (target.classList.contains(type)) {
-          this.selected = type;
-          filterItems(this.selected);
+          this.activeFilterType = type;
+          filterItems(this.activeFilterType);
         }
       });
       this.render();
@@ -23,16 +23,11 @@ export default function TodoFilter($todoFilter, data, selected, filterItems) {
   };
 
   this.render = () => {
-    let result = '';
-    FilterDetails.map(({type, text}) => {
-      result += `
-        <li>
-          <a class="${type} ${this.selected == type? 'selected': ''}" href="#${type}">${text}</a>
-        </li>
-        `;
-    });
-
-    this.$todoFilter.innerHTML = result;
+    this.$todoFilter.innerHTML = FilterDetails.map(({type, text}) => `
+      <li>
+        <a class="${type} ${this.activeFilterType == type? 'selected': ''}" href="#${type}">${text}</a>
+      </li>
+    `).join('');
   };
 
   this.init();

@@ -16,19 +16,15 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
         if (target.tagName === 'INPUT' && target.classList.contains('toggle')) {
           const $todoItem = target.closest('.todo-item');
           const {index} = $todoItem.dataset;
-
-          if ($todoItem.classList.contains('completed')) {
-            $todoItem.classList.remove('completed');
-            this.data[index].isCompleted = false;
-          } else {
-            $todoItem.classList.add('completed');
-            this.data[index].isCompleted = true;
-          }
+          const item = this.data[index];
+          const isCompleted = !$todoItem.classList.contains('completed');
+          item.isCompleted = isCompleted;
+          $todoItem.classList[isCompleted ? 'add' : 'remove']('completed');
         }
-
+        
         if (target.classList.contains('destroy')) {
           const {index} = target.closest('.todo-item').dataset;
-          removeItem(index);
+          removeItem(Number(index));
         }
       });
 
@@ -57,9 +53,7 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
   };
 
   this.render = () => {
-    let result = '';
-    this.data.map(({text, isCompleted}, index) => {
-      result += `
+    this.$todoList.innerHTML = this.data.map(({text, isCompleted}, index) => `
       <li class="todo-item ${isCompleted? 'completed' : ''}" data-index="${index}">
         <div class="view">
           <input class="toggle" type="checkbox" ${isCompleted? 'checked' : ''} />
@@ -68,9 +62,6 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
         </div>
         <input class="edit" value="${text}" />
       </li>
-      `;
-    }).join('');
-
-    this.$todoList.innerHTML = result;
+    `).join('');
   };
 }

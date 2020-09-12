@@ -1,11 +1,10 @@
-export default function TodoCount($todoCount, totalCount) {
-  this.$todoCount = $todoCount;
-  this.totalCount = totalCount;
-
-  this.render = (totalCount) => {
-    this.totalCount = totalCount;
-    this.$todoCount.innerHTML = `총 <strong>${this.totalCount}</strong> 개`;
+export default function TotalCount($todoCount, totalCount) {
+  const render = (totalCount) => {
+    $todoCount.innerHTML = `총 <strong>${totalCount}</strong> 개`;
   };
 
-  this.render(this.totalCount);
+  render(totalCount);
+
+  return {render};
 }
+x`
