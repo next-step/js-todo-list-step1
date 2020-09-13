@@ -1,43 +1,48 @@
 import { TodoInput } from "./TodoInput.js"
 import { TodoList } from "./TodoList.js"
 import { TodoCount } from "./TodoCount.js"
-import { ItemController } from "./ItemController.js"
+import  ItemController from "./ItemController.js"
 
-function TodoApp() {
-    this.state = {
-        todoItems:[],
-        id:0,
-        viewMode:"all",
+class TodoApp {
+    constructor() {
+        this.init();
     }
 
-    this.setState = (command,value) => {
-        if(command === "addItem"){ //value = {item}
-            this.state.id++; 
-            todoList.render.add(value,this.state.viewMode);
-        }
-        else if(command === "changeView"){ //value = newViewMode
-            if( this.state.viewMode == value) return;
-            todoList.render.view(value);
-            this.state.viewMode = value;
-        }
-    }
-    
-    const itemController = new ItemController(this.state.todoItems);
-    const todoList = new TodoList(itemController,this.state);
+    init = ()=>{
+        this.loadItems();
 
-    new TodoInput({
-        addItem: (title) => {
-            const item = {id:this.state.id,title:title};
-            itemController.addItem(item);
-            this.setState("addItem",item);
+        const todoCount = new TodoCount({
+            onChangeView: viewMode => {
+                todoList.render.view(viewMode);
+            }
+        });
+        const todoList = new TodoList({
+            count:()=>{
+                todoCount.count();
+            }
+        });
+        const todoInput = new TodoInput({
+            addItem: (title) => {
+                const item = ItemController.addItem({title:title});
+                todoList.render.add(item);
+                todoCount.count();
+            },
+            count: ()=>{
+                todoCount.count();
+            }
+        });
+    }
+
+    loadItems = () => {
+        console.log('load %citems%c...', 'color:#ff0000;','color:#000');
+        if(!!window.localStorage.getItem("TodoApp")){
+            console.log("localStorage has items!");
+            //JSON.parse(window.localStorage.getItem("item"));//TodoState로 전달
+            //{items:[item,...],id=0,viewMode:"all"}
+            return;
         }
-    })
-    
-    new TodoCount({
-        onChangeView: viewMode => {
-            this.setState("changeView",viewMode);
-        }
-    });
+        console.log("%citems not found!!","font-weight:bold;");
+    }
 }  
 
 new TodoApp();

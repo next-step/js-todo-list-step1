@@ -1,28 +1,29 @@
-import { TodoState } from "./TodoState.js"
-export function TodoList(itemController,state){
+import TodoState from "./TodoState.js"
+import ItemController from "./ItemController.js"
+export function TodoList({count}){
     const $todoList = document.querySelector("#todo-list");
 
     this.remove = ({target}) => {
         if(target.classList.contains("destroy")){
             if(confirm("정말로 삭제하시겠습니까?")){
                 const id = Number(target.closest("li").dataset.id);
-                itemController.deleteItem(id);
+                ItemController.deleteItem(id);
                 target.closest("li").remove();//this.render.remove(id); 
-                //todoCount.renderCount();
+                count();
             }
         }
     }
 
     this.toggle = (target,value) => {
         const id = Number(target.closest("li").dataset.id);
-        itemController.toggleItem(id,value);
-        if(state.viewMode === "all" || value === "editing"){ 
+        ItemController.toggleItem(id,value);
+        if(TodoState.view === "all" || value === "editing"){ 
             target.closest("li").classList.toggle(value);
             target.closest("li").lastElementChild.focus();
         }
         else {
             target.closest("li").remove();
-            if(value === "completed") console.log("todoCount render()");//value == "completed" && console.log("todoCount"); //anti pattern
+            if(value === "completed") count();//value == "completed" && console.log("todoCount"); //anti pattern
         }
     }
 
@@ -30,12 +31,12 @@ export function TodoList(itemController,state){
         if(!['Enter','Escape'].includes(event.key)) return;
         const id = Number(event.target.closest("li").dataset.id);
         const newTitle = event.target.value;
-        itemController.toggleItem(id,"editing");
+        ItemController.toggleItem(id,"editing");
         event.target.closest("li").classList.toggle("editing");//this.render.toggle("editing");
 
         if(event.key === 'Enter' && !!newTitle.trim() &&
             event.target.closest("li").querySelector("label").textContent != newTitle){
-            itemController.changeTitle(id,newTitle);
+            ItemController.changeTitle(id,newTitle);
             event.target.closest("li").querySelector("label").textContent = newTitle;//this.render.changeTitle(id,newTitle)
         }
         else {
@@ -52,15 +53,18 @@ export function TodoList(itemController,state){
     });
     $todoList.addEventListener("keyup", this.update);
 
+    document.querySelector("h1").onclick = ()=>{
+        ItemController.clear();
+    }
     this.render = {
         add : (item) => {
-                if(state.viewMode !== "completed"){
+                if(TodoState.view !== "completed"){
                     const template = todoItemTemplate(item);
                     $todoList.insertAdjacentHTML("beforeend", template);
                 }
         },
         view : (view) => {//view = "all, active, completed"
-                const items = itemController.getItemsByState(view);
+                const items = ItemController.getItemsByState(view);
                 const template = items.map(todoItemTemplate);
                 $todoList.innerHTML = template.join("");
         },
