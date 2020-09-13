@@ -7,4 +7,3 @@ export default function TotalCount($todoCount, totalCount) {
 
   return {render};
 }
-x`

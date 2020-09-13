@@ -4,10 +4,14 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
   this.$todoList = $todoList;
   this.data = data;
 
-  this.updateItem = (nextData) => {
-    this.data = [...nextData];
+  this.setState = () => {
     this.render();
     this.bindEvents();
+  }
+
+  this.updateItem = (nextData) => {
+    this.data = [...nextData];
+    this.setState();
   };
 
   this.bindEvents = () => {
@@ -21,7 +25,7 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
           item.isCompleted = isCompleted;
           $todoItem.classList[isCompleted ? 'add' : 'remove']('completed');
         }
-        
+
         if (target.classList.contains('destroy')) {
           const {index} = target.closest('.todo-item').dataset;
           removeItem(Number(index));
@@ -64,4 +68,6 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
       </li>
     `).join('');
   };
+
+  this.setState();
 }

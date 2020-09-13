@@ -26,7 +26,7 @@
 
 ## 🚀🚀 심화 요구사항
 
-- [ ] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
+- [x] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
 
 <br/><br/>
 
@@ -97,6 +97,7 @@ This project is [MIT](https://github.com/next-step/js-todo-list-step1/blob/maste
 ### ✨ Updates
 - Filter 구현
 - editing item에 focus / focusout 적용
+- local storage 사용
 
 ### 🙏 Feedback
 - [PR](https://github.com/next-step/js-todo-list-step1/pull/36)
@@ -105,4 +106,4 @@ This project is [MIT](https://github.com/next-step/js-todo-list-step1/blob/maste
 - data를 컨트롤하는 방법이 맞는지? 상태관리법에 대해 더 알아보기
 
 ### 🐞 버그
-- [ ] todo item을 필터링할 때 원 배열의 인덱스도 같이 넘기기
+- [x] todo item을 필터링할 때 원 배열의 인덱스도 같이 넘기기

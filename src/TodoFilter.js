@@ -1,6 +1,6 @@
 import {FilterDetails} from './constants.js';
 
-export default function TodoFilter($todoFilter, data, activeFilterType, filterItems) {
+export default function TodoFilter($todoFilter, {data, activeFilterType}, filterItems) {
   this.$todoFilter = $todoFilter;
   this.data = data;
   this.activeFilterType = activeFilterType;
