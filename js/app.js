@@ -7,17 +7,25 @@ function TodoApp(){
         console.log(this.todoItems);
     }
 
+    const getIdx = id => {
+        return this.todoItems.findIndex(item => item.id === parseInt(id));
+    };
+
     const todoList = new TodoList({
         onToggle: (id, type) => {
-            const idx = this.todoItems.findIndex(item => item.id === parseInt(id));
-            this.todoItems[idx].type = type;
-            this.setState(this.todoItems);
+            let newTodoItems = [...this.todoItems];
+            newTodoItems[getIdx(id)].type = type;
+            this.setState(newTodoItems);
         },
         onRemove: (id) => {
-
+            let newTodoItems = [...this.todoItems];
+            newTodoItems.splice(getIdx(id), 1);
+            this.setState(newTodoItems);
         },
-        onMod: () => {
-
+        onMod: (id, title) => {
+            let newTodoItems = [...this.todoItems];
+            newTodoItems[getIdx(id)].title = title;
+            this.setState(newTodoItems);
         }
     });
 
@@ -48,13 +56,13 @@ function TodoInput({onAdd}){
 
     this.addTodoItem = event => {
         const $newTodoTarget = event.target;
-        if(this.isValid(event, $newTodoTarget.value)){
+        if(isValid(event, $newTodoTarget.value)){
             onAdd($newTodoTarget.value);
             $newTodoTarget.value = "";
         }
     };
 
-    this.isValid = (event, value) => {
+    const isValid = (event, value) => {
         if(event.key === "Enter" && value !== ""){
             return true;
         }
@@ -75,14 +83,44 @@ function TodoList({onToggle, onRemove, onMod}) {
     });
 
     $todoList.addEventListener("dblclick", event => {
-
+        onChangeToEditing(event.target);
     });
+
+    $todoList.addEventListener("keydown", event => {
+        if(event.key === "Escape"){
+            onChangeToView(event.target);
+        }else if(event.key === "Enter"){
+            onModTodoItem(event.target);
+        }
+    })
 
     const onToggleTodoItem = target => {
         const $li = target.closest("li");
         let type = (target.checked === true ? "completed" : "view");
 
         onToggle($li.dataset.id, type);
+    };
+
+    const onChangeToEditing = target => {
+        const $li = target.closest("li");
+        const $editInput = $li.querySelector(".edit");
+        const title = target.innerText;
+
+        $editInput.value = title;
+        $li.classList.add("editing");
+        $editInput.focus();
+    };
+
+    const onChangeToView = target => {
+        const $li = target.closest("li");
+        $li.classList.remove("editing");
+    };
+
+    const onModTodoItem = target => {
+        const $li = target.closest("li");
+        const $editInput = $li.querySelector(".edit");
+
+        onMod($li.dataset.id, $editInput.value);
     };
 
     const onRemoveTodoItem = target => {
@@ -92,7 +130,7 @@ function TodoList({onToggle, onRemove, onMod}) {
         onRemove(id);
     };
 
-    this.todoItemTemplate = item => {
+    const todoItemTemplate = item => {
         return `<li data-id="${item.id}" class="${item.type === "view" ? "" : item.type}">
             <div class="view">
                 <input class="toggle" type="checkbox" ${item.type === "completed" ? "checked" : ""}>
@@ -109,13 +147,19 @@ function TodoList({onToggle, onRemove, onMod}) {
     }
 
     this.render = items => {
-        const template = items.map(item => this.todoItemTemplate(item));
+        const template = items.map(item => todoItemTemplate(item));
         $todoList.innerHTML = template.join("");
     }
 }
 
 function TodoCount(){
+    const $countContainer = document.querySelector(".count-container");
+    const $todoCount = $countContainer.querySelector(".todo-count");
+    const $count = $todoCount.querySelector("strong");
 
+    this.render = count => {
+        $count.innerText = count;
+    }
 }
 
 TodoApp();
