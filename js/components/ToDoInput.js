@@ -1,5 +1,5 @@
-import store from "../store/store.js";
-export default {
+import {removetoDosObj, saveToDo, PushTodo}from "../store/store.js";
+export  {
     paintToDo, edited
 }
 
@@ -19,9 +19,9 @@ function paintToDo(text,val){
 
 function edited(text, li){
     const label = li.querySelector(".label");
-    store.removetoDosObj(label.innerText);
+    removetoDosObj(label.innerText);
     label.innerText = text;
     li.classList.remove("editing");
-    store.PushTodo(text, li.className === "completed" ? 'checked' : 'unchecked');
-    store.saveToDo();
+    PushTodo(text, li.className === "completed" ? 'checked' : 'unchecked');
+    saveToDo();
 }

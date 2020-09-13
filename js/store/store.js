@@ -1,30 +1,29 @@
-import ToDoInput from "../components/ToDoInput.js";
-import {$toDoList}from "../app.js";
-import {toDos, TODOS_LS} from "../store/storeConfig.js"
-export default {
-    saveToDo, removetoDosObj ,PushTodo, loadToDos
-  }
+import {paintToDo, edited} from "../components/ToDoInput.js";
+import { $toDoList, toDos ,TODOS_LS } from "../app.js";
 
 
-function saveToDo() {
+
+export function saveToDo() {
     localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
 }
 
-function removetoDosObj(text){
+export function removetoDosObj(text){
     const index = toDos.findIndex(item => item.text === text);
     toDos.splice(index, 1);
     saveToDo();
 }
 
-const PushTodo = (text, check) => toDos.push({ text, check });
+export const PushTodo = (text, check) => toDos.push({ text, check });
 
-function loadToDos() {
+export function loadToDos() {
+    const PushTodo = (text, check) => toDos.push({ text, check });
     const parsedToDos = JSON.parse(localStorage.getItem(TODOS_LS));
-    if (toDos === null) return;
+    console.log(toDos);
+    if (toDos === null | parsedToDos === null) return;
 
     parsedToDos.forEach(({ check, text }) => {
         const completed = check === "checked" ? 'completed' : '';
-        $toDoList.insertAdjacentHTML("beforeend", ToDoInput.paintToDo(text, completed))
+        $toDoList.insertAdjacentHTML("beforeend", paintToDo(text, completed))
         PushTodo(text, check);
     });
 

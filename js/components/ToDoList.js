@@ -1,9 +1,9 @@
-import {$toDoList}from "../app.js";
-import store from "../store/store.js";
-export default {cancel, deleteTodoItem, editing, completed
+import {count} from "../components/ToDoCount.js";
+import {removetoDosObj} from "../store/store.js";
+export {cancel, deleteTodoItem, editing, completed
 }
 
-
+const $toDoList = document.querySelector(".todo-list");
 
 function cancel(closestLi){
     closestLi.classList.remove("editing");
@@ -13,7 +13,7 @@ function cancel(closestLi){
 function deleteTodoItem  (closestLi){
     const textlabel = closestLi.querySelector(".label");
     closestLi.remove();
-    store.removetoDosObj(textlabel.innerText);
+    removetoDosObj(textlabel.innerText);
     count($toDoList.childElementCount);
 }
 

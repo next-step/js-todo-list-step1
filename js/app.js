@@ -1,13 +1,17 @@
 import {count} from "./components/ToDoCount.js";
-import store from "./store/store.js";
-import ToDoList from "./components/ToDoList.js";
+import {loadToDos, saveToDo, PushTodo}from "./store/store.js";
+import {cancel, deleteTodoItem, editing, completed} from "./components/ToDoList.js";
 import {activeOf} from "./components/ToDoFilter.js";
-import ToDoInput from "./components/ToDoInput.js";
-export {$toDoList};
+import {
+    paintToDo, edited
+} from "./components/ToDoInput.js";
 
+
+export let toDos = [];
+export const TODOS_LS = "toDos";
 const $toDoForm = document.querySelector(".toDojs");
 const $toDoInput = $toDoForm.querySelector(".new-todo");
-const $toDoList = document.querySelector(".todo-list");
+export const $toDoList = document.querySelector(".todo-list");
 const $toDoFilter = document.querySelector(".filters");
 
 function handlekeyup({ target }){
@@ -15,20 +19,20 @@ function handlekeyup({ target }){
     const closestLi = target.closest("li");
 
     if ( event.key === "Enter"){
-        return ToDoInput.edited(closestInput.value, closestLi);
+        return edited(closestInput.value, closestLi);
     }
     if(event.key === "Escape"){
-        return ToDoList.cancel(closestLi);
+        return cancel(closestLi);
     }
 } 
 
-const handledbclick = ({ target }) => ToDoList.editing(target.closest("li"));
+const handledbclick = ({ target }) => editing(target.closest("li"));
 
 function handleClick({ target }) {
     const closestLi = target.closest("li");
     ({
-        destroy: () => ToDoList.deleteTodoItem(closestLi),
-        toggle: () => ToDoList.completed(closestLi),
+        destroy: () => deleteTodoItem(closestLi),
+        toggle: () => completed(closestLi),
         active: () => activeOf('active'),
         completed: () => activeOf('completed'),
         all: () => activeOf('all'),
@@ -37,9 +41,9 @@ function handleClick({ target }) {
 
 
 function handleSumit(event) {
-    $toDoList.insertAdjacentHTML("beforeend", ToDoInput.paintToDo($toDoInput.value,""));
-    store.PushTodo($toDoInput.value,"unchecked");
-    store.saveToDo();
+    $toDoList.insertAdjacentHTML("beforeend", paintToDo($toDoInput.value,""));
+    PushTodo($toDoInput.value,"unchecked");
+    saveToDo();
     toDocountNum = $toDoList.childElementCount;
     count(toDocountNum);
     $toDoInput.value="";
@@ -47,7 +51,7 @@ function handleSumit(event) {
 
 
 function init(){  
-    store.loadToDos();
+    loadToDos();
     count($toDoList.childElementCount);
     $toDoForm.addEventListener("submit", handleSumit);
     $toDoList.addEventListener("click", handleClick);

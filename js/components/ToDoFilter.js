@@ -1,7 +1,7 @@
-import {$toDoList}from "../app.js";
+
 export {activeOf}
 
-
+const $toDoList = document.querySelector(".todo-list");
 
 function Detecting(list, val) {
     console.log(val);
