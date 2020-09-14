@@ -27,20 +27,20 @@ export function TodoList({count}){
         }
     }
 
-    this.update = event => {
-        if(!['Enter','Escape'].includes(event.key)) return;
-        const id = Number(event.target.closest("li").dataset.id);
-        const newTitle = event.target.value;
+    this.update = (target,key) => {
+        if(!['Enter','Escape'].includes(key)) return;
+        const id = Number(target.closest("li").dataset.id);
+        const newTitle = target.value;
         ItemController.toggleItem(id,"editing");
-        event.target.closest("li").classList.toggle("editing");//this.render.toggle("editing");
+        target.closest("li").classList.toggle("editing");//this.render.toggle("editing");
 
-        if(event.key === 'Enter' && !!newTitle.trim() &&
-            event.target.closest("li").querySelector("label").textContent != newTitle){
+        if(key === 'Enter' && !!newTitle.trim() &&
+            target.closest("li").querySelector("label").textContent != newTitle){
             ItemController.changeTitle(id,newTitle);
-            event.target.closest("li").querySelector("label").textContent = newTitle;//this.render.changeTitle(id,newTitle)
+            target.closest("li").querySelector("label").textContent = newTitle;//this.render.changeTitle(id,newTitle)
         }
         else {
-            event.target.value = event.target.closest("li").querySelector("label").textContent;//this.render.stopChangeTitle(id)
+            target.value = target.closest("li").querySelector("label").textContent;//this.render.stopChangeTitle(id)
         }
     }
 
@@ -51,7 +51,7 @@ export function TodoList({count}){
     $todoList.addEventListener("dblclick", ({target}) => {
         if(target.classList.contains("label")) this.toggle(target,"editing");
     });
-    $todoList.addEventListener("keyup", this.update);
+    $todoList.addEventListener("keyup", ({target,key}) => this.update(target,key));
 
     document.querySelector("h1").onclick = ()=>{
         ItemController.clear();

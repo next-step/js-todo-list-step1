@@ -2,9 +2,9 @@ import TodoState from "./TodoState.js"
 import ItemController from "./ItemController.js"
 export class TodoCount{
     constructor({onChangeView}){
-        this.$todoFilter = document.querySelector(".filters");
-        this.$todoFilters = $todoFilter.querySelectorAll(".filters a");
-        this.$count = document.querySelector(".todo-count strong");
+        this.$todoFilter = qs(".filters");
+        this.$todoFilters = qsa("a",this.$todoFilter);
+        this.$count = qs(".todo-count strong");
         this.onChangeView = onChangeView;
         
         this.$todoFilter.addEventListener("click", ({target}) => {
@@ -23,7 +23,6 @@ export class TodoCount{
     }
     
     count = (view = TodoState.view) =>{
-        this.$count.innerText = ItemController.getItemsByState(view).length;//굳이 아이템불러와야하나! state에 상태별갯수 저장?
-        //this.$count.innerText = $todoList.childElementCount
+        this.$count.innerText = ItemController.getItemsByState(view).length;
     }
 }

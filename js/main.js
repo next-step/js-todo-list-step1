@@ -2,7 +2,7 @@ import { TodoInput } from "./TodoInput.js"
 import { TodoList } from "./TodoList.js"
 import { TodoCount } from "./TodoCount.js"
 import  ItemController from "./ItemController.js"
-
+import { qs, qsa } from "./utils.js"
 class TodoApp {
     constructor() {
         this.init();
@@ -10,7 +10,9 @@ class TodoApp {
 
     init = ()=>{
         this.loadItems();
-
+        window.qs = qs;
+        window.qsa = qsa;
+        
         const todoCount = new TodoCount({
             onChangeView: viewMode => {
                 todoList.render.view(viewMode);
