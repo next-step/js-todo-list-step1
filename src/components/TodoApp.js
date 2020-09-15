@@ -1,25 +1,16 @@
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
-import { ACTIVE, EDITING, COMPLETED } from "../utils/constants.js";
 import TodoCount from "./TodoCount.js";
+import TodoFilter from "./TodoFilter.js";
+import { ACTIVE, EDITING, COMPLETED } from "../utils/constants.js";
 
 export default function TodoApp() {
     this.todoItems = [];
 
-    this.todoList = new TodoList({
-        onHandleToggle: id => this.onHandleToggle(id),
-        onEdit: (id, flag) => this.onEdit(id, flag),
-        onDelete: id => this.onDelete(id),
-        saveTodoItems: (targetId, todoContext) => this.saveTodoItems(targetId, todoContext)
-    });
-
     this.setState = updatedItems => {
-        this.todoItems = updatedItems;
-        this.todoList.setState(this.todoItems);
-
-        new TodoCount({
-            todoItems: this.todoItems
-        });
+        this.todoList.setState(updatedItems);
+        this.todoCount.setState(updatedItems);
+        this.todoFilter.setState(updatedItems);
     };
 
     this.onHandleToggle = targetId => {
@@ -32,7 +23,6 @@ export default function TodoApp() {
         };
         this.setState(updatedItems);
     };
-
 
     this.saveTodoItems = (targetId, todoContext) => {
         const $index =  this.todoItems.findIndex(item => item.id === Number(targetId));
@@ -52,7 +42,6 @@ export default function TodoApp() {
         let updatedItems = [ ...this.todoItems ];
         updatedItems[$index] = {... updatedItems[$index],
             status: flag === true ? EDITING : ACTIVE
-            // status: updatedItems[$index].status === ACTIVE ? EDITING : ACTIVE,
         };
         this.setState(updatedItems);
     };
@@ -64,7 +53,12 @@ export default function TodoApp() {
         this.setState(updatedItems);
     };
 
-    new TodoInput({
+    this.filterSelectedType = (type) => {
+        const updatedItems = this.todoItems.filter(item => item.status === type);
+        this.setState(updatedItems);
+    };
+
+    this.todoInput = new TodoInput({
         todoItems: this.todoItems,
         onAdd: item => {
             const maxId = Math.max(...this.todoItems.map(item => item.id), 0);
@@ -73,6 +67,25 @@ export default function TodoApp() {
         }
     });
 
+    this.todoList = new TodoList({
+        onHandleToggle: id => this.onHandleToggle(id),
+        onEdit: (id, flag) => this.onEdit(id, flag),
+        onDelete: id => this.onDelete(id),
+        saveTodoItems: (targetId, todoContext) => this.saveTodoItems(targetId, todoContext)
+    });
 
+    this.todoCount = new TodoCount({
+        todoItems: this.todoItems
+    });
+    this.todoFilter = new TodoFilter({
+        todoItems: this.todoItems,
+        onFilter: this.filterSelectedType,
+    });
+
+    this.init = () => {
+        this.setState(this.todoItems);
+    };
+
+    this.init();
 
 }
