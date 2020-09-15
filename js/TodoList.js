@@ -1,86 +1,60 @@
-import TodoState from "./TodoState.js"
 import ItemController from "./ItemController.js"
-export function TodoList({count}){
-    const $todoList = document.querySelector("#todo-list");
+import Render from "./render.js"
+export function TodoList(){
+    const $todoList = qs("#todo-list");
 
-    this.remove = ({target}) => {
-        if(target.classList.contains("destroy")){
-            if(confirm("정말로 삭제하시겠습니까?")){
-                const id = Number(target.closest("li").dataset.id);
-                ItemController.deleteItem(id);
-                target.closest("li").remove();//this.render.remove(id); 
-                count();
-            }
+    this.remove = (target) => {
+        if(confirm("정말로 삭제하시겠습니까?")){
+            const id = Number(target.closest("li").dataset.id);
+            ItemController.remove(id);
+            Render.todoList.remove(target);
         }
     }
 
-    this.toggle = (target,value) => {
+    this.toggleCompleted = (target) => {
         const id = Number(target.closest("li").dataset.id);
-        ItemController.toggleItem(id,value);
-        if(TodoState.view === "all" || value === "editing"){ 
-            target.closest("li").classList.toggle(value);
-            target.closest("li").lastElementChild.focus();
-        }
-        else {
-            target.closest("li").remove();
-            if(value === "completed") count();//value == "completed" && console.log("todoCount"); //anti pattern
-        }
+        ItemController.toggle(id,"completed");
+        Render.todoList.toggleCompleted(target);
+    }
+
+    this.toggleEditing = (target) => {
+        const id = Number(target.closest("li").dataset.id);
+        ItemController.toggle(id,"editing");
+        Render.todoList.toggleEditing(target);
     }
 
     this.update = (target,key) => {
-        if(!['Enter','Escape'].includes(key)) return;
         const id = Number(target.closest("li").dataset.id);
+        const title = qs(`li[data-id='${id}'] label`).textContent;
         const newTitle = target.value;
-        ItemController.toggleItem(id,"editing");
-        target.closest("li").classList.toggle("editing");//this.render.toggle("editing");
 
-        if(key === 'Enter' && !!newTitle.trim() &&
-            target.closest("li").querySelector("label").textContent != newTitle){
+        ItemController.toggle(id,"editing");
+        Render.todoList.toggleEditing(target);
+
+        if(key === 'Enter' && !!newTitle.trim() && title != newTitle){
             ItemController.changeTitle(id,newTitle);
-            target.closest("li").querySelector("label").textContent = newTitle;//this.render.changeTitle(id,newTitle)
+            Render.todoList.changeTitle(target)
         }
-        else {
-            target.value = target.closest("li").querySelector("label").textContent;//this.render.stopChangeTitle(id)
-        }
+        else 
+            Render.todoList.undoChange(target);
     }
 
-    $todoList.addEventListener("click", this.remove);
+    $todoList.addEventListener("click", ({target}) => {
+        if(target.classList.contains("destroy")) this.remove(target)
+    });
     $todoList.addEventListener("change", ({target}) => {
-        if(target.classList.contains("toggle")) this.toggle(target,"completed");
+        if(target.classList.contains("toggle")) this.toggleCompleted(target);
     });
     $todoList.addEventListener("dblclick", ({target}) => {
-        if(target.classList.contains("label")) this.toggle(target,"editing");
+        if(target.classList.contains("label")) this.toggleEditing(target);
     });
-    $todoList.addEventListener("keyup", ({target,key}) => this.update(target,key));
+    $todoList.addEventListener("keyup", ({target,key}) => {
+        if(['Enter','Escape'].includes(key)) this.update(target,key)
+    });
 
     document.querySelector("h1").onclick = ()=>{
         ItemController.clear();
-    }
-    this.render = {
-        add : (item) => {
-                if(TodoState.view !== "completed"){
-                    const template = todoItemTemplate(item);
-                    $todoList.insertAdjacentHTML("beforeend", template);
-                }
-        },
-        view : (view) => {//view = "all, active, completed"
-                const items = ItemController.getItemsByState(view);
-                const template = items.map(todoItemTemplate);
-                $todoList.innerHTML = template.join("");
-        },
-        clear : () => {
-                $todoList.innerHTML = "";
-        } 
-    }
-
-    function todoItemTemplate({title,id,completed,editing}){
-        return ` <li data-id="${id}" class="${completed ? 'completed':''}${ editing ? ' editing':''}">
-                        <div class="view">
-                            <input class="toggle" type="checkbox" ${completed?"checked":""}>
-                            <label class="label">${title}</label>
-                            <button class="destroy"></button>
-                        </div>
-                        <input class="edit" value="${title}">
-                    </li>`;
+        Render.todoList.clear();
+        Render.todoCount.count();
     }
 }

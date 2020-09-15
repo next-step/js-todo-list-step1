@@ -1,18 +1,17 @@
+import ItemController from "./ItemController.js"
+import Render from "./render.js"
 export class TodoInput{
-  constructor({addItem}){
-    this.$todoInput = document.querySelector("#new-todo-title");
-    this.addItem = addItem;
+  constructor(){
+    this.$todoInput = qs("#new-todo-title");
     
     this.$todoInput.addEventListener("keydown", ({target, key}) => {
-      if(key === "Enter") this.addTodoItem(target);
+      if(key === "Enter" && !!target.value.trim()) {
+        const item = ItemController.add({title:target.value});
+        console.log(item);
+        Render.todoList.add(item);
+        Render.todoCount.count();
+        target.value = "";
+      }
     });
-  }
-  
-  addTodoItem(target) {
-    const $newTodoTarget = target;
-    if(!!$newTodoTarget.value.trim()) {
-      this.addItem($newTodoTarget.value);
-      $newTodoTarget.value = "";
-    }
   }
 }

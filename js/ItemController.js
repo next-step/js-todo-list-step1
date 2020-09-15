@@ -5,13 +5,6 @@ export default new class ItemController{
         this.todoItems = TodoState.items;    
     }
 
-    getItems = (filter) => {
-        return this._filters(function(item){
-            if(filter === undefined) return true;
-            return item.completed == filter;
-        });
-    }
-
     getItemsByState = (state) => {
         if(state === undefined || state === "all") {
             return this.todoItems;
@@ -21,24 +14,23 @@ export default new class ItemController{
     }
 
     getItemById = (id) => {
-        //return todoItems.find(item => item.id == id);
         return this._filter( item => item.id == id);
     }
 
-    addItem = (item) => {
+    add = (item) => {
         const newItem = new TodoItem(TodoState.id++,item.title,!!item.completed)
         this.todoItems.push(newItem);
         return newItem;
     }
 
-    deleteItem = (id) => {
+    remove = (id) => {
         this._filter(item=>{
             if(item.id === id) this.todoItems.splice(this.todoItems.indexOf(item),1);
         });
         return id;
     }
 
-    toggleItem = (id,target) => {
+    toggle = (id,target) => {
         this._filter(item=>{
             if(id == item.id) item[target] = !item[target]; 
         })
