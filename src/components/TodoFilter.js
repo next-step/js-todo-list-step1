@@ -10,6 +10,7 @@ export default function TodoFilter({ todoItems, onFilter }) {
         { type: ACTIVE, text: '해야할 일' },
         { type: COMPLETED, text: '완료한 일' },
     ];
+    let selected = ALL;
 
     this.setState = items => {
         this.todoItems = items;
@@ -18,15 +19,19 @@ export default function TodoFilter({ todoItems, onFilter }) {
 
     this.bindEvent = () => {
         $todoFilter.addEventListener('click', e => {
+            e.preventDefault();
             const $filterType = e.target.dataset.filterType;
             switch ($filterType) {
                 case ALL:
+                    selected = ALL;
                     onFilter(ALL);
                     break;
                 case ACTIVE:
+                    selected = ACTIVE;
                     onFilter(ACTIVE);
                     break;
                 case COMPLETED:
+                    selected = COMPLETED;
                     onFilter(COMPLETED);
                     break;
                 default:
@@ -39,7 +44,7 @@ export default function TodoFilter({ todoItems, onFilter }) {
         const filterList = filterTypes.map(filter => {
             return (`
             <li>
-              <a class="all ${filter.type}" data-filter-type=${filter.type} >${filter.text}</a>
+              <a class="all ${filter.type} ${selected === filter.type ? 'selected': ''}" data-filter-type=${filter.type} >${filter.text}</a>
             </li>
             `)
         }).join("");
