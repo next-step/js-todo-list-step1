@@ -8,6 +8,7 @@ export default function TodoApp() {
     this.todoItems = [];
 
     this.setState = updatedItems => {
+
         this.todoList.setState(updatedItems);
         this.todoCount.setState(updatedItems);
         this.todoFilter.setState(updatedItems);
@@ -21,6 +22,8 @@ export default function TodoApp() {
             status: updatedItems[$index].status === ACTIVE ? COMPLETED : ACTIVE,
             checked: !updatedItems[$index].checked
         };
+
+        this.todoItems = updatedItems;
         this.setState(updatedItems);
     };
 
@@ -32,24 +35,49 @@ export default function TodoApp() {
             status: ACTIVE,
             title: todoContext
         };
+
+        this.todoItems = updatedItems;
         this.setState(updatedItems);
     };
 
     // editing
-    this.onEdit = (targetId ,flag) => {
-        const $index =  this.todoItems.findIndex(item => item.id === Number(targetId));
-
+    this.onEdit = (targetId) => {
         let updatedItems = [ ...this.todoItems ];
+        const $index = this.todoItems.findIndex(item => item.id === Number(targetId));
+        if(this.todoItems[$index].status !== COMPLETED) {
+            this.todoItems.map(item => {
+                if(item.id === Number(targetId)) {
+                    updatedItems[$index] = {... updatedItems[$index],
+                        status: EDITING
+                    };
+                } else if(item.id !== Number(targetId) && item.status === EDITING) {
+                    const $bfIndex = this.todoItems.findIndex(bf => bf.id === item.id);
+                    updatedItems[$bfIndex] = {... updatedItems[$bfIndex],
+                        status: ACTIVE
+                    };
+                }
+            });
+            this.setState(updatedItems);
+            this.todoItems = updatedItems;
+        }
+    };
+
+    this.onEditOff =targetId => {
+        let updatedItems = [ ...this.todoItems ];
+        const $index = this.todoItems.findIndex(item => item.id === Number(targetId));
         updatedItems[$index] = {... updatedItems[$index],
-            status: flag === true ? EDITING : ACTIVE
+            status: ACTIVE
         };
         this.setState(updatedItems);
+        this.todoItems = updatedItems;
     };
 
     this.onDelete = targetId => {
         const $index =  this.todoItems.findIndex(item => item.id === Number(targetId));
         let updatedItems = [ ...this.todoItems ];
         if($index > -1) updatedItems.splice($index, 1);
+
+        this.todoItems = updatedItems;
         this.setState(updatedItems);
     };
 
@@ -74,7 +102,8 @@ export default function TodoApp() {
 
     this.todoList = new TodoList({
         onHandleToggle: id => this.onHandleToggle(id),
-        onEdit: (id, flag) => this.onEdit(id, flag),
+        onEdit: (id) => this.onEdit(id),
+        onEditOff: (id) => this.onEditOff(id),
         onDelete: id => this.onDelete(id),
         saveTodoItems: (targetId, todoContext) => this.saveTodoItems(targetId, todoContext)
     });

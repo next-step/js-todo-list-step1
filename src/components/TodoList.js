@@ -1,6 +1,6 @@
 import TodoItem from './TodoItem.js';
 
-export default function TodoList({onHandleToggle, onEdit, onDelete, saveTodoItems}) {
+export default function TodoList({onHandleToggle, onEdit, onEditOff, onDelete, saveTodoItems}) {
     const $todoList = document.getElementById('todo-list');
 
     this.setState = items => {
@@ -46,7 +46,7 @@ export default function TodoList({onHandleToggle, onEdit, onDelete, saveTodoItem
                     saveTodoItems($itemId, $context);
                     break;
                 case 'Escape':
-                    onEdit($itemId, false);
+                    onEditOff($itemId, false);
                     break;
                 default:
                     break;
