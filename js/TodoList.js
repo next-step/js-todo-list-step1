@@ -23,7 +23,7 @@ export function TodoList(){
         Render.todoList.toggleEditing(target);
     }
 
-    this.update = (target,key) => {
+    this.titleUpdate = (target,key) => {
         const id = Number(target.closest("li").dataset.id);
         const title = qs(`li[data-id='${id}'] label`).textContent;
         const newTitle = target.value;
@@ -31,7 +31,7 @@ export function TodoList(){
         ItemController.toggle(id,"editing");
         Render.todoList.toggleEditing(target);
 
-        if(key === 'Enter' && !!newTitle.trim() && title != newTitle){
+        if(key === 'Enter' && !!newTitle.trim() && title !== newTitle){
             ItemController.changeTitle(id,newTitle);
             Render.todoList.changeTitle(target)
         }
@@ -49,7 +49,7 @@ export function TodoList(){
         if(target.classList.contains("label")) this.toggleEditing(target);
     });
     $todoList.addEventListener("keyup", ({target,key}) => {
-        if(['Enter','Escape'].includes(key)) this.update(target,key)
+        if(['Enter','Escape'].includes(key)) this.titleUpdate(target,key)
     });
 
     document.querySelector("h1").onclick = ()=>{
