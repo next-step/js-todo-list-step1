@@ -2,7 +2,7 @@ import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
 import TodoCount from "./TodoCount.js";
 import TodoFilter from "./TodoFilter.js";
-import { ACTIVE, EDITING, COMPLETED } from "../utils/constants.js";
+import { ALL, ACTIVE, EDITING, COMPLETED } from "../utils/constants.js";
 
 export default function TodoApp() {
     this.todoItems = [];
@@ -54,7 +54,12 @@ export default function TodoApp() {
     };
 
     this.filterSelectedType = (type) => {
-        const updatedItems = this.todoItems.filter(item => item.status === type);
+        let updatedItems;
+        if(type === ALL) {
+            updatedItems = this.todoItems;
+        } else {
+            updatedItems = this.todoItems.filter(item => item.status === type);
+        }
         this.setState(updatedItems);
     };
 
