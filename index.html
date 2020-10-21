@@ -9,12 +9,14 @@
   <body>
     <div class="todoapp">
       <h1>TODOS</h1>
+     <form class="toDojs">
       <input
         id="new-todo-title"
         class="new-todo"
         placeholder="할일을 추가해주세요"
         autofocus
       />
+      </form>
       <main>
         <input class="toggle-all" type="checkbox" />
         <ul id="todo-list" class="todo-list"></ul>
@@ -22,7 +24,7 @@
           <span class="todo-count">총 <strong>0</strong> 개</span>
           <ul class="filters">
             <li>
-              <a class="all selected" href="/#">전체보기</a>
+              <a class="all" href="#all">전체보기</a>
             </li>
             <li>
               <a class="active" href="#active">해야할 일</a>
@@ -34,5 +36,6 @@
         </div>
       </main>
     </div>
+    <script src="./js/App.js" type="module"></script>
   </body>
 </html>
