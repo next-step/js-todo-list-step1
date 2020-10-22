@@ -92,10 +92,7 @@ window.onload = () => {
 	});
 
 	const all = document.querySelector(".all.selected");
-	all.onclick = () => {
-		if(list.children.length != allTodoItems.length)
-			filtersButtonSelect("all");
-	};
+	all.onclick = () => filtersButtonSelect("all");
 
 	const active = document.querySelector(".active");
 	active.onclick = () => filtersButtonSelect("active");
