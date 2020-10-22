@@ -3,7 +3,7 @@ window.onload = () => {
 	const countBox = document.querySelector(".todo-count");
 	let pushCheck = true;
 	let count = 0;
-	let todoItems = [];
+	let allTodoItems = [];
 	let selectedTodoItems = [];
 
 	Object.prototype.siblings = function(select) {
@@ -47,10 +47,10 @@ window.onload = () => {
 		destoryButton.addEventListener("click", function(e) {
 			list.removeChild(this.parentNode.parentNode);
 
-			todoItems.indexOf(this.parentNode.parentNode);
+			allTodoItems.indexOf(this.parentNode.parentNode);
 
-			let idx = todoItems.indexOf(this.parentNode.parentNode);
-			todoItems.splice(idx, 1);
+			let idx = allTodoItems.indexOf(this.parentNode.parentNode);
+			allTodoItems.splice(idx, 1);
 
 			count--;
 			loadTodoItemCount();
@@ -75,8 +75,8 @@ window.onload = () => {
 		view.append(checkBox, label, destoryButton);
 		box.append(view, editInput);
 
-		todoItems.push(box);
-		loadTodoList(todoItems);
+		allTodoItems.push(box);
+		loadTodoList(allTodoItems);
 	};
 
 	const input = document.querySelector("#new-todo-title");
@@ -93,7 +93,7 @@ window.onload = () => {
 
 	const all = document.querySelector(".all.selected");
 	all.onclick = () => {
-		if(list.children.length != todoItems.length)
+		if(list.children.length != allTodoItems.length)
 			filtersButtonSelect("all");
 	};
 
@@ -109,7 +109,7 @@ window.onload = () => {
 		arr.forEach(item => {
 			list.append(item);
 		});
-	})(todoItems);
+	})(allTodoItems);
 
 	(loadTodoItemCount = function() {
 		countBox.children[0].innerHTML = count;
@@ -126,7 +126,7 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				selectedTodoItems = todoItems;
+				selectedTodoItems = allTodoItems;
 				loadTodoList(selectedTodoItems);
 
 				countBox.children[0].innerHTML = count;
@@ -141,7 +141,7 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				[...todoItems].forEach(item => {
+				[...allTodoItems].forEach(item => {
 					if(!item.children[0].children[0].checked)
 						selectedTodoItems.push(item);
 				});
@@ -161,7 +161,7 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				[...todoItems].forEach(item => {
+				[...allTodoItems].forEach(item => {
 					if(item.children[0].children[0].checked)
 						selectedTodoItems.push(item);
 				});
