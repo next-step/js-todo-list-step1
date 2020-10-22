@@ -38,11 +38,9 @@ window.onload = () => {
 			editInput.select();
 		});
 		checkBox.addEventListener("change", function(e) {
-			if(this.checked) {
-				box.classList.add("completed");
-			}else {
-				box.classList.remove("completed");
-			};
+			if(this.checked) box.classList.add("completed");
+			
+			box.classList.remove("completed");
 		});
 		destoryButton.addEventListener("click", function(e) {
 			list.removeChild(this.parentNode.parentNode);
@@ -81,14 +79,11 @@ window.onload = () => {
 
 	const input = document.querySelector("#new-todo-title");
 	input.addEventListener("keyup", function(e) {
-		if(e.key === "Enter") {
-			if(this.value == "") alert("공백은 추가할 수 없습니다");
-			else {
-				makeTodoItem(this.value);
+		if(e.key !== "Enter") return;
+		if(this.value == "") alert("공백은 추가할 수 없습니다");
 
-				this.value = "";
-			};
-		};
+		makeTodoItem(this.value);
+		this.value = "";
 	});
 
 	const all = document.querySelector(".all.selected");
