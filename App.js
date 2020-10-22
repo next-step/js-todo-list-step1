@@ -6,7 +6,8 @@ function App() {
     throw new Error("error: App must be called with new!");
   }
 
-  this.todos = [];
+  // this.todos = [];
+  this.todos = [{ content: "이별하기", isCompleted: false }];
 
   const onAdd = (todo) => {
     const originTodos = this.todos;
@@ -33,7 +34,19 @@ function App() {
     const newTodos = originTodos.filter(
       (todo, index) => index !== parseInt(idx)
     );
-    console.log(newTodos);
+    this.setState(newTodos);
+  };
+
+  const onChange = ({ idx, content }) => {
+    const originTodos = this.todos;
+    const newTodos = originTodos.map((todo, index) => {
+      if (index === parseInt(idx)) {
+        return {
+          ...todo,
+          content: content,
+        };
+      }
+    });
     this.setState(newTodos);
   };
 
@@ -52,7 +65,7 @@ function App() {
     try {
       this.todoInput = new TodoInput(this.$input, { onAction: { add: onAdd } });
       this.todoList = new TodoList(this.$list, this.todos, {
-        onAction: { toggle: onToggle, remove: onRemove },
+        onAction: { toggle: onToggle, remove: onRemove, change: onChange },
       });
     } catch (e) {
       console.log(error);
