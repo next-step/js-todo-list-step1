@@ -28,6 +28,15 @@ function App() {
     this.setState(newTodos);
   };
 
+  const onRemove = (idx) => {
+    const originTodos = this.todos;
+    const newTodos = originTodos.filter(
+      (todo, index) => index !== parseInt(idx)
+    );
+    console.log(newTodos);
+    this.setState(newTodos);
+  };
+
   this.setState = (newData) => {
     this.todos = newData;
     this.render();
@@ -43,7 +52,7 @@ function App() {
     try {
       this.todoInput = new TodoInput(this.$input, { onAction: { add: onAdd } });
       this.todoList = new TodoList(this.$list, this.todos, {
-        onAction: { toggle: onToggle },
+        onAction: { toggle: onToggle, remove: onRemove },
       });
     } catch (e) {
       console.log(error);

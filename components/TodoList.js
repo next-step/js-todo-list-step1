@@ -13,7 +13,10 @@ function TodoList(element, todos, { onAction }) {
   };
 
   this.render = () => {
-    if (!this.todos.length) return;
+    if (!this.todos.length) {
+      this.$list.innerHTML = "";
+      return;
+    }
 
     const htmlString = this.todos
       .map((todo, idx) => {
@@ -50,6 +53,12 @@ function TodoList(element, todos, { onAction }) {
         dataset: { idx },
       } = e.target.parentNode.parentNode;
       this.onAction.toggle(idx);
+    }
+    if (className === "destroy" && type === "submit") {
+      const {
+        dataset: { idx },
+      } = e.target.parentNode.parentNode;
+      this.onAction.remove(idx);
     }
   });
 }
