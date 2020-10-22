@@ -56,13 +56,8 @@ window.onload = () => {
 			loadTodoItemCount();
 		});
 		editInput.addEventListener("keyup", function(e) {
-			if(e.key == "Enter") {
-				label.innerHTML = this.value;
-
-				this.value = "";
-
-				box.classList.remove("editing");
-			}else if(e.key == "Escape") {
+			if(e.key === "Enter") label.innerHTML = this.value;
+			if(e.key === "Enter" || e.key === "Escape") {
 				this.value = "";
 
 				box.classList.remove("editing");
@@ -81,7 +76,7 @@ window.onload = () => {
 
 	const input = document.querySelector("#new-todo-title");
 	input.addEventListener("keyup", function(e) {
-		if(e.key == "Enter") {
+		if(e.key === "Enter") {
 			if(this.value == "") alert("공백은 추가할 수 없습니다");
 			else {
 				makeTodoItem(this.value);
