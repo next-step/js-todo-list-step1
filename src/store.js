@@ -7,7 +7,7 @@ const getKey = () => Date.now();
 const makeTodo = (text) => ({
   key: getKey(),
   text,
-  isComplete: false,
+  status: "none",
 });
 
 const updateTodo = (todo) => {
@@ -32,11 +32,11 @@ export const setTodoHandler = (type, handler) => {
   handlers[type] = handler;
 };
 
-export const setTodoStatus = (key, isComplete) => {
+export const setTodoStatus = (key, status) => {
   const todo = data[key];
   if (!todo) {
     return;
   }
-  data = R.assocPath([key, "isComplete"], !todo.isComplete)(data);
+  data = R.assocPath([key, "status"], status)(data);
   processHandler("refresh", data);
 };
