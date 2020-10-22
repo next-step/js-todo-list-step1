@@ -1,7 +1,7 @@
 import { makeElement } from "./utils.js";
 import { setTodoStatus } from "./store.js";
 
-const makeCheckBox = () => {
+const makeCheckBox = (key) => {
   const checkBox = makeElement("input", {
     className: "toggle",
     type: "checkbox",
@@ -12,9 +12,9 @@ const makeCheckBox = () => {
   return checkBox;
 };
 
-const makeContent = () => {
+const makeContent = (key) => {
   const contents = makeElement("div", { className: "view" });
-  const checkBox = makeCheckBox();
+  const checkBox = makeCheckBox(key);
   const label = makeElement("label", { className: "label" });
   const removeButton = makeElement("button", { className: "destroy" });
 
@@ -25,9 +25,9 @@ const makeContent = () => {
   return { contents, checkBox, label, removeButton };
 };
 
-const makeTemplateInfo = () => {
+const makeTemplateInfo = (key) => {
   const todo = makeElement("li");
-  const { contents, checkBox, label, removeButton } = makeContent();
+  const { contents, checkBox, label, removeButton } = makeContent(key);
   const edit = makeElement("input", { className: "edit" });
 
   todo.appendChild(contents);
@@ -47,7 +47,7 @@ const updateNode = (data) => {
 
 export const makeTodo = (data) => {
   if (!data.node) {
-    data.node = makeTemplateInfo();
+    data.node = makeTemplateInfo(data.key);
   }
   updateNode(data);
   return data.node.todo;
