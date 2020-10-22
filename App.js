@@ -46,6 +46,7 @@ function App() {
           content: content,
         };
       }
+      return todo;
     });
     this.setState(newTodos);
   };
