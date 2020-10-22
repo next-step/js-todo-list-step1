@@ -3,8 +3,8 @@ window.onload = () => {
 	const countBox = document.querySelector(".todo-count");
 	let pushCheck = true;
 	let count = 0;
-	let allArr = [];
-	let selectArr = [];
+	let todoItems = [];
+	let selectedTodoItems = [];
 
 	Object.prototype.siblings = function(select) {
 		return this.filter(v => v != select);
@@ -47,10 +47,10 @@ window.onload = () => {
 		destoryButton.addEventListener("click", function(e) {
 			list.removeChild(this.parentNode.parentNode);
 
-			allArr.indexOf(this.parentNode.parentNode);
+			todoItems.indexOf(this.parentNode.parentNode);
 
-			let idx = allArr.indexOf(this.parentNode.parentNode);
-			allArr.splice(idx, 1);
+			let idx = todoItems.indexOf(this.parentNode.parentNode);
+			todoItems.splice(idx, 1);
 
 			count--;
 			loadTodoItemCount();
@@ -75,8 +75,8 @@ window.onload = () => {
 		view.append(checkBox, label, destoryButton);
 		box.append(view, editInput);
 
-		allArr.push(box);
-		loadTodoList(allArr);
+		todoItems.push(box);
+		loadTodoList(todoItems);
 	};
 
 	const input = document.querySelector("#new-todo-title");
@@ -93,7 +93,7 @@ window.onload = () => {
 
 	const all = document.querySelector(".all.selected");
 	all.onclick = () => {
-		if(list.children.length != allArr.length)
+		if(list.children.length != todoItems.length)
 			filtersButtonSelect("all");
 	};
 
@@ -109,7 +109,7 @@ window.onload = () => {
 		arr.forEach(item => {
 			list.append(item);
 		});
-	})(allArr);
+	})(todoItems);
 
 	(loadTodoItemCount = function() {
 		countBox.children[0].innerHTML = count;
@@ -117,7 +117,7 @@ window.onload = () => {
 
 	function filtersButtonSelect(kind) {
 		const filters = [all, active, completed];
-		selectArr = [];
+		selectedTodoItems = [];
 
 		switch(kind) {
 			case "all" : {
@@ -126,8 +126,8 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				selectArr = allArr;
-				loadTodoList(selectArr);
+				selectedTodoItems = todoItems;
+				loadTodoList(selectedTodoItems);
 
 				countBox.children[0].innerHTML = count;
 
@@ -141,13 +141,13 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				[...allArr].forEach(item => {
+				[...todoItems].forEach(item => {
 					if(!item.children[0].children[0].checked)
-						selectArr.push(item);
+						selectedTodoItems.push(item);
 				});
 
-				activeCount = selectArr.length;
-				loadTodoList(selectArr);
+				activeCount = selectedTodoItems.length;
+				loadTodoList(selectedTodoItems);
 
 				countBox.children[0].innerHTML = activeCount;
 
@@ -161,13 +161,13 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				[...allArr].forEach(item => {
+				[...todoItems].forEach(item => {
 					if(item.children[0].children[0].checked)
-						selectArr.push(item);
+						selectedTodoItems.push(item);
 				});
 
-				completedCount = selectArr.length;
-				loadTodoList(selectArr);
+				completedCount = selectedTodoItems.length;
+				loadTodoList(selectedTodoItems);
 
 				countBox.children[0].innerHTML = completedCount;
 
