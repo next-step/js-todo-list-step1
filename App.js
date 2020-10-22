@@ -1,5 +1,6 @@
 import TodoInput from "./components/TodoInput.js";
 import TodoList from "./components/TodoList.js";
+import TodoCount from "./components/TodoCount.js";
 
 function App() {
   if (!(this instanceof App)) {
@@ -58,16 +59,19 @@ function App() {
 
   this.render = () => {
     this.todoList.setState(this.todos);
+    this.todoCount.setState(this.todos);
   };
 
   this.init = () => {
-    this.$input = document.getElementById("new-todo-title");
-    this.$list = document.getElementById("todo-list");
+    this.$input = document.querySelector("#new-todo-title");
+    this.$list = document.querySelector("#todo-list");
+    this.$count = document.querySelector(".todo-count strong");
     try {
       this.todoInput = new TodoInput(this.$input, { onAction: { add: onAdd } });
       this.todoList = new TodoList(this.$list, this.todos, {
         onAction: { toggle: onToggle, remove: onRemove, change: onChange },
       });
+      this.todoCount = new TodoCount(this.$count, this.todos);
     } catch (e) {
       console.log(error);
     }
