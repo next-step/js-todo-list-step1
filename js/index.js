@@ -33,14 +33,12 @@ window.onload = () => {
 		label.innerHTML = val;
 
 		box.addEventListener("dblclick", function(e) {
-			this.classList.add("editing");
+			this.classList.toggle("editing");
 
 			editInput.select();
 		});
 		checkBox.addEventListener("change", function(e) {
-			if(this.checked) box.classList.add("completed");
-			
-			box.classList.remove("completed");
+			box.classList.toggle("completed");
 		});
 		destoryButton.addEventListener("click", function(e) {
 			list.removeChild(this.parentNode.parentNode);
