@@ -1,10 +1,10 @@
 window.onload = () => {
 	const list = document.querySelector("#todo-list");
-	const count_box = document.querySelector(".todo-count");
-	let push_check = true;
+	const countBox = document.querySelector(".todo-count");
+	let pushCheck = true;
 	let count = 0;
-	let all_arr = [];
-	let select_arr = [];
+	let allArr = [];
+	let selectArr = [];
 
 	Object.prototype.siblings = function(select) {
 		console.log(this.filter(v => v != select));
@@ -16,29 +16,29 @@ window.onload = () => {
 		}
 	};
 
-	function make_todo(val) {
+	function makeTodoItem(val) {
 		const box = document.createElement("li");
 		const view = document.createElement("div");
-		const check_input = document.createElement("input");
+		const checkInput = document.createElement("input");
 		const label = document.createElement("label");
 		const button = document.createElement("button");
-		const edit_input = document.createElement("input");
+		const EditInput = document.createElement("input");
 
 		view.setAttribute("class", "view");
-		check_input.setAttribute("class", "toggle");
-		check_input.setAttribute("type", "checkbox");
+		checkInput.setAttribute("class", "toggle");
+		checkInput.setAttribute("type", "checkbox");
 		label.setAttribute("class", "label");
 		button.setAttribute("class", "destroy");
-		edit_input.setAttribute("class", "edit");
+		EditInput.setAttribute("class", "edit");
 
 		label.innerHTML = val;
 
 		box.addEventListener("dblclick", function(e) {
 			this.classList.add("editing");
 
-			edit_input.select();
+			EditInput.select();
 		});
-		check_input.addEventListener("change", function(e) {
+		checkInput.addEventListener("change", function(e) {
 			if(this.checked) {
 				box.classList.add("completed");
 			}else {
@@ -48,15 +48,15 @@ window.onload = () => {
 		button.addEventListener("click", function(e) {
 			list.removeChild(this.parentNode.parentNode);
 
-			all_arr.indexOf(this.parentNode.parentNode);
+			allArr.indexOf(this.parentNode.parentNode);
 
-			let idx = all_arr.indexOf(this.parentNode.parentNode);
-			all_arr.splice(idx, 1);
+			let idx = allArr.indexOf(this.parentNode.parentNode);
+			allArr.splice(idx, 1);
 
 			count--;
-			count_load();
+			CountLoad();
 		});
-		edit_input.addEventListener("keyup", function(e) {
+		EditInput.addEventListener("keyup", function(e) {
 			if(e.keyCode == 13) {
 				label.innerHTML = this.value;
 
@@ -71,13 +71,13 @@ window.onload = () => {
 		});
 
 		count++;
-		count_box.children[0].innerHTML = count;
+		countBox.children[0].innerHTML = count;
 
-		view.append(check_input, label, button);
-		box.append(view, edit_input);
+		view.append(checkInput, label, button);
+		box.append(view, EditInput);
 
-		all_arr.push(box);
-		list_load(all_arr);
+		allArr.push(box);
+		ListLoad(allArr);
 	};
 
 	const input = document.querySelector("#new-todo-title");
@@ -85,7 +85,7 @@ window.onload = () => {
 		if(e.keyCode == 13) {
 			if(this.value == "") alert("공백은 추가할 수 없습니다");
 			else {
-				make_todo(this.value);
+				makeTodoItem(this.value);
 
 				this.value = "";
 			};
@@ -94,9 +94,9 @@ window.onload = () => {
 
 	const all = document.querySelector(".all.selected");
 	all.onclick = () => {
-		if(list.children.length == all_arr.length) push_check = false;
+		if(list.children.length == allArr.length) pushCheck = false;
 		else {
-			push_check = true;
+			pushCheck = true;
 
 			select("all");
 		};
@@ -104,33 +104,33 @@ window.onload = () => {
 
 	const active = document.querySelector(".active");
 	active.onclick = () => {
-		push_check = false;
+		pushCheck = false;
 
 		select("active");
 	};
 
 	const completed = document.querySelector(".completed");
 	completed.onclick = () => {
-		push_check = false;
+		pushCheck = false;
 
 		select("completed");
 	};
 
-	(list_load = function(arr) {
+	(ListLoad = function(arr) {
 		list.innerHTML = "";
 
 		arr.forEach(item => {
 			list.append(item);
 		});
-	})(all_arr);
+	})(allArr);
 
-	(count_load = function() {
-		count_box.children[0].innerHTML = count;
+	(CountLoad = function() {
+		countBox.children[0].innerHTML = count;
 	})();
 
 	function select(kind) {
 		const filters = [all, active, completed];
-		select_arr = [];
+		selectArr = [];
 
 		switch(kind) {
 			case "all" : {
@@ -139,50 +139,50 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				select_arr = all_arr;
-				list_load(select_arr);
+				selectArr = allArr;
+				ListLoad(selectArr);
 
-				count_box.children[0].innerHTML = count;
+				countBox.children[0].innerHTML = count;
 
 				break;
 			};
 			case "active" : {
-				let active_count = 0;
+				let activeCount = 0;
 
 				filters[1].classList.add("selected");
 				filters.siblings(filters[1]).forEach(item => {
 					item.classList.remove("selected");
 				});
 
-				[...all_arr].forEach(item => {
+				[...allArr].forEach(item => {
 					if(!item.children[0].children[0].checked)
-						select_arr.push(item);
+						selectArr.push(item);
 				});
 
-				active_count = select_arr.length;
-				list_load(select_arr);
+				activeCount = selectArr.length;
+				ListLoad(selectArr);
 
-				count_box.children[0].innerHTML = active_count;
+				countBox.children[0].innerHTML = activeCount;
 
 				break;
 			};
 			case "completed" : {
-				let completed_count = 0;
+				let completedCount = 0;
 
 				filters[2].classList.add("selected");
 				filters.siblings(filters[2]).forEach(item => {
 					item.classList.remove("selected");
 				});
 
-				[...all_arr].forEach(item => {
+				[...allArr].forEach(item => {
 					if(item.children[0].children[0].checked)
-						select_arr.push(item);
+						selectArr.push(item);
 				});
 
-				completed_count = select_arr.length;
-				list_load(select_arr);
+				completedCount = selectArr.length;
+				ListLoad(selectArr);
 
-				count_box.children[0].innerHTML = completed_count;
+				countBox.children[0].innerHTML = completedCount;
 
 				break;
 			};
