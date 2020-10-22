@@ -63,6 +63,11 @@ window.onload = () => {
 				box.classList.remove("editing");
 			};
 		});
+		editInput.addEventListener("focusout", function(e) {
+			this.value = "";
+
+			box.classList.remove("editing");
+		});
 
 		count++;
 		countBox.children[0].innerHTML = count;
@@ -88,27 +93,15 @@ window.onload = () => {
 
 	const all = document.querySelector(".all.selected");
 	all.onclick = () => {
-		if(list.children.length == allArr.length) pushCheck = false;
-		else {
-			pushCheck = true;
-
+		if(list.children.length != allArr.length)
 			filtersButtonSelect("all");
-		};
 	};
 
 	const active = document.querySelector(".active");
-	active.onclick = () => {
-		pushCheck = false;
-
-		filtersButtonSelect("active");
-	};
+	active.onclick = () => filtersButtonSelect("active");
 
 	const completed = document.querySelector(".completed");
-	completed.onclick = () => {
-		pushCheck = false;
-
-		filtersButtonSelect("completed");
-	};
+	completed.onclick = () => filtersButtonSelect("completed");
 
 	(loadTodoList = function(arr) {
 		list.innerHTML = "";
