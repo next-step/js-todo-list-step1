@@ -20,22 +20,22 @@ window.onload = () => {
 		const view = document.createElement("div");
 		const checkBox = document.createElement("input");
 		const label = document.createElement("label");
-		const DestoryButton = document.createElement("button");
-		const EditInput = document.createElement("input");
+		const destoryButton = document.createElement("button");
+		const editInput = document.createElement("input");
 
 		view.setAttribute("class", "view");
 		checkBox.setAttribute("class", "toggle");
 		checkBox.setAttribute("type", "checkbox");
 		label.setAttribute("class", "label");
-		DestoryButton.setAttribute("class", "destroy");
-		EditInput.setAttribute("class", "edit");
+		destoryButton.setAttribute("class", "destroy");
+		editInput.setAttribute("class", "edit");
 
 		label.innerHTML = val;
 
 		box.addEventListener("dblclick", function(e) {
 			this.classList.add("editing");
 
-			EditInput.select();
+			editInput.select();
 		});
 		checkBox.addEventListener("change", function(e) {
 			if(this.checked) {
@@ -44,7 +44,7 @@ window.onload = () => {
 				box.classList.remove("completed");
 			};
 		});
-		DestoryButton.addEventListener("click", function(e) {
+		destoryButton.addEventListener("click", function(e) {
 			list.removeChild(this.parentNode.parentNode);
 
 			allArr.indexOf(this.parentNode.parentNode);
@@ -53,9 +53,9 @@ window.onload = () => {
 			allArr.splice(idx, 1);
 
 			count--;
-			CountLoad();
+			loadTodoItemCount();
 		});
-		EditInput.addEventListener("keyup", function(e) {
+		editInput.addEventListener("keyup", function(e) {
 			if(e.key == "Enter") {
 				label.innerHTML = this.value;
 
@@ -72,11 +72,11 @@ window.onload = () => {
 		count++;
 		countBox.children[0].innerHTML = count;
 
-		view.append(checkBox, label, DestoryButton);
-		box.append(view, EditInput);
+		view.append(checkBox, label, destoryButton);
+		box.append(view, editInput);
 
 		allArr.push(box);
-		ListLoad(allArr);
+		loadTodoList(allArr);
 	};
 
 	const input = document.querySelector("#new-todo-title");
@@ -115,7 +115,7 @@ window.onload = () => {
 		select("completed");
 	};
 
-	(ListLoad = function(arr) {
+	(loadTodoList = function(arr) {
 		list.innerHTML = "";
 
 		arr.forEach(item => {
@@ -123,7 +123,7 @@ window.onload = () => {
 		});
 	})(allArr);
 
-	(CountLoad = function() {
+	(loadTodoItemCount = function() {
 		countBox.children[0].innerHTML = count;
 	})();
 
@@ -139,7 +139,7 @@ window.onload = () => {
 				});
 
 				selectArr = allArr;
-				ListLoad(selectArr);
+				loadTodoList(selectArr);
 
 				countBox.children[0].innerHTML = count;
 
@@ -159,7 +159,7 @@ window.onload = () => {
 				});
 
 				activeCount = selectArr.length;
-				ListLoad(selectArr);
+				loadTodoList(selectArr);
 
 				countBox.children[0].innerHTML = activeCount;
 
@@ -179,7 +179,7 @@ window.onload = () => {
 				});
 
 				completedCount = selectArr.length;
-				ListLoad(selectArr);
+				loadTodoList(selectArr);
 
 				countBox.children[0].innerHTML = completedCount;
 
