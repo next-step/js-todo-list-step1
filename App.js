@@ -1,4 +1,5 @@
 import TodoInput from "./components/TodoInput.js";
+import TodoList from "./components/TodoList.js";
 
 function App() {
   if (!(this instanceof App)) {
@@ -15,16 +16,24 @@ function App() {
 
   this.setState = (newData) => {
     this.todos = newData;
+    this.render();
+  };
+
+  this.render = () => {
+    this.todoList.setState(this.todos);
   };
 
   this.init = () => {
     this.$input = document.getElementById("new-todo-title");
+    this.$list = document.getElementById("todo-list");
     try {
       this.todoInput = new TodoInput(this.$input, { onAdd: onAdd });
+      this.todoList = new TodoList(this.$list, this.todos);
     } catch (e) {
       console.log(error);
     }
   };
+
   this.init();
 }
 
