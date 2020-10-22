@@ -15,33 +15,37 @@ export default store => {
 
   const list = document.getElementById("todo-list");
 
-  TodoInput(insertTodoItem);
-
-  const onClick = e => {
+  const onClick = ({ target }) => {
     const {
       dataset: { index }
-    } = e.target.parentElement;
+    } = target.parentElement;
 
     const id = parseInt(index, 10);
 
-    if (e.target.className === "destroy") {
-      removeTodoItem(parseInt(index, 10));
-      return;
-    }
-    if (e.target.className === "toggle") {
-      toggleTodoItem(id);
+    switch (target.className) {
+      case "destroy": {
+        removeTodoItem(parseInt(index, 10));
+        break;
+      }
+      case "toggle": {
+        toggleTodoItem(id);
+        break;
+      }
+      default:
+        return;
     }
   };
 
   const setCount = state => {
-    const { todo } = state;
+    const { todos } = state;
 
     const todoCount = document.querySelector(".todo-count");
     const count = todoCount.querySelector("strong");
 
-    count.innerHTML = todo.length;
+    count.innerHTML = todos.length;
   };
 
+  TodoInput(insertTodoItem);
   list.addEventListener("click", onClick);
 
   store.subscribe(() => {

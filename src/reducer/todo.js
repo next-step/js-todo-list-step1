@@ -16,12 +16,12 @@ export const updateTodo = (id, text) => ({
 
 let key = 1;
 
-const todoReducer = (state = { todo: [] }, { type, payload }) => {
+const todoReducer = (state = { todos: [] }, { type, payload }) => {
   switch (type) {
     case TODO_INSERT:
       return {
         ...state,
-        todo: state.todo.concat({
+        todos: state.todos.concat({
           id: key++,
           text: payload.text,
           completed: false
@@ -30,19 +30,19 @@ const todoReducer = (state = { todo: [] }, { type, payload }) => {
     case TODO_DELETE:
       return {
         ...state,
-        todo: state.todo.filter(t => t.id !== payload.id)
+        todos: state.todos.filter(t => t.id !== payload.id)
       };
     case TODO_TOGGLE:
       return {
         ...state,
-        todo: state.todo.map(t =>
+        todos: state.todos.map(t =>
           t.id === payload.id ? { ...t, completed: !t.completed } : t
         )
       };
     case TODO_UPDATE:
       return {
         ...state,
-        todo: state.todo.map(t =>
+        todos: state.todos.map(t =>
           t.id === payload.id ? { ...t, text: payload.text } : t
         )
       };

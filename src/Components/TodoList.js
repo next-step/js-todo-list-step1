@@ -42,10 +42,8 @@ const createListItem = ({ id, text, completed }) => {
   return toDo;
 };
 
-export default ({ todo: todoList }) => {
+export default ({ todos }) => {
   const list = document.getElementById("todo-list");
 
-  list.innerHTML = todoList
-    .map(todo => createListItem(todo).outerHTML)
-    .join("");
+  list.innerHTML = todos.map(todo => createListItem(todo).outerHTML).join("");
 };
