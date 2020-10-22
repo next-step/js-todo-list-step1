@@ -1,9 +1,9 @@
 window.onload = () => {
 	const list = document.querySelector("#todo-list");
 	const countBox = document.querySelector(".todo-count");
+	const allTodoItems = [];
 	let pushCheck = true;
 	let count = 0;
-	let allTodoItems = [];
 	let selectedTodoItems = [];
 
 	Object.prototype.siblings = function(select) {
@@ -138,7 +138,7 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				[...allTodoItems].forEach(item => {
+				allTodoItems.forEach(item => {
 					if(!item.children[0].children[0].checked)
 						selectedTodoItems.push(item);
 				});
@@ -158,7 +158,7 @@ window.onload = () => {
 					item.classList.remove("selected");
 				});
 
-				[...allTodoItems].forEach(item => {
+				allTodoItems.forEach(item => {
 					if(item.children[0].children[0].checked)
 						selectedTodoItems.push(item);
 				});
