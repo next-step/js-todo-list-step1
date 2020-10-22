@@ -7,7 +7,6 @@ window.onload = () => {
 	let selectArr = [];
 
 	Object.prototype.siblings = function(select) {
-		console.log(this.filter(v => v != select));
 		return this.filter(v => v != select);
 	};
 	Object.prototype.forEach = function(callback) {
@@ -19,16 +18,16 @@ window.onload = () => {
 	function makeTodoItem(val) {
 		const box = document.createElement("li");
 		const view = document.createElement("div");
-		const checkInput = document.createElement("input");
+		const checkBox = document.createElement("input");
 		const label = document.createElement("label");
-		const button = document.createElement("button");
+		const DestoryButton = document.createElement("button");
 		const EditInput = document.createElement("input");
 
 		view.setAttribute("class", "view");
-		checkInput.setAttribute("class", "toggle");
-		checkInput.setAttribute("type", "checkbox");
+		checkBox.setAttribute("class", "toggle");
+		checkBox.setAttribute("type", "checkbox");
 		label.setAttribute("class", "label");
-		button.setAttribute("class", "destroy");
+		DestoryButton.setAttribute("class", "destroy");
 		EditInput.setAttribute("class", "edit");
 
 		label.innerHTML = val;
@@ -38,14 +37,14 @@ window.onload = () => {
 
 			EditInput.select();
 		});
-		checkInput.addEventListener("change", function(e) {
+		checkBox.addEventListener("change", function(e) {
 			if(this.checked) {
 				box.classList.add("completed");
 			}else {
 				box.classList.remove("completed");
 			};
 		});
-		button.addEventListener("click", function(e) {
+		DestoryButton.addEventListener("click", function(e) {
 			list.removeChild(this.parentNode.parentNode);
 
 			allArr.indexOf(this.parentNode.parentNode);
@@ -73,7 +72,7 @@ window.onload = () => {
 		count++;
 		countBox.children[0].innerHTML = count;
 
-		view.append(checkInput, label, button);
+		view.append(checkBox, label, DestoryButton);
 		box.append(view, EditInput);
 
 		allArr.push(box);
