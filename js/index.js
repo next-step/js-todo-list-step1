@@ -92,7 +92,7 @@ window.onload = () => {
 		else {
 			pushCheck = true;
 
-			select("all");
+			filtersButtonSelect("all");
 		};
 	};
 
@@ -100,14 +100,14 @@ window.onload = () => {
 	active.onclick = () => {
 		pushCheck = false;
 
-		select("active");
+		filtersButtonSelect("active");
 	};
 
 	const completed = document.querySelector(".completed");
 	completed.onclick = () => {
 		pushCheck = false;
 
-		select("completed");
+		filtersButtonSelect("completed");
 	};
 
 	(loadTodoList = function(arr) {
@@ -122,7 +122,7 @@ window.onload = () => {
 		countBox.children[0].innerHTML = count;
 	})();
 
-	function select(kind) {
+	function filtersButtonSelect(kind) {
 		const filters = [all, active, completed];
 		selectArr = [];
 
