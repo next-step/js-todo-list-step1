@@ -1,5 +1,5 @@
 import { makeElement } from "./utils.js";
-import { setTodoStatus } from "./store.js";
+import { setTodoStatus, removeTodo } from "./store.js";
 
 const makeCheckBox = (key) => {
   const checkBox = makeElement("input", {
@@ -12,17 +12,23 @@ const makeCheckBox = (key) => {
   return checkBox;
 };
 
+const makeDeleteButton = (key) => {
+  const button = makeElement("button", { className: "destroy" });
+  button.addEventListener("click", (e) => removeTodo(key));
+  return button;
+};
+
 const makeContent = (key) => {
   const contents = makeElement("div", { className: "view" });
   const checkBox = makeCheckBox(key);
   const label = makeElement("label", { className: "label" });
-  const removeButton = makeElement("button", { className: "destroy" });
+  const deleteButton = makeDeleteButton(key);
 
   contents.appendChild(checkBox);
   contents.appendChild(label);
-  contents.appendChild(removeButton);
+  contents.appendChild(deleteButton);
 
-  return { contents, checkBox, label, removeButton };
+  return { contents, checkBox, label, deleteButton };
 };
 
 const makeTemplateInfo = (key) => {

@@ -22,10 +22,12 @@ const processHandler = (type, info) => {
   handler && handler(info);
 };
 
+const refresh = () => processHandler("refresh", data);
+
 export const addTodo = (text) => {
   const todo = makeTodo(text);
   updateTodo(todo);
-  processHandler("refresh", data);
+  refresh();
 };
 
 export const setTodoHandler = (type, handler) => {
@@ -38,5 +40,10 @@ export const setTodoStatus = (key, status) => {
     return;
   }
   data = R.assocPath([key, "status"], status)(data);
-  processHandler("refresh", data);
+  refresh();
+};
+
+export const removeTodo = (key) => {
+  data = R.omit([key])(data);
+  refresh();
 };
