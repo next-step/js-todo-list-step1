@@ -1,3 +1,6 @@
+//하나의 파일로 만든 index.js원본
+//app.js 연결하여 모듈화하여 컴포넌트 변경작업
+
 //document query selectors
 const input = document.querySelector(".new-todo");
 const ul = document.querySelector(".todo-list");
@@ -23,7 +26,6 @@ function addTodos(item) {
     content: item,
     isCompleted: false,
   });
-  console.log(todoList);
   totalNum.innerText = todoList.length;
   render(todoList);
 }
