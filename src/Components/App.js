@@ -17,26 +17,47 @@ export default store => {
 
   TodoInput(insertTodoItem);
 
-  /*
-  TODO 변경 예정
-  newTodos, prevTodos 비교하기
-  1. length 가 달라질 경우 추가 새 todo만 보내기
-  2. isRemove, isCompleted 와 그 외의 값이 바뀔 경우 해당 todo만 보내기
-
-  받는쪽
-  해당 id값 조회
-  1.해당 데이터에 추가 신호가 올 경우 or 해당 index 의 데이터가 없을 경우 appendChild
-  2.isRemove true 일 경우 removeChild
-  3.isCompleted 값을 전달
-  4.text 가 바뀌었을 경우 label 에 값 전달
-
-  initTodo
-  현재 todos 의 값이 없을 경우 localStorage 에서 값을 불러와 initTodo 로 한번에 그려줌.
-  */
-
-  store.subscribe(type => {
+  const todoSubscribe = type => {
     const { todos } = store.getState();
 
-    TodoList({ todos, removeTodoItem, toggleTodoItem, updateTodoItem });
-  });
+    if (!todos) {
+      return;
+    }
+
+    let newTodo;
+
+    if (location.hash === "#active") {
+      newTodo = todos.filter(todo => !todo.completed);
+    } else if (location.hash === "#completed") {
+      newTodo = todos.filter(todo => todo.completed);
+    } else {
+      newTodo = todos;
+    }
+
+    TodoList({
+      todos: newTodo,
+      removeTodoItem,
+      toggleTodoItem,
+      updateTodoItem
+    });
+  };
+
+  const hashChange = e => {
+    const filter = document.querySelector(".filters");
+    const tabs = filter.querySelectorAll("a");
+
+    const selected = location.hash.split("#")[1] || "all";
+
+    const selectedTab = filter.getElementsByClassName(selected);
+
+    tabs.forEach(tab => tab.classList.remove("selected"));
+
+    selectedTab[0].classList.add("selected");
+
+    todoSubscribe("HASH_CHANGE");
+  };
+
+  window.addEventListener("hashchange", hashChange);
+
+  store.subscribe(todoSubscribe);
 };
