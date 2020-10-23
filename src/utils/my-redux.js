@@ -3,16 +3,16 @@ export function createStore(reducer) {
 
   const listeners = [];
 
-  const publish = type => {
+  const publish = () => {
     listeners.forEach(({ subscriber }) => {
-      subscriber(type);
+      subscriber();
     });
   };
 
   const dispatch = action => {
     state = reducer(state, action);
 
-    publish(action.type);
+    publish();
   };
 
   const subscribe = subscriber => {

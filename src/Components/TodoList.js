@@ -7,42 +7,16 @@ const setListCount = todos => {
   count.innerHTML = todos.length;
 };
 
-const targetEvent = (target, func) => {
-  const {
-    dataset: { index }
-  } = target.parentElement;
-
-  const targetId = parseInt(index, 10);
-
-  func(targetId);
-};
-
-export default ({ todos, removeTodoItem, toggleTodoItem, updateTodoItem }) => {
+export default ({ todos, onDestroy, onToggle, onEdit }) => {
   const list = document.getElementById("todo-list");
-
-  const onDestroy = ({ target }) => {
-    targetEvent(target, removeTodoItem);
-  };
-
-  const onToggle = ({ target }) => {
-    targetEvent(target, toggleTodoItem);
-  };
-
-  const editTodo = ({ target }) => {
-    const targetId = parseInt(target.dataset.index, 10);
-    const targetValue = target.value;
-
-    updateTodoItem(targetId, targetValue);
-  };
 
   const cancelInput = ({ target }) => {
     const parent = target.parentNode;
-
     parent.classList.remove("editing");
   };
 
   const keyHandler = {
-    Enter: editTodo,
+    Enter: onEdit,
     Escape: cancelInput
   };
 
