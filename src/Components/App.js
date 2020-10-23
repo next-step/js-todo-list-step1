@@ -87,7 +87,7 @@ export default store => {
 
     const selectedTab = filter.getElementsByClassName(selected);
 
-    if (!selectedTab) {
+    if (!selectedTab[0]) {
       return;
     }
 
