@@ -79,8 +79,8 @@ window.onload = () => {
 	input.addEventListener("keyup", function(e) {
 		if(e.key !== "Enter") return;
 		if(this.value == "") alert("공백은 추가할 수 없습니다");
-
-		makeTodoItem(this.value);
+		
+		render("");
 		this.value = "";
 	});
 
@@ -164,5 +164,18 @@ window.onload = () => {
 				break;
 			};
 		};
+	};
+
+	const render = (state) => {
+		list.insertAdjacentHTML("beforeend", `
+			<li class='${state}'>
+    			<div class="view">
+      				<input class="toggle" type="checkbox"/>
+      				<label class="label">${input.value}</label>
+      				<button class="destroy"></button>
+    			</div>
+    			<input class="edit" value="새로운 타이틀" />
+  			</li>
+		`);
 	};
 };
