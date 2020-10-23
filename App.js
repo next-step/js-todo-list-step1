@@ -3,13 +3,12 @@ import TodoList from "./components/TodoList.js";
 import TodoCount from "./components/TodoCount.js";
 import TodoStatus from "./components/TodoStatus.js";
 import { STATUS } from "./utils/constantsKey.js";
+import { getStorageData, setStorageData } from "./utils/handleData.js";
 
-function App() {
+function App(storageKey) {
   if (!(this instanceof App)) {
     throw new Error("error: App must be called with new!");
   }
-
-  this.todos = [];
 
   const onAdd = (todo) => {
     const originTodos = this.todos;
@@ -28,6 +27,7 @@ function App() {
       }
       return todo;
     });
+
     this.setState(newTodos);
   };
 
@@ -75,7 +75,8 @@ function App() {
   };
 
   this.setState = (newData, { status } = "") => {
-    this.todos = newData;
+    setStorageData(storageKey, newData);
+    this.todos = getStorageData(storageKey);
     this.fileteredTodos = status ? onFilter(status) : this.todos;
 
     this.render(this.fileteredTodos);
@@ -87,6 +88,8 @@ function App() {
   };
 
   this.init = () => {
+    this.storageKey = storageKey;
+    this.todos = getStorageData(this.storageKey);
     this.$input = document.querySelector("#new-todo-title");
     this.$list = document.querySelector("#todo-list");
     this.$count = document.querySelector(".todo-count strong");
@@ -109,4 +112,4 @@ function App() {
   this.init();
 }
 
-new App();
+new App("todoData");
