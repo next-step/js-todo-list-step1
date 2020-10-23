@@ -1,11 +1,12 @@
+import TodoInput from "./TodoInput.js";
+import TodoList from "./TodoList.js";
 import {
+  initTodo,
   insertTodo,
   removeTodo,
   toggleTodo,
   updateTodo
 } from "../reducer/todo.js";
-import TodoInput from "./TodoInput.js";
-import TodoList from "./TodoList.js";
 
 const getNewTodo = todos => {
   if (location.hash === "#active") {
@@ -27,11 +28,24 @@ const targetEvent = (target, func) => {
   func(targetId);
 };
 
+const persistToDos = todos => {
+  const stringToDo = JSON.stringify(todos);
+  localStorage.setItem("todos", stringToDo);
+};
+
 export default store => {
   const insertTodoItem = text => store.dispatch(insertTodo(text));
   const removeTodoItem = id => store.dispatch(removeTodo(id));
   const toggleTodoItem = id => store.dispatch(toggleTodo(id));
   const updateTodoItem = (id, text) => store.dispatch(updateTodo(id, text));
+
+  const loadToDos = () => {
+    const loadedToDos = localStorage.getItem("todos");
+    if (loadedToDos !== null) {
+      const parsedToDos = JSON.parse(loadedToDos);
+      store.dispatch(initTodo(parsedToDos));
+    }
+  };
 
   const onDestroy = ({ target }) => {
     targetEvent(target, removeTodoItem);
@@ -61,9 +75,11 @@ export default store => {
       onToggle,
       onEdit
     });
+
+    persistToDos(todos);
   };
 
-  const hashChange = () => {
+  const locationChange = () => {
     const filter = document.querySelector(".filters");
     const tabs = filter.querySelectorAll("a");
 
@@ -82,9 +98,11 @@ export default store => {
     todoSubscribe("HASH_CHANGE");
   };
 
-  window.addEventListener("hashchange", hashChange);
-
-  TodoInput(insertTodoItem);
+  window.addEventListener("hashchange", locationChange);
+  window.addEventListener("DOMContentLoaded", locationChange);
 
   store.subscribe(todoSubscribe);
+
+  TodoInput(insertTodoItem);
+  loadToDos();
 };

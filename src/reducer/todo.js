@@ -1,7 +1,10 @@
+const TODO_INIT = "TODO_INIT";
 const TODO_INSERT = "TODO_INSERT";
 const TODO_DELETE = "TODO_DELETE";
 const TODO_TOGGLE = "TODO_TOGGLE";
 const TODO_UPDATE = "TODO_UPDATE";
+
+export const initTodo = todos => ({ type: TODO_INIT, payload: { todos } });
 
 export const insertTodo = text => ({ type: TODO_INSERT, payload: { text } });
 
@@ -18,6 +21,13 @@ let key = 1;
 
 const todoReducer = (state = { todos: [] }, { type, payload }) => {
   switch (type) {
+    case TODO_INIT: {
+      key = payload.todos.length;
+      return {
+        ...state,
+        todos: payload.todos
+      };
+    }
     case TODO_INSERT:
       return {
         ...state,

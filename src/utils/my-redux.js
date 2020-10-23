@@ -11,7 +11,6 @@ export function createStore(reducer) {
 
   const dispatch = action => {
     state = reducer(state, action);
-
     publish();
   };
 

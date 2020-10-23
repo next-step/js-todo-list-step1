@@ -6,6 +6,8 @@ const makeElement = (tagName, options) => {
   return tag;
 };
 
+const getClassName = isCompleted => (isCompleted ? "completed" : "");
+
 const makeListItem = completed =>
   makeElement("li", { className: getClassName(completed) });
 
@@ -60,8 +62,6 @@ const makeEditInput = (id, text, listener) => {
 
   return editInput;
 };
-
-const getClassName = isCompleted => (isCompleted ? "completed" : "");
 
 export const makeLists = ({
   id,
