@@ -1,4 +1,3 @@
-
 	const input = document.getElementById("new-todo-title");
 	const todo = document.getElementById("todo-list");
 
@@ -26,5 +25,32 @@
 			todo.append(li);
 
 			input.value = "";
+			button.addEventListener("click", function(){
+				li.remove();
+			});
+
+			toggleinput.addEventListener("click", function(){
+				if(this.checked){
+					li.setAttribute("class", "completed");
+
+					return;
+				}
+					li.removeAttribute("class");
+			})
+
+				li.addEventListener("dblclick", function(){
+					this.setAttribute("class", "editing");
+
+				})
+				editinput.addEventListener("keyup", function(e){
+					if(e.key === "Enter") label.innerHTML = this.value;
+					if(e.key === "Enter" || e.key === "Escape"){
+						this.value = "";
+
+						li.classList.remove("editing");
+					}
+				})
+			
 		}
+
 	})
