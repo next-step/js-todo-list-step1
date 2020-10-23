@@ -1,10 +1,15 @@
 const titleInput = document.getElementById("new-todo-title");
 const list = document.getElementById("todo-list");
+const listItems = list.childNodes;
 
 const countEl = document.getElementsByClassName("todo-count")[0].children[0];
 let count = Number(
   document.getElementsByClassName("todo-count")[0].children[0].innerText
 );
+
+const allBtn = document.getElementsByClassName("all")[0];
+const activeBtn = document.getElementsByClassName("active")[0];
+const completedBtn = document.getElementsByClassName("completed")[0];
 
 class DOMelement {
   constructor(tag) {
@@ -90,4 +95,30 @@ titleInput.addEventListener("keydown", (event) => {
     ++count;
     countEl.innerText = count;
   }
+});
+
+allBtn.addEventListener("click", () => {
+  listItems.forEach((listItem) => {
+    listItem.removeAttribute("style");
+  });
+});
+
+activeBtn.addEventListener("click", () => {
+  listItems.forEach((listItem) => {
+    if (listItem.classList[0] === "completed") {
+      listItem.setAttribute("style", "display: none;");
+    } else {
+      listItem.removeAttribute("style");
+    }
+  });
+});
+
+completedBtn.addEventListener("click", () => {
+  listItems.forEach((listItem) => {
+    if (!listItem.classList[0]) {
+      listItem.setAttribute("style", "display: none;");
+    } else {
+      listItem.removeAttribute("style");
+    }
+  });
 });
