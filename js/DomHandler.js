@@ -41,6 +41,10 @@ const todoItem = (title) => {
   labelEl.innerText = title;
 
   const destroyEl = new DOMelement("button").addProperties("destroy");
+  destroyEl.addEventListener("click", () => {
+    li.remove();
+  });
+
   const editEl = new DOMelement("input").addProperties("edit", {
     attributeKey: "value",
     attributeValue: "새로운 타이틀",
