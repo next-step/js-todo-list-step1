@@ -21,6 +21,12 @@ class DOMelement {
 
 const todoItem = (title) => {
   const li = new DOMelement("li").element;
+  li.addEventListener("dblclick", () => {
+    if (li.classList.value === "") {
+      li.classList.add("editing");
+    }
+  });
+
   const viewEl = new DOMelement("div").addProperties("view");
 
   const toggleEl = new DOMelement("input").addProperties("toggle", {
@@ -47,7 +53,16 @@ const todoItem = (title) => {
 
   const editEl = new DOMelement("input").addProperties("edit", {
     attributeKey: "value",
-    attributeValue: "새로운 타이틀",
+    attributeValue: title,
+  });
+  editEl.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      li.classList.remove("editing");
+    } else if (event.key === "Enter") {
+      labelEl.innerText = editEl.value;
+      title = editEl.value;
+      li.classList.remove("editing");
+    }
   });
 
   viewEl.appendChild(toggleEl);
@@ -59,7 +74,7 @@ const todoItem = (title) => {
   return li;
 };
 
-titleInput.addEventListener("keypress", (event) => {
+titleInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     const inputValue = titleInput.value;
     if (inputValue === "") return;
