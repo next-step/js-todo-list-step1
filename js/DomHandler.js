@@ -1,6 +1,11 @@
 const titleInput = document.getElementById("new-todo-title");
 const list = document.getElementById("todo-list");
 
+const countEl = document.getElementsByClassName("todo-count")[0].children[0];
+let count = Number(
+  document.getElementsByClassName("todo-count")[0].children[0].innerText
+);
+
 class DOMelement {
   constructor(tag) {
     this.element = document.createElement(tag);
@@ -49,6 +54,8 @@ const todoItem = (title) => {
   const destroyEl = new DOMelement("button").addProperties("destroy");
   destroyEl.addEventListener("click", () => {
     li.remove();
+    --count;
+    countEl.innerText = count;
   });
 
   const editEl = new DOMelement("input").addProperties("edit", {
@@ -80,5 +87,7 @@ titleInput.addEventListener("keydown", (event) => {
     if (inputValue === "") return;
     list.appendChild(todoItem(inputValue));
     titleInput.value = "";
+    ++count;
+    countEl.innerText = count;
   }
 });
