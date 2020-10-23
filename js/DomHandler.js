@@ -22,12 +22,24 @@ class DOMelement {
 const todoItem = (title) => {
   const li = new DOMelement("li").element;
   const viewEl = new DOMelement("div").addProperties("view");
+
   const toggleEl = new DOMelement("input").addProperties("toggle", {
     attributeKey: "type",
     attributeValue: "checkbox",
   });
+  toggleEl.addEventListener("click", () => {
+    if (!toggleEl.getAttribute("checked")) {
+      toggleEl.setAttribute("checked", "true");
+      li.classList.add("completed");
+    } else {
+      toggleEl.removeAttribute("checked");
+      li.classList.remove("completed");
+    }
+  });
+
   const labelEl = new DOMelement("label").addProperties("label");
   labelEl.innerText = title;
+
   const destroyEl = new DOMelement("button").addProperties("destroy");
   const editEl = new DOMelement("input").addProperties("edit", {
     attributeKey: "value",
