@@ -72,14 +72,14 @@ window.onload = () => {
 		box.append(view, editInput);
 
 		allTodoItems.push(box);
-		loadTodoList(allTodoItems);
+		// loadTodoList(zallTodoItems);
 	};
 
 	const input = document.querySelector("#new-todo-title");
 	input.addEventListener("keyup", function(e) {
 		if(e.key !== "Enter") return;
-		if(this.value == "") alert("공백은 추가할 수 없습니다");
-		
+		if(this.value === "") alert("공백은 추가할 수 없습니다");
+
 		render("");
 		this.value = "";
 	});
@@ -178,4 +178,18 @@ window.onload = () => {
   			</li>
 		`);
 	};
+
+	const createDomElement = {
+		input: function(obj) {
+			// console.log("asdf");
+		},
+		button: function({attr} = obj) {
+			const button = document.createElement("button");
+			button.setAttribute(attr[0], attr[1]);
+			
+			return button
+		},
+	};
+
+	console.log(createDomElement.button({"attr": ["class", "destroy"]}));
 };
