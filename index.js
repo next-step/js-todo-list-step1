@@ -6,62 +6,84 @@ const totalNum = total.querySelector("strong");
 const filters = document.querySelector(".filters");
 
 //count id setting
-let i = 1;
-itemarray = [];
+
+todoList = [];
 //get info from input
 input.addEventListener("keypress", (e) => {
   if (input.value && e.key === "Enter") {
-    addItemList(input.value);
+    addTodos(input.value);
     input.value = "";
   }
 });
 
 //handling add
-function addItemList(item) {
-  // totalNum.innerText = ul.childElementCount;
-  itemarray.push({ id: i, title: item, completed: false });
-  totalNum.innerText = itemarray.length;
-  const newitem = addHtml(i, item);
-  i++;
-  ul.insertAdjacentHTML("beforeend", newitem);
+function addTodos(item) {
+  todoList.push({
+    id: Date.now(),
+    content: item,
+    isCompleted: false,
+  });
+  console.log(todoList);
+  totalNum.innerText = todoList.length;
+  render(todoList);
 }
 
-function addHtml(i, item) {
-  return `<li id=${i}>
- <input class="toggle" type="checkbox"  />
- <label>${item}</label>
- <div class="destroy"></div></li>`;
+function render(todoList) {
+  const todos = todoList
+    .map(
+      (todo) => `<li id=${todo.id} class=${todo.isCompleted ? "completed" : ""}>
+   <div class="view">
+     <input class="toggle" type="checkbox" ${
+       todo.isCompleted ? "checked" : ""
+     } />
+    <label class="label">${todo.content}</label>
+     <button class="destroy"></button>
+   </div>
+   <input class="edit" value="${todo.content}" />
+   </li>`
+    )
+    .join("");
+  return (ul.innerHTML = todos);
 }
 
 //handling destroy and toggle checkbox
 ul.addEventListener("click", (e) => {
+  const eId = parseInt(e.target.closest("li").id);
   if (e.target.className === "destroy") {
-    e.target.parentNode.remove();
-    itemarray = itemarray.filter((item) => item.id != e.target.parentNode.id);
-    totalNum.innerText = itemarray.length;
+    todoList = todoList.filter((todo) => todo.id !== eId);
+    render(todoList);
+    totalNum.innerText = todoList.length;
   }
   if (e.target.className === "toggle") {
-    e.target.parentNode.classList.toggle("completed");
+    todoList = todoList.map((todo) => {
+      if (todo.id === eId) {
+        return { ...todo, isCompleted: !todo.isCompleted };
+      }
+      return todo;
+    });
+    render(todoList);
   }
 });
 
 //handle Editing
-ul.addEventListener("dblclick", (e) => {
-  handleEditing(e);
-});
-
+ul.addEventListener("dblclick", (e) => handleEditing(e));
 function handleEditing(e) {
-  const currentValue = e.target.textContent;
-  const switchBox = document.createElement("input");
-  switchBox.setAttribute("value", currentValue);
-  e.target.textContent = "";
-  e.target.append(switchBox);
-  switchBox.addEventListener("keydown", (e) => {
+  const selected = e.target;
+  selected.closest("li").classList.toggle("editing");
+  console.log(selected.closest("li"));
+  selected.closest("li").addEventListener("keydown", (e) => {
+    const eId = parseInt(e.target.closest("li").id);
     if (e.key === "Enter") {
-      e.target.parentNode.textContent = switchBox.value;
+      todoList = todoList.map((todo) => {
+        if (todo.id === eId) {
+          return { ...todo, content: e.target.value };
+        }
+        return todo;
+      });
+      render(todoList);
     }
     if (e.key === "Escape") {
-      e.target.parentNode.textContent = currentValue;
+      render(todoList);
     }
   });
 }
@@ -72,38 +94,17 @@ filters.addEventListener("click", (e) => {
   prev.classList.toggle("selected");
   const now = e.target;
   now.classList.toggle("selected");
-  clickMenu(now.className);
+  handleFiltering(now.className);
 });
 
-function clickMenu(condition) {
-  switch (condition) {
-    case "completed selected":
-      console.log("e");
-      break;
-    case "active selected":
-      console.log("act");
-      break;
-    default:
-      console.log("all");
-      break;
+function handleFiltering(condition) {
+  if (condition.startsWith("completed")) {
+    completedTodos = todoList.filter((todo) => todo.isCompleted);
+    render(completedTodos);
+  } else if (condition.startsWith("active")) {
+    activeTodos = todoList.filter((todo) => !todo.isCompleted);
+    render(activeTodos);
+  } else {
+    render(todoList);
   }
 }
-
-/*
-function showList(i, item) {
-  const newlist = document.createElement("li");
-  newlist.setAttribute("id", i);
-  const checkbox = document.createElement("input");
-  checkbox.setAttribute("type", "checkbox");
-  checkbox.setAttribute("class", "toggle");
-  const newcontent = document.createElement("label");
-  newcontent.innerText = item;
-  const deletebtn = document.createElement("div");
-  deletebtn.setAttribute("class", "destroy");
-  checkbox.addEventListener("click", handleCheck);
-  deletebtn.addEventListener("click", handleRemove);
-  newlist.appendChild(checkbox);
-  newlist.appendChild(newcontent);
-  newlist.appendChild(deletebtn);
-  ul.append(newlist);
-}*/
