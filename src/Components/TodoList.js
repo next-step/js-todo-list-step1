@@ -1,4 +1,4 @@
-import { createListItem } from "../utils/element-utils.js";
+import { makeLists } from "../utils/element-utils.js";
 
 const setListCount = todos => {
   const todoCount = document.querySelector(".todo-count");
@@ -7,33 +7,57 @@ const setListCount = todos => {
   count.innerHTML = todos.length;
 };
 
-export default ({ todos, removeTodoItem, toggleTodoItem }) => {
+const targetEvent = (target, func) => {
+  const {
+    dataset: { index }
+  } = target.parentElement;
+
+  const targetId = parseInt(index, 10);
+
+  func(targetId);
+};
+
+export default ({ todos, removeTodoItem, toggleTodoItem, updateTodoItem }) => {
   const list = document.getElementById("todo-list");
 
   const onDestroy = ({ target }) => {
-    const {
-      dataset: { index }
-    } = target.parentElement;
-
-    const targetId = parseInt(index, 10);
-
-    removeTodoItem(targetId);
+    targetEvent(target, removeTodoItem);
   };
 
   const onToggle = ({ target }) => {
-    const {
-      dataset: { index }
-    } = target.parentElement;
+    targetEvent(target, toggleTodoItem);
+  };
 
-    const targetId = parseInt(index, 10);
+  const editTodo = ({ target }) => {
+    const targetId = parseInt(target.dataset.index, 10);
+    const targetValue = target.value;
 
-    toggleTodoItem(targetId);
+    updateTodoItem(targetId, targetValue);
+  };
+
+  const cancelInput = ({ target }) => {
+    const parent = target.parentNode;
+
+    parent.classList.remove("editing");
+  };
+
+  const keyHandler = {
+    Enter: editTodo,
+    Escape: cancelInput
+  };
+
+  const EditListener = e => {
+    const handler = keyHandler[e.key];
+
+    if (handler) {
+      handler(e);
+    }
   };
 
   list.innerHTML = "";
 
   todos
-    .map(todo => createListItem({ ...todo, onDestroy, onToggle }))
+    .map(todo => makeLists({ ...todo, onDestroy, onToggle, EditListener }))
     .forEach(item => list.insertBefore(item, list.firstChild));
 
   setListCount(todos);

@@ -48,14 +48,28 @@ const makeRemoveButton = onDestroy => {
   return button;
 };
 
+const makeEditInput = (id, text, listener) => {
+  const editInput = makeElement("input", {
+    className: "edit",
+    value: text
+  });
+
+  editInput.dataset.index = id;
+
+  editInput.addEventListener("keypress", listener);
+
+  return editInput;
+};
+
 const getClassName = isCompleted => (isCompleted ? "completed" : "");
 
-export const createListItem = ({
+export const makeLists = ({
   id,
   text,
   completed,
   onDestroy,
-  onToggle
+  onToggle,
+  EditListener
 }) => {
   const toDo = makeListItem(completed);
 
@@ -65,13 +79,25 @@ export const createListItem = ({
 
   const label = makeLabel(text);
 
+  label.addEventListener("dblclick", ({ target }) => {
+    const list = target.closest("li");
+    const input = list.querySelector(".edit");
+
+    list.classList.add("editing");
+    input.focus();
+  });
+
   const removeButton = makeRemoveButton(onDestroy);
+
+  const editInput = makeEditInput(id, text, EditListener);
 
   viewDiv.appendChild(toggle);
   viewDiv.appendChild(label);
   viewDiv.appendChild(removeButton);
 
   toDo.appendChild(viewDiv);
+
+  toDo.appendChild(editInput);
 
   return toDo;
 };

@@ -1,20 +1,26 @@
 export function createStore(reducer) {
   let state;
+
   const listeners = [];
-  const publish = () => {
+
+  const publish = type => {
     listeners.forEach(({ subscriber }) => {
-      subscriber();
+      subscriber(type);
     });
   };
+
   const dispatch = action => {
     state = reducer(state, action);
-    publish();
+
+    publish(action.type);
   };
+
   const subscribe = subscriber => {
     listeners.push({
       subscriber
     });
   };
+
   const getState = () => ({ ...state });
 
   return {
