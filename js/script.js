@@ -1,10 +1,10 @@
 window.onload = function() {
-  const input = document.getElementById("new-todo-title");
-  const list = document.getElementById("todo-list");
+  const mainInput = document.getElementById("new-todo-title");
+  const mainList = document.getElementById("todo-list");
 
-  input.addEventListener("keydown", e => {
-    if(e.keyCode === 13) {
-      console.log(e.keyCode);
+  mainInput.addEventListener("keydown", e => {
+    // console.log(e.key);
+    if(e.key === "Enter" && mainInput.value.replace(/ /g,"") != "") {
       const liElement = document.createElement("li");
       const viewDivElement = document.createElement("div");
       const inputEditElement = document.createElement("input");
@@ -19,11 +19,60 @@ window.onload = function() {
       labelLabelElement.setAttribute("class", "label");
       buttonDestroyElement.setAttribute("class", "destroy");
 
-      labelLabelElement.innerHTML= input.value;
+      inputToggleElement.addEventListener("input", e => {
+        const target = e.target.parentNode.parentNode;
+        if(e.target.checked) return target.classList.add("completed");
+        target.classList.remove("completed");
+      })
+      
+      buttonDestroyElement.addEventListener("click", e => {
+        e.target.parentNode.parentNode.remove();
+      })
+
+      liElement.addEventListener("dblclick", e => {
+        const parentLi = parent(e.target, "li");
+        parentLi.classList.add("editing");
+        parentLi.childNodes[1].focus();
+      })
+
+      inputEditElement.addEventListener("blur", e => {
+        const parentLi = parent(e.target, "li");
+        const siblingDiv = e.target.previousSibling.childNodes[1];
+        parentLi.classList.remove("editing");
+        siblingDiv.innerHTML = e.target.value;
+      })
+
+      inputEditElement.addEventListener("keydown", e => {
+        if(e.key === "Enter") {
+          const parentLi = parent(e.target, "li");
+          const siblingDiv = e.target.previousSibling.childNodes[1];
+          parentLi.classList.remove("editing");
+          siblingDiv.innerHTML = e.target.value;
+        }
+        if(e.key === "Escape") {
+          const parentLi = parent(e.target, "li");
+          const siblingDiv = e.target.previousSibling.childNodes[1];
+          parentLi.classList.remove("editing");
+          e.target.value = siblingDiv.innerHTML;
+        }
+      })
+
+      labelLabelElement.innerHTML = mainInput.value;
+      inputEditElement.value = mainInput.value;
 
       viewDivElement.append(inputToggleElement, labelLabelElement, buttonDestroyElement);
       liElement.append(viewDivElement, inputEditElement);
-      list.appendChild(liElement);
+      mainList.append(liElement);
+
+      mainInput.value = "";
     }
   })
+
+}
+
+function parent(target, tag) {
+  while(target.tagName.toLowerCase() != tag) {
+    target = target.parentNode;
+  }
+  return target;
 }
