@@ -1,36 +1,38 @@
 const titleInput = document.getElementById("new-todo-title");
 const list = document.getElementById("todo-list");
 
-const createDOMElement = (tag) => {
-  return document.createElement(tag);
-};
+class DOMelement {
+  constructor(tag) {
+    this.element = document.createElement(tag);
+  }
 
-const addClassName = (element, className) => {
-  element.className = className;
-  return element;
-};
-
-const addAttribute = (element, attribute, attributeValue) => {
-  element.setAttribute(attribute, attributeValue);
-  return element;
-};
+  addProperties = (className, attrProps) => {
+    this.element.className = className;
+    if (attrProps) {
+      this.element.setAttribute(
+        attrProps.attributeKey,
+        attrProps.attributeValue
+      );
+      return this.element;
+    }
+    return this.element;
+  };
+}
 
 const todoItem = (title) => {
-  const li = createDOMElement("li");
-  const viewEl = addClassName(createDOMElement("div"), "view");
-  const toggleEl = addAttribute(
-    addClassName(createDOMElement("input"), "toggle"),
-    "type",
-    "checkbox"
-  );
-  const labelEl = addClassName(createDOMElement("label"), "label");
+  const li = new DOMelement("li").element;
+  const viewEl = new DOMelement("div").addProperties("view");
+  const toggleEl = new DOMelement("input").addProperties("toggle", {
+    attributeKey: "type",
+    attributeValue: "checkbox",
+  });
+  const labelEl = new DOMelement("label").addProperties("label");
   labelEl.innerText = title;
-  const destroyEl = addClassName(createDOMElement("button"), "destroy");
-  const editEl = addAttribute(
-    addClassName(createDOMElement("input"), "edit"),
-    "value",
-    "새로운 타이틀"
-  );
+  const destroyEl = new DOMelement("button").addProperties("destroy");
+  const editEl = new DOMelement("input").addProperties("edit", {
+    attributeKey: "value",
+    attributeValue: "새로운 타이틀",
+  });
 
   viewEl.appendChild(toggleEl);
   viewEl.appendChild(labelEl);
