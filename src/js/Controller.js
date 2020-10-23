@@ -62,38 +62,54 @@ export default class Controller {
       })
     }
 
-    if (e.target.classList.contains('toggle') && e.target.checked) {
-      const id = e.target.closest('li').getAttribute('data-id')
-      setState({ todos: filterStatus(id, 'completed') })
-    } else {
-      const id = e.target.closest('li').getAttribute('data-id')
-      setState({ todos: filterStatus(id, 'active') })
-    }
-
     const type = document.querySelector('.selected').className.split(' ')
 
-    render(this.model.state, type[0])
-    this.saveTodos()
+    if (e.target.classList.contains('toggle')) {
+      const id = e.target.closest('li').getAttribute('data-id')
+
+      if (e.target.checked) {
+        setState({ todos: filterStatus(id, 'completed') })
+      } else {
+        setState({ todos: filterStatus(id, 'active') })
+      }
+
+      render(this.model.state, type[0])
+      this.saveTodos()
+    }
   }
 
   toggleModifyTodo = (e) => {
-    console.log(123)
     if (!document.querySelector('.editing')) {
-      e.target.closest('li').classList.toggle('editing')
+      e.target.closest('li').classList.add('editing', 'active')
     }
   }
 
   modifyTodo = (e) => {
+    const { state, setState } = this.model
+    const { render } = this.view
+
+    const changeValue = (id, title) => {
+      return [...state.todos].map((value) => {
+        if (value.id === id) value.title = title
+        return value
+      })
+    }
+
+    const type = document.querySelector('.selected').className.split(' ')
+
     if (e.key === 'Escape' && document.querySelector('.editing')) {
       document.querySelector('.editing').classList.remove('editing')
     } else if (e.key === 'Enter' && document.querySelector('.editing')) {
-      document
-        .querySelector('.editing')
-        .getElementsByClassName('label')[0].innerText = document
-        .querySelector('.editing')
-        .getElementsByClassName('edit')[0].value
+      const id = document.querySelector('.editing').getAttribute('data-id')
 
-      document.querySelector('.editing').classList.remove('editing')
+      setState({
+        todos: changeValue(
+          id,
+          document.querySelector('.editing').getElementsByClassName('edit')[0]
+            .value
+        ),
+      })
+      render(this.model.state, type[0])
       this.saveTodos()
     }
   }
@@ -120,7 +136,7 @@ export default class Controller {
   getTodos() {
     const todos = localStorage.getItem('todos')
     if (todos) return JSON.parse(todos)
-    else return {}
+    else return []
   }
 
   init() {
