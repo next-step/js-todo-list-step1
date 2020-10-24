@@ -4,7 +4,19 @@ import { dispatch, subscribe } from "./handleState.js";
 
 let counter = count;
 
-const createTodoItem = (idx, title) => {
+titleInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    const idx = subscribe() ? subscribe().length : 0;
+    const inputValue = titleInput.value;
+    const isCompleted = false;
+    if (inputValue === "") return;
+    addTodo(idx, inputValue, isCompleted);
+    render(subscribe());
+    titleInput.value = "";
+  }
+});
+
+const createTodoItem = (idx, title, isCompleted) => {
   const li = new DOMelement("li").element;
   li.addEventListener("dblclick", () => {
     if (li.classList.value === "") {
@@ -18,13 +30,31 @@ const createTodoItem = (idx, title) => {
     attributeKey: "type",
     attributeValue: "checkbox",
   });
+
+  if (isCompleted) {
+    toggleEl.setAttribute("checked", "true");
+    li.classList.add("completed");
+  } else {
+    toggleEl.removeAttribute("checked");
+    li.classList.remove("completed");
+  }
+
+  const dispatchStoreByToggle = () => {
+    const store = subscribe();
+    const index = store.indexOf(store.find((item) => item.idx === idx));
+    store[index].isCompleted = !isCompleted;
+    dispatch(store);
+  };
+
   toggleEl.addEventListener("click", () => {
     if (!toggleEl.getAttribute("checked")) {
       toggleEl.setAttribute("checked", "true");
       li.classList.add("completed");
+      dispatchStoreByToggle();
     } else {
       toggleEl.removeAttribute("checked");
       li.classList.remove("completed");
+      dispatchStoreByToggle();
     }
   });
 
@@ -69,12 +99,13 @@ const createTodoItem = (idx, title) => {
   return li;
 };
 
-const addTodo = (idx, title) => {
+const addTodo = (idx, title, isCompleted) => {
   if (subscribe()) {
     const store = subscribe();
     const todoItem = {
       idx,
       title,
+      isCompleted,
     };
     store.push(todoItem);
     dispatch(store);
@@ -83,6 +114,7 @@ const addTodo = (idx, title) => {
     const todoItem = {
       idx,
       title,
+      isCompleted,
     };
     store.push(todoItem);
     dispatch(store);
@@ -94,24 +126,13 @@ const updateCounter = () => {
   countEl.innerText = counter;
 };
 
-titleInput.addEventListener("keypress", (event) => {
-  if (event.key === "Enter") {
-    const idx = subscribe() ? subscribe().length : 0;
-    const inputValue = titleInput.value;
-    if (inputValue === "") return;
-    addTodo(idx, inputValue);
-    render(subscribe());
-    titleInput.value = "";
-  }
-});
-
 const render = (store) => {
   while (list.firstChild) {
     list.removeChild(list.firstChild);
   }
   store.forEach((item) => {
-    const { idx, title } = item;
-    list.insertBefore(createTodoItem(idx, title), list.firstChild);
+    const { idx, title, isCompleted } = item;
+    list.insertBefore(createTodoItem(idx, title, isCompleted), list.firstChild);
     updateCounter();
   });
 };
