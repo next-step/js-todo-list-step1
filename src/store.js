@@ -2,10 +2,10 @@ let data = {};
 
 const handlers = {};
 
-const getKey = () => Date.now();
+const getID = () => Date.now();
 
 const makeTodo = (text) => ({
-  key: getKey(),
+  id: getID(),
   text,
   status: "none",
 });
@@ -13,7 +13,7 @@ const makeTodo = (text) => ({
 const updateTodo = (todo) => {
   data = {
     ...data,
-    [todo.key]: todo,
+    [todo.id]: todo,
   };
 };
 
@@ -34,17 +34,21 @@ export const setTodoHandler = (type, handler) => {
   handlers[type] = handler;
 };
 
-export const setTodoStatus = (key, status) => {
-  const todo = data[key];
+const setTodo = (key) => (id, value) => {
+  const todo = data[id];
   if (!todo) {
     return;
   }
-  data = R.assocPath([key, "status"], status)(data);
+  data = R.assocPath([id, key], value)(data);
   refresh();
 };
 
-export const removeTodo = (key) => {
-  data = R.omit([key])(data);
+export const setTodoStatus = setTodo("status");
+
+export const setTodoText = setTodo("text");
+
+export const removeTodo = (id) => {
+  data = R.omit([id])(data);
   refresh();
 };
 
