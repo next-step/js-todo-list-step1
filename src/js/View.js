@@ -66,14 +66,16 @@ export default class View {
     this.el.todoInput.addEventListener('keydown', addTodo, false)
     this.el.todoList.addEventListener('click', removeTodo, false)
     this.el.todoList.addEventListener('click', completeTodo, false)
-    this.el.todoList.addEventListener('dblclick', toggleModifyTodo, false)
+    this.el.todoList.addEventListener('click', toggleModifyTodo, false)
     this.el.filters.addEventListener('click', filterStatus, false)
     document.body.addEventListener('keydown', modifyTodo, false)
   }
 
   render = (state, type = 'all') => {
-    this.makeTodos(state.todos, type)
-    this.countTodos(state.todos, type)
+    if (state.todos.length) {
+      this.makeTodos(state.todos, type)
+      this.countTodos(state.todos, type)
+    }
     this.initEvents()
   }
 }
