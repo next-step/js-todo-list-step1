@@ -6,16 +6,16 @@ const makeElement = (tagName, options) => {
   return tag;
 };
 
-const getClassName = isCompleted => (isCompleted ? "completed" : "");
+const getCompletedClassName = isCompleted => (isCompleted ? "completed" : "");
 
 const makeListItem = completed =>
-  makeElement("li", { className: getClassName(completed) });
+  makeElement("li", { className: getCompletedClassName(completed) });
 
-const makeViewDiv = id => {
-  const viewDiv = makeElement("div", { className: "view" });
-  viewDiv.dataset.index = id;
+const makeTodoView = id => {
+  const todoView = makeElement("div", { className: "view" });
+  todoView.dataset.index = id;
 
-  return viewDiv;
+  return todoView;
 };
 
 const makeToggleButton = (completed, onToggle) => {
@@ -33,7 +33,7 @@ const makeToggleButton = (completed, onToggle) => {
   return toggle;
 };
 
-const makeLabel = text =>
+const makeTodoText = text =>
   makeElement("label", {
     className: "label",
     innerHTML: text
@@ -63,7 +63,7 @@ const makeEditInput = (id, text, listener) => {
   return editInput;
 };
 
-export const makeLists = ({
+export const makeTodoItem = ({
   id,
   text,
   completed,
@@ -71,15 +71,15 @@ export const makeLists = ({
   onToggle,
   EditListener
 }) => {
-  const toDo = makeListItem(completed);
+  const todoItem = makeListItem(completed);
 
-  const viewDiv = makeViewDiv(id);
+  const todoView = makeTodoView(id);
 
-  const toggle = makeToggleButton(completed, onToggle);
+  const toggleButton = makeToggleButton(completed, onToggle);
 
-  const label = makeLabel(text);
+  const todoText = makeTodoText(text);
 
-  label.addEventListener("dblclick", ({ target }) => {
+  todoText.addEventListener("dblclick", ({ target }) => {
     const list = target.closest("li");
     const input = list.querySelector(".edit");
 
@@ -91,13 +91,9 @@ export const makeLists = ({
 
   const editInput = makeEditInput(id, text, EditListener);
 
-  viewDiv.appendChild(toggle);
-  viewDiv.appendChild(label);
-  viewDiv.appendChild(removeButton);
+  todoView.append(toggleButton, todoText, removeButton);
 
-  toDo.appendChild(viewDiv);
+  todoItem.append(todoView, editInput);
 
-  toDo.appendChild(editInput);
-
-  return toDo;
+  return todoItem;
 };

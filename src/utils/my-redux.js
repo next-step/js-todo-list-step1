@@ -28,3 +28,8 @@ export function createStore(reducer) {
     subscribe
   };
 }
+
+export const actionCreator = (type, payload = {}) => ({
+  type,
+  payload: { ...payload }
+});

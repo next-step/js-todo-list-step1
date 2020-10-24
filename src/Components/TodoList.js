@@ -1,4 +1,4 @@
-import { makeLists } from "../utils/element-utils.js";
+import { makeTodoItem } from "../utils/element-utils.js";
 
 const setListCount = todos => {
   const todoCount = document.querySelector(".todo-count");
@@ -31,7 +31,7 @@ export default ({ todos, onDestroy, onToggle, onEdit }) => {
   list.innerHTML = "";
 
   todos
-    .map(todo => makeLists({ ...todo, onDestroy, onToggle, EditListener }))
+    .map(todo => makeTodoItem({ ...todo, onDestroy, onToggle, EditListener }))
     .forEach(item => list.insertBefore(item, list.firstChild));
 
   setListCount(todos);

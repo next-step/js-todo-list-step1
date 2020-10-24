@@ -8,7 +8,7 @@ import {
   updateTodo
 } from "../reducer/todo.js";
 
-const getNewTodo = todos => {
+const getTodos = todos => {
   if (location.hash === "#active") {
     return todos.filter(todo => !todo.completed);
   }
@@ -23,9 +23,7 @@ const targetEvent = (target, func) => {
     dataset: { index }
   } = target.parentElement;
 
-  const targetId = parseInt(index, 10);
-
-  func(targetId);
+  func(index);
 };
 
 const persistToDos = todos => {
@@ -56,7 +54,7 @@ export default store => {
   };
 
   const onEdit = ({ target }) => {
-    const targetId = parseInt(target.dataset.index, 10);
+    const targetId = target.dataset.index;
     const targetValue = target.value;
 
     updateTodoItem(targetId, targetValue);
@@ -70,7 +68,7 @@ export default store => {
     }
 
     TodoList({
-      todos: getNewTodo(todos),
+      todos: getTodos(todos),
       onDestroy,
       onToggle,
       onEdit
@@ -83,17 +81,17 @@ export default store => {
     const filter = document.querySelector(".filters");
     const tabs = filter.querySelectorAll("a");
 
-    const selected = location.hash.split("#")[1] || "all";
+    const [, selected = "all"] = location.hash.split("#");
 
-    const selectedTab = filter.getElementsByClassName(selected);
+    const [selectedTab] = filter.getElementsByClassName(selected);
 
-    if (!selectedTab[0]) {
+    if (!selectedTab) {
       return;
     }
 
     tabs.forEach(tab => tab.classList.remove("selected"));
 
-    selectedTab[0].classList.add("selected");
+    selectedTab.classList.add("selected");
 
     todoSubscribe("HASH_CHANGE");
   };
