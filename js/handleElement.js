@@ -1,33 +1,7 @@
-const titleInput = document.getElementById("new-todo-title");
-const list = document.getElementById("todo-list");
-const listItems = list.childNodes;
+import { titleInput, list, countEl, count } from "./selectElement.js";
+import DOMelement from "./createElement.js";
 
-const countEl = document.getElementsByClassName("todo-count")[0].children[0];
-let count = Number(
-  document.getElementsByClassName("todo-count")[0].children[0].innerText
-);
-
-const allBtn = document.getElementsByClassName("all")[0];
-const activeBtn = document.getElementsByClassName("active")[0];
-const completedBtn = document.getElementsByClassName("completed")[0];
-
-class DOMelement {
-  constructor(tag) {
-    this.element = document.createElement(tag);
-  }
-
-  addProperties = (className, attrProps) => {
-    this.element.className = className;
-    if (attrProps) {
-      this.element.setAttribute(
-        attrProps.attributeKey,
-        attrProps.attributeValue
-      );
-      return this.element;
-    }
-    return this.element;
-  };
-}
+let counter = count;
 
 const todoItem = (title) => {
   const li = new DOMelement("li").element;
@@ -59,8 +33,8 @@ const todoItem = (title) => {
   const destroyEl = new DOMelement("button").addProperties("destroy");
   destroyEl.addEventListener("click", () => {
     li.remove();
-    --count;
-    countEl.innerText = count;
+    --counter;
+    countEl.innerText = counter;
   });
 
   const editEl = new DOMelement("input").addProperties("edit", {
@@ -92,33 +66,7 @@ titleInput.addEventListener("keydown", (event) => {
     if (inputValue === "") return;
     list.appendChild(todoItem(inputValue));
     titleInput.value = "";
-    ++count;
-    countEl.innerText = count;
+    ++counter;
+    countEl.innerText = counter;
   }
-});
-
-allBtn.addEventListener("click", () => {
-  listItems.forEach((listItem) => {
-    listItem.removeAttribute("style");
-  });
-});
-
-activeBtn.addEventListener("click", () => {
-  listItems.forEach((listItem) => {
-    if (listItem.classList[0] === "completed") {
-      listItem.setAttribute("style", "display: none;");
-    } else {
-      listItem.removeAttribute("style");
-    }
-  });
-});
-
-completedBtn.addEventListener("click", () => {
-  listItems.forEach((listItem) => {
-    if (!listItem.classList[0]) {
-      listItem.setAttribute("style", "display: none;");
-    } else {
-      listItem.removeAttribute("style");
-    }
-  });
 });
