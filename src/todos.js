@@ -18,6 +18,16 @@ const renderTodos = R.pipe(
   R.tap(removeAllChildren),
   R.values,
   R.tap(setTodoCount),
+  R.filter(({ status }) => {
+    const condition = document.location.hash.replace("#", "");
+    if (condition === "") {
+      return true;
+    }
+    if (condition === "completed") {
+      return status === "completed";
+    }
+    return status !== "completed";
+  }),
   R.reverse,
   R.map(makeTodo),
   R.forEach(addTodo)

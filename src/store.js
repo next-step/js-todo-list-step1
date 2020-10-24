@@ -47,3 +47,5 @@ export const removeTodo = (key) => {
   data = R.omit([key])(data);
   refresh();
 };
+
+export const onChangeFilter = refresh;

@@ -6,3 +6,7 @@ export const makeElement = (tagName, options) => {
   )(options);
   return el;
 };
+
+export const setClassName = (el) => (newName) => {
+  el.className = newName;
+};
