@@ -42,6 +42,7 @@ const changeFilter = (hash) => {
 };
 
 export const initFilter = () => {
+  changeFilter(document.location.hash);
   window.onpopstate = () => {
     changeFilter(document.location.hash);
   };

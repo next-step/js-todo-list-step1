@@ -53,8 +53,6 @@ const setEditModeEvent = ({ label, todo, edit, id }) => {
   });
   edit.addEventListener("keypress", ({ key }) => {
     if (key === "Enter") {
-      console.log(edit.value);
-
       setTodoText(id, edit.value);
       removeClassName(todo)("editing");
       edit.value = "";

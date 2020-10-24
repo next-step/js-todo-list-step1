@@ -33,4 +33,7 @@ const renderTodos = R.pipe(
   R.forEach(addTodo)
 );
 
-export const initTodos = () => setTodoHandler("refresh", renderTodos);
+export const initTodos = () => {
+  setTodoHandler("refresh", renderTodos);
+  renderTodos();
+};
