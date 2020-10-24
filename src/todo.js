@@ -1,4 +1,4 @@
-import { makeElement } from "./utils.js";
+import { makeElement, setClassName } from "./utils.js";
 import { setTodoStatus, removeTodo } from "./store.js";
 
 const makeCheckBox = (key) => {
@@ -46,7 +46,7 @@ const updateNode = (data) => {
   const { key, text, status, node } = data;
   const { todo, checkBox, label, removeButton, edit } = node;
 
-  todo.className = status;
+  setClassName(todo)(status);
   checkBox.checked = status === "completed";
   label.innerHTML = text;
 };
