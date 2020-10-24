@@ -1,195 +1,93 @@
 window.onload = () => {
-	const list = document.querySelector("#todo-list");
-	const countBox = document.querySelector(".todo-count");
-	const allTodoItems = [];
-	let pushCheck = true;
-	let count = 0;
-	let selectedTodoItems = [];
+	// const allTodoItems = [];
+	// let pushCheck = true;
+	// let selectedTodoItems = [];
 
-	Object.prototype.siblings = function(select) {
-		return this.filter(v => v != select);
-	};
-	Object.prototype.forEach = function(callback) {
-		for(let i = 0; i < this.length; i++) {
-			callback(this[i], i);
-		}
-	};
+	// Object.prototype.siblings = function(select) {
+	// 	return this.filter(v => v != select);
+	// };
 
-	function makeTodoItem(val) {
-		const box = document.createElement("li");
-		const view = document.createElement("div");
-		const checkBox = document.createElement("input");
-		const label = document.createElement("label");
-		const destoryButton = document.createElement("button");
-		const editInput = document.createElement("input");
+	// const all = document.querySelector(".all.selected");
+	// all.onclick = () => filtersButtonSelect("all");
 
-		view.setAttribute("class", "view");
-		checkBox.setAttribute("class", "toggle");
-		checkBox.setAttribute("type", "checkbox");
-		label.setAttribute("class", "label");
-		destoryButton.setAttribute("class", "destroy");
-		editInput.setAttribute("class", "edit");
+	// const active = document.querySelector(".active");
+	// active.onclick = () => filtersButtonSelect("active");
 
-		label.innerHTML = val;
+	// const completed = document.querySelector(".completed");
+	// completed.onclick = () => filtersButtonSelect("completed");
 
-		box.addEventListener("dblclick", function(e) {
-			this.classList.toggle("editing");
+	// (loadTodoList = function(arr) {
+	// 	list.innerHTML = "";
 
-			editInput.select();
-		});
-		checkBox.addEventListener("change", function(e) {
-			box.classList.toggle("completed");
-		});
-		destoryButton.addEventListener("click", function(e) {
-			list.removeChild(this.parentNode.parentNode);
+	// 	arr.forEach(item => {
+	// 		list.append(item);
+	// 	});
+	// })(allTodoItems);
 
-			allTodoItems.indexOf(this.parentNode.parentNode);
+	// (loadTodoItemCount = function() {
+	// 	countBox.children[0].innerHTML = count;
+	// })();
 
-			let idx = allTodoItems.indexOf(this.parentNode.parentNode);
-			allTodoItems.splice(idx, 1);
+	// function filtersButtonSelect(kind) {
+	// 	const filters = [all, active, completed];
+	// 	selectedTodoItems = [];
 
-			count--;
-			loadTodoItemCount();
-		});
-		editInput.addEventListener("keyup", function(e) {
-			if(e.key === "Enter") label.innerHTML = this.value;
-			if(e.key === "Enter" || e.key === "Escape") {
-				this.value = "";
+	// 	switch(kind) {
+	// 		case "all" : {
+	// 			filters[0].classList.add("selected");
+	// 			filters.siblings(filters[0]).forEach(item => {
+	// 				item.classList.remove("selected");
+	// 			});
 
-				box.classList.remove("editing");
-			};
-		});
-		editInput.addEventListener("focusout", function(e) {
-			this.value = "";
+	// 			selectedTodoItems = allTodoItems;
+	// 			loadTodoList(selectedTodoItems);
 
-			box.classList.remove("editing");
-		});
+	// 			countBox.children[0].innerHTML = count;
 
-		count++;
-		countBox.children[0].innerHTML = count;
+	// 			break;
+	// 		};
+	// 		case "active" : {
+	// 			let activeCount = 0;
 
-		view.append(checkBox, label, destoryButton);
-		box.append(view, editInput);
+	// 			filters[1].classList.add("selected");
+	// 			filters.siblings(filters[1]).forEach(item => {
+	// 				item.classList.remove("selected");
+	// 			});
 
-		allTodoItems.push(box);
-		// loadTodoList(zallTodoItems);
-	};
+	// 			allTodoItems.forEach(item => {
+	// 				if(!item.children[0].children[0].checked)
+	// 					selectedTodoItems.push(item);
+	// 			});
 
-	const input = document.querySelector("#new-todo-title");
-	input.addEventListener("keyup", function(e) {
-		if(e.key !== "Enter") return;
-		if(this.value === "") alert("공백은 추가할 수 없습니다");
+	// 			activeCount = selectedTodoItems.length;
+	// 			loadTodoList(selectedTodoItems);
 
-		render("");
-		this.value = "";
-	});
+	// 			countBox.children[0].innerHTML = activeCount;
 
-	const all = document.querySelector(".all.selected");
-	all.onclick = () => filtersButtonSelect("all");
+	// 			break;
+	// 		};
+	// 		case "completed" : {
+	// 			let completedCount = 0;
 
-	const active = document.querySelector(".active");
-	active.onclick = () => filtersButtonSelect("active");
+	// 			filters[2].classList.add("selected");
+	// 			filters.siblings(filters[2]).forEach(item => {
+	// 				item.classList.remove("selected");
+	// 			});
 
-	const completed = document.querySelector(".completed");
-	completed.onclick = () => filtersButtonSelect("completed");
+	// 			allTodoItems.forEach(item => {
+	// 				if(item.children[0].children[0].checked)
+	// 					selectedTodoItems.push(item);
+	// 			});
 
-	(loadTodoList = function(arr) {
-		list.innerHTML = "";
+	// 			completedCount = selectedTodoItems.length;
+	// 			loadTodoList(selectedTodoItems);
 
-		arr.forEach(item => {
-			list.append(item);
-		});
-	})(allTodoItems);
+	// 			countBox.children[0].innerHTML = completedCount;
 
-	(loadTodoItemCount = function() {
-		countBox.children[0].innerHTML = count;
-	})();
+	// 			break;
+	// 		};
+	// 	};
+	// };
 
-	function filtersButtonSelect(kind) {
-		const filters = [all, active, completed];
-		selectedTodoItems = [];
-
-		switch(kind) {
-			case "all" : {
-				filters[0].classList.add("selected");
-				filters.siblings(filters[0]).forEach(item => {
-					item.classList.remove("selected");
-				});
-
-				selectedTodoItems = allTodoItems;
-				loadTodoList(selectedTodoItems);
-
-				countBox.children[0].innerHTML = count;
-
-				break;
-			};
-			case "active" : {
-				let activeCount = 0;
-
-				filters[1].classList.add("selected");
-				filters.siblings(filters[1]).forEach(item => {
-					item.classList.remove("selected");
-				});
-
-				allTodoItems.forEach(item => {
-					if(!item.children[0].children[0].checked)
-						selectedTodoItems.push(item);
-				});
-
-				activeCount = selectedTodoItems.length;
-				loadTodoList(selectedTodoItems);
-
-				countBox.children[0].innerHTML = activeCount;
-
-				break;
-			};
-			case "completed" : {
-				let completedCount = 0;
-
-				filters[2].classList.add("selected");
-				filters.siblings(filters[2]).forEach(item => {
-					item.classList.remove("selected");
-				});
-
-				allTodoItems.forEach(item => {
-					if(item.children[0].children[0].checked)
-						selectedTodoItems.push(item);
-				});
-
-				completedCount = selectedTodoItems.length;
-				loadTodoList(selectedTodoItems);
-
-				countBox.children[0].innerHTML = completedCount;
-
-				break;
-			};
-		};
-	};
-
-	const render = (state) => {
-		list.insertAdjacentHTML("beforeend", `
-			<li class='${state}'>
-    			<div class="view">
-      				<input class="toggle" type="checkbox"/>
-      				<label class="label">${input.value}</label>
-      				<button class="destroy"></button>
-    			</div>
-    			<input class="edit" value="새로운 타이틀" />
-  			</li>
-		`);
-	};
-
-	const createDomElement = {
-		input: function(obj) {
-			// console.log("asdf");
-		},
-		button: function({attr} = obj) {
-			const button = document.createElement("button");
-			button.setAttribute(attr[0], attr[1]);
-			
-			return button
-		},
-	};
-
-	console.log(createDomElement.button({"attr": ["class", "destroy"]}));
+	const app = new TodoApp();
 };
