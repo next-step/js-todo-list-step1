@@ -12,14 +12,14 @@ const makeCheckBox = (id) => {
     type: "checkbox",
   });
   checkBox.addEventListener("change", (e) =>
-    setTodoStatus(id, e.target.checked ? "completed" : "none")
+    setTodoStatus(id, e.target.checked ? "completed" : "active")
   );
   return checkBox;
 };
 
 const makeDeleteButton = (id) => {
   const button = makeElement("button", { className: "destroy" });
-  button.addEventListener("click", (e) => removeTodo(id));
+  button.addEventListener("click", () => removeTodo(id));
   return button;
 };
 
@@ -36,26 +36,29 @@ const makeContent = (id) => {
   return { contents, checkBox, label, deleteButton };
 };
 
+const enableEditMode = addClassName("editing");
+const disableEditMode = (todo, edit) => {
+  removeClassName("editing")(todo);
+  edit.value = "";
+};
+
 const setEditModeEvent = ({ label, todo, edit, id }) => {
   label.addEventListener("dblclick", () => {
-    addClassName(todo)("editing");
+    enableEditMode(todo);
     edit.focus();
   });
   edit.addEventListener("blur", () => {
-    removeClassName(todo)("editing");
-    edit.value = "";
+    disableEditMode(todo, edit);
   });
   edit.addEventListener("keyup", ({ key }) => {
     if (key === "Escape") {
-      removeClassName(todo)("editing");
-      edit.value = "";
+      disableEditMode(todo, edit);
     }
   });
   edit.addEventListener("keypress", ({ key }) => {
     if (key === "Enter") {
       setTodoText(id, edit.value);
-      removeClassName(todo)("editing");
-      edit.value = "";
+      disableEditMode(todo, edit);
     }
   });
 };
@@ -74,10 +77,10 @@ const makeTemplateInfo = (id) => {
 };
 
 const updateNode = (data) => {
-  const { id, text, status, node } = data;
-  const { todo, checkBox, label, removeButton, edit } = node;
+  const { text, status, node } = data;
+  const { todo, checkBox, label } = node;
 
-  setClassName(todo)(status);
+  setClassName(todo, status);
   checkBox.checked = status === "completed";
   label.innerHTML = text;
 };

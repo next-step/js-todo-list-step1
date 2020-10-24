@@ -19,14 +19,11 @@ const renderTodos = R.pipe(
   R.values,
   R.tap(setTodoCount),
   R.filter(({ status }) => {
-    const condition = document.location.hash.replace("#", "");
-    if (condition === "") {
+    const filterStatus = document.location.hash.replace("#", "");
+    if (filterStatus === "") {
       return true;
     }
-    if (condition === "completed") {
-      return status === "completed";
-    }
-    return status !== "completed";
+    return status === filterStatus;
   }),
   R.reverse,
   R.map(makeTodo),

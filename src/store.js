@@ -1,18 +1,22 @@
 import { getData, saveData } from "./db.js";
-
 const DATA_KEY = "todo";
 
 let data = getData(DATA_KEY);
 const save = () => R.pipe(R.map(R.omit(["node"])), saveData(DATA_KEY))(data);
 const handlers = {};
 
-const getID = () => Date.now();
-
 const makeTodo = (text) => ({
-  id: getID(),
+  id: Date.now(),
   text,
-  status: "none",
+  status: "active",
 });
+
+const processHandler = (type, info) => {
+  const handler = handlers[type];
+  handler && handler(info);
+};
+
+const refresh = () => processHandler("refresh", data);
 
 const updateTodo = (todo) => {
   data = {
@@ -23,21 +27,9 @@ const updateTodo = (todo) => {
   refresh();
 };
 
-const processHandler = (type, info) => {
-  const handler = handlers[type];
-  handler && handler(info);
-};
+export const addTodo = R.pipe(makeTodo, updateTodo);
 
-const refresh = () => processHandler("refresh", data);
-
-export const addTodo = (text) => {
-  const todo = makeTodo(text);
-  updateTodo(todo);
-};
-
-export const setTodoHandler = (type, handler) => {
-  handlers[type] = handler;
-};
+export const setTodoHandler = (type, handler) => (handlers[type] = handler);
 
 const setTodo = (key) => (id, value) => {
   const todo = data[id];
