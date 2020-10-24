@@ -24,12 +24,14 @@ function addTodos(item) {
     content: item,
     isCompleted: false,
   });
+  localStorage.setItem("TODOS", JSON.stringify(todoList));
   todoCount.showCount(todoList);
   todoShow.render(todoList);
 }
 
 function onDelete(eId) {
   todoList = todoList.filter((todo) => todo.id !== eId);
+  localStorage.setItem("TODOS", JSON.stringify(todoList));
   todoShow.render(todoList);
   todoCount.showCount(todoList);
 }
@@ -41,6 +43,8 @@ function onToggle(eId) {
     }
     return todo;
   });
+
+  localStorage.setItem("TODOS", JSON.stringify(todoList));
   todoShow.render(todoList);
 }
 
@@ -63,9 +67,12 @@ function handleEditing(eId, value) {
     }
     return todo;
   });
-
+  localStorage.setItem("TODOS", JSON.stringify(todoList));
   todoShow.render(todoList);
 }
 function handleRender() {
   todoShow.render(todoList);
 }
+
+todoList = JSON.parse(localStorage.getItem("TODOS"));
+handleRender();
