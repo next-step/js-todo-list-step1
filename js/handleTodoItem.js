@@ -38,7 +38,7 @@ const createTodoItem = (idx, title) => {
     store.splice(index, 1);
     dispatch(store);
     render(subscribe());
-    updateCounter();
+    if (store.length === 0) updateCounter();
   });
 
   const editEl = new DOMelement("input").addProperties("edit", {
@@ -94,7 +94,7 @@ const updateCounter = () => {
   countEl.innerText = counter;
 };
 
-titleInput.addEventListener("keydown", (event) => {
+titleInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
     const idx = subscribe() ? subscribe().length : 0;
     const inputValue = titleInput.value;
@@ -102,7 +102,6 @@ titleInput.addEventListener("keydown", (event) => {
     addTodo(idx, inputValue);
     render(subscribe());
     titleInput.value = "";
-    updateCounter();
   }
 });
 
