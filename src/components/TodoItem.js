@@ -8,7 +8,7 @@ export default class TodoItem {
     this.attachEventListener();
   }
 
-  get element() {
+  get $el() {
     return this._$el;
   }
 
@@ -21,19 +21,19 @@ export default class TodoItem {
   }
 
   attachEventListener() {
-    this._$el.addEventListener('click', (e) => this.onClickHandler(e));
-    this._$el.addEventListener('dblclick', (e) => this.onDoubleClickHandler(e));
-    this._$el.addEventListener('keydown', (e) => this.onKeypressHandler(e));
+    this.$el.addEventListener('click', (e) => this.onClickHandler(e));
+    this.$el.addEventListener('dblclick', (e) => this.onDoubleClickHandler(e));
+    this.$el.addEventListener('keydown', (e) => this.onKeypressHandler(e));
   }
 
   onClickHandler({ target }) {
     const { className } = target;
 
     if (className === 'toggle') {
-      this._$el.classList.toggle('completed');
+      this.$el.classList.toggle('completed');
       target.classList.toggle('checked');
     } else if (className === 'destroy') {
-      this._$el.remove();
+      this.$el.remove();
     }
   }
 
@@ -41,30 +41,31 @@ export default class TodoItem {
     const { className } = target;
 
     if (className === 'label') {
-      this._$el.classList.add('editing');
+      this.$el.classList.add('editing');
     }
   }
 
   onKeypressHandler({ key, target }) {
     if (key === 'Escape') {
       target.value = this.title;
-    } else if (key === 'Enter') {
-      this.onEnterKeypressHandler(target, target.value);
-    } else {
+      this.$el.classList.remove('editing');
       return;
     }
-    this._$el.classList.remove('editing');
+    if (key === 'Enter') {
+      this.onEnterKeypressHandler(target, target.value);
+      this.$el.classList.remove('editing');
+    }
   }
 
   onEnterKeypressHandler(target, value) {
-    const $label = this._$el.querySelector('.label');
+    const $label = this.$el.querySelector('.label');
     $label.innerText = value;
     target.setAttribute('value', value);
     this.title = value;
   }
 
   render(title) {
-    this._$el.appendChild(
+    this.$el.appendChild(
       e(
         'div',
         { class: 'view' },
@@ -73,6 +74,6 @@ export default class TodoItem {
         e('button', { class: 'destroy' })
       )
     );
-    this._$el.appendChild(e('input', { class: 'edit', value: title }));
+    this.$el.appendChild(e('input', { class: 'edit', value: title }));
   }
 }
