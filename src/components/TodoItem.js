@@ -5,10 +5,16 @@ export default class TodoItem {
     this._$el = document.createElement('li');
     this.title = title;
     this.render(this.title);
+    this.attachEventHandler();
   }
 
   get element() {
     return this._$el;
+  }
+
+  onToggleHandler({ target }) {
+    this._$el.classList.toggle('completed');
+    target.classList.toggle('checked');
   }
 
   render(title) {
@@ -22,5 +28,10 @@ export default class TodoItem {
       ),
       e('input', { class: 'edit', value: title })
     );
+  }
+
+  attachEventHandler() {
+    const checkbox = this._$el.querySelector('.toggle');
+    checkbox.addEventListener('click', (e) => this.onToggleHandler(e));
   }
 }
