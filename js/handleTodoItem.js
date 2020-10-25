@@ -1,31 +1,15 @@
 import { titleInput, list, countEl } from "./selectElement.js";
 import DOMelement from "./createElement.js";
-import { dispatch, subscribe } from "./handleState.js";
-
-const createIdx = () => {
-  let result;
-  if (subscribe()) {
-    const store = subscribe();
-    const idxArray = [];
-    store.map((item) => {
-      idxArray.push(item.idx);
-    });
-    const max = idxArray.reduce(function (previous, current) {
-      return previous > current ? previous : current;
-    });
-    return max + 1;
-  } else {
-    return (result = 0);
-  }
-};
+import { dispatch, subscribe, createIdx } from "./handleState.js";
 
 titleInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
     const idx = createIdx();
     const inputValue = titleInput.value;
     const isCompleted = false;
+    const initState = { idx, inputValue, isCompleted };
     if (inputValue === "") return;
-    addTodo(idx, inputValue, isCompleted);
+    addStateToStore(initState);
     titleInput.value = "";
   }
 });
@@ -62,13 +46,13 @@ const createTodoItem = (idx, title, isCompleted) => {
   };
 
   toggleEl.addEventListener("click", () => {
-    if (!toggleEl.getAttribute("checked")) {
-      toggleEl.setAttribute("checked", "true");
-      li.classList.add("completed");
-      dispatchStoreByToggle();
-    } else {
+    if (toggleEl.getAttribute("checked")) {
       toggleEl.removeAttribute("checked");
       li.classList.remove("completed");
+      dispatchStoreByToggle();
+    } else {
+      toggleEl.setAttribute("checked", "true");
+      li.classList.add("completed");
       dispatchStoreByToggle();
     }
   });
@@ -114,27 +98,25 @@ const createTodoItem = (idx, title, isCompleted) => {
   return li;
 };
 
-const addTodo = (idx, title, isCompleted) => {
+const setStateAndDispatch = (store, initState) => {
+  const { idx, inputValue: title, isCompleted } = initState;
+  const todoItem = {
+    idx,
+    title,
+    isCompleted,
+  };
+  store.push(todoItem);
+  dispatch(store);
+  render(subscribe());
+};
+
+const addStateToStore = (initState) => {
   if (subscribe()) {
     const store = subscribe();
-    const todoItem = {
-      idx,
-      title,
-      isCompleted,
-    };
-    store.push(todoItem);
-    dispatch(store);
-    render(subscribe());
+    setStateAndDispatch(store, initState);
   } else {
     const store = [];
-    const todoItem = {
-      idx,
-      title,
-      isCompleted,
-    };
-    store.push(todoItem);
-    dispatch(store);
-    render(subscribe());
+    setStateAndDispatch(store, initState);
   }
 };
 
