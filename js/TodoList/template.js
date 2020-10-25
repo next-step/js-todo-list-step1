@@ -1,7 +1,7 @@
 let Template = (obj) => {
     console.log('TEST: Template enter', obj);
     return `
-    <li>
+    <li id="item-${obj.id}">
         <div class="view">
         <input class="toggle" type="checkbox"/>
         <label class="label">${obj.context}</label>
