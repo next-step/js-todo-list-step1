@@ -5,20 +5,23 @@ export default class TodoItem {
     this._$el = document.createElement('li');
     this.title = title;
     this.render(this.title);
-    this.attachEventHandler();
+    this._$el.addEventListener('click', (e) => this.onClickHandler(e));
   }
 
   get element() {
     return this._$el;
   }
 
-  onToggleHandler({ target }) {
-    this._$el.classList.toggle('completed');
-    target.classList.toggle('checked');
-  }
+  onClickHandler({ target }) {
+    const { className } = target;
 
-  onDeleteHandler() {
-    this._$el.remove();
+    if (className === 'toggle') {
+      this._$el.classList.toggle('completed');
+      target.classList.toggle('checked');
+    }
+    if (className === 'destroy') {
+      this._$el.remove();
+    }
   }
 
   render(title) {
@@ -32,13 +35,5 @@ export default class TodoItem {
       ),
       e('input', { class: 'edit', value: title })
     );
-  }
-
-  attachEventHandler() {
-    const $checkbox = this._$el.querySelector('.toggle');
-    $checkbox.addEventListener('click', (e) => this.onToggleHandler(e));
-
-    const $destroy = this._$el.querySelector('.destroy');
-    $destroy.addEventListener('click', () => this.onDeleteHandler());
   }
 }
