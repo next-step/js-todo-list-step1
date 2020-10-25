@@ -17,6 +17,10 @@ export default class TodoItem {
     target.classList.toggle('checked');
   }
 
+  onDeleteHandler() {
+    this._$el.remove();
+  }
+
   render(title) {
     this._$el.appendChild(
       e(
@@ -31,7 +35,10 @@ export default class TodoItem {
   }
 
   attachEventHandler() {
-    const checkbox = this._$el.querySelector('.toggle');
-    checkbox.addEventListener('click', (e) => this.onToggleHandler(e));
+    const $checkbox = this._$el.querySelector('.toggle');
+    $checkbox.addEventListener('click', (e) => this.onToggleHandler(e));
+
+    const $destroy = this._$el.querySelector('.destroy');
+    $destroy.addEventListener('click', () => this.onDeleteHandler());
   }
 }
