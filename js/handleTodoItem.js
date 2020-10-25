@@ -4,10 +4,8 @@ import { dispatch, subscribe, createIdx } from "./handleState.js";
 
 titleInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
-    const idx = createIdx();
     const inputValue = titleInput.value;
-    const isCompleted = false;
-    const initState = { idx, inputValue, isCompleted };
+    const initState = { idx: createIdx(), inputValue, isCompleted: false };
     if (inputValue === "") return;
     addStateToStore(initState);
     titleInput.value = "";
