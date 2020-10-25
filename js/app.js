@@ -39,8 +39,25 @@ class app {
         this.item.push(eachItem)
         this.render()
     }
-    updateItem () {}
-    deleteItem () {}
+    beforeUpdateItem () {}
+    afterUpdateItem (targetElement, value) {
+        console.log('TEST: afterUpdateItem', );
+        let itemId = targetElement.id.replace('item-', '')
+        this.item = this.item.map(v => {
+            if ( parseInt(itemId) === v.id) {
+                v.context = value
+            }
+            console.log('TEST: ', v);
+            return v
+        })
+        this.render();
+    }
+    deleteItem (targetElement) {
+        let itemId = targetElement.id.replace('item-', '')
+        this.item = this.item.filter( v =>  (parseInt(itemId) === v.id) ? false : true )
+        console.log('TEST: deleteItem ', itemId, this.item);
+        this.render();
+    }
     completeItem (targetElement) {
         // item값 변경 
         let itemId = targetElement.id.replace('item-', '')
