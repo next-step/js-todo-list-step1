@@ -3,8 +3,8 @@ import { createElement as e } from '../utils.js';
 export default class TodoItem {
   constructor(title) {
     this._$el = document.createElement('li');
-    this.title = title;
-    this.render(this.title);
+    this._title = title;
+    this.render(this._title);
     this.attachEventListener();
   }
 
@@ -12,9 +12,18 @@ export default class TodoItem {
     return this._$el;
   }
 
+  get title() {
+    return this._title;
+  }
+
+  set title(value) {
+    this._title = value;
+  }
+
   attachEventListener() {
     this._$el.addEventListener('click', (e) => this.onClickHandler(e));
     this._$el.addEventListener('dblclick', (e) => this.onDoubleClickHandler(e));
+    this._$el.addEventListener('keydown', (e) => this.onKeypressHandler(e));
   }
 
   onClickHandler({ target }) {
@@ -34,6 +43,24 @@ export default class TodoItem {
     if (className === 'label') {
       this._$el.classList.add('editing');
     }
+  }
+
+  onKeypressHandler({ key, target }) {
+    if (key === 'Escape') {
+      target.value = this.title;
+    } else if (key === 'Enter') {
+      this.onEnterKeypressHandler(target, target.value);
+    } else {
+      return;
+    }
+    this._$el.classList.remove('editing');
+  }
+
+  onEnterKeypressHandler(target, value) {
+    const $label = this._$el.querySelector('.label');
+    $label.innerText = value;
+    target.setAttribute('value', value);
+    this.title = value;
   }
 
   render(title) {
