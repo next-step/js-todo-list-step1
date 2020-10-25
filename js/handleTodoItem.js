@@ -1,17 +1,31 @@
-import { titleInput, list, countEl, count } from "./selectElement.js";
+import { titleInput, list, countEl } from "./selectElement.js";
 import DOMelement from "./createElement.js";
 import { dispatch, subscribe } from "./handleState.js";
 
-let counter = count;
+const createIdx = () => {
+  let result;
+  if (subscribe()) {
+    const store = subscribe();
+    const idxArray = [];
+    store.map((item) => {
+      idxArray.push(item.idx);
+    });
+    const max = idxArray.reduce(function (previous, current) {
+      return previous > current ? previous : current;
+    });
+    return max + 1;
+  } else {
+    return (result = 0);
+  }
+};
 
 titleInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
-    const idx = subscribe() ? subscribe().length : 0;
+    const idx = createIdx();
     const inputValue = titleInput.value;
     const isCompleted = false;
     if (inputValue === "") return;
     addTodo(idx, inputValue, isCompleted);
-    render(subscribe());
     titleInput.value = "";
   }
 });
@@ -42,6 +56,7 @@ const createTodoItem = (idx, title, isCompleted) => {
   const dispatchStoreByToggle = () => {
     const store = subscribe();
     const index = store.indexOf(store.find((item) => item.idx === idx));
+    let isCompleted = store[index].isCompleted;
     store[index].isCompleted = !isCompleted;
     dispatch(store);
   };
@@ -109,6 +124,7 @@ const addTodo = (idx, title, isCompleted) => {
     };
     store.push(todoItem);
     dispatch(store);
+    render(subscribe());
   } else {
     const store = [];
     const todoItem = {
@@ -118,11 +134,12 @@ const addTodo = (idx, title, isCompleted) => {
     };
     store.push(todoItem);
     dispatch(store);
+    render(subscribe());
   }
 };
 
 const updateCounter = () => {
-  counter = subscribe().length;
+  let counter = subscribe().length;
   countEl.innerText = counter;
 };
 
