@@ -1,8 +1,8 @@
-import Model from './js/Model'
-import View from './js/View'
-import Controller from './js/Controller'
+import TodoModel from './js/TodoModel'
+import TodoView from './js/TodoView'
+import TodoController from './js/TodoController'
 
-const VIEW = new View()
-const CONTROLLER = new Controller(Model, VIEW)
+const View = new TodoView()
+const Controller = new TodoController(TodoModel, View)
 
-CONTROLLER.init()
+Controller.init()

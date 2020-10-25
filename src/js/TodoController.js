@@ -1,6 +1,6 @@
 import faker from 'faker'
 
-export default class Controller {
+export default class TodoController {
   constructor(model, view) {
     this.model = model
     this.view = view
@@ -19,16 +19,16 @@ export default class Controller {
     const { state, setState } = this.model
     const { el, render } = this.view
 
-    if (e.key === 'Enter' && el.todoInput.value !== '') {
-      let newState = [...state.todos]
-      newState.push({
+    if (e.key === 'Enter' && el.todoInput.value) {
+      const newTodos = [...state.todos]
+      newTodos.push({
         id: faker.random.uuid(),
         title: el.todoInput.value,
         status: 'active',
       })
 
       setState({
-        todos: newState,
+        todos: newTodos,
       })
       render(this.model.state)
       el.todoInput.value = ''
@@ -40,11 +40,11 @@ export default class Controller {
     const { state, setState } = this.model
     const { render } = this.view
     if (e.target.classList.contains('destroy')) {
-      const id = e.target.closest('li').getAttribute('data-id')
-      const newState = state.todos.filter((value) => value.id !== id)
+      const id = e.target.closest('li').dataset.id
+      const newTodos = state.todos.filter((value) => value.id !== id)
 
       setState({
-        todos: newState,
+        todos: newTodos,
       })
       render(this.model.state)
       this.saveTodos()
@@ -56,11 +56,14 @@ export default class Controller {
     const { render } = this.view
 
     const filterStatus = (id, status) => {
-      return [...state.todos].map((value) => {
-        if (value.id === id) value.status = status
-        return value
+      return state.todos.map((todo) => {
+        if (todo.id === id) todo.status = status
+        return todo
       })
     }
+
+    const getTodoTypeByChecked = (isChecked) =>
+      isChecked ? 'completed' : 'active'
 
     const type = document.querySelector('.selected').className.split(' ')
 
@@ -68,9 +71,13 @@ export default class Controller {
       const id = e.target.closest('li').getAttribute('data-id')
 
       if (e.target.checked) {
-        setState({ todos: filterStatus(id, 'completed') })
+        setState({
+          todos: filterStatus(id, getTodoTypeByChecked(e.target.checked)),
+        })
       } else {
-        setState({ todos: filterStatus(id, 'active') })
+        setState({
+          todos: filterStatus(id, getTodoTypeByChecked(e.target.checked)),
+        })
       }
 
       render(this.model.state, type[0])
@@ -95,21 +102,27 @@ export default class Controller {
       })
     }
 
-    const type = document.querySelector('.selected').className.split(' ')
+    const [type] = document.querySelector('.selected').className.split(' ')
 
-    if (e.key === 'Escape' && document.querySelector('.editing')) {
+    if (!document.querySelector('.editing')) {
+      return
+    }
+
+    if (e.key === 'Escape') {
       document.querySelector('.editing').classList.remove('editing')
-    } else if (e.key === 'Enter' && document.querySelector('.editing')) {
+    }
+
+    if (e.key === 'Enter') {
       const id = document.querySelector('.editing').getAttribute('data-id')
+      const [editElement] = document
+        .querySelector('.editing')
+        .getElementsByClassName('edit')
 
       setState({
-        todos: changeValue(
-          id,
-          document.querySelector('.editing').getElementsByClassName('edit')[0]
-            .value
-        ),
+        todos: changeValue(id, editElement.value),
       })
-      render(this.model.state, type[0])
+
+      render(this.model.state, type)
       this.saveTodos()
     }
   }
@@ -135,16 +148,15 @@ export default class Controller {
 
   getTodos() {
     const todos = localStorage.getItem('todos')
-    if (todos) return JSON.parse(todos)
-    else return []
+    return todos ? JSON.parse(todos) : []
   }
 
   init() {
     const { setState } = this.model
     const { render } = this.view
-    const getTodos = this.getTodos()
+    const todos = this.getTodos()
 
-    setState({ todos: getTodos })
+    setState({ todos })
     render(this.model.state)
   }
 }
