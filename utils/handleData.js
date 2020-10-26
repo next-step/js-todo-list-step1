@@ -1,9 +1,9 @@
 export const getStorageData = (key) => {
   try {
-    const data = JSON.parse(localStorage.getItem(key)) || [];
-    return data;
+    return JSON.parse(localStorage.getItem(key)) || [];
   } catch (e) {
     console.log(e);
+    return [];
   }
 };
 
