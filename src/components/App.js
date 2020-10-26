@@ -1,4 +1,5 @@
 import { action } from '../utils/action.js';
+import Filter from './Filter.js';
 import TodoList from './TodoList.js';
 
 export default class App {
@@ -43,6 +44,7 @@ export default class App {
   }
 
   setState(todos) {
+    todos = Filter(todos, location.href);
     this.render(todos);
   }
 

@@ -1,3 +1,7 @@
+export const parseHash = (href) => {
+  return href.split('#').pop();
+};
+
 export const getDataAttribute = (str) => {
   return lowercaseFirstLetter(str.slice('data'.length));
 };
