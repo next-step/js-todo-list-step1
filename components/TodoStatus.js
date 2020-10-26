@@ -6,10 +6,9 @@ function TodoStatus({ onAction }) {
   this.onAction = onAction;
 
   this.$filter.addEventListener("click", (e) => {
-    const { classList } = e.target;
+    const [selectedStatus] = e.target.classList;
 
-    // 하나 이상의 className이 있을 경우 $el을 못찾는 이슈로 인해 classList[0] 사용
-    const status = classList[0];
+    const status = selectedStatus;
     const $el = this.$filter.querySelector(`.${status}`);
     const isAlreadyBinding = $el.classList.contains("selected");
 
