@@ -58,27 +58,18 @@ function App(storageKey) {
     this.setState(this.todos, { status: status });
   };
 
-  const onFilter = (status) => {
-    let filteredTodos;
-
-    switch (status) {
-      case STATUS.ACTIVE:
-        filteredTodos = this.todos.filter((todo) => todo.isCompleted === false);
-        break;
-      case STATUS.COMPLETED:
-        filteredTodos = this.todos.filter((todo) => todo.isCompleted === true);
-        break;
-      default:
-        filteredTodos = this.todos;
-    }
-
-    return filteredTodos;
+  const onSetStatus = (status) => {
+    const todosBy = {
+      [STATUS.ACTIVE]: this.todos.filter((todo) => !todo.isCompleted),
+      [STATUS.COMPLETED]: this.todos.filter((todo) => todo.isCompleted),
+    };
+    return todosBy[status] || this.todos;
   };
 
   this.setState = (newData, { status } = "") => {
     setStorageData(storageKey, newData);
     this.todos = getStorageData(storageKey);
-    this.fileteredTodos = status ? onFilter(status) : this.todos;
+    this.fileteredTodos = status ? onSetStatus(status) : this.todos;
 
     this.render(this.fileteredTodos);
   };
