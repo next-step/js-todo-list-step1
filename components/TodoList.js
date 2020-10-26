@@ -7,37 +7,27 @@ function TodoList(todos, { onAction }) {
   this.todos = todos;
   this.onAction = onAction;
 
+  const createTodoList = (todo, idx) => {
+    const { content, isCompleted = false } = todo;
+    if (!content) return;
+
+    return `<li data-idx=${idx} class=${isCompleted ? "completed" : ""}>
+      <div class="view">
+        <input class="toggle" type="checkbox" ${isCompleted ? "checked" : ""}>
+        <label class="label">${content}</label>
+        <button class="destroy"></button>
+      </div>
+      <input class="edit" value="${content}">
+    </li>`;
+  };
+
   this.setState = (todos) => {
     this.todos = todos;
     this.render();
   };
 
   this.render = () => {
-    if (!this.todos.length) {
-      this.$list.innerHTML = "";
-      return;
-    }
-
-    const htmlString = this.todos
-      .map((todo, idx) => {
-        const { content, isCompleted = false } = todo;
-
-        if (!content) return;
-
-        return `<li data-idx=${idx} class=${isCompleted ? "completed" : ""}>
-          <div class="view">
-            <input class="toggle" type="checkbox" ${
-              isCompleted ? "checked" : ""
-            }>
-            <label class="label">${content}</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value="${content}">
-        </li>`;
-      })
-      .join("");
-
-    this.$list.innerHTML = htmlString;
+    this.$list.innerHTML = this.todos.map(createTodoList).join("");
   };
 
   this.init = () => {
