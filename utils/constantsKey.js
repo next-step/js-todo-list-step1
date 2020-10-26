@@ -1,7 +1,7 @@
 export const ENTER_KEY_CODE = 13;
 export const ESCAPE_KEY_CODE = 27;
-export const STATUS = {
+export const STATUS = Object.freeze({
   ALL: "all",
   ACTIVE: "active",
   COMPLETED: "completed",
-};
+});
