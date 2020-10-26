@@ -1,8 +1,8 @@
-function TodoStatus(element, { onAction }) {
+function TodoStatus({ onAction }) {
   if (!new.target)
     throw new Error("error: TodoStatus must be called with new!");
 
-  this.$filter = element;
+  this.$filter = document.querySelector("ul.filters");
   this.onAction = onAction;
 
   this.$filter.addEventListener("click", (e) => {

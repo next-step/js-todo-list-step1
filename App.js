@@ -82,18 +82,14 @@ function App(storageKey) {
   this.init = () => {
     this.storageKey = storageKey;
     this.todos = getStorageData(this.storageKey);
-    this.$input = document.querySelector("#new-todo-title");
-    this.$list = document.querySelector("#todo-list");
-    this.$count = document.querySelector(".todo-count strong");
-    this.$filters = document.querySelector("ul.filters");
 
     try {
-      this.todoInput = new TodoInput(this.$input, { onAction: { add: onAdd } });
-      this.todoList = new TodoList(this.$list, this.todos, {
+      this.todoInput = new TodoInput({ onAction: { add: onAdd } });
+      this.todoList = new TodoList(this.todos, {
         onAction: { toggle: onToggle, remove: onRemove, change: onChange },
       });
-      this.todoCount = new TodoCount(this.$count, this.todos);
-      this.todoStatus = new TodoStatus(this.$filters, {
+      this.todoCount = new TodoCount(this.todos);
+      this.todoStatus = new TodoStatus({
         onAction: { bind: onBindStatus },
       });
     } catch (e) {

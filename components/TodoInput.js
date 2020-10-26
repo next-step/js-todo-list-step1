@@ -1,9 +1,9 @@
 import { ENTER_KEY_CODE } from "../utils/constantsKey.js";
 
-function TodoInput(element, { onAction }) {
+function TodoInput({ onAction }) {
   if (!new.target) throw new Error("error: TodoInput must be called with new!");
 
-  this.$input = element;
+  this.$input = document.querySelector("#new-todo-title");
   this.onAction = onAction;
 
   this.$input.addEventListener("keyup", (e) => {

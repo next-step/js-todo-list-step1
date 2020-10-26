@@ -1,9 +1,9 @@
 import { ENTER_KEY_CODE, ESCAPE_KEY_CODE } from "../utils/constantsKey.js";
 
-function TodoList(element, todos, { onAction }) {
+function TodoList(todos, { onAction }) {
   if (!new.target) throw new Error("error: TodoList must be called with new!");
 
-  this.$list = element;
+  this.$list = document.querySelector("#todo-list");
   this.todos = todos;
   this.onAction = onAction;
 

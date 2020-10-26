@@ -1,7 +1,7 @@
-function TodoCount(element, todos) {
+function TodoCount(todos) {
   if (!new.target) throw new Error("error: TodoCount must be called with new!");
 
-  this.$count = element;
+  this.$count = document.querySelector(".todo-count strong");
   this.todos = todos;
 
   this.setState = (todos) => {
