@@ -8,9 +8,12 @@ import { getStorageData, setStorageData } from "./utils/handleData.js";
 function App(storageKey) {
   if (!new.target) throw new Error("error: App must be called with new!");
 
-  const onAdd = (todo) => {
+  const onAdd = (inputVal) => {
     const originTodos = this.todos;
-    const newTodos = [...originTodos, { content: todo, isCompleted: false }];
+    const newTodos = [
+      ...originTodos,
+      { content: inputVal, isCompleted: false },
+    ];
     this.setState(newTodos);
   };
 
