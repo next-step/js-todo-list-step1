@@ -1,7 +1,6 @@
 function TodoStatus(element, { onAction }) {
-  if (!(this instanceof TodoStatus)) {
+  if (!new.target)
     throw new Error("error: TodoStatus must be called with new!");
-  }
 
   this.$filter = element;
   this.onAction = onAction;

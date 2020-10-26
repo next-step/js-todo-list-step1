@@ -1,7 +1,5 @@
 function TodoCount(element, todos) {
-  if (!(this instanceof TodoCount)) {
-    throw new Error("error: TodoCount must be called with new!");
-  }
+  if (!new.target) throw new Error("error: TodoCount must be called with new!");
 
   this.$count = element;
   this.todos = todos;

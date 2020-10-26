@@ -6,9 +6,7 @@ import { STATUS } from "./utils/constantsKey.js";
 import { getStorageData, setStorageData } from "./utils/handleData.js";
 
 function App(storageKey) {
-  if (!(this instanceof App)) {
-    throw new Error("error: App must be called with new!");
-  }
+  if (!new.target) throw new Error("error: App must be called with new!");
 
   const onAdd = (todo) => {
     const originTodos = this.todos;
