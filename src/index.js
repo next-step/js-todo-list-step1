@@ -1,13 +1,10 @@
-import { createElement as e } from './utils.js';
-import TodoItem from './components/TodoItem.js';
+import App from './components/App.js';
+import TodoStore from './store/todoStore.js';
 
-const $newTodoInput = document.querySelector('#new-todo-title');
-const $todoList = document.querySelector('#todo-list');
-
-$newTodoInput.addEventListener('keypress', ({ key, target }) => {
-  if (key === 'Enter') {
-    const newTodo = new TodoItem(target.value);
-    $todoList.appendChild(newTodo.$el);
-    target.value = '';
-  }
-});
+new App();
+new TodoStore([
+  { id: 1, title: '밥 먹기', isDone: true },
+  { id: 2, title: '아침 먹기', isDone: false },
+  { id: 3, title: '점심 먹기', isDone: false },
+  { id: 4, title: '저녁 먹기', isDone: false },
+]);
