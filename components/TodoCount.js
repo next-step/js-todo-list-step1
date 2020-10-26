@@ -9,10 +9,7 @@ function TodoCount(todos) {
     this.render();
   };
 
-  this.render = () => {
-    const completedCount = this.todos.length;
-    this.$count.innerHTML = completedCount;
-  };
+  this.render = () => (this.$count.innerHTML = this.todos.length);
 
   this.render();
 }
