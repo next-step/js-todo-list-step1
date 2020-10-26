@@ -55,7 +55,7 @@ export default class TodoController {
     const { state, setState } = this.model
     const { render } = this.view
 
-    const filterStatus = (id, status) => {
+    const filterStatusByChecked = (id, status) => {
       return state.todos.map((todo) => {
         if (todo.id === id) todo.status = status
         return todo
@@ -65,22 +65,19 @@ export default class TodoController {
     const getTodoTypeByChecked = (isChecked) =>
       isChecked ? 'completed' : 'active'
 
-    const type = document.querySelector('.selected').className.split(' ')
+    const [type] = document.querySelector('.selected').className.split(' ')
 
     if (e.target.classList.contains('toggle')) {
       const id = e.target.closest('li').getAttribute('data-id')
 
-      if (e.target.checked) {
-        setState({
-          todos: filterStatus(id, getTodoTypeByChecked(e.target.checked)),
-        })
-      } else {
-        setState({
-          todos: filterStatus(id, getTodoTypeByChecked(e.target.checked)),
-        })
-      }
+      setState({
+        todos: filterStatusByChecked(
+          id,
+          getTodoTypeByChecked(e.target.checked)
+        ),
+      })
 
-      render(this.model.state, type[0])
+      render(this.model.state, type)
       this.saveTodos()
     }
   }
@@ -130,14 +127,15 @@ export default class TodoController {
   filterStatus = (e) => {
     const { render } = this.view
     if (e.target.tagName === 'A') {
-      const type = e.target.className.split(' ')
+      const [type] = e.target.className.split(' ')
+      const selected = document.querySelector('.selected')
 
-      if (type.length === 1) {
-        document.querySelector('.selected').classList.remove('selected')
+      if (selected) {
+        selected.classList.remove('selected')
         e.target.classList.add('selected')
       }
 
-      render(this.model.state, type[0])
+      render(this.model.state, type)
     }
   }
 

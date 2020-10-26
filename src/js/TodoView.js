@@ -35,11 +35,11 @@ export default class TodoView {
       })
 
     this.el.todoList.innerHTML = filterTodos.join('')
+    this.bindEvents()
   }
 
-  initEvents = () => {
+  bindEvents = () => {
     const {
-      addTodo,
       removeTodo,
       completeTodo,
       toggleModifyTodo,
@@ -47,12 +47,16 @@ export default class TodoView {
       modifyTodo,
     } = this.controllerEvents
 
-    this.el.todoInput.addEventListener('keydown', addTodo, false)
     this.el.todoList.addEventListener('click', removeTodo, false)
     this.el.todoList.addEventListener('click', completeTodo, false)
     this.el.todoList.addEventListener('click', toggleModifyTodo, false)
     this.el.filters.addEventListener('click', filterStatus, false)
     document.body.addEventListener('keydown', modifyTodo, false)
+  }
+
+  initEvents = () => {
+    const { addTodo } = this.controllerEvents
+    this.el.todoInput.addEventListener('keydown', addTodo, false)
   }
 
   render = (state, type = this.defaultType) => {
