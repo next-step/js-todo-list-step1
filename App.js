@@ -20,7 +20,7 @@ function App(storageKey) {
   const onToggle = (idx) => {
     const originTodos = this.todos;
     const newTodos = originTodos.map((todo, index) => {
-      if (index === parseInt(idx)) {
+      if (index === parseInt(idx, 10)) {
         return {
           ...todo,
           isCompleted: !todo.isCompleted,
@@ -35,7 +35,7 @@ function App(storageKey) {
   const onRemove = (idx) => {
     const originTodos = this.todos;
     const newTodos = originTodos.filter(
-      (todo, index) => index !== parseInt(idx)
+      (todo, index) => index !== parseInt(idx, 10)
     );
     this.setState(newTodos);
   };
@@ -43,7 +43,7 @@ function App(storageKey) {
   const onChange = ({ idx, content }) => {
     const originTodos = this.todos;
     const newTodos = originTodos.map((todo, index) => {
-      if (index === parseInt(idx)) {
+      if (index === parseInt(idx, 10)) {
         return {
           ...todo,
           content: content,
