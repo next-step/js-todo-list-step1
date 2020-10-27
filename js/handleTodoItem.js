@@ -35,11 +35,15 @@ const createTodoItem = (idx, title, isCompleted) => {
     li.classList.remove("completed");
   }
 
+  const findSelectedTodoIndex = (store) => {
+    return store.findIndex((item) => item.idx === idx);
+  };
+
   const dispatchStoreByToggle = () => {
     const store = subscribe();
-    const index = store.indexOf(store.find((item) => item.idx === idx));
-    let isCompleted = store[index].isCompleted;
-    store[index].isCompleted = !isCompleted;
+    const selectedTodoIndex = findSelectedTodoIndex(store);
+    let isCompleted = store[selectedTodoIndex].isCompleted;
+    store[selectedTodoIndex].isCompleted = !isCompleted;
     dispatch(store);
   };
 
@@ -61,8 +65,8 @@ const createTodoItem = (idx, title, isCompleted) => {
   const destroyEl = new DOMelement("button").addProperties("destroy");
   destroyEl.addEventListener("click", () => {
     const store = subscribe();
-    const index = store.indexOf(store.find((item) => item.idx === idx));
-    store.splice(index, 1);
+    const selectedTodoIndex = findSelectedTodoIndex(store);
+    store.splice(selectedTodoIndex, 1);
     dispatch(store);
     render(subscribe());
     if (store.length === 0) updateCounter();
