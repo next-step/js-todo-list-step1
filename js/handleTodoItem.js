@@ -50,13 +50,11 @@ const createTodoItem = (idx, title, isCompleted) => {
   toggleEl.addEventListener("click", () => {
     if (toggleEl.getAttribute("checked")) {
       toggleEl.removeAttribute("checked");
-      li.classList.remove("completed");
-      dispatchStoreByToggle();
     } else {
       toggleEl.setAttribute("checked", "true");
-      li.classList.add("completed");
-      dispatchStoreByToggle();
     }
+    li.classList.toggle("completed");
+    dispatchStoreByToggle();
   });
 
   const labelEl = new DOMelement("label").addProperties("label");
@@ -77,15 +75,16 @@ const createTodoItem = (idx, title, isCompleted) => {
     attributeValue: title,
   });
   editEl.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
+    if (event.key === "Escape" || event.key === "Enter") {
       li.classList.remove("editing");
-    } else if (event.key === "Enter") {
+    }
+
+    if (event.key === "Enter") {
       labelEl.innerText = editEl.value;
       title = editEl.value;
-      li.classList.remove("editing");
       const store = subscribe();
-      const index = store.indexOf(store.find((item) => item.idx === idx));
-      store[index].title = editEl.value;
+      const selectedTodoIndex = findSelectedTodoIndex(store);
+      store[selectedTodoIndex].title = editEl.value;
       dispatch(store);
       render(subscribe());
     }
