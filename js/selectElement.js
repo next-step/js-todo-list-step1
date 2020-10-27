@@ -4,9 +4,9 @@ const listItems = list.childNodes;
 
 const countEl = document.querySelector(".todo-count strong");
 
-const allBtn = document.getElementsByClassName("all")[0];
-const activeBtn = document.getElementsByClassName("active")[0];
-const completedBtn = document.getElementsByClassName("completed")[0];
+const [allBtn, activeBtn, completedBtn] = document.querySelectorAll(
+  ".filters a"
+);
 
 export {
   titleInput,
