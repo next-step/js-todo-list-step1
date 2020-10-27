@@ -90,11 +90,8 @@ const createTodoItem = (idx, title, isCompleted) => {
     }
   });
 
-  viewEl.appendChild(toggleEl);
-  viewEl.appendChild(labelEl);
-  viewEl.appendChild(destroyEl);
-  li.appendChild(viewEl);
-  li.appendChild(editEl);
+  viewEl.append(toggleEl, labelEl, destroyEl);
+  li.append(viewEl, editEl);
 
   return li;
 };
