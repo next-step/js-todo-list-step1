@@ -10,6 +10,7 @@ function TodoApp() {
 		active: [],
 		completed: []
 	};
+
 	const list = document.querySelector("#todo-list");
 	const countBox = document.querySelector(".todo-count");
 
@@ -36,10 +37,25 @@ function TodoApp() {
 		managementCountBox("minus");
 	};
 
+	objectForEach(localStorage, (item, index) => {
+		if(typeof item === "string") {
+			const localStorageIndex = Object.keys(localStorage)[index];
+
+			const newTodoItem = new TodoItem(JSON.parse(item).text, this.refresh, this.remove, localStorageIndex, JSON.parse(item).state);
+			todoItems[JSON.parse(item).state].push(newTodoItem);
+
+			this.render(newTodoItem);
+		};
+	});
+
 	new TodoInput({
 		addTodo: text => {
-			const newTodoItem = new TodoItem(text, this.refresh, this.remove);
+			const index = "todo" + countBox.children[0].innerHTML;
+			localStorage.setItem(index, JSON.stringify({text: text, state: "active"}));
+
+			const newTodoItem = new TodoItem(text, this.refresh, this.remove, index);
 			todoItems["active"].push(newTodoItem);
+
 			this.render(newTodoItem);
 		}
 	});
@@ -58,8 +74,8 @@ function TodoInput({addTodo}) {
 	});
 };
 
-function TodoItem(text, refresh, remove) {
-	this.originalState = "active";
+function TodoItem(text, refresh, remove, index, state) {
+	if(state) this.originalState = state;
 	this.changedState = "";
 
 	this.setState = function(state) {
@@ -68,6 +84,8 @@ function TodoItem(text, refresh, remove) {
 
 	this.refresh = refresh;
 	this.remove = remove;
+
+	this.index = index;
 
 	this.dom = initTodoItem(text, this);
 	this.dom.__proto__ = this;
@@ -110,9 +128,14 @@ function TodoList() {
 };
 
 function initTodoItem(text, item) {
-	const box = makeDomElement({name: "li"});
+	let check = null;
+
+	if(item.originalState === "active") check = false;
+	if(item.originalState === "completed") check = true;
+
+	const box = makeDomElement({name: "li", kind: ["class", item.originalState]});
 	const view = makeDomElement({name: "div", kind: ["class", "view"]});
-	const checkBox = makeDomElement({name: "input", kind: ["class", "toggle"], type: "checkbox"});
+	const checkBox = makeDomElement({name: "input", kind: ["class", "toggle"], type: "checkbox", "checked" : check});
 	const label = makeDomElement({name: "label", kind: ["class", "label"]});
 	const destroyButton = makeDomElement({name: "button", kind: ["class", "destroy"], type: "button"});
 	const editInput = makeDomElement({name: "input", kind: ["class", "edit"]});
@@ -127,11 +150,12 @@ function initTodoItem(text, item) {
 	return box;
 };
 
-function makeDomElement({name, kind, type}) {
+function makeDomElement({name, kind, type, checked}) {
 	const dom = document.createElement(name);
 
 	if(kind) dom.setAttribute(kind[0], kind[1]);
 	if(type) dom.setAttribute("type", type);
+	if(checked) dom.setAttribute("checked", checked);
 
 	return dom;
 };
@@ -144,14 +168,30 @@ function setTodoEvent(box, label, checkBox, destroyButton, editInput, todo) {
 		editInput.value = label.innerHTML;
 	});
 	addBubblingEvent("change", checkBox, function(e) {
-		if(checkBox.checked) box.setState("completed");
-		if(!checkBox.checked) box.setState("active");
+		const text = label.innerHTML;
+		const name = findLocalStorageItem(text);
+
+		if(checkBox.checked) {
+			localStorage.setItem(name, JSON.stringify({text: text, state: "completed"}));
+
+			box.setState("completed");
+		};
+		if(!checkBox.checked) {
+			localStorage.setItem(name, JSON.stringify({text: text, state: "active"}));
+
+			box.setState("active");
+		};
 
 		todo.refresh();
 
 		box.classList.toggle("completed");
 	});
 	addBubblingEvent("click", destroyButton, function(e) {
+		const text = label.innerHTML;
+		const name = findLocalStorageItem(text);
+
+		localStorage.removeItem(name);
+
 		todo.remove();
 	});
 	addBubblingEvent("keyup", editInput, function(e) {
@@ -185,7 +225,21 @@ function objectForEach(object, callback) {
 	let index = 0;
 
 	for(let key in object) {
-		index++;
 		callback(object[key], index);
+		index++;
 	}
+};
+
+function findLocalStorageItem(text) {
+	let name = "";
+
+	Object.keys(localStorage).forEach((item, index) => {
+		if(JSON.parse(localStorage.getItem(item)).text == text) {
+			name = Object.keys(localStorage)[index];
+
+			return;
+		};
+	});
+
+	return name;
 };
