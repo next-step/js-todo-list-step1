@@ -10,7 +10,6 @@ export default class DOMelement {
         attrProps.attributeKey,
         attrProps.attributeValue
       );
-      return this.element;
     }
     return this.element;
   };
