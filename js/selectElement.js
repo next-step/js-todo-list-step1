@@ -2,7 +2,7 @@ const titleInput = document.getElementById("new-todo-title");
 const list = document.getElementById("todo-list");
 const listItems = list.childNodes;
 
-const countEl = document.getElementsByClassName("todo-count")[0].children[0];
+const countEl = document.querySelector(".todo-count strong");
 
 const allBtn = document.getElementsByClassName("all")[0];
 const activeBtn = document.getElementsByClassName("active")[0];
