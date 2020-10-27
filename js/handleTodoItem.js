@@ -109,17 +109,12 @@ const setStateAndDispatch = (store, initState) => {
 };
 
 const addStateToStore = (initState) => {
-  if (subscribe()) {
-    const store = subscribe();
-    setStateAndDispatch(store, initState);
-  } else {
-    const store = [];
-    setStateAndDispatch(store, initState);
-  }
+  const store = subscribe() || [];
+  setStateAndDispatch(store, initState);
 };
 
 const updateCounter = () => {
-  let counter = subscribe().length;
+  const counter = subscribe().length;
   countEl.innerText = counter;
 };
 
