@@ -32,7 +32,7 @@ window.onload = () => {
 
 					return;
 				};
-
+				
 				item.children[0].classList.remove("selected");
 			};
 		});
