@@ -1,5 +1,5 @@
 const addBubblingEvent = function(eventName, eventTarget, callback) {
-	document.body.addEventListener(eventName, e => {
+	document.body.addEventListener(eventName, function(e) {
 		if(e.target === eventTarget)
 			callback(e);
 	});
@@ -7,19 +7,42 @@ const addBubblingEvent = function(eventName, eventTarget, callback) {
 let count = 0;
 
 function TodoApp() {
-	this.todoItems = {
-		nomal: [new TodoItem("test")],
+	const todoItems = {
 		active: [],
 		completed: []
 	};
+	const _list = document.querySelector("#todo-list");
+	const countBox = document.querySelector(".todo-count");
 
-	this.state = "nomal";
+	this.render = TodoList().render;
+	this.renderAsState = state => TodoList().renderAsState(state, todoItems);
+
+	this.refresh = function() {
+		todoItems[this.originalState].forEach((item, index) => {
+			if(item.dom == this.dom) todoItems[this.originalState].splice(index, 1);
+		});
+
+		todoItems[this.dom.changedState].push(this);
+
+		this.originalState = this.dom.changedState;
+		this.changedState = "";
+	};
+	this.remove = function() {
+		todoItems[this.originalState].forEach((item, index) => {
+			if(this == item) todoItems[this.originalState].splice(index, 1);
+		});
+
+		_list.removeChild(this.dom);
+
+		count--;
+		countBox.children[0].innerHTML = count;
+	};
 
 	new TodoInput({
 		addTodo: text => {
-			const newTodoItem = new TodoItem(text);
-			this.todoItems[this.state].push(newTodoItem);
-			TodoList().render(newTodoItem);
+			const newTodoItem = new TodoItem(text, this.refresh, this.remove);
+			todoItems["active"].push(newTodoItem);
+			this.render(newTodoItem);
 		}
 	});
 };
@@ -33,37 +56,54 @@ function TodoInput({addTodo}) {
 
 			addTodo(event.target.value);
 			event.target.value = "";
-
 		};
 	});
 };
 
-function TodoItem(text) {
-	this.text = text;
-	this.state = "";
+function TodoItem(text, refresh, remove) {
+	this.originalState = "active";
+	this.changedState = "";
 
 	this.setState = function(state) {
-		this.state = state;
+		this.changedState = state;
 	};
 
-	this.dom = initTodoItem(this.text, this);
+	this.refresh = refresh;
+	this.remove = remove;
+
+	this.dom = initTodoItem(text, this);
+	this.dom.__proto__ = this;
 
 	return this;
 };
+TodoItem.prototype = Object.create(HTMLLIElement.prototype)
 
 function TodoList() {
 	const _list = document.querySelector("#todo-list");
 	const countBox = document.querySelector(".todo-count");
 
-	this.render = (todo) => {
+	this.render = todo => {
 		count++;
 		countBox.children[0].innerHTML = count;
 		_list.append(todo.dom);
 	};
 	
-	this.renderAsState = arr => {
-		arr.forEach(item => {
-			_list.insertAdjacentHTML("beforeend", item);
+	this.renderAsState = (state, arr) => {
+		_list.innerHTML = "";
+		console.log(arr);
+
+		if(state === "all") {
+			objectForEach(arr, kind => {
+				kind.forEach(todo => {
+					_list.append(todo.dom);
+				});
+			});
+
+			return;
+		};
+		
+		arr[state].forEach(todo => {
+			_list.append(todo.dom);
 		});
 	};
 
@@ -72,23 +112,17 @@ function TodoList() {
 
 function initTodoItem(text, item) {
 	const box = makeDomElement({name: "li"});
-	const view = makeDomElement({name: "div", kind: ["class", "veiw"]});
+	const view = makeDomElement({name: "div", kind: ["class", "view"]});
 	const checkBox = makeDomElement({name: "input", kind: ["class", "toggle"], type: "checkbox"});
 	const label = makeDomElement({name: "label", kind: ["class", "label"]});
-	const destoryButton = makeDomElement({name: "button", kind: ["class", "destroy"], type: "button"});
+	const destroyButton = makeDomElement({name: "button", kind: ["class", "destroy"], type: "button"});
 	const editInput = makeDomElement({name: "input", kind: ["class", "edit"]});
 
 	label.innerHTML = text;
 
-	// setAttr({
-	// 	target: [view, checkBox, label, editInput],
-	// 	kind: "class",
-	// 	value: ["view", "toggle", "label", "edit"]
-	// });
+	setTodoEvent(box, label, checkBox, destroyButton, editInput, item);
 
-	// setAttr({target: checkBox, kind: "type", value: "checkBox"});
-
-	view.append(checkBox, label, destoryButton);
+	view.append(checkBox, label, destroyButton);
 	box.append(view, editInput);
 
 	return box;
@@ -96,57 +130,49 @@ function initTodoItem(text, item) {
 
 function makeDomElement({name, kind, type}) {
 	const dom = document.createElement(name);
+
 	if(kind) dom.setAttribute(kind[0], kind[1]);
 	if(type) dom.setAttribute("type", type);
 
 	return dom;
 };
 
-function setAttr({target, kind, value}) {
-	if(target.length === undefined) target.setAttribute(kind, value);
-
-	objectForEach(target, (item, index) => {
-		item.setAttribute(kind, value[index]);
-	});
-};
-
-function setEvent(target) {
-	box.addEventListener("dblclick", function(e) {
-		this.classList.toggle("editing");
-
+function setTodoEvent(box, label, checkBox, destroyButton, editInput, todo) {
+	addBubblingEvent("dblclick", label, function(e) {
+		box.classList.add("editing");
+		
 		editInput.select();
 	});
-	checkBox.addEventListener("change", function(e) {
+	addBubblingEvent("change", checkBox, function(e) {
+		if(checkBox.checked) box.setState("completed");
+		if(!checkBox.checked) box.setState("active");
+
+		todo.refresh();
+
 		box.classList.toggle("completed");
 	});
-	destoryButton.addEventListener("click", function(e) {
-		list.removeChild(this.parentNode.parentNode);
-
-		allTodoItems.indexOf(this.parentNode.parentNode);
-
-		let idx = allTodoItems.indexOf(this.parentNode.parentNode);
-		allTodoItems.splice(idx, 1);
-
-		count--;
-		loadTodoItemCount();
+	addBubblingEvent("click", destroyButton, function(e) {
+		todo.remove();
 	});
-	editInput.addEventListener("keyup", function(e) {
-		if(e.key === "Enter") label.innerHTML = this.value;
+	addBubblingEvent("keyup", editInput, function(e) {
+		if(e.key === "Enter") label.innerHTML = e.target.value;
 		if(e.key === "Enter" || e.key === "Escape") {
-			this.value = "";
+			e.target.value = "";
 
 			box.classList.remove("editing");
 		};
 	});
-	editInput.addEventListener("focusout", function(e) {
-		this.value = "";
+	addBubblingEvent("focusout", editInput, function(e) {
+		e.target.value = "";
 
 		box.classList.remove("editing");
 	});
 };
 
-function objectForEach(target, callback) {
-	for(let i = 0; i < target.length; i++) {
-		callback(target[i], i);
+function objectForEach(object, callback) {
+	let index = 0;
+	for(let key in object) {
+		index++;
+		callback(object[key], index);
 	}
 };
