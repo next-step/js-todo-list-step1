@@ -90,4 +90,5 @@ window.onload = () => {
 	// };
 
 	const app = new TodoApp();
+	console.log(app.todoItems.nomal);
 };

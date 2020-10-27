@@ -7,8 +7,8 @@ const addBubblingEvent = function(eventName, eventTarget, callback) {
 let count = 0;
 
 function TodoApp() {
-	const todoItems = {
-		nomal: [],
+	this.todoItems = {
+		nomal: [new TodoItem("test")],
 		active: [],
 		completed: []
 	};
@@ -18,7 +18,7 @@ function TodoApp() {
 	new TodoInput({
 		addTodo: text => {
 			const newTodoItem = new TodoItem(text);
-			todoItems[this.state].push(newTodoItem);
+			this.todoItems[this.state].push(newTodoItem);
 			TodoList().render(newTodoItem);
 		}
 	});
@@ -42,7 +42,13 @@ function TodoItem(text) {
 	this.text = text;
 	this.state = "";
 
-	return initTodoItem(text, this.state);
+	this.setState = function(state) {
+		this.state = state;
+	};
+
+	this.dom = initTodoItem(this.text, this);
+
+	return this;
 };
 
 function TodoList() {
@@ -52,7 +58,7 @@ function TodoList() {
 	this.render = (todo) => {
 		count++;
 		countBox.children[0].innerHTML = count;
-		_list.append(todo);
+		_list.append(todo.dom);
 	};
 	
 	this.renderAsState = arr => {
@@ -64,28 +70,36 @@ function TodoList() {
 	return this;
 };
 
-function initTodoItem(text, state) {
-	const box = document.createElement("li");
-	const view = document.createElement("div");
-	const checkBox = document.createElement("input");
-	const label = document.createElement("label");
-	const destoryButton = document.createElement("button");
-	const editInput = document.createElement("input");
+function initTodoItem(text, item) {
+	const box = makeDomElement({name: "li"});
+	const view = makeDomElement({name: "div", kind: ["class", "veiw"]});
+	const checkBox = makeDomElement({name: "input", kind: ["class", "toggle"], type: "checkbox"});
+	const label = makeDomElement({name: "label", kind: ["class", "label"]});
+	const destoryButton = makeDomElement({name: "button", kind: ["class", "destroy"], type: "button"});
+	const editInput = makeDomElement({name: "input", kind: ["class", "edit"]});
 
 	label.innerHTML = text;
 
-	setAttr({
-		target: [view, checkBox, label, destoryButton, editInput],
-		kind: "class",
-		value: ["view", "toggle", "label", "destroy", "edit"]
-	});
+	// setAttr({
+	// 	target: [view, checkBox, label, editInput],
+	// 	kind: "class",
+	// 	value: ["view", "toggle", "label", "edit"]
+	// });
 
-	setAttr({target: checkBox, kind: "type", value: "checkBox"});
+	// setAttr({target: checkBox, kind: "type", value: "checkBox"});
 
 	view.append(checkBox, label, destoryButton);
 	box.append(view, editInput);
 
 	return box;
+};
+
+function makeDomElement({name, kind, type}) {
+	const dom = document.createElement(name);
+	if(kind) dom.setAttribute(kind[0], kind[1]);
+	if(type) dom.setAttribute("type", type);
+
+	return dom;
 };
 
 function setAttr({target, kind, value}) {
