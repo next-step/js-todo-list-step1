@@ -4,14 +4,13 @@ const addBubblingEvent = function(eventName, eventTarget, callback) {
 			callback(e);
 	});
 };
-let count = 0;
 
 function TodoApp() {
 	const todoItems = {
 		active: [],
 		completed: []
 	};
-	const _list = document.querySelector("#todo-list");
+	const list = document.querySelector("#todo-list");
 	const countBox = document.querySelector(".todo-count");
 
 	this.render = TodoList().render;
@@ -32,10 +31,9 @@ function TodoApp() {
 			if(this == item) todoItems[this.originalState].splice(index, 1);
 		});
 
-		_list.removeChild(this.dom);
+		list.removeChild(this.dom);
 
-		count--;
-		countBox.children[0].innerHTML = count;
+		managementCountBox("minus");
 	};
 
 	new TodoInput({
@@ -79,32 +77,33 @@ function TodoItem(text, refresh, remove) {
 TodoItem.prototype = Object.create(HTMLLIElement.prototype)
 
 function TodoList() {
-	const _list = document.querySelector("#todo-list");
-	const countBox = document.querySelector(".todo-count");
+	const list = document.querySelector("#todo-list");
 
 	this.render = todo => {
-		count++;
-		countBox.children[0].innerHTML = count;
-		_list.append(todo.dom);
+		managementCountBox("plus");
+
+		list.append(todo.dom);
 	};
 	
 	this.renderAsState = (state, arr) => {
-		_list.innerHTML = "";
-		console.log(arr);
+		list.innerHTML = "";
 
 		if(state === "all") {
 			objectForEach(arr, kind => {
 				kind.forEach(todo => {
-					_list.append(todo.dom);
+					list.append(todo.dom);
 				});
 			});
+			managementCountBox();
 
 			return;
 		};
 		
 		arr[state].forEach(todo => {
-			_list.append(todo.dom);
+			list.append(todo.dom);
 		});
+
+		managementCountBox();
 	};
 
 	return this;
@@ -142,6 +141,7 @@ function setTodoEvent(box, label, checkBox, destroyButton, editInput, todo) {
 		box.classList.add("editing");
 		
 		editInput.select();
+		editInput.value = label.innerHTML;
 	});
 	addBubblingEvent("change", checkBox, function(e) {
 		if(checkBox.checked) box.setState("completed");
@@ -169,8 +169,21 @@ function setTodoEvent(box, label, checkBox, destroyButton, editInput, todo) {
 	});
 };
 
+function managementCountBox(operator, kind) {
+	const list = document.querySelector("#todo-list");
+	const countBox = document.querySelector(".todo-count");
+	let count = countBox.children[0].innerHTML;
+
+	if(operator === "plus") count++;
+	if(operator === "minus") count--;
+	if(!operator) count = list.children.length;
+
+	countBox.children[0].innerHTML = count;
+};
+
 function objectForEach(object, callback) {
 	let index = 0;
+
 	for(let key in object) {
 		index++;
 		callback(object[key], index);
