@@ -3,10 +3,10 @@ import DOMelement from "./createElement.js";
 import { dispatch, subscribe, createIdx } from "./handleState.js";
 
 titleInput.addEventListener("keypress", (event) => {
+  const inputValue = titleInput.value;
+  if (!inputValue) return;
   if (event.key === "Enter") {
-    const inputValue = titleInput.value;
     const initState = { idx: createIdx(), inputValue, isCompleted: false };
-    if (inputValue === "") return;
     addStateToStore(initState);
     titleInput.value = "";
   }
