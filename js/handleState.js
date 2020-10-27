@@ -11,10 +11,10 @@ const createIdx = () => {
     const store = subscribe();
     if (store.length === 0) return 0;
     const idxArray = [];
-    store.map((item) => {
+    store.forEach((item) => {
       idxArray.push(item.idx);
     });
-    const max = idxArray.reduce(function (previous, current) {
+    const max = idxArray.reduce((previous, current = 0) => {
       return previous > current ? previous : current;
     });
     return max + 1;
