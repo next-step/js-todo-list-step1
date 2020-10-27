@@ -1,21 +1,21 @@
 window.onload = () => {
 	const app = new TodoApp();
 
-	const all = document.querySelector(".all");
+	const all = document.querySelector(".filters a.all");
 	addBubblingEvent("click", all, function(e) {
 		selectFilter("all");
 
 		app.renderAsState("all");
 	});
 
-	const active = document.querySelector(".active");
+	const active = document.querySelector(".filters a.active");
 	addBubblingEvent("click", active, function(e) {
 		selectFilter("active");
 
 		app.renderAsState("active");
 	});
 
-	const completed = document.querySelector(".completed");
+	const completed = document.querySelector(".filters a.completed");
 	addBubblingEvent("click", completed, function(e) {
 		selectFilter("completed");
 
