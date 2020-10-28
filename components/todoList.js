@@ -3,6 +3,7 @@ function TodoList({ onAction }) {
   const $ul = document.querySelector(".todo-list");
   const $filters = document.querySelector(".filters");
   this.render = (todoList) => {
+    if (!todoList) return;
     const todos = todoList
       .map(
         (todo) => `<li id=${todo.id} class=${

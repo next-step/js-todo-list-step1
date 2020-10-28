@@ -2,7 +2,6 @@ import TodoCount from "./components/todoCount.js";
 import TodoInput from "./components/todoInput.js";
 import TodoList from "./components/todoList.js";
 
-//count id setting
 let todoList = [];
 
 const todoInput = new TodoInput({ onAction: { add: addTodos } });
@@ -17,6 +16,12 @@ const todoShow = new TodoList({
 });
 const todoCount = new TodoCount();
 
+todoList = JSON.parse(localStorage.getItem("TODOS"));
+handleRender();
+
+if (!todoList) {
+  todoList = [];
+}
 //handling add
 function addTodos(item) {
   todoList.push({
@@ -70,9 +75,7 @@ function handleEditing(eId, value) {
   localStorage.setItem("TODOS", JSON.stringify(todoList));
   todoShow.render(todoList);
 }
+
 function handleRender() {
   todoShow.render(todoList);
 }
-
-todoList = JSON.parse(localStorage.getItem("TODOS"));
-handleRender();
