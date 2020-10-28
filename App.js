@@ -50,10 +50,20 @@ function App() {
         this.setState(data)
     }
     
+    this.saveLocalStorage = () => {
+        localStorage.setItem('data', JSON.stringify(this.data))
+    }
     
+    this.getLocalStorage = () => {
+        if(localStorage.getItem('data')) {
+            const data = JSON.parse(localStorage.data)
+            this.setState(data);
+        }
+    }
     
     this.setState = updatedData => {
         this.data = updatedData;
+        this.saveLocalStorage();
         this.render();
     }
     this.render = () => {
@@ -61,7 +71,7 @@ function App() {
         todoCount.setState(this.data)
     }
     
-    
+    this.getLocalStorage();
 }
 
 export default App;
