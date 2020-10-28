@@ -1,56 +1,54 @@
-	const input = document.getElementById("new-todo-title");
-	const todo = document.getElementById("todo-list");
+const todoAppender = document.getElementById("new-todo-title");
+const todoList = document.getElementById("todo-list");
+const todoCount = document.getElementsByClassName("todo-count");
 
-	input.addEventListener("keydown", v => {
-		if(v.key === "Enter"){
-			console.log(v.key === "Enter");
-			const li = document.createElement("li");
-			const div = document.createElement("div");
-			const toggleinput = document.createElement("input");
-			const label =  document.createElement("label");
-			const button = document.createElement("button");
-			const editinput = document.createElement("input");
+todoAppender.addEventListener("keydown", ({ key, target }) => {
+	
+	if(key !== "Enter" || target.value.trim().length === 0) return;
+	const lastIndex = Math.max(0, ...[ ...todoList.querySelectorAll('[data-index]') ].map(v => v.dataset.index).map(Number)) + 1;
+	todoList.insertAdjacentHTML('beforeend', `
+		<li data-index="${lastIndex}">
+			<div class="view">
+				<input class="toggle" type="checkbox"/>
+				<label class="label">${target.value}</label>
+				<button class="destroy"></button>
+			</div>
+			<input class="edit" value="${target.value}" />
+		</li>
+	`.trim());
+	
+	target.value = "";
+})
 
-			div.setAttribute("class", "view");
-			toggleinput.setAttribute("class", "toggle");
-			toggleinput.setAttribute("type", "checkbox");
-			label.setAttribute("class", "label");
-			button.setAttribute("class", "destroy");
-			editinput.setAttribute("class", "edit");
 
-			label.innerHTML = input.value;
+todoList.addEventListener('click', ({ target }) => {
+	if (!target.classList.contains('destroy')) return;
+	const todoItem = target.closest('[data-index]');
+	todoItem.remove();
+})
 
-			div.append(toggleinput, label, button);
-			li.append(div, editinput);
-			todo.append(li);
+todoList.addEventListener('change', ({ target }) => {
+	if (!target.classList.contains('toggle')) return;
+	const todoItem = target.closest('[data-index]');
+	if (target.checked){
+		return todoItem.setAttribute("class", "completed");
+	}
+	todoItem.removeAttribute("class");
+})
 
-			input.value = "";
-			button.addEventListener("click", function(){
-				li.remove();
-			});
+todoList.addEventListener("dblclick", ({ target }) => {
+	if (!target.classList.contains('label')) return;
+	target.closest('li').setAttribute("class", "editing");
 
-			toggleinput.addEventListener("click", function(){
-				if(this.checked){
-					li.setAttribute("class", "completed");
-
-					return;
-				}
-					li.removeAttribute("class");
-			})
-
-				li.addEventListener("dblclick", function(){
-					this.setAttribute("class", "editing");
-
-				})
-				editinput.addEventListener("keyup", function(e){
-					if(e.key === "Enter") label.innerHTML = this.value;
-					if(e.key === "Enter" || e.key === "Escape"){
-						this.value = "";
-
-						li.classList.remove("editing");
-					}
-				})
-			
-		}
-
-	})
+})
+todoList.addEventListener("keyup", ({ key, target }) => {
+	if (!target.classList.contains('edit')) return;
+	const todoItem = target.closest('[data-index]');
+	if (key === "Enter") {
+		todoItem.querySelector('.label').innerHTML = target.value;
+	}
+	if (['Enter', 'Escape'].includes(key)){
+		target.value = "";
+		todoItem.classList.remove("editing");
+	}
+})
