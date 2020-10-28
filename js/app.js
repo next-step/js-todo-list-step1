@@ -41,6 +41,7 @@ todoList.addEventListener("dblclick", ({ target }) => {
 	target.closest('li').setAttribute("class", "editing");
 
 })
+
 todoList.addEventListener("keyup", ({ key, target }) => {
 	if (!target.classList.contains('edit')) return;
 	const todoItem = target.closest('[data-index]');
