@@ -61,19 +61,6 @@ function TodoApp() {
 	});
 };
 
-function TodoInput({addTodo}) {
-	const input = document.querySelector("#new-todo-title");
-
-	addBubblingEvent("keydown", input, event => {
-		if(event.key === "Enter") {
-			if(event.target.value === "") return false;
-
-			addTodo(event.target.value);
-			event.target.value = "";
-		};
-	});
-};
-
 function TodoItem(text, refresh, remove, index, state) {
 	if(state) this.originalState = state;
 	this.changedState = "";
@@ -242,4 +229,85 @@ function findLocalStorageItem(text) {
 	});
 
 	return name;
+};
+
+
+
+
+
+
+
+
+
+
+import Component from "./core/Component.js";
+import TodoInput from "./components/TodoInput.js";
+
+export default class App extends Component {
+	init() {
+		this.$state = {
+			todos: {
+
+			},
+			filterType: 0,
+		}
+	};
+
+	template() {
+		return `
+		<li>
+			<div class="view">
+				<input class="toggle" type="checkbox"/>
+				<label class="label">새로운 타이틀</label>
+				<button class="destroy"></button>
+			</div>
+			<input class="edit" value="새로운 타이틀" />
+		</li>
+		`;
+	};
+
+	addItem(text) {
+		const id = Math.max(0, ...Object.keys(this.$state.todos)) + 1;
+		const active = false;
+		this.setState({
+			todos: {
+				...this.$state.todos,
+				[name] : { name, text, active }
+			};
+		});
+	};
+
+	toggleEvent() {
+		this.setState({
+			todos: {
+				...this.$state.todos,
+				[name] : { ...todos[name], active: !todos[name].active }
+			};
+		});
+	};
+
+	deleteEvent(name) {
+		const todos = { ...this.$state.todos };
+
+		delete todos[name];
+
+		this.setState({ todos });
+	};
+
+	filterItem(filterType) {
+		this.setState({ filterType });
+	};
+
+	mounted() {
+		const $todoInput = document.querySelector("#new-todo-title");
+		const $todoList = document.querySelector("#todo-list");
+
+		new TodoInput($todoInput, {
+			addItem: addItem.bind(this);
+		});
+
+		new TodoItems($todoList, {
+
+		});
+	};
 };
