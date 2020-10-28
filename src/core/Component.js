@@ -7,17 +7,22 @@ export default class Component{
 		this.init();
 		this.setEvent();
 		this.render();
+
 	};
 
 	template() {return ``};
 
-	render() {
-		this.$state = this.template();
-		
+	init() {};
+
+	render () {
+		this.$target.innerHTML = this.template();
+
 		this.mounted();
 	};
+
 	setState(newState) {
-		this.$state = { ...this.$state, ...newState};
+		console.log(this.$state.todos)
+		this.$state.todos = newState.todos;
 
 		this.render();
 	};
@@ -26,9 +31,13 @@ export default class Component{
 	setEvent() {};
 	addEvent(eventName, eventTarget, callback) {
 		this.$target.addEventListener(eventName, event => {
+			console.log(eventTarget);
+
 			const children = [ ...this.$target.querySelectorAll(eventTarget) ];
 
-			if(!children.includes(event.target)) return;
+			console.log(children);
+
+			if (!children.includes(event.target)) return;
 
 			callback(event);
 		});

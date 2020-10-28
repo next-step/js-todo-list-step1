@@ -242,12 +242,14 @@ function findLocalStorageItem(text) {
 
 import Component from "./core/Component.js";
 import TodoInput from "./components/TodoInput.js";
+import todoList from "./components/TodoList.js";
 
 export default class App extends Component {
-	init() {
+	init () {
 		this.$state = {
 			todos: {
-
+				"1": { id: 1, text: '아이템1', active: false },
+				"2": { id: 2, text: '아이템2', active: true }
 			},
 			filterType: 0,
 		}
@@ -255,25 +257,43 @@ export default class App extends Component {
 
 	template() {
 		return `
-		<li>
-			<div class="view">
-				<input class="toggle" type="checkbox"/>
-				<label class="label">새로운 타이틀</label>
-				<button class="destroy"></button>
-			</div>
-			<input class="edit" value="새로운 타이틀" />
-		</li>
+		<h1>TODOS</h1>
+      	<input
+      	  id="new-todo-title"
+      	  class="new-todo"
+      	  placeholder="할일을 추가해주세요"
+      	  autofocus
+      	/>
+      	<main>
+      	  <input class="toggle-all" type="checkbox" />
+      		  <ul id="todo-list" class="todo-list"></ul>
+      		  <div class="count-container">
+      		    <span class="todo-count">총 <strong>0</strong> 개</span>
+      		    <ul class="filters">
+       	     <li>
+       	       <a class="all selected" href="#">전체보기</a>
+        	    </li>
+        	    <li>
+        	      <a class="active" href="#active">해야할 일</a>
+        	    </li>
+   	     	    <li>
+   	     	      <a class="completed" href="#completed">완료한 일</a>
+   	         </li>
+   	       </ul>
+      	  </div>
+      	</main>
 		`;
 	};
 
 	addItem(text) {
 		const id = Math.max(0, ...Object.keys(this.$state.todos)) + 1;
 		const active = false;
+
 		this.setState({
 			todos: {
 				...this.$state.todos,
-				[name] : { name, text, active }
-			};
+				[id] : { id, text, active }
+			}
 		});
 	};
 
@@ -281,15 +301,15 @@ export default class App extends Component {
 		this.setState({
 			todos: {
 				...this.$state.todos,
-				[name] : { ...todos[name], active: !todos[name].active }
-			};
+				[id] : { ...todos[id], active: !todos[id].active }
+			}
 		});
 	};
 
-	deleteEvent(name) {
+	deleteEvent(id) {
 		const todos = { ...this.$state.todos };
 
-		delete todos[name];
+		delete todos[id];
 
 		this.setState({ todos });
 	};
@@ -299,14 +319,15 @@ export default class App extends Component {
 	};
 
 	mounted() {
-		const $todoInput = document.querySelector("#new-todo-title");
+		const { addItem } = this;
+		const $main = document.querySelector("main");
 		const $todoList = document.querySelector("#todo-list");
 
-		new TodoInput($todoInput, {
-			addItem: addItem.bind(this);
+		new TodoInput($main, {
+			addItem: addItem.bind(this)
 		});
 
-		new TodoItems($todoList, {
+		new TodoList($todoList, {
 
 		});
 	};
