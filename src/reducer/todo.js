@@ -18,7 +18,7 @@ export const toggleTodo = id => actionCreator(TODO_TOGGLE, { id });
 export const updateTodo = (id, text) =>
   actionCreator(TODO_UPDATE, { id, text });
 
-const todoReducer = (state, { type, payload }) => {
+const todoReducer = (state = { todos: [] }, { type, payload }) => {
   switch (type) {
     case TODO_INIT: {
       return {
