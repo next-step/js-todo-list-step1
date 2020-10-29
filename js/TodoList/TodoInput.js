@@ -1,6 +1,6 @@
-class Head {
+class TodoInput {
     constructor (parent, item) {
-        console.log('TEST: TodoList Head', );
+        console.log('TEST: TodoList TodoInput', );
         this.$TodoInput = document.getElementById('new-todo-title')
         this.$TodoInput.addEventListener('keyup', (e) => {
             console.log('TEST: input keyup event', parent, item);
@@ -13,4 +13,4 @@ class Head {
         })
     }
 }
-export { Head }
+export { TodoInput }

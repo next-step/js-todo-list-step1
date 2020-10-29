@@ -1,6 +1,6 @@
-class Body {
+class TodoList {
     constructor (parent, item) {
-        console.log('TEST: TodoList Body', );
+        console.log('TEST: TodoList TodoList', );
         this.$TodoList = document.getElementById('todo-list')
         
         console.log('TEST: body', this.$TodoListComplete);
@@ -34,4 +34,4 @@ class Body {
         })
     }
 }
-export { Body }
+export { TodoList }

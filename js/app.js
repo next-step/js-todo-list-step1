@@ -1,6 +1,6 @@
-import { Head } from './TodoList/head.js';
-import { Body } from './TodoList/body.js';
-import { Bottom } from './TodoList/bottom.js';
+import { TodoInput } from './TodoList/TodoInput.js';
+import { TodoList } from './TodoList/TodoList.js';
+import { TodoFilter } from './TodoList/TodoFilter.js';
 import { Template } from './TodoList/template.js';
 
 console.log('TEST: TodoList init', );
@@ -10,9 +10,9 @@ class App {
         this.ID = 0;
         this.item = [] // {id, context, complete}, {id: ID++, context: 'test', complete: false}
         console.log('TEST: app.js', this.item, this.ID);
-        this.Head = new Head(this, this.item);
-        this.Body = new Body(this, this.item);
-        this.Bottom = new Bottom(this, this.item);
+        this.TodoInput = new TodoInput(this, this.item);
+        this.TodoList = new TodoList(this, this.item);
+        this.TodoFilter = new TodoFilter(this, this.item);
         this.Template = Template
         this.$TodoInput = document.getElementById('new-todo-title')
         this.$TodoList = document.getElementById('todo-list')
@@ -72,4 +72,4 @@ class App {
     }
 }
 
-const TodoList = new App();
+const todo = new App();
