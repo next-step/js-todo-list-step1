@@ -1,6 +1,7 @@
 import TodoInput from './components/TodoInput.js';
 import TodoList from './components/TodoList.js';
 import TodoCount from './components/TodoCount.js';
+import TodoFilter from './components/TodoFilter.js';
 import newId from './components/utils/newId.js'
 
 function App() {
@@ -10,7 +11,8 @@ function App() {
     //컴포넌트 인스턴스 생성
     const todoInput = new TodoInput(this.app);
     const todoList = new TodoList(this.data, this.app);
-    const todoCount = new TodoCount(this.app, this.data)
+    const todoCount = new TodoCount(this.app, this.data);
+    const todoFilter = new TodoFilter(this.app, this.data);
     
    
     this.addTodo = newTodo => {
@@ -61,11 +63,33 @@ function App() {
         }
     }
     
+    // this.filterRender = (filterBtn) => {
+    //     console.log('app-todoFilter function')
+    //     const data = this.data.slice();
+        
+    //     switch(filterBtn) {
+    //         case 'all' :
+    //         todoList.setState(data)
+    //         break;
+            
+    //         case 'active' :
+    //             data.filter(todo => !todo.completed )
+    //             todoList.setState(data)
+    //         break;
+            
+    //         case 'completed' :
+    //             data.filter(todo => todo.completed )
+    //             todoList.setState(data)
+    //         break;
+    //     }
+    // }
+    
     this.setState = updatedData => {
         this.data = updatedData;
         this.saveLocalStorage();
         this.render();
     }
+    
     this.render = () => {
         todoList.setState(this.data);
         todoCount.setState(this.data)

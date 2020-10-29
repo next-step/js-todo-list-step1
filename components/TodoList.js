@@ -19,17 +19,12 @@ function TodoList(data, app) {
         }).join('')
     }
     
-    
-     
-     //esc누르면 editing 클래스 삭제
      this.editMode = e => {
         if(e.target.className === 'label') {
             e.target.parentNode.parentNode.classList.add('editing');
         }
-        
     }
     $todoList.addEventListener('dblclick', this.editMode);
-    
     
     this.editTodo = e => {
         if(e.target.className === 'edit') {
@@ -44,18 +39,6 @@ function TodoList(data, app) {
         }
     }
     $todoList.addEventListener('keydown', this.editTodo);
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
     
     this.toggleTodo = e => {
         if(e.target.className === 'toggle') {
@@ -72,12 +55,6 @@ function TodoList(data, app) {
         }
     }
     $todoList.addEventListener('click', this.deleteTodo);
-    
-   
-    
-    
-    
-    
     
     this.setState = newData => {
         this.data = newData;
