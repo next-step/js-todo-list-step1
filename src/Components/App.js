@@ -93,7 +93,7 @@ export default store => {
 
     selectedTab.classList.add("selected");
 
-    todoSubscribe("HASH_CHANGE");
+    todoSubscribe();
   };
 
   window.addEventListener("hashchange", locationChange);
