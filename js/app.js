@@ -5,11 +5,11 @@ import { Template } from './TodoList/template.js';
 
 console.log('TEST: TodoList init', );
 
-let ID = 0;
 class App {
     constructor () {
+        this.ID = 0;
         this.item = [] // {id, context, complete}, {id: ID++, context: 'test', complete: false}
-        console.log('TEST: app.js', this.item, ID);
+        console.log('TEST: app.js', this.item, this.ID);
         this.Head = new Head(this, this.item);
         this.Body = new Body(this, this.item);
         this.Bottom = new Bottom(this, this.item);
@@ -34,7 +34,7 @@ class App {
     }
     
     addItem (inputValue) {
-        const eachItem = {id: ID++, context: inputValue, complete: false}
+        const eachItem = {id: this.ID++, context: inputValue, complete: false}
         console.log('TEST: addItem', eachItem);
         this.item.push(eachItem)
         this.render()
