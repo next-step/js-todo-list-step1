@@ -6,7 +6,7 @@ import { Template } from './TodoList/template.js';
 console.log('TEST: TodoList init', );
 
 let ID = 0;
-class app {
+class App {
     constructor () {
         this.item = [] // {id, context, complete}, {id: ID++, context: 'test', complete: false}
         console.log('TEST: app.js', this.item, ID);
@@ -26,7 +26,7 @@ class app {
     render() {
         /** 아이템 조작하는 로직 작성 */
         /**  body.js로 옮길것  */
-        let result = this.itemBeforeRender().join()
+        const result = this.itemBeforeRender().join()
         this.$TodoList.innerHTML = '';
         this.$TodoList.insertAdjacentHTML('beforeend', result)
         /** bottom.js로 옮길것  */
@@ -34,7 +34,7 @@ class app {
     }
     
     addItem (inputValue) {
-        let eachItem = {id: ID++, context: inputValue, complete: false}
+        const eachItem = {id: ID++, context: inputValue, complete: false}
         console.log('TEST: addItem', eachItem);
         this.item.push(eachItem)
         this.render()
@@ -42,7 +42,7 @@ class app {
     beforeUpdateItem () {}
     afterUpdateItem (targetElement, value) {
         console.log('TEST: afterUpdateItem', );
-        let itemId = targetElement.id.replace('item-', '')
+        const itemId = targetElement.id.replace('item-', '')
         this.item = this.item.map(v => {
             if ( parseInt(itemId) === v.id) {
                 v.context = value
@@ -53,14 +53,14 @@ class app {
         this.render();
     }
     deleteItem (targetElement) {
-        let itemId = targetElement.id.replace('item-', '')
+        const itemId = targetElement.id.replace('item-', '')
         this.item = this.item.filter( v =>  (parseInt(itemId) === v.id) ? false : true )
         console.log('TEST: deleteItem ', itemId, this.item);
         this.render();
     }
     completeItem (targetElement) {
         // item값 변경 
-        let itemId = targetElement.id.replace('item-', '')
+        const itemId = targetElement.id.replace('item-', '')
         console.log('TEST: completeItem enter', itemId, targetElement);
         this.item = this.item.map(v => {
             console.log('TEST: completeItem map', v);
@@ -72,5 +72,4 @@ class app {
     }
 }
 
-let TodoList = new app();
-console.log('TEST: TodoList init done', TodoList);
+const TodoList = new App();

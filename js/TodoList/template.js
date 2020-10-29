@@ -1,4 +1,4 @@
-let Template = (obj) => {
+const Template = (obj) => {
     console.log('TEST: Template enter', obj);
     return `
     <li id="item-${obj.id}">
