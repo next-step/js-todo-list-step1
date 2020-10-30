@@ -5,3 +5,4 @@ export const STATUS = Object.freeze({
   ACTIVE: "active",
   COMPLETED: "completed",
 });
+export const STORAGE_KEY = "todoData";

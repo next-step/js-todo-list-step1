@@ -1,4 +1,6 @@
-export const getStorageData = (key) => {
+import { STORAGE_KEY as key } from "./constantsKey.js";
+
+export const getStorageData = () => {
   try {
     return JSON.parse(localStorage.getItem(key)) || [];
   } catch (e) {
@@ -7,7 +9,7 @@ export const getStorageData = (key) => {
   }
 };
 
-export const setStorageData = (key, todo) => {
+export const setStorageData = (todo) => {
   try {
     localStorage.setItem(key, JSON.stringify(todo));
   } catch (e) {
