@@ -7,8 +7,8 @@ function TodoList(todos, { onAction }) {
   this.todos = todos;
   this.onAction = onAction;
 
-  const createTodoList = (todo, idx) => {
-    const { content, isCompleted = false } = todo;
+  const createTodoList = (todo) => {
+    const { idx, content, isCompleted = false } = todo;
     if (!content) return;
 
     return `<li data-idx=${idx} class=${isCompleted ? "completed" : ""}>

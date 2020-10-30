@@ -12,15 +12,15 @@ function App(storageKey) {
     const originTodos = this.todos;
     const newTodos = [
       ...originTodos,
-      { content: inputVal, isCompleted: false },
+      { idx: Date.now(), content: inputVal, isCompleted: false },
     ];
     this.setState(newTodos);
   };
 
   const onToggle = (idx) => {
     const originTodos = this.todos;
-    const newTodos = originTodos.map((todo, index) => {
-      if (index === parseInt(idx, 10)) {
+    const newTodos = originTodos.map((todo) => {
+      if (todo.idx === parseInt(idx, 10)) {
         return {
           ...todo,
           isCompleted: !todo.isCompleted,
@@ -35,15 +35,15 @@ function App(storageKey) {
   const onRemove = (idx) => {
     const originTodos = this.todos;
     const newTodos = originTodos.filter(
-      (todo, index) => index !== parseInt(idx, 10)
+      (todo) => todo.idx !== parseInt(idx, 10)
     );
     this.setState(newTodos);
   };
 
   const onChange = ({ idx, content }) => {
     const originTodos = this.todos;
-    const newTodos = originTodos.map((todo, index) => {
-      if (index === parseInt(idx, 10)) {
+    const newTodos = originTodos.map((todo) => {
+      if (todo.idx === parseInt(idx, 10)) {
         return {
           ...todo,
           content: content,
