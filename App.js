@@ -66,10 +66,11 @@ function App(storageKey) {
     return todosBy[status] || this.todos;
   };
 
-  this.setState = (newData, { status } = "") => {
+  this.setState = (newData, { status = this.status || "all" } = "") => {
     setStorageData(storageKey, newData);
     this.todos = getStorageData(storageKey);
-    this.fileteredTodos = status ? onSetStatus(status) : this.todos;
+    this.status = status;
+    this.fileteredTodos = onSetStatus(this.status);
 
     this.render(this.fileteredTodos);
   };
