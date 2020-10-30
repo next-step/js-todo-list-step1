@@ -5,72 +5,69 @@ import TodoStatus from "./components/TodoStatus.js";
 import { STATUS } from "./utils/constantsKey.js";
 import { getStorageData, setStorageData } from "./utils/handleData.js";
 
-function App(storageKey) {
+function App() {
   if (!new.target) throw new Error("error: App must be called with new!");
 
-  const onAdd = (inputVal) => {
-    const originTodos = this.todos;
-    const newTodos = [
-      ...originTodos,
-      { idx: Date.now(), content: inputVal, isCompleted: false },
-    ];
-    this.setState(newTodos);
-  };
+  const handleData = {
+    onAdd: (inputVal) => {
+      const originTodos = this.todos;
+      const newTodos = [
+        ...originTodos,
+        { idx: Date.now(), content: inputVal, isCompleted: false },
+      ];
+      this.setState(newTodos);
+    },
+    onToggle: (idx) => {
+      const originTodos = this.todos;
+      const newTodos = originTodos.map((todo) => {
+        if (todo.idx === parseInt(idx, 10)) {
+          return {
+            ...todo,
+            isCompleted: !todo.isCompleted,
+          };
+        }
+        return todo;
+      });
 
-  const onToggle = (idx) => {
-    const originTodos = this.todos;
-    const newTodos = originTodos.map((todo) => {
-      if (todo.idx === parseInt(idx, 10)) {
-        return {
-          ...todo,
-          isCompleted: !todo.isCompleted,
-        };
-      }
-      return todo;
-    });
-
-    this.setState(newTodos);
-  };
-
-  const onRemove = (idx) => {
-    const originTodos = this.todos;
-    const newTodos = originTodos.filter(
-      (todo) => todo.idx !== parseInt(idx, 10)
-    );
-    this.setState(newTodos);
-  };
-
-  const onChange = ({ idx, content }) => {
-    const originTodos = this.todos;
-    const newTodos = originTodos.map((todo) => {
-      if (todo.idx === parseInt(idx, 10)) {
-        return {
-          ...todo,
-          content: content,
-        };
-      }
-      return todo;
-    });
-    this.setState(newTodos);
-  };
-
-  const onBindStatus = (status) => {
-    this.setState(this.todos, { status: status });
-  };
-
-  const onSetStatus = (status) => {
-    const todosBy = {
-      [STATUS.ACTIVE]: this.todos.filter((todo) => !todo.isCompleted),
-      [STATUS.COMPLETED]: this.todos.filter((todo) => todo.isCompleted),
-    };
-    return todosBy[status] || this.todos;
+      this.setState(newTodos);
+    },
+    onRemove: (idx) => {
+      const originTodos = this.todos;
+      const newTodos = originTodos.filter(
+        (todo) => todo.idx !== parseInt(idx, 10)
+      );
+      this.setState(newTodos);
+    },
+    onChange: ({ idx, content }) => {
+      const originTodos = this.todos;
+      const newTodos = originTodos.map((todo) => {
+        if (todo.idx === parseInt(idx, 10)) {
+          return {
+            ...todo,
+            content: content,
+          };
+        }
+        return todo;
+      });
+      this.setState(newTodos);
+    },
+    onBindStatus: (status) => {
+      this.setState(this.todos, { status: status });
+    },
+    onSetStatus: (status) => {
+      const todosBy = {
+        [STATUS.ACTIVE]: this.todos.filter((todo) => !todo.isCompleted),
+        [STATUS.COMPLETED]: this.todos.filter((todo) => todo.isCompleted),
+      };
+      return todosBy[status] || this.todos;
+    },
   };
 
   this.setState = (newData, { status = this.status || "all" } = "") => {
-    setStorageData(storageKey, newData);
-    this.todos = getStorageData(storageKey);
+    setStorageData(newData);
+    this.todos = getStorageData();
     this.status = status;
-    this.fileteredTodos = onSetStatus(this.status);
+    this.fileteredTodos = handleData.onSetStatus(this.status);
 
     this.render(this.fileteredTodos);
   };
@@ -81,17 +78,20 @@ function App(storageKey) {
   };
 
   this.init = () => {
-    this.storageKey = storageKey;
-    this.todos = getStorageData(this.storageKey);
+    this.todos = getStorageData();
 
     try {
-      this.todoInput = new TodoInput({ onAction: { add: onAdd } });
+      this.todoInput = new TodoInput({ onAction: { add: handleData.onAdd } });
       this.todoList = new TodoList(this.todos, {
-        onAction: { toggle: onToggle, remove: onRemove, change: onChange },
+        onAction: {
+          toggle: handleData.onToggle,
+          remove: handleData.onRemove,
+          change: handleData.onChange,
+        },
       });
       this.todoCount = new TodoCount(this.todos);
       this.todoStatus = new TodoStatus({
-        onAction: { bind: onBindStatus },
+        onAction: { bind: handleData.onBindStatus },
       });
     } catch (e) {
       console.log(error);
@@ -101,4 +101,4 @@ function App(storageKey) {
   this.init();
 }
 
-new App("todoData");
+new App();
