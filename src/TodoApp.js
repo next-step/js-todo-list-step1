@@ -2,14 +2,15 @@ import Component from "./core/Component.js";
 import TodoInput from "./components/TodoInput.js";
 import TodoList from "./components/TodoList.js";
 import TodoCounter from "./components/TodoCounter.js";
+import TodoFilters from "./components/TodoFilters.js";
 
 export default class App extends Component {
 	init() {
 		this.$state = {
 			todos: {
-
+				
 			},
-			filterType: 0,
+			filterType: {filterType: "all"},
 		};
 	};
 
@@ -18,21 +19,25 @@ export default class App extends Component {
 	};
 
 	setEvent() {
-		this.addEvent("change", ".toggle", ({ target }) => {
+		this.addEvent("change", ".toggle", ({ target }) => {  // 체크박스 클릭
+			const parent = target.closest("[data-id]");
 			const id = target.closest("[data-id]").dataset.id;
+
+			if(parent.children[0].children[0].checked) parent.classList.add("completed");
+			if(!parent.children[0].children[0].checked) parent.classList.remove("completed");
 
 			this.toggleEvent(id);
 		});
-		this.addEvent("click", ".destroy", ({ target }) => {
+		this.addEvent("click", ".destroy", ({ target }) => {  // 삭제버튼 클릭
 			const id = target.closest("[data-id]").dataset.id;
 
 			this.deleteEvent(id);
 		});
-		this.addEvent("dblclick", ".label", ({ target }) => {
+		this.addEvent("dblclick", ".label", ({ target }) => { // 레이블 더블 클릭
 			const parent = target.closest("[data-id]");
 
 			if(!parent) return;
-			
+
 			const editInput = parent.children[1];
 
 			parent.classList.add("editing");
@@ -40,7 +45,7 @@ export default class App extends Component {
 
 			editInput.focus();
 		});
-		this.addEvent("keyup", ".edit", ({ target, key }) => {
+		this.addEvent("keyup", ".edit", ({ target, key }) => { // 수정용 인풋에 keyup
 			const parent = target.closest("[data-id");
 
 			if(key === "Enter") {
@@ -57,6 +62,15 @@ export default class App extends Component {
 				return;
 			};
 		});
+		this.addEvent("focusout", ".edit", ({ target }) => { // 수정용 인풋이 포커스를 잃으경우
+			const parent = target.closest("[data-id");
+
+			target.value = "";
+
+			parent.classList.remove("editing");
+		});
+
+		this.setFilterEvent(); // 상태 필터에 이벤트 걸기
 	};
 
 	addItem(text) {
@@ -72,7 +86,7 @@ export default class App extends Component {
 	};
 
 	toggleEvent(id) {
-		this.$state.todos[id].active = !this.$state.todos[id].active
+		this.$state.todos[id].active = !this.$state.todos[id].active;
 	};
 
 	deleteEvent(id) {
@@ -87,8 +101,30 @@ export default class App extends Component {
 		this.setState({ filterType });
 	};
 
+	setFilterEvent() {
+		const filters = document.querySelector(".filters").children;
+
+		this.objectForEach(filters, filter => {
+			if(typeof filter === "object") {
+				filter.children[0].classList.remove("selected");
+
+				this.addEvent("click", `.${filter.children[0].classList[0]}`, ({ target }) => {
+					target.classList.add("selected");
+
+					const filterType = filter.children[0].classList[0];
+
+					this.filterItem({ filterType });
+				});
+			};
+		});
+	};
+
+	stateTodoCount() {
+		return this.getStateTodoCount();
+	};
+
 	mounted() {
-		const { addItem, template, render, toggleEvent, deleteEvent } = this;
+		const { addItem, template, render, toggleEvent, deleteEvent, stateTodoCount, filterItem } = this;
 		const $todoapp = document.querySelector(".todoapp");
 		const $main = document.querySelector("main");
 		const $todoCountBox = document.querySelector(".count-container");
@@ -104,21 +140,27 @@ export default class App extends Component {
 		});
 
 		const countBox = new TodoCounter($todoCountBox, {
-			todoCount: Math.max(0, ...Object.keys(this.$state.todos))
+			todoCount: stateTodoCount.bind(this)
+		});
+
+		const filters = new TodoFilters($todoCountBox, {
+			filterItem: filterItem,
+			type: this.$state.filterType.filterType
 		});
 
 		this.input = input;
 		this.list = list;
 		this.countBox = countBox;
+		this.filters = filters;
 	};
 
 	render() {
 		this.mounted();
 
-		const { input, list, countBox } = this;
+		const { input, list, countBox, filters } = this;
 
 		this.$target.innerHTML = this.template();
 		this.$target.innerHTML += input.template();
-		this.$target.innerHTML += (list.template() + countBox.template());
+		this.$target.innerHTML += (list.template() + countBox.template() + filters.template());
 	};
 };
