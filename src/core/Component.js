@@ -8,20 +8,13 @@ export default class Component{
 		this.setEvent();
 		this.render();
 
-		$target.innerHTML = this.$target.innerHTML;
-
-		console.log($target)
+		return this;
 	};
 
 	template() {return ``};
 
 	init () {};
-
-	render () {
-		this.$target.innerHTML = this.template();
-
-		this.mounted();
-	};
+	render() {};
 
 	setState(newState) {
 		this.$state.todos = newState.todos;
@@ -34,6 +27,8 @@ export default class Component{
 	addEvent(eventName, eventTarget, callback) {
 		this.$target.addEventListener(eventName, event => {
 			const children = [ ...this.$target.querySelectorAll(eventTarget) ];
+
+			console.log(eventTarget);
 
 			if (!children.includes(event.target)) return;
 

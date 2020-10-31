@@ -1,236 +1,238 @@
-const addBubblingEvent = function(eventName, eventTarget, callback) {
-	document.body.addEventListener(eventName, function(e) {
-		if(e.target === eventTarget)
-			callback(e);
-	});
-};
+// const addBubblingEvent = function(eventName, eventTarget, callback) {
+// 	document.body.addEventListener(eventName, function(e) {
+// 		if(e.target === eventTarget)
+// 			callback(e);
+// 	});
+// };
 
-function TodoApp() {
-	const todoItems = {
-		active: [],
-		completed: []
-	};
+// function TodoApp() {
+// 	const todoItems = {
+// 		active: [],
+// 		completed: []
+// 	};
 
-	const list = document.querySelector("#todo-list");
-	const countBox = document.querySelector(".todo-count");
+// 	const list = document.querySelector("#todo-list");
+// 	const countBox = document.querySelector(".todo-count");
 
-	this.render = TodoList().render;
-	this.renderAsState = state => TodoList().renderAsState(state, todoItems);
+// 	this.render = TodoList().render;
+// 	this.renderAsState = state => TodoList().renderAsState(state, todoItems);
 
-	this.refresh = function() {
-		todoItems[this.originalState].forEach((item, index) => {
-			if(item.dom == this.dom) todoItems[this.originalState].splice(index, 1);
-		});
+// 	this.refresh = function() {
+// 		todoItems[this.originalState].forEach((item, index) => {
+// 			if(item.dom == this.dom) todoItems[this.originalState].splice(index, 1);
+// 		});
 
-		todoItems[this.dom.changedState].push(this);
+// 		todoItems[this.dom.changedState].push(this);
 
-		this.originalState = this.dom.changedState;
-		this.changedState = "";
-	};
-	this.remove = function() {
-		todoItems[this.originalState].forEach((item, index) => {
-			if(this == item) todoItems[this.originalState].splice(index, 1);
-		});
+// 		this.originalState = this.dom.changedState;
+// 		this.changedState = "";
+// 	};
+// 	this.remove = function() {
+// 		todoItems[this.originalState].forEach((item, index) => {
+// 			if(this == item) todoItems[this.originalState].splice(index, 1);
+// 		});
 
-		list.removeChild(this.dom);
+// 		list.removeChild(this.dom);
 
-		managementCountBox("minus");
-	};
+// 		managementCountBox("minus");
+// 	};
 
-	objectForEach(localStorage, (item, index) => {
-		if(typeof item === "string") {
-			const localStorageIndex = Object.keys(localStorage)[index];
+// 	objectForEach(localStorage, (item, index) => {
+// 		if(typeof item === "string") {
+// 			const localStorageIndex = Object.keys(localStorage)[index];
 
-			const newTodoItem = new TodoItem(JSON.parse(item).text, this.refresh, this.remove, localStorageIndex, JSON.parse(item).state);
-			todoItems[JSON.parse(item).state].push(newTodoItem);
+// 			const newTodoItem = new TodoItem(JSON.parse(item).text, this.refresh, this.remove, localStorageIndex, JSON.parse(item).state);
+// 			todoItems[JSON.parse(item).state].push(newTodoItem);
 
-			this.render(newTodoItem);
-		};
-	});
+// 			this.render(newTodoItem);
+// 		};
+// 	});
 
-	new TodoInput({
-		addTodo: text => {
-			const index = "todo" + countBox.children[0].innerHTML;
-			localStorage.setItem(index, JSON.stringify({text: text, state: "active"}));
+// 	new TodoInput({
+// 		addTodo: text => {
+// 			const index = "todo" + countBox.children[0].innerHTML;
+// 			localStorage.setItem(index, JSON.stringify({text: text, state: "active"}));
 
-			const newTodoItem = new TodoItem(text, this.refresh, this.remove, index);
-			todoItems["active"].push(newTodoItem);
+// 			const newTodoItem = new TodoItem(text, this.refresh, this.remove, index);
+// 			todoItems["active"].push(newTodoItem);
 
-			this.render(newTodoItem);
-		}
-	});
-};
+// 			this.render(newTodoItem);
+// 		}
+// 	});
+// };
 
-function TodoItem(text, refresh, remove, index, state) {
-	if(state) this.originalState = state;
-	this.changedState = "";
+// function TodoItem(text, refresh, remove, index, state) {
+// 	if(state) this.originalState = state;
+// 	this.changedState = "";
 
-	this.setState = function(state) {
-		this.changedState = state;
-	};
+// 	this.setState = function(state) {
+// 		this.changedState = state;
+// 	};
 
-	this.refresh = refresh;
-	this.remove = remove;
+// 	this.refresh = refresh;
+// 	this.remove = remove;
 
-	this.index = index;
+// 	this.index = index;
 
-	this.dom = initTodoItem(text, this);
-	this.dom.__proto__ = this;
+// 	this.dom = initTodoItem(text, this);
+// 	this.dom.__proto__ = this;
 
-	return this;
-};
-TodoItem.prototype = Object.create(HTMLLIElement.prototype)
+// 	return this;
+// };
+// TodoItem.prototype = Object.create(HTMLLIElement.prototype)
 
-function TodoList() {
-	const list = document.querySelector("#todo-list");
+// function TodoList() {
+// 	const list = document.querySelector("#todo-list");
 
-	this.render = todo => {
-		managementCountBox("plus");
+// 	this.render = todo => {
+// 		managementCountBox("plus");
 
-		list.append(todo.dom);
-	};
-	
-	this.renderAsState = (state, arr) => {
-		list.innerHTML = "";
+// 		list.append(todo.dom);
+// 	};
 
-		if(state === "all") {
-			objectForEach(arr, kind => {
-				kind.forEach(todo => {
-					list.append(todo.dom);
-				});
-			});
-			managementCountBox();
+// 	this.renderAsState = (state, arr) => {
+// 		list.innerHTML = "";
 
-			return;
-		};
-		
-		arr[state].forEach(todo => {
-			list.append(todo.dom);
-		});
+// 		if(state === "all") {
+// 			objectForEach(arr, kind => {
+// 				kind.forEach(todo => {
+// 					list.append(todo.dom);
+// 				});
+// 			});
+// 			managementCountBox();
 
-		managementCountBox();
-	};
+// 			return;
+// 		};
 
-	return this;
-};
+// 		arr[state].forEach(todo => {
+// 			list.append(todo.dom);
+// 		});
 
-function initTodoItem(text, item) {
-	let check = null;
+// 		managementCountBox();
+// 	};
 
-	if(item.originalState === "active") check = false;
-	if(item.originalState === "completed") check = true;
+// 	return this;
+// };
 
-	const box = makeDomElement({name: "li", kind: ["class", item.originalState]});
-	const view = makeDomElement({name: "div", kind: ["class", "view"]});
-	const checkBox = makeDomElement({name: "input", kind: ["class", "toggle"], type: "checkbox", "checked" : check});
-	const label = makeDomElement({name: "label", kind: ["class", "label"]});
-	const destroyButton = makeDomElement({name: "button", kind: ["class", "destroy"], type: "button"});
-	const editInput = makeDomElement({name: "input", kind: ["class", "edit"]});
+// function initTodoItem(text, item) {
+// 	let check = null;
 
-	label.innerHTML = text;
+// 	if(item.originalState === "active") check = false;
+// 	if(item.originalState === "completed") check = true;
 
-	setTodoEvent(box, label, checkBox, destroyButton, editInput, item);
+// 	const box = makeDomElement({name: "li", kind: ["class", item.originalState]});
+// 	const view = makeDomElement({name: "div", kind: ["class", "view"]});
+// 	const checkBox = makeDomElement({name: "input", kind: ["class", "toggle"], type: "checkbox", "checked" : check});
+// 	const label = makeDomElement({name: "label", kind: ["class", "label"]});
+// 	const destroyButton = makeDomElement({name: "button", kind: ["class", "destroy"], type: "button"});
+// 	const editInput = makeDomElement({name: "input", kind: ["class", "edit"]});
 
-	view.append(checkBox, label, destroyButton);
-	box.append(view, editInput);
+// 	label.innerHTML = text;
 
-	return box;
-};
+// 	setTodoEvent(box, label, checkBox, destroyButton, editInput, item);
 
-function makeDomElement({name, kind, type, checked}) {
-	const dom = document.createElement(name);
+// 	view.append(checkBox, label, destroyButton);
+// 	box.append(view, editInput);
 
-	if(kind) dom.setAttribute(kind[0], kind[1]);
-	if(type) dom.setAttribute("type", type);
-	if(checked) dom.setAttribute("checked", checked);
+// 	return box;
+// };
 
-	return dom;
-};
+// function makeDomElement({name, kind, type, checked}) {
+// 	const dom = document.createElement(name);
 
-function setTodoEvent(box, label, checkBox, destroyButton, editInput, todo) {
-	addBubblingEvent("dblclick", label, function(e) {
-		box.classList.add("editing");
-		
-		editInput.select();
-		editInput.value = label.innerHTML;
-	});
-	addBubblingEvent("change", checkBox, function(e) {
-		const text = label.innerHTML;
-		const name = findLocalStorageItem(text);
+// 	if(kind) dom.setAttribute(kind[0], kind[1]);
+// 	if(type) dom.setAttribute("type", type);
+// 	if(checked) dom.setAttribute("checked", checked);
 
-		if(checkBox.checked) {
-			localStorage.setItem(name, JSON.stringify({text: text, state: "completed"}));
+// 	return dom;
+// };
 
-			box.setState("completed");
-		};
-		if(!checkBox.checked) {
-			localStorage.setItem(name, JSON.stringify({text: text, state: "active"}));
+// function setTodoEvent(box, label, checkBox, destroyButton, editInput, todo) {
+// 	addBubblingEvent("dblclick", label, function(e) {
+// 		box.classList.add("editing");
 
-			box.setState("active");
-		};
+// 		editInput.select();
+// 		editInput.value = label.innerHTML;
+// 	});
+// 	addBubblingEvent("change", checkBox, function(e) {
+// 		const text = label.innerHTML;
+// 		const name = findLocalStorageItem(text);
 
-		todo.refresh();
+// 		if(checkBox.checked) {
+// 			localStorage.setItem(name, JSON.stringify({text: text, state: "completed"}));
 
-		box.classList.toggle("completed");
-	});
-	addBubblingEvent("click", destroyButton, function(e) {
-		const text = label.innerHTML;
-		const name = findLocalStorageItem(text);
+// 			box.setState("completed");
+// 		};
+// 		if(!checkBox.checked) {
+// 			localStorage.setItem(name, JSON.stringify({text: text, state: "active"}));
 
-		localStorage.removeItem(name);
+// 			box.setState("active");
+// 		};
 
-		todo.remove();
-	});
-	addBubblingEvent("keyup", editInput, function(e) {
-		if(e.key === "Enter") label.innerHTML = e.target.value;
-		if(e.key === "Enter" || e.key === "Escape") {
-			e.target.value = "";
+// 		todo.refresh();
 
-			box.classList.remove("editing");
-		};
-	});
-	addBubblingEvent("focusout", editInput, function(e) {
-		e.target.value = "";
+// 		box.classList.toggle("completed");
+// 	});
+// 	addBubblingEvent("click", destroyButton, function(e) {
+// 		const text = label.innerHTML;
+// 		const name = findLocalStorageItem(text);
 
-		box.classList.remove("editing");
-	});
-};
+// 		localStorage.removeItem(name);
 
-function managementCountBox(operator, kind) {
-	const list = document.querySelector("#todo-list");
-	const countBox = document.querySelector(".todo-count");
-	let count = countBox.children[0].innerHTML;
+// 		todo.remove();
+// 	});
+// 	addBubblingEvent("keyup", editInput, function(e) {
+// 		if(e.key === "Enter") label.innerHTML = e.target.value;
+// 		if(e.key === "Enter" || e.key === "Escape") {
+// 			e.target.value = "";
 
-	if(operator === "plus") count++;
-	if(operator === "minus") count--;
-	if(!operator) count = list.children.length;
+// 			box.classList.remove("editing");
+// 		};
+// 	});
+// 	addBubblingEvent("focusout", editInput, function(e) {
+// 		e.target.value = "";
 
-	countBox.children[0].innerHTML = count;
-};
+// 		box.classList.remove("editing");
+// 	});
+// };
 
-function objectForEach(object, callback) {
-	let index = 0;
+// function managementCountBox(operator, kind) {
+// 	const list = document.querySelector("#todo-list");
+// 	const countBox = document.querySelector(".todo-count");
+// 	let count = countBox.children[0].innerHTML;
 
-	for(let key in object) {
-		callback(object[key], index);
-		index++;
-	}
-};
+// 	if(operator === "plus") count++;
+// 	if(operator === "minus") count--;
+// 	if(!operator) count = list.children.length;
 
-function findLocalStorageItem(text) {
-	let name = "";
+// 	countBox.children[0].innerHTML = count;
+// };
 
-	Object.keys(localStorage).forEach((item, index) => {
-		if(JSON.parse(localStorage.getItem(item)).text == text) {
-			name = Object.keys(localStorage)[index];
+// function objectForEach(object, callback) {
+// 	let index = 0;
 
-			return;
-		};
-	});
+// 	for(let key in object) {
+// 		callback(object[key], index);
+// 		index++;
+// 	}
+// };
 
-	return name;
-};
+// function findLocalStorageItem(text) {
+// 	let name = "";
 
+// 	Object.keys(localStorage).forEach((item, index) => {
+// 		if(JSON.parse(localStorage.getItem(item)).text == text) {
+// 			name = Object.keys(localStorage)[index];
+
+// 			return;
+// 		};
+// 	});
+
+// 	return name;
+// };
+
+
+// 위의 주석처리된 코드는 이전에 사용하던 코드입니다.
 
 
 
@@ -242,46 +244,23 @@ function findLocalStorageItem(text) {
 
 import Component from "./core/Component.js";
 import TodoInput from "./components/TodoInput.js";
-import todoList from "./components/TodoList.js";
+import TodoList from "./components/TodoList.js";
+import TodoCounter from "./components/TodoCounter.js";
 
 export default class App extends Component {
-	init () {
+	init() {
 		this.$state = {
 			todos: {
 				"1": { id: 1, text: '아이템1', active: false },
 				"2": { id: 2, text: '아이템2', active: true }
 			},
 			filterType: 0,
-		}
+		};
 	};
 
 	template() {
 		return `
 		<h1>TODOS</h1>
-      	<input
-      	  id="new-todo-title"
-      	  class="new-todo"
-      	  placeholder="할일을 추가해주세요"
-      	  autofocus
-      	/>
-      	<main>
-      	  <input class="toggle-all" type="checkbox" />
-      		  <ul id="todo-list" class="todo-list"></ul>
-      		  <div class="count-container">
-      		    <span class="todo-count">총 <strong>0</strong> 개</span>
-      		    <ul class="filters">
-       	     <li>
-       	       <a class="all selected" href="#">전체보기</a>
-        	    </li>
-        	    <li>
-        	      <a class="active" href="#active">해야할 일</a>
-        	    </li>
-   	     	    <li>
-   	     	      <a class="completed" href="#completed">완료한 일</a>
-   	         </li>
-   	       </ul>
-      	  </div>
-      	</main>
 		`;
 	};
 
@@ -309,6 +288,8 @@ export default class App extends Component {
 	deleteEvent(id) {
 		const todos = { ...this.$state.todos };
 
+		console.log(todos);
+
 		delete todos[id];
 
 		this.setState({ todos });
@@ -319,16 +300,39 @@ export default class App extends Component {
 	};
 
 	mounted() {
-		const { addItem } = this;
+		const { addItem, template, render } = this;
+		const $todoapp = document.querySelector(".todoapp");
 		const $main = document.querySelector("main");
-		const $todoList = document.querySelector("#todo-list");
+		const $todoCountBox = document.querySelector(".count-container");
 
-		new TodoInput($main, {
-			addItem: addItem.bind(this)
+		const input = new TodoInput($todoapp, {
+			addItem: addItem.bind(this),
+			template: template.bind(this),
+			render: render.bind(this)
 		});
 
-		new TodoList($todoList, {
-
+		const list = new TodoList($main, {
+			state: this.$state,
+			countBox: $todoCountBox,
+			render: render.bind(this)
 		});
+
+		const countBox = new TodoCounter($todoCountBox, {
+			todoCount: Math.max(0, ...Object.keys(this.$state.todos))
+		});
+
+		this.input = input;
+		this.list = list;
+		this.countBox = countBox;
+	};
+
+	render() {
+		this.mounted();
+
+		const { input, list, countBox } = this;
+
+		this.$target.innerHTML = this.template();
+		this.$target.innerHTML += input.template();
+		this.$target.innerHTML += (list.template() + countBox.template());
 	};
 };
