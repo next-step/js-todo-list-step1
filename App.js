@@ -82,17 +82,18 @@ function App() {
 
     try {
       this.todoInput = new TodoInput({ onAction: { add: handleData.onAdd } });
-      this.todoList = new TodoList(this.todos, {
+      this.todoList = new TodoList({
         onAction: {
           toggle: handleData.onToggle,
           remove: handleData.onRemove,
           change: handleData.onChange,
         },
       });
-      this.todoCount = new TodoCount(this.todos);
+      this.todoCount = new TodoCount();
       this.todoStatus = new TodoStatus({
         onAction: { bind: handleData.onBindStatus },
       });
+      this.render(this.todos);
     } catch (e) {
       console.log(error);
     }

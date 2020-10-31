@@ -1,10 +1,9 @@
 import { ENTER_KEY_CODE, ESCAPE_KEY_CODE } from "../utils/constantsKey.js";
 
-function TodoList(todos, { onAction }) {
+function TodoList({ onAction }) {
   if (!new.target) throw new Error("error: TodoList must be called with new!");
 
   this.$list = document.querySelector("#todo-list");
-  this.todos = todos;
   this.onAction = onAction;
 
   const createTodoList = (todo) => {
@@ -29,12 +28,6 @@ function TodoList(todos, { onAction }) {
   this.render = () => {
     this.$list.innerHTML = this.todos.map(createTodoList).join("");
   };
-
-  this.init = () => {
-    this.render();
-  };
-
-  this.init();
 
   this.$list.addEventListener("click", (e) => {
     const { className, nodeName } = e.target;
