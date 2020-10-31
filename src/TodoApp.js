@@ -24,6 +24,99 @@ export default class App extends Component {
 		return `<h1>TODOS</h1>`;
 	};
 
+	addItem(text) {
+		const id = Math.max(0, ...Object.keys(localStorage)) + 1;
+		const active = false;
+
+		this.setState({
+			todos: {
+				...this.$state.todos,
+				[id] : { id, text, active }
+			}
+		});
+
+		localStorage.setItem(id, JSON.stringify({id: id, text: text, active: active}));
+	};
+
+	toggleItem(id) {
+		localStorage.setItem(id, JSON.stringify({id: id, text: JSON.parse(localStorage.getItem(id)).text, active: !JSON.parse(localStorage.getItem(id)).active}));
+
+		try{
+			this.$state.todos[id].active = !this.$state.todos[id].active;
+		}catch(err) {
+
+		}
+
+	};
+
+	deleteItem(id) {
+		const todos = { ...this.$state.todos };
+
+		localStorage.removeItem(id);
+
+		delete todos[id];
+
+		this.setState({
+			todos: {
+				...this.localStorageParser()
+			}
+		});
+		this.render();
+	};
+
+	filterItem(filterType) {
+		this.setState({ filterType });
+	};
+
+	stateTodoCount() {
+		return this.getStateTodoCount();
+	};
+
+	mounted() {
+		const { addItem, template, render, toggleItem, deleteItem, stateTodoCount, filterItem } = this;
+		const $todoapp = document.querySelector(".todoapp");
+		const $main = document.querySelector("main");
+		const $todoCountBox = document.querySelector(".count-container");
+
+		const input = new TodoInput($todoapp, {
+			addItem: addItem.bind(this),
+		});
+
+		const list = new TodoList($main, {
+			state: this.$state,
+			toggleItem: toggleItem,
+			deleteItem: deleteItem,
+		});
+
+		const countBox = new TodoCounter($todoCountBox, {
+			todoCount: stateTodoCount.bind(this)
+		});
+
+		const filters = new TodoFilters($todoCountBox, {
+			filterItem: filterItem,
+			type: this.$state.filterType.filterType
+		});
+
+		this.input = input;
+		this.list = list;
+		this.countBox = countBox;
+		this.filters = filters;
+
+		this.$target.innerHTML = `
+			<h1>TODOS</h1>
+			${input.template()}
+			${list.template()}
+			${countBox.template()}
+			${filters.template()}
+		`
+	};
+
+	render() {
+		this.$target.innerHTML = "";
+		
+		this.mounted();
+	};
+
 	setEvent() {
 		this.addEvent("change", ".toggle", ({ target }) => {  // 체크박스 클릭
 			const parent = target.closest("[data-id]");
@@ -32,12 +125,12 @@ export default class App extends Component {
 			if(parent.children[0].children[0].checked) parent.classList.add("completed");
 			if(!parent.children[0].children[0].checked) parent.classList.remove("completed");
 
-			this.toggleEvent(id);
+			this.toggleItem(id);
 		});
 		this.addEvent("click", ".destroy", ({ target }) => {  // 삭제버튼 클릭
 			const id = target.closest("[data-id]").dataset.id;
 
-			this.deleteEvent(id);
+			this.deleteItem(id);
 		});
 		this.addEvent("dblclick", ".label", ({ target }) => { // 레이블 더블 클릭
 			const parent = target.closest("[data-id]");
@@ -83,50 +176,6 @@ export default class App extends Component {
 		this.setFilterEvent(); // 상태 필터에 이벤트 걸기
 	};
 
-	addItem(text) {
-		const id = Math.max(0, ...Object.keys(localStorage)) + 1;
-		const active = false;
-
-		this.setState({
-			todos: {
-				...this.$state.todos,
-				[id] : { id, text, active }
-			}
-		});
-
-		localStorage.setItem(id, JSON.stringify({id: id, text: text, active: active}));
-	};
-
-	toggleEvent(id) {
-		localStorage.setItem(id, JSON.stringify({id: id, text: JSON.parse(localStorage.getItem(id)).text, active: !JSON.parse(localStorage.getItem(id)).active}));
-
-		try{
-			this.$state.todos[id].active = !this.$state.todos[id].active;
-		}catch(err) {
-
-		}
-
-	};
-
-	deleteEvent(id) {
-		const todos = { ...this.$state.todos };
-
-		localStorage.removeItem(id);
-
-		delete todos[id];
-
-		this.setState({
-			todos: {
-				...this.localStorageParser()
-			}
-		});
-		this.render();
-	};
-
-	filterItem(filterType) {
-		this.setState({ filterType });
-	};
-
 	setFilterEvent() {
 		const filters = document.querySelector(".filters").children;
 
@@ -144,51 +193,4 @@ export default class App extends Component {
 			};
 		});
 	};
-
-	stateTodoCount() {
-		return this.getStateTodoCount();
-	};
-
-	mounted() {
-		const { addItem, template, render, toggleEvent, deleteEvent, stateTodoCount, filterItem } = this;
-		const $todoapp = document.querySelector(".todoapp");
-		const $main = document.querySelector("main");
-		const $todoCountBox = document.querySelector(".count-container");
-
-		const input = new TodoInput($todoapp, {
-			addItem: addItem.bind(this),
-		});
-
-		const list = new TodoList($main, {
-			state: this.$state,
-			toggleEvent: toggleEvent,
-			deleteEvent: deleteEvent,
-		});
-
-		const countBox = new TodoCounter($todoCountBox, {
-			todoCount: stateTodoCount.bind(this)
-		});
-
-		const filters = new TodoFilters($todoCountBox, {
-			filterItem: filterItem,
-			type: this.$state.filterType.filterType
-		});
-
-		this.input = input;
-		this.list = list;
-		this.countBox = countBox;
-		this.filters = filters;
-	};
-
-	render() {
-		this.mounted();
-
-		const { input, list, countBox, filters } = this;
-
-		this.$target.innerHTML = this.template();
-		this.$target.innerHTML += input.template();
-		this.$target.innerHTML += (list.template() + countBox.template() + filters.template());
-	};
 };
-
-// localStorage.clear();

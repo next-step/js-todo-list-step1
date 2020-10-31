@@ -43,17 +43,7 @@ export default class Component{
 			index++;
 		}
 	};
-
-	getStateValue(object) {
-		const arr = [];
-
-		this.objectForEach(object, item => {
-			arr.push(item);
-		});
-
-		return arr;
-	};
-
+	
 	getStateTodoCount() {
 		const type = this.$state.filterType.filterType;
 

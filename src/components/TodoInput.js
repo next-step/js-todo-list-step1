@@ -15,7 +15,6 @@ export default class TodoInput extends Component {
 		const { addItem } = this.$props;
 
 		this.addEvent("keyup", "#new-todo-title", ({key, target}) => {
-			if(key !== "Enter") return;
 			if(key === "Enter") {
 				addItem(target.value);
 
