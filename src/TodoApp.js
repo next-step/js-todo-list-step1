@@ -20,10 +20,6 @@ export default class App extends Component {
 		});
 	};
 
-	template() {
-		return `<h1>TODOS</h1>`;
-	};
-
 	addItem(text) {
 		const id = Math.max(0, ...Object.keys(localStorage)) + 1;
 		const active = false;
@@ -113,12 +109,12 @@ export default class App extends Component {
 
 	render() {
 		this.$target.innerHTML = "";
-		
+
 		this.mounted();
 	};
 
 	setEvent() {
-		this.addEvent("change", ".toggle", ({ target }) => {  // 체크박스 클릭
+		this.addEvent("change", ".toggle", ({ target }) => {
 			const parent = target.closest("[data-id]");
 			const id = target.closest("[data-id]").dataset.id;
 
@@ -127,12 +123,12 @@ export default class App extends Component {
 
 			this.toggleItem(id);
 		});
-		this.addEvent("click", ".destroy", ({ target }) => {  // 삭제버튼 클릭
+		this.addEvent("click", ".destroy", ({ target }) => {
 			const id = target.closest("[data-id]").dataset.id;
 
 			this.deleteItem(id);
 		});
-		this.addEvent("dblclick", ".label", ({ target }) => { // 레이블 더블 클릭
+		this.addEvent("dblclick", ".label", ({ target }) => {
 			const parent = target.closest("[data-id]");
 
 			if(!parent) return;
@@ -144,7 +140,7 @@ export default class App extends Component {
 
 			editInput.focus();
 		});
-		this.addEvent("keyup", ".edit", ({ target, key }) => { // 수정용 인풋에 keyup
+		this.addEvent("keyup", ".edit", ({ target, key }) => {
 			const parent = target.closest("[data-id");
 			const id = parent.dataset.id;
 
@@ -165,7 +161,7 @@ export default class App extends Component {
 				return;
 			};
 		});
-		this.addEvent("focusout", ".edit", ({ target }) => { // 수정용 인풋이 포커스를 잃으경우
+		this.addEvent("focusout", ".edit", ({ target }) => {
 			const parent = target.closest("[data-id");
 
 			target.value = "";
@@ -173,7 +169,7 @@ export default class App extends Component {
 			parent.classList.remove("editing");
 		});
 
-		this.setFilterEvent(); // 상태 필터에 이벤트 걸기
+		this.setFilterEvent();
 	};
 
 	setFilterEvent() {
