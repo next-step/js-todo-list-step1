@@ -3,7 +3,6 @@ function TodoStatus({ onAction }) {
     throw new Error("error: TodoStatus must be called with new!");
 
   this.$filter = document.querySelector("ul.filters");
-  this.onAction = onAction;
 
   this.$filter.addEventListener("click", (e) => {
     const [selectedStatus] = e.target.classList;
@@ -15,7 +14,7 @@ function TodoStatus({ onAction }) {
     if (!isAlreadyBinding) {
       this.$filter.querySelector(".selected").classList.remove("selected");
       this.$filter.querySelector(`.${status}`).classList.add("selected");
-      this.onAction.bind(`${status}`);
+      onAction.bind(`${status}`);
     }
   });
 }

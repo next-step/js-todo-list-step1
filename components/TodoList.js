@@ -4,7 +4,6 @@ function TodoList({ onAction }) {
   if (!new.target) throw new Error("error: TodoList must be called with new!");
 
   this.$list = document.querySelector("#todo-list");
-  this.onAction = onAction;
 
   const createTodoList = (todo) => {
     const { idx, content, isCompleted = false } = todo;
@@ -35,13 +34,13 @@ function TodoList({ onAction }) {
     // onToggle
     if (className === "toggle" && nodeName === "INPUT") {
       const idx = e.target.closest("li").dataset.idx;
-      this.onAction.toggle(idx);
+      onAction.toggle(idx);
     }
 
     // onRemove
     if (className === "destroy" && nodeName === "BUTTON") {
       const idx = e.target.closest("li").dataset.idx;
-      this.onAction.remove(idx);
+      onAction.remove(idx);
     }
   });
 
@@ -68,7 +67,7 @@ function TodoList({ onAction }) {
     const $li = e.target.closest("li");
 
     if (keyCode === ENTER_KEY_CODE && value) {
-      this.onAction.change({ idx: $li.dataset.idx, content: value });
+      onAction.change({ idx: $li.dataset.idx, content: value });
       $li.classList.remove("editing");
     }
 
