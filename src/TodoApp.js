@@ -25,13 +25,37 @@ export default class App extends Component {
 		});
 		this.addEvent("click", ".destroy", ({ target }) => {
 			const id = target.closest("[data-id]").dataset.id;
-			
-			this.deleteEvent(target.closest("[data-id]").dataset.id);
+
+			this.deleteEvent(id);
 		});
 		this.addEvent("dblclick", ".label", ({ target }) => {
-			const id = target.closest("[data-id]").dataset.id;
+			const parent = target.closest("[data-id]");
 
-			console.log(this.$state.todos)
+			if(!parent) return;
+			
+			const editInput = parent.children[1];
+
+			parent.classList.add("editing");
+			editInput.value = parent.children[0].children[1].innerHTML;
+
+			editInput.focus();
+		});
+		this.addEvent("keyup", ".edit", ({ target, key }) => {
+			const parent = target.closest("[data-id");
+
+			if(key === "Enter") {
+				if(!parent) return;
+
+				parent.children[0].children[1].innerHTML = target.value;	
+				parent.classList.remove("editing");
+			};
+			if(key === "Enter" || key === "Escape") {
+				target.value = "";
+
+				parent.classList.remove("editing");
+
+				return;
+			};
 		});
 	};
 
