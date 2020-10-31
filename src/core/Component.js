@@ -8,11 +8,14 @@ export default class Component{
 		this.setEvent();
 		this.render();
 
+		$target.innerHTML = this.$target.innerHTML;
+
+		console.log($target)
 	};
 
 	template() {return ``};
 
-	init() {};
+	init () {};
 
 	render () {
 		this.$target.innerHTML = this.template();
@@ -21,7 +24,6 @@ export default class Component{
 	};
 
 	setState(newState) {
-		console.log(this.$state.todos)
 		this.$state.todos = newState.todos;
 
 		this.render();
@@ -31,15 +33,30 @@ export default class Component{
 	setEvent() {};
 	addEvent(eventName, eventTarget, callback) {
 		this.$target.addEventListener(eventName, event => {
-			console.log(eventTarget);
-
 			const children = [ ...this.$target.querySelectorAll(eventTarget) ];
-
-			console.log(children);
 
 			if (!children.includes(event.target)) return;
 
 			callback(event);
 		});
+	};
+
+	objectForEach(object, callback) {
+		let index = 0;
+
+		for(let key in object) {
+			callback(object[key], index);
+			index++;
+		}
+	};
+
+	getStateValue(object) {
+		const arr = [];
+
+		this.objectForEach(object, item => {
+			arr.push(item);
+		});
+
+		return arr;
 	};
 };
