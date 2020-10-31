@@ -24,12 +24,9 @@ class App {
         return this.item.map(v => Template(v))
     }
     render() {
-        /** 아이템 조작하는 로직 작성 */
-        /**  body.js로 옮길것  */
         const result = this.itemBeforeRender().join()
         this.$TodoList.innerHTML = '';
         this.$TodoList.insertAdjacentHTML('beforeend', result)
-        /** bottom.js로 옮길것  */
         this.$TodoCount.innerText = this.itemBeforeRender().length
     }
     

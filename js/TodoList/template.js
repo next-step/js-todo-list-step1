@@ -1,5 +1,4 @@
 const Template = (obj) => {
-    console.log('TEST: Template enter', obj);
     return `
     <li id="item-${obj.id}">
         <div class="view">
@@ -11,18 +10,8 @@ const Template = (obj) => {
     </li>
     `
 }
-
-export { Template }
-/**
-<ul id="todo-list" class="todo-list">
-  <li>
-    <div class="view">
-      <input class="toggle" type="checkbox"/>
-      <label class="label">새로운 타이틀</label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="새로운 타이틀" />
-  </li>
+const TemplateEditing = (obj) => {
+  return `
   <li class="editing">
     <div class="view">
       <input class="toggle" type="checkbox" />
@@ -30,7 +19,10 @@ export { Template }
       <button class="destroy"></button>
     </div>
     <input class="edit" value="완료된 타이틀" />
-  </li>
+  </li>`
+}
+const TemplateCompleted = (obj) => {
+  return `
   <li class="completed">
     <div class="view">
       <input class="toggle" type="checkbox" checked/>
@@ -38,6 +30,7 @@ export { Template }
       <button class="destroy"></button>
     </div>
     <input class="edit" value="완료된 타이틀" />
-  </li>
-</ul>
- */
+  </li>`
+}
+
+export { Template, TemplateEditing, TemplateCompleted }
