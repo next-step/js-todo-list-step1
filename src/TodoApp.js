@@ -7,16 +7,30 @@ export default class App extends Component {
 	init() {
 		this.$state = {
 			todos: {
-			
+
 			},
 			filterType: 0,
 		};
 	};
 
 	template() {
-		return `
-		<h1>TODOS</h1>
-		`;
+		return `<h1>TODOS</h1>`;
+	};
+
+	setEvent() {
+		this.addEvent("change", ".toggle", ({ target }) => {
+			const id = target.closest("[data-id]").dataset.id;
+
+			
+		});
+		this.addEvent("click", ".destroy", ({ target }) => {
+			deleteEvent(target.closest("[data-id]").dataset.id);
+		});
+		this.addEvent("dblclick", ".label", ({ target }) => {
+			const id = target.closest("[data-id]").dataset.id;
+
+			console.log(this.$state.todos)
+		});
 	};
 
 	addItem(text) {
@@ -53,21 +67,19 @@ export default class App extends Component {
 	};
 
 	mounted() {
-		const { addItem, template, render } = this;
+		const { addItem, template, render, toggleEvent, deleteEvent } = this;
 		const $todoapp = document.querySelector(".todoapp");
 		const $main = document.querySelector("main");
 		const $todoCountBox = document.querySelector(".count-container");
 
 		const input = new TodoInput($todoapp, {
 			addItem: addItem.bind(this),
-			template: template.bind(this),
-			render: render.bind(this)
 		});
 
 		const list = new TodoList($main, {
 			state: this.$state,
-			countBox: $todoCountBox,
-			render: render.bind(this)
+			toggleEvent: toggleEvent,
+			deleteEvent: deleteEvent,
 		});
 
 		const countBox = new TodoCounter($todoCountBox, {
@@ -81,7 +93,6 @@ export default class App extends Component {
 
 	render() {
 		this.mounted();
-		this.setEvent();
 
 		const { input, list, countBox } = this;
 

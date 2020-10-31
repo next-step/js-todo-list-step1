@@ -15,20 +15,18 @@ export default class Component{
 
 	init () {};
 	render() {};
+	mounted() {};
+	setEvent() {};
 
 	setState(newState) {
 		this.$state.todos = newState.todos;
 
 		this.render();
 	};
-	mounted() {};
 
-	setEvent() {};
 	addEvent(eventName, eventTarget, callback) {
 		this.$target.addEventListener(eventName, event => {
 			const children = [ ...this.$target.querySelectorAll(eventTarget) ];
-
-			console.log(eventTarget);
 
 			if (!children.includes(event.target)) return;
 
