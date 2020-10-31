@@ -20,7 +20,7 @@ class App {
     }
 
     itemBeforeRender () {
-        return this.item.map(v => Template(v))
+        return this.item.map(todoItem => Template(todoItem))
     }
     render() {
         const result = this.itemBeforeRender().join()
@@ -31,7 +31,6 @@ class App {
     
     addItem (inputValue) {
         const eachItem = {id: this.ID++, context: inputValue, complete: false}
-        console.log('TEST: addItem', eachItem);
         this.item.push(eachItem)
         this.render()
     }
@@ -39,31 +38,27 @@ class App {
     afterUpdateItem (targetElement, value) {
         console.log('TEST: afterUpdateItem', );
         const itemId = targetElement.id.replace('item-', '')
-        this.item = this.item.map(v => {
-            if ( parseInt(itemId) === v.id) {
-                v.context = value
+        this.item = this.item.map(todoItem => {
+            if ( parseInt(itemId) === todoItem.id) {
+                todoItem.context = value
             }
-            console.log('TEST: ', v);
-            return v
+            return todoItem
         })
         this.render();
     }
     deleteItem (targetElement) {
         const itemId = targetElement.id.replace('item-', '')
-        this.item = this.item.filter( v =>  (parseInt(itemId) === v.id) ? false : true )
-        console.log('TEST: deleteItem ', itemId, this.item);
+        this.item = this.item.filter( todoItem =>  (parseInt(itemId) === todoItem.id) ? false : true )
         this.render();
     }
     completeItem (targetElement) {
         // item값 변경 
         const itemId = targetElement.id.replace('item-', '')
-        console.log('TEST: completeItem enter', itemId, targetElement);
-        this.item = this.item.map(v => {
-            console.log('TEST: completeItem map', v);
-            if ( v.id === parseInt(itemId) ) {
-                v.complete = !v.complete
+        this.item = this.item.map(todoItem => {
+            if ( todoItem.id === parseInt(itemId) ) {
+                todoItem.complete = !todoItem.complete
             }
-            return v
+            return todoItem
         })
     }
 }
