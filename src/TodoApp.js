@@ -8,10 +8,16 @@ export default class App extends Component {
 	init() {
 		this.$state = {
 			todos: {
-				
+				...this.localStorageParser()
 			},
 			filterType: {filterType: "all"},
 		};
+	};
+
+	localStorageParser() {
+		return Object.keys(localStorage).map(idx => {
+			return JSON.parse(localStorage[idx])
+		});
 	};
 
 	template() {
@@ -47,11 +53,15 @@ export default class App extends Component {
 		});
 		this.addEvent("keyup", ".edit", ({ target, key }) => { // 수정용 인풋에 keyup
 			const parent = target.closest("[data-id");
+			const id = parent.dataset.id;
 
 			if(key === "Enter") {
 				if(!parent) return;
 
-				parent.children[0].children[1].innerHTML = target.value;	
+				parent.children[0].children[1].innerHTML = target.value;
+
+				localStorage.setItem(id, JSON.stringify({id: id, text: target.value, active: JSON.parse(localStorage.getItem(id)).active}));
+
 				parent.classList.remove("editing");
 			};
 			if(key === "Enter" || key === "Escape") {
@@ -74,7 +84,7 @@ export default class App extends Component {
 	};
 
 	addItem(text) {
-		const id = Math.max(0, ...Object.keys(this.$state.todos)) + 1;
+		const id = Math.max(0, ...Object.keys(localStorage)) + 1;
 		const active = false;
 
 		this.setState({
@@ -83,18 +93,34 @@ export default class App extends Component {
 				[id] : { id, text, active }
 			}
 		});
+
+		localStorage.setItem(id, JSON.stringify({id: id, text: text, active: active}));
 	};
 
 	toggleEvent(id) {
-		this.$state.todos[id].active = !this.$state.todos[id].active;
+		localStorage.setItem(id, JSON.stringify({id: id, text: JSON.parse(localStorage.getItem(id)).text, active: !JSON.parse(localStorage.getItem(id)).active}));
+
+		try{
+			this.$state.todos[id].active = !this.$state.todos[id].active;
+		}catch(err) {
+
+		}
+
 	};
 
 	deleteEvent(id) {
 		const todos = { ...this.$state.todos };
 
+		localStorage.removeItem(id);
+
 		delete todos[id];
 
-		this.setState({ todos });
+		this.setState({
+			todos: {
+				...this.localStorageParser()
+			}
+		});
+		this.render();
 	};
 
 	filterItem(filterType) {
@@ -164,3 +190,5 @@ export default class App extends Component {
 		this.$target.innerHTML += (list.template() + countBox.template() + filters.template());
 	};
 };
+
+// localStorage.clear();
