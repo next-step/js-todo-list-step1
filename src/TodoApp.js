@@ -21,7 +21,7 @@ export default class App extends Component {
 		this.addEvent("change", ".toggle", ({ target }) => {
 			const id = target.closest("[data-id]").dataset.id;
 
-			
+			this.toggleEvent(id);
 		});
 		this.addEvent("click", ".destroy", ({ target }) => {
 			deleteEvent(target.closest("[data-id]").dataset.id);
@@ -45,13 +45,8 @@ export default class App extends Component {
 		});
 	};
 
-	toggleEvent() {
-		this.setState({
-			todos: {
-				...this.$state.todos,
-				[id] : { ...todos[id], active: !todos[id].active }
-			}
-		});
+	toggleEvent(id) {
+		this.$state.todos[id].active = !this.$state.todos[id].active
 	};
 
 	deleteEvent(id) {
