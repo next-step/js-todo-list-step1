@@ -24,7 +24,9 @@ export default class App extends Component {
 			this.toggleEvent(id);
 		});
 		this.addEvent("click", ".destroy", ({ target }) => {
-			deleteEvent(target.closest("[data-id]").dataset.id);
+			const id = target.closest("[data-id]").dataset.id;
+			
+			this.deleteEvent(target.closest("[data-id]").dataset.id);
 		});
 		this.addEvent("dblclick", ".label", ({ target }) => {
 			const id = target.closest("[data-id]").dataset.id;
