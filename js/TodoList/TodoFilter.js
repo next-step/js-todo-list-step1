@@ -1,5 +1,5 @@
 class TodoFilter {
-    constructor () {
+    constructor (parent) {
         console.log('TEST: TodoList TodoFilter', );
     }
 }

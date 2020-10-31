@@ -1,15 +1,13 @@
 class TodoInput {
-    constructor (parent, item) {
-        console.log('TEST: TodoList TodoInput', );
+    constructor (parent) {
         this.$TodoInput = document.getElementById('new-todo-title')
         this.$TodoInput.addEventListener('keyup', (e) => {
-            console.log('TEST: input keyup event', parent, item);
             if (e.key === "Enter" ) {
-                console.log('TEST: Enter', this.$TodoInput);
                 const input = this.$TodoInput.value.trim()
                 parent.addItem(input)
                 this.$TodoInput.value = '';
             }
+            /** ESC를 눌렀을때 발생하는 이벤트 정리 */
         })
     }
 }

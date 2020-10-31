@@ -1,7 +1,7 @@
 import { TodoInput } from './TodoList/TodoInput.js';
 import { TodoList } from './TodoList/TodoList.js';
 import { TodoFilter } from './TodoList/TodoFilter.js';
-import { Template } from './TodoList/template.js';
+import { Template, TemplateEditing, TemplateCompleted } from './TodoList/Templates.js';
 
 console.log('TEST: TodoList init', );
 
@@ -9,15 +9,14 @@ class App {
     constructor () {
         this.ID = 0;
         this.item = [] // {id, context, complete}, {id: ID++, context: 'test', complete: false}
-        console.log('TEST: app.js', this.item, this.ID);
-        this.TodoInput = new TodoInput(this, this.item);
-        this.TodoList = new TodoList(this, this.item);
-        this.TodoFilter = new TodoFilter(this, this.item);
+        this.TodoInput = new TodoInput(this);
+        this.TodoList = new TodoList(this);
+        this.TodoFilter = new TodoFilter(this);
         this.Template = Template
-        this.$TodoInput = document.getElementById('new-todo-title')
+
+        // this.$TodoInput = document.getElementById('new-todo-title')
         this.$TodoList = document.getElementById('todo-list')
         this.$TodoCount = document.querySelector('.todo-count strong');
-        // this.render();
     }
 
     itemBeforeRender () {
