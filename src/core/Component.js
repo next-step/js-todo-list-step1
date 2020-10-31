@@ -19,7 +19,8 @@ export default class Component{
 	setEvent() {};
 
 	setState(newState) {
-		this.$state.todos = newState.todos;
+		if(newState?.todos) this.$state.todos = newState?.todos;
+		if(newState?.filterType) this.$state.filterType = newState?.filterType;
 
 		this.render();
 	};
@@ -51,5 +52,25 @@ export default class Component{
 		});
 
 		return arr;
+	};
+
+	getStateTodoCount() {
+		const type = this.$state.filterType.filterType;
+
+		let count = 0;
+
+		if(type === "all") return Object.keys(this.$state.todos).length;
+		if(type === "active") {
+			this.objectForEach(this.$state.todos, item => {
+				if(item.active === false) count++;
+			});
+		};
+		if(type === "completed") {
+			this.objectForEach(this.$state.todos, item => {
+				if(item.active === true) count++;
+			});
+		};
+
+		return count;
 	};
 };
