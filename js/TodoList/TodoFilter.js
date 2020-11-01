@@ -15,15 +15,15 @@ class TodoFilter {
             case 'active':
                 const active = document.querySelector('.active')
                 active.className = active.className + ' selected'
-                break;
+                break
             case 'completed':
                 const completed = document.querySelector('.completed')
                 completed.className = completed.className + ' selected'
-                break;
+                break
             default:
                 const all = document.querySelector('.all')
                 all.className = all.className + ' selected'
-                break;
+                break
         }
     }
 }

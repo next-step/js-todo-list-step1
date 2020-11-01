@@ -7,11 +7,11 @@ class TodoInput {
             if (e.key === ENTER ) {
                 const input = this.$TodoInput.value.trim()
                 parent.addItem(input)
-                this.$TodoInput.value = '';
+                this.$TodoInput.value = ''
             }
             /** ESC를 눌렀을때 발생하는 이벤트 정리 */
             if (e.key === ESC ) {
-                this.$TodoInput.value = '';
+                this.$TodoInput.value = ''
             }
         })
     }

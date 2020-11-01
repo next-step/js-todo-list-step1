@@ -1,20 +1,20 @@
-import { TodoInput } from './TodoList/TodoInput.js';
-import { TodoList } from './TodoList/TodoList.js';
-import { TodoFilter } from './TodoList/TodoFilter.js';
-import { Template, TemplateEditing, TemplateCompleted } from './TodoList/Templates.js';
+import { TodoInput } from './TodoList/TodoInput.js'
+import { TodoList } from './TodoList/TodoList.js'
+import { TodoFilter } from './TodoList/TodoFilter.js'
+import { Template, TemplateEditing, TemplateCompleted } from './TodoList/Templates.js'
 
 class App {
     constructor () {
-        this.ID = 0;
-        this.STATUS = '';
+        this.ID = 0
+        this.STATUS = ''
         this.item = [] // {id, context, complete}, {id: ID++, context: 'test', complete: false}
-        this.TodoInput = new TodoInput(this);
-        this.TodoList = new TodoList(this);
-        this.TodoFilter = new TodoFilter(this);
+        this.TodoInput = new TodoInput(this)
+        this.TodoList = new TodoList(this)
+        this.TodoFilter = new TodoFilter(this)
         this.Template = Template
 
         this.$TodoList = document.getElementById('todo-list')
-        this.$TodoCount = document.querySelector('.todo-count strong');
+        this.$TodoCount = document.querySelector('.todo-count strong')
     }
 
     itemBeforeRender (renderItem) {
@@ -30,7 +30,7 @@ class App {
     render(status) {
         // 현재의 status값을 찾아서 사용해야 함. 
         const targetItem = this.item.filter(todoItem => {
-            if (this.STATUS === '' ) return true;
+            if (this.STATUS === '' ) return true
             if (this.STATUS === 'active' && !todoItem.complete) return true
             if (this.STATUS === 'completed' && todoItem.complete) return true
         })
@@ -38,9 +38,9 @@ class App {
         const resultList = this.itemBeforeRender(targetItem)
         const resultLength = resultList.length
         const resultHTML = resultList.join()
-        this.$TodoList.innerHTML = '';
+        this.$TodoList.innerHTML = ''
         this.$TodoList.insertAdjacentHTML('beforeend', resultHTML)
-        this.$TodoCount.innerText = resultLength;
+        this.$TodoCount.innerText = resultLength
     }
     
     addItem (inputValue) {
@@ -56,12 +56,12 @@ class App {
             }
             return todoItem
         })
-        this.render();
+        this.render()
     }
     deleteItem (targetElement) {
         const itemId = targetElement.id.replace('item-', '')
         this.item = this.item.filter( todoItem =>  (parseInt(itemId) === todoItem.id) ? false : true )
-        this.render();
+        this.render()
     }
     completeItem (targetElement) {
         // item값 변경 
@@ -76,8 +76,8 @@ class App {
     }
     changeStatus (status = '') {
         this.STATUS = status
-        this.render();
+        this.render()
     }
 }
 
-const todo = new App();
+const todo = new App()
