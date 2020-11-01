@@ -1,5 +1,5 @@
 import Todo from "./todo.js";
-import { TYPE, TAB } from "../utils/constant.js";
+import { TYPE, TAB } from "../utils/constants.js";
 import { checkArray, checkType, checkInstance } from "../utils/validator.js";
 
 

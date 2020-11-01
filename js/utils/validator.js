@@ -1,4 +1,4 @@
-import { MESSAGE, TYPE } from "./constant.js"
+import { MESSAGE, TYPE } from "./constants.js"
 
 export const checkTarget = ($target) => {
     if(!$target instanceof HTMLElement) {

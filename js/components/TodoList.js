@@ -1,7 +1,7 @@
 import { checkTarget, checkInstance, checkFunction } from "../utils/validator.js";
 import Todos from "../domain/todos.js";
 import { todoListDOM } from "../utils/templates.js";
-import { EVENT, CLASS, NODE, KEY_EVENT, TAB, MESSAGE } from "../utils/constant.js";
+import { EVENT, CLASS, NODE, KEY_EVENT, TAB, MESSAGE } from "../utils/constants.js";
 
 class TodoList {
     constructor({

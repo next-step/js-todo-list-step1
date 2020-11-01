@@ -1,4 +1,4 @@
-import { TYPE } from "../utils/constant.js";
+import { TYPE } from "../utils/constants.js";
 import { checkType } from "../utils/validator.js";
 
 class Todo {

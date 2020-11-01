@@ -1,5 +1,5 @@
 import { checkTarget } from "../utils/validator.js";
-import { KEY, SELECTOR } from "../utils/constant.js";
+import { KEY, SELECTOR } from "../utils/constants.js";
 import { fetchTodos, saveTodo } from "../domain/todoRepository.js";
 import TodoInput from "./TodoInput.js";
 import Todo from "../domain/todo.js";

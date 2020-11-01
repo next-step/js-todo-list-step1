@@ -1,5 +1,5 @@
 import { checkTarget, checkFunction } from "../utils/validator.js"
-import { EVENT, CLASS, NODE } from "../utils/constant.js";
+import { EVENT, CLASS, NODE } from "../utils/constants.js";
 
 class TodoTab {
     constructor({$target, selectedTab, onChangeTab}) {

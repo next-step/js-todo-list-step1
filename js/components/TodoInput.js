@@ -1,5 +1,5 @@
 import { checkTarget, checkFunction } from "../utils/validator.js"
-import { TYPE, EVENT } from "../utils/constant.js";
+import { TYPE, EVENT } from "../utils/constants.js";
 
 class TodoInput {
     constructor({$target, onAddTodo}) {
