@@ -65,7 +65,6 @@ class Todos {
           
           default :
             console.error(`Error : ${MESSAGE.INVALID_TAB}`)
-            return;
         }
     };
 
