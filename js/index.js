@@ -1,5 +1,5 @@
 import App from "./components/App.js"
-import { EVENT, SELECTOR } from "./utils/constant.js"
+import { EVENT, SELECTOR } from "./utils/constants.js"
 
 
 document.addEventListener(EVENT.DOM_LOADED,() => {

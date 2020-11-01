@@ -1,31 +1,33 @@
-import { MESSAGE, TYPE } from "./constants.js"
+import { MESSAGE, TYPE } from "./constants.js";
 
 export const checkTarget = ($target) => {
-    if(!$target instanceof HTMLElement) {
-        throw new TypeError(`${$target} : ${MESSAGE.INVALID_HTML_ELEMENT}`)
+    if (!$target instanceof HTMLElement) {
+        throw new TypeError(`${$target} : ${MESSAGE.INVALID_HTML_ELEMENT}`);
     }
-}
+};
 
 export const checkType = (target, type) => {
-    if(typeof target != type) {
-        throw new TypeError(`${target} : ${MESSAGE.INVALID_TYPE} - ${type}`)
+    if (typeof target != type) {
+        throw new TypeError(`${target} : ${MESSAGE.INVALID_TYPE} - ${type}`);
     }
-}
+};
 
 export const checkInstance = (target, instance) => {
-    if(!target instanceof instance) {
-        throw new TypeError(`${target} : ${MESSAGE.INVALID_INSTANCE} - ${instance}`)
+    if (!target instanceof instance) {
+        throw new TypeError(
+            `${target} : ${MESSAGE.INVALID_INSTANCE} - ${instance}`
+        );
     }
-}
+};
 
 export const checkFunction = (func) => {
-    if(!func || checkType(func, TYPE.FUNCTION)) {
-        throw new TypeError(`${func} : ${MESSAGE.INVALID_TYPE}`)
+    if (!func || checkType(func, TYPE.FUNCTION)) {
+        throw new TypeError(`${func} : ${MESSAGE.INVALID_TYPE}`);
     }
-}
+};
 
 export const checkArray = (target) => {
-    if(!Array.isArray(target)) {
-        throw new TypeError(`${target} : ${MESSAGE.INVALID_TYPE}`)
+    if (!Array.isArray(target)) {
+        throw new TypeError(`${target} : ${MESSAGE.INVALID_TYPE}`);
     }
-}
+};
