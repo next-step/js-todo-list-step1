@@ -63,8 +63,8 @@ components
     TodoList.js
     TodoTab.js
 utils
-    constant.js
-    validator.js
+    constants.js
+    validators.js
 domain
     todo.js
     todos.js

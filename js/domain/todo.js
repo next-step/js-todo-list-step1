@@ -1,5 +1,5 @@
 import { TYPE } from "../utils/constants.js";
-import { checkType } from "../utils/validator.js";
+import { checkType } from "../utils/validators.js";
 
 class Todo {
     constructor(id, title, isCompleted) {

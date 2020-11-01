@@ -1,4 +1,4 @@
-import { checkTarget } from "../utils/validator.js"
+import { checkTarget } from "../utils/validators.js"
 class TodoCount {
     constructor({$target, state}) {
         checkTarget($target)

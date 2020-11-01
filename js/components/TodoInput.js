@@ -1,4 +1,4 @@
-import { checkTarget, checkFunction } from "../utils/validator.js"
+import { checkTarget, checkFunction } from "../utils/validators.js"
 import { TYPE, EVENT } from "../utils/constants.js";
 
 class TodoInput {
