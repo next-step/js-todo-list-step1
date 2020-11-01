@@ -23,13 +23,13 @@ const TemplateEditing = (obj) => {
 }
 const TemplateCompleted = (obj) => {
   return `
-  <li class="completed">
+  <li id="item-${obj.id}" class="completed">
     <div class="view">
       <input class="toggle" type="checkbox" checked/>
-      <label class="label">완료된 타이틀</label>
+      <label class="label">${obj.context}</label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="완료된 타이틀" />
+    <input class="edit" value="${obj.context}" />
   </li>`
 }
 

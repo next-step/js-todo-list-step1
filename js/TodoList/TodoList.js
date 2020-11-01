@@ -11,14 +11,13 @@ class TodoList {
         })
         this.$TodoList.addEventListener('change', (e) => {
             if ( e.target.className === 'toggle') {
-                parentElement.className = 'completed'
-                console.log('TEST: body click toggle', parent);
+                const parentElement = e.target.closest('li')
                 parent.completeItem(parentElement)
             }
         })
         this.$TodoList.addEventListener('dblclick', (e) => {
             const parentElement = e.target.closest('li')
-            parentElement.className = 'editing'
+            parentElement.className = 'editing' // 이부분을 랜더링 할때 적용 해야 함. 
             const editInput = parentElement.querySelector('.edit')
             editInput.focus()
         })
