@@ -1,6 +1,6 @@
 import { checkTarget } from "../utils/validator.js";
 import { KEY, SELECTOR } from "../utils/constant.js";
-import { fetchTodos, saveTodo } from "../domain/todoService.js";
+import { fetchTodos, saveTodo } from "../domain/todoRepository.js";
 import TodoInput from "./TodoInput.js";
 import Todo from "../domain/todo.js";
 import TodoList from "./TodoList.js";
