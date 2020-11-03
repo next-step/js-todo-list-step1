@@ -1,8 +1,6 @@
-let lastId = 0;
-
 function newId(prefix='id_') {
-    lastId++;
-    return `${prefix}${lastId}`;
+    const id = Date.now();
+    return `${prefix}${id}`;
 }
 
 export default newId;

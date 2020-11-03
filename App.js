@@ -16,14 +16,13 @@ function App() {
     
    
     this.addTodo = newTodo => {
-        const data = this.data.slice();
-        data.push({
+        this.data.push({
             text: newTodo,
             id: newId(),
             completed: false,
             modifyMode: false
         })
-        this.setState(data);
+        this.setState(this.data);
     }
     
     this.toggleTodo = toggleId => {
@@ -33,6 +32,7 @@ function App() {
                 data[i].completed = !data[i].completed
             }
         }
+        console.log(data)
         this.setState(data);
     }
    
@@ -62,27 +62,6 @@ function App() {
             this.setState(data);
         }
     }
-    
-    // this.filterRender = (filterBtn) => {
-    //     console.log('app-todoFilter function')
-    //     const data = this.data.slice();
-        
-    //     switch(filterBtn) {
-    //         case 'all' :
-    //         todoList.setState(data)
-    //         break;
-            
-    //         case 'active' :
-    //             data.filter(todo => !todo.completed )
-    //             todoList.setState(data)
-    //         break;
-            
-    //         case 'completed' :
-    //             data.filter(todo => todo.completed )
-    //             todoList.setState(data)
-    //         break;
-    //     }
-    // }
     
     this.setState = updatedData => {
         this.data = updatedData;

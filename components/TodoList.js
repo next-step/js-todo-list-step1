@@ -21,7 +21,7 @@ function TodoList(data, app) {
     
      this.editMode = e => {
         if(e.target.className === 'label') {
-            e.target.parentNode.parentNode.classList.add('editing');
+            e.target.closest('li').classList.add('editing');
         }
     }
     $todoList.addEventListener('dblclick', this.editMode);
@@ -29,12 +29,12 @@ function TodoList(data, app) {
     this.editTodo = e => {
         if(e.target.className === 'edit') {
             const editedText = e.target.value;
-            const id = e.target.parentNode.id;
+            const id = e.target.closest('li').id;
             
            if(e.key === 'Enter') {
                 this.app.editTodo(editedText, id);
             }else if(e.key === 'Escape') {
-                e.target.parentNode.classList.remove('editing') 
+                e.target.closest('li').classList.remove('editing');
             }
         }
     }
@@ -42,14 +42,15 @@ function TodoList(data, app) {
     
     this.toggleTodo = e => {
         if(e.target.className === 'toggle') {
-            const toggleId = e.target.parentNode.parentNode.id;
+            const toggleId = e.target.closest('li').id;
+            //console.log(toggleId)
             this.app.toggleTodo(toggleId);
         }
     }
     $todoList.addEventListener('click', this.toggleTodo); //다른 코드 참고해보기
     
     this.deleteTodo = e => {
-        const deleteId = e.target.parentNode.parentNode.id;
+        const deleteId = e.target.closest('li').id;
         if(e.target.className === 'destroy') {
             this.app.deleteTodo(deleteId)
         }
