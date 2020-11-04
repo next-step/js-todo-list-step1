@@ -1,6 +1,6 @@
 const todoAppender = document.getElementById("new-todo-title");
-const todoList = document.getElementById("todo-list");
-const todoCount = document.getElementsByClassName("todo-count");
+const todoList   = document.getElementById("todo-list");
+const todoCount = document.querySelector(".todo-count strong");
 
 todoAppender.addEventListener("keydown", ({ key, target }) => {
 	
@@ -18,13 +18,20 @@ todoAppender.addEventListener("keydown", ({ key, target }) => {
 	`.trim());
 	
 	target.value = "";
-})
 
+	let count = 0;
+	
+	count = lastIndex;
+
+	todoCount.innerHTML = count++;
+
+})
 
 todoList.addEventListener('click', ({ target }) => {
 	if (!target.classList.contains('destroy')) return;
 	const todoItem = target.closest('[data-index]');
 	todoItem.remove();
+	
 })
 
 todoList.addEventListener('change', ({ target }) => {
@@ -52,4 +59,6 @@ todoList.addEventListener("keyup", ({ key, target }) => {
 		target.value = "";
 		todoItem.classList.remove("editing");
 	}
+
 })
+
