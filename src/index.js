@@ -75,10 +75,7 @@ import {
 
 function TodoApp(todo) {
   return DynamicDom.createElement("li", {
-    id: 1,
-    dataset: {
-      id: todo.id
-    }
+    id: todo.id
   },  TodoList({todo, id: todo.id}), 
   TodoInput({id: todo.id}))
 }
@@ -123,16 +120,12 @@ function TodoButton({id}) {
     className: "destroy",
     id: id,
     onClick: (e) => {
-      // app.setState(id++)
-      // app.dispatch({
-      //   type: "DELETE_TODO",
-      //   payload: {
-      //     id: id
-      //   }
-      // })
-      // console.log(id, e)
-      // app.deleteDom(todoContainer, id);
-      app.testDom(id);
+      app.dispatch({
+        type: "DELETE_TODO",
+        payload: {
+          id: id
+        }
+      });
     }
   }, "")
 }
@@ -171,15 +164,33 @@ const app = new DynamicDom({
 });
 
 function init() {
-  app.getState().todos.forEach((todo) => {
-    app.addDomList(TodoApp(todo), todo.id);
+  app.getState().todos.forEach((todo, idx) => {
+    app.addDomList(TodoApp(todo), idx);
   })
   app.allDomRender(todoContainer);
 }
+
+// function update() {
+//   const TodoList = app.getState().todos.map((todo) => 
+//     TodoApp(todo)
+//   )
+//   app.compareDom(TodoList, todoContainer)
+// }
+
 app.subscriber(init);
 init();
 
+function addTodo2() {
+  app.dispatch({
+    type:"ADD_TODO",
+    payload: {
+      id: app.getState().todos.length+1,
+      title: "newTEST"
+    }
+  })
+}
 
+todoInput.addEventListener("click",addTodo2)
 
 // const app = new DynamicDom(todoContainer.id);
 // app.render(TodoApp(), todoContainer);
