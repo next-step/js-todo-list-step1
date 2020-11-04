@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,7 +17,16 @@
       />
       <main>
         <input class="toggle-all" type="checkbox" />
-        <ul id="todo-list" class="todo-list"></ul>
+        <ul id="todo-list" class="todo-list">
+          <li>
+            <div class="view">
+              <input type="checkbox" class="toggle" />
+              <label>테스트</label>
+              <button class="destroy"></button>
+            </div>
+            <input type="text" class="edit">
+          </li>
+        </ul>
         <div class="count-container">
           <span class="todo-count">총 <strong>0</strong> 개</span>
           <ul class="filters">
@@ -34,6 +43,6 @@
         </div>
       </main>
     </div>
-    <script src="./src/index.js"></script>
+    <script type="module" src="./src/index.js"></script>
   </body>
 </html>
