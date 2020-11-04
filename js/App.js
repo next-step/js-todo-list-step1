@@ -1,48 +1,49 @@
 import { getTodoList, setTodo } from "./controller/TodoStorage.js";
 import InputTodo from "./controller/InputTodo.js";
+import TodoList from "./controller/TodoList.js";
 
 function App() {
-  console.log("App.js");
+  let data = getTodoList();
 
   const todoApp = document.querySelector(".todoapp");
-  const ul = todoApp.querySelector(".todo-list");
-  const data = getTodoList();
+  const toDos = todoApp.querySelector("#todo-list");
 
-  const render = function(toDos) {
-    toDos.forEach(function(todo) {
-      const list = document.createElement("li");
-      list.innerHTML = `
-      <li>
-        <div class="view">
-          <input class="toggle" type="checkbox" />
-          <label class="label"></label>
-          <button class="destroy"></button>
-        </div>
-        <input class="edit" value="" />
-      </li>`;
+  //complete
+  const handleToggle = e => {
+    const newData = [...data];
 
-      let li = list.querySelector(".label");
-      li.innerText = todo.text;
-      ul.appendChild(list);
-    });
-  };
+    if (e.target.className === "toggle") {
+      let index = e.target.id;
 
-  //add
-  const addTodo = todo => {
-    data.push(todo);
-    setTodo(data);
-    load();
-  };
-
-  //load
-  const load = () => {
-    if (data.length !== 0) {
-      render(data);
+      data.forEach(value => {
+        if (value.id === index) {
+          value.state = value.state === "completed" ? "" : "completed";
+        }
+      });
     }
+
+    setState(newData);
   };
 
-  //input
-  new InputTodo(todoApp, addTodo);
-  load();
+  todoApp.addEventListener("click", handleToggle);
+
+  const setState = newData => {
+    data = newData;
+    setTodo(data);
+    new TodoList(data, toDos);
+  };
+
+  // add
+  const addTodo = todoObj => {
+    const newData = [...data, todoObj];
+    setState(newData);
+  };
+
+  const init = () => {
+    new TodoList(data, toDos);
+    new InputTodo(todoApp, addTodo);
+  };
+
+  init();
 }
 export default App;
