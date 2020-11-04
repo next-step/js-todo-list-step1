@@ -21,7 +21,14 @@ function InputTodo(target, addTodo) {
     }
   };
 
+  const todoList = target.querySelector(".todo-list");
+  //동작을 안함.. 왜그럴까요..
+  const handleDblClick = e => {
+    console.log(e);
+  };
+
   target.addEventListener("keypress", handleSubmit);
+  todoList.addEventListener("dblclick", handleDblClick);
 }
 
 export default InputTodo;

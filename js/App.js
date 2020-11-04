@@ -1,6 +1,7 @@
 import { getTodoList, setTodo } from "./controller/TodoStorage.js";
 import InputTodo from "./controller/InputTodo.js";
 import TodoList from "./controller/TodoList.js";
+import TodoCount from "./controller/TodoCount.js";
 
 function App() {
   let data = getTodoList();
@@ -48,6 +49,7 @@ function App() {
     data = newData;
     setTodo(data);
     new TodoList(data, toDos);
+    new TodoCount(todoApp, data);
   };
 
   // add
@@ -59,6 +61,7 @@ function App() {
   const init = () => {
     new TodoList(data, toDos);
     new InputTodo(todoApp, addTodo);
+    new TodoCount(todoApp, data);
   };
 
   init();
