@@ -1,7 +1,7 @@
-import { getTodoList, setTodo } from "./controller/TodoStorage.js";
-import InputTodo from "./controller/InputTodo.js";
-import TodoList from "./controller/TodoList.js";
-import TodoCount from "./controller/TodoCount.js";
+import { getTodoList, setTodo } from "./components/TodoStorage.js";
+import InputTodo from "./components/InputTodo.js";
+import TodoList from "./components/TodoList.js";
+import TodoCount from "./components/TodoCount.js";
 
 function App() {
   let data = getTodoList();
@@ -9,8 +9,8 @@ function App() {
   const todoApp = document.querySelector(".todoapp");
   const toDos = todoApp.querySelector("#todo-list");
 
-  //complete / delete
-  const handleClick = e => {
+  //complete & delete
+  this.handleClick = e => {
     let newData = [...data];
 
     if (e.target.className === "toggle") {
@@ -40,30 +40,31 @@ function App() {
 
       newData = cleanTodo;
     }
-    setState(newData);
+    this.setState(newData);
   };
 
-  todoApp.addEventListener("click", handleClick);
+  todoApp.addEventListener("click", this.handleClick);
 
-  const setState = newData => {
+  this.setState = newData => {
     data = newData;
     setTodo(data);
-    new TodoList(data, toDos);
-    new TodoCount(todoApp, data);
+    this.TodoList.setState(data);
+    this.TodoCount.setState(data);
+    // new TodoCount(todoApp, data);
   };
 
   // add
-  const addTodo = todoObj => {
+  this.addTodo = todoObj => {
     const newData = [...data, todoObj];
-    setState(newData);
+    this.setState(newData);
   };
 
-  const init = () => {
-    new TodoList(data, toDos);
-    new InputTodo(todoApp, addTodo);
-    new TodoCount(todoApp, data);
+  this.init = () => {
+    this.TodoList = new TodoList(data, toDos);
+    this.TodoInput = new InputTodo(todoApp, this.addTodo);
+    this.TodoCount = new TodoCount(todoApp, data);
   };
 
-  init();
+  this.init();
 }
 export default App;
