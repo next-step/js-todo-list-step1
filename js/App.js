@@ -8,24 +8,41 @@ function App() {
   const todoApp = document.querySelector(".todoapp");
   const toDos = todoApp.querySelector("#todo-list");
 
-  //complete
-  const handleToggle = e => {
-    const newData = [...data];
+  //complete / delete
+  const handleClick = e => {
+    let newData = [...data];
 
     if (e.target.className === "toggle") {
-      let index = e.target.id;
+      let id = e.target.parentNode.id;
 
       data.forEach(value => {
-        if (value.id === index) {
+        if (value.id === id) {
           value.state = value.state === "completed" ? "" : "completed";
         }
       });
     }
 
+    if (e.target.className === "destroy") {
+      let div = e.target.parentNode;
+      let id = div.id;
+
+      data.forEach((value, index) => {
+        if (value.id === id) {
+          const li = div.parentNode;
+          toDos.removeChild(li);
+        }
+      });
+
+      const cleanTodo = data.filter(function(toDo) {
+        return toDo.id !== id;
+      });
+
+      newData = cleanTodo;
+    }
     setState(newData);
   };
 
-  todoApp.addEventListener("click", handleToggle);
+  todoApp.addEventListener("click", handleClick);
 
   const setState = newData => {
     data = newData;

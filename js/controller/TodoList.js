@@ -5,11 +5,11 @@ function TodoList(data, toDos) {
       .map(
         data =>
           `<li class=${data.state}>
-            <div class="view">
+            <div class="view" id=${data.id}>
             ${
               data.state === "completed"
-                ? `<input class="toggle" type="checkbox" id=${data.id} checked/>`
-                : `<input class="toggle" type="checkbox" id=${data.id} />`
+                ? `<input class="toggle" type="checkbox" checked />`
+                : `<input class="toggle" type="checkbox" />`
             }
               <label class="label">${data.text}</label>
               <button class="destroy"></button>
