@@ -1,5 +1,8 @@
+var num = 0
+
 function enterkey() {
     if(window.event.keyCode == 13) {
+        
         const inputTodo = document.querySelector('#new-todo-title')
         const ul = document.querySelector('#todo-list')
         const li = document.createElement('li')
@@ -8,6 +11,7 @@ function enterkey() {
         const checkBox = document.createElement('input')
         const label = document.createElement('label')
         const editInput = document.createElement('input')
+        const count = document.querySelector('.todo-count')
         
 
         checkBox.setAttribute('class', 'toggle')
@@ -19,7 +23,11 @@ function enterkey() {
         ul.appendChild(li)
 
         
+        inputTodo.value = ''
 
+        num++
+        count.textContent = "총 " + num + "개"
+        
         //체크박스
         checkBox.addEventListener('click', function() {
             checkBox.setAttribute('checked', 'checked')
@@ -46,14 +54,17 @@ function enterkey() {
                 li.removeChild(editInput)
             }
         })
+
         
-        inputTodo.value = ''
+        
 
         // 삭제 버튼
         close.addEventListener('click', function() {
             const answer = confirm("정말로 삭제하시겠습니까?")
             if(answer){
                 ul.removeChild(li)
+                num--
+                count.textContent = "총 " + num + "개"
              }
         })
 
