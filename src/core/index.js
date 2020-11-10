@@ -181,7 +181,19 @@ class DynamicDom {
       Object.keys(element.props)
         .filter(isEvent)
         .forEach(name => {
+          const eventType = name.toLowerCase().substring(2);
+          dom.addEventListener(eventType,element.props[name]);
+        });
 
+      const fiber = {
+        dom,
+        element: {
+          type: element.type,
+          props: element.props
+        },
+        key: Number(key),
+        children: []
+      }
 
       fiber.children =[...element.children.map((child, idx) =>
         this.childCreateDom(child, fiber, idx)
