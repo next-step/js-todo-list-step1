@@ -10,103 +10,99 @@ import {
   updateTodoTitle
 } from "./store/index.js";
 
-// class DynamicDom {
-//   wipRoot = [];
-//   rootId;
-
-//   data;
-
-//   constructor(rootId) {
-//     this.rootId = rootId
-//   }
-
-//   static createElement(type, props, ...children) {
-//     return {
-//       type: type,
-//       props: {
-//         ...props,
-//         children: children? children.map(child => 
-//           typeof child === "object" ?
-//           child : this.createTextElement(child)
-//         ) : []
-//       }
-//     }
-//   }
-
-//   static createTextElement(text) {
-//     return  {
-//       type: "TEXT_ELEMENT",
-//       props: {
-//         nodeValue: text,
-//         children: [],
-//       }
-//     }
-//   }
-
-//   setData (data) {
-//     this.data = data
-//   }
-
-//   render(element, container) {
-//     const dom = element.type == "TEXT_ELEMENT" 
-//       ? document.createTextNode("")
-//       : document.createElement(element.type);
-
-//     if(element.props) {
-//       const isProperty = key => key !== "children";
-//       Object.keys(element.props)
-//       .filter(isProperty)
-//       .forEach(name => {
-//         dom[name] = element.props[name]
-//       })
-//     }
-
-//     element.props.children.forEach(child => 
-//       this.render(child, dom)
-//     );
-    
-//     if(container.id && container.id == this.rootId) {
-//       container.innerHTML = "";
-//     }
-
-//     container.appendChild(dom); 
-//   }
-// }
+// const stateAction = new useState();
 
 function TodoApp(todo) {
+
+  // const [data, setState] = stateAction(1);
+
   return DynamicDom.createElement("li", {
-    id: todo.id
-  },  TodoList({todo, id: todo.id}), 
-  TodoInput({id: todo.id}))
+    id: todo.id,
+    className: todo.state,
+    onDblclick: () => {
+      console.log(state());
+      init();
+    }
+  },  TodoList({todo}), 
+  TodoInput({todo}))
 }
+
+// function useState(payload) {
+//   const stateList = [];
+
+//   let state = payload;
+
+//   const setState = (payload) => {
+//     stateList.push(payload);
+//     init();
+//   }
+
+
+//   const getState = () => {
+//     let data 
+//     if(stateList) {
+//       data = stateList[0]
+//       stateList.shift()
+//     } else {
+//       data = state
+//     }
+    
+//     return data
+//   }
+
+//   return [getState(), setState]
+// }
+
+
   
 
 
-function TodoList({todo, id}) {
+function TodoList({todo}) {
   return DynamicDom.createElement(
-      "div", 
-      {
-        className: "view",
-        id: id
-      }, 
-      TodoToggle(),
-      TodoTitle({todo}),
-      TodoButton({id})
-    )
+    "div", 
+    {
+      className: "view",
+      id: todo.id,
+      onDblclick: ()=> {
+        console.log("click")
+        console.log(todo)
+        changeEditMode(todo.id)
+      }
+    }, 
+    TodoToggle({todo}),
+    TodoTitle({todo}),
+    TodoButton({id: todo.id})
+  )
 }
 
-function TodoInput({id}) {
+function TodoInput({todo}) {
   return DynamicDom.createElement("input",{
     className: "edit",
-    value: "새로운 타이틀",
-    type: "text"
+    value: todo.title,
+    type: "text",
+    onDblclick: (e)=> {
+      changeEditMode(todo.id)
+      e.target.value = todo.title
+    },
+    onKeypress: (e)=>{
+      if(e.keyCode === 13) {
+        updateTodo(e.target.value, todo.id)
+        changeEditMode(todo.id)
+      }
+      console.log(e.target.value)
+    }
   }, "")
 }
 
-function TodoToggle() {
+function TodoToggle({todo}) {
+
   return DynamicDom.createElement("input", {
     className: "toggle",
-    type: "checkbox"  
+    type: "checkbox",
+    checked: todo.state === "completed" ? true : false,
+    onClick: ()=> {
+      todoToggle(todo.id)
+    }
   }, "")
 }
 
@@ -115,7 +111,6 @@ function TodoTitle({todo}) {
 }
 
 function TodoButton({id}) {
-  // dispatch(deleteTodo({id}))
   return DynamicDom.createElement("button", {
     className: "destroy",
     id: id,
@@ -133,41 +128,45 @@ function TodoButton({id}) {
 
 const todoContainer = document.getElementById("todo-list");
 const todoInput = document.querySelector(".new-todo");
+
+const $todoCount = document.querySelector(".todo-count").querySelector("strong");
+
 const app = new DynamicDom({
   todos: [
     {
       id: 1,
       title: "test",
-      state: "aaa"
+      state: ""
     },
     {
       id: 2,
       title: "test",
-      state: "aaa"
+      state: ""
     },
     {
       id: 3,
       title: "test",
-      state: "aaa"
+      state: ""
     },
     {
       id: 4,
       title: "test",
-      state: "aaa"
+      state: ""
     },
     {
       id: 5,
       title: "test",
-      state: "aaa"
+      state: ""
     },
   ]
 });
 
 function init() {
-  app.getState().todos.forEach((todo, idx) => {
-    app.addDomList(TodoApp(todo), idx);
+  app.getState().todos.forEach((todo) => {
+    app.addDomList(TodoApp(todo), todo.id);
   })
   app.allDomRender(todoContainer);
+  $todoCount.innerHTML = app.getState().todos.length
 }
 
 // function update() {
@@ -180,101 +179,61 @@ function init() {
 app.subscriber(init);
 init();
 
-function addTodo2() {
+function addTodo2(e) {
+  if(e.keyCode === 13) {
+    app.dispatch({
+      type:"ADD_TODO",
+      payload: {
+        id: app.getState().todos[0]? app.getState().todos[app.getState().todos.length-1].id + 1 : 1,
+        title: e.target.value
+      }
+    })
+    e.target.value = ""
+  }
+  
+}
+
+function updateTodo(title, id) {
+  console.log("2")
   app.dispatch({
-    type:"ADD_TODO",
+    type:"UPDATE_TODO_TITLE",
     payload: {
-      id: app.getState().todos.length+1,
-      title: "newTEST"
+      id,
+      title
     }
   })
 }
 
-todoInput.addEventListener("click",addTodo2)
+function todoToggle(id) {
+  console.log("toggle")
+  app.dispatch({
+    type: "TOGGLE_TODO_STATE",
+    payload: {
+      id
+    }
+  })
+}
 
-// const app = new DynamicDom(todoContainer.id);
-// app.render(TodoApp(), todoContainer);
+// state에서 edited는 삭제해야함. 다른 방식을 찾아봐야함. useState? 
+function changeEditMode(id) {
+  app.dispatch({
+    type: "EDITE_TODO_STATE",
+    payload: {
+      id
+    }
+  })
+}
 
-// let int = 1;
+todoInput.addEventListener("keypress",(e) => {addTodo2(e)});
 
-// const todoDomList = [];
+const APIURL = "https://js-todo-list-9ca3a.df.r.appspot.com";
 
-// function init(store) {
-//   store.dispatch("");
-//   todoInput.addEventListener("click",() => {
-//     store.dispatch(addTodo({id: int++, title: "추가"}));
-//   });
-//   todoContainer.addEventListener("click", (e) => {
-//     console.log(e.target.nodeName === "LABEL", e.target.parentNode);
-//     switch(e.target.nodeName) {
-//       case "BUTTON": 
-//       console.log(e.target.parentNode.id)
-//         store.dispatch(deleteTodo(e.target.parentNode.id))
-//         app.setData(10)
-//         console.log(app.data)
-//       case "INPUT": 
-//         if(e.target.type === "checkbox") {
-//           store.dispatch(toggleTodoState(id = e.target.id))
-//         }
-//     }
-//   })
+let userList = "";
 
-  // app.render(TodoApp({state: store.getState(),dispatch: store.dispatch }), todoContainer);
-  // store.subscribe(()=>{
-  //   app.render(TodoApp({state: store.getState(), dispatch:store.dispatch }), todoContainer);
-  // });
-
-  // store.getState().todos.forEach((todo, idx) => 
-  //   app.createDom(TodoApp(todo), idx)
-  // )
-  // app.domRender(todoContainer);
-
-  // app.domRender(todoContainer);
-
-
-  // todoContainer.removeChild(todoDomList[0]);
-  // todoContainer.removeChild(todoDomList[2]);
-
-  // console.log(todoDomList);
-  
-// }
-
-// const store = createStore(reducer);
-
-// init(store);
-
-
-// function createDom(element) {
-//   const dom = element.type == "TEXT_ELEMENT" 
-//     ? document.createTextNode("")
-//     : document.createElement(element.type);
-
-//     const isProperty = key => 
-//       key !== "children";
-//     Object.keys(element.props)
-//     .filter(isProperty)
-//     .forEach(name => {
-//       dom[name] = element.props[name]
-//     })
-
-//   element.props.children.forEach(child => {
-//     app.render(child, dom)
-//   });
-
-//   dom.addEventListener("click", ()=> {
-//     console.log("click")
-//   })
-
-//   dom.dataset.dataId = "1"
-//   // console.log(dom["dataset"])
-
-//   todoDomList.push(dom);
-   
-// }
-
-// function domRender(domList, container) {
-//   domList.forEach(dom => container.appendChild(dom));
-// }
-// console.log()
-
-
+fetch(`${APIURL}/api/users`)
+  .then(data => {
+    return data.json()
+  })
+  .then(data => {
+    console.log(data);
+  })
