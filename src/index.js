@@ -39,13 +39,11 @@ function addTodoList(e) {
   }
 }
 
-function todoFilter(e) {
-  // e.preventDefault()
-  console.log(location.href)
-  if(e.target.tag === "A") {
+// function todoFilter(e) {
+//   if(e.target.tag === "A") {
 
-  }
-}
+//   }
+// }
 
 function domEventListeners() {
   $todoInput.addEventListener("keypress", addTodoList);
@@ -57,14 +55,3 @@ app.subscriber(init);
 init();
 domEventListeners();
 
-
-
-const APIURL = "https://js-todo-list-9ca3a.df.r.appspot.com";
-
-fetch(`${APIURL}/api/users`)
-  .then(data => {
-    return data.json()
-  })
-  .then(data => {
-    console.log(data);
-  })
