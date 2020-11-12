@@ -1,5 +1,5 @@
 function useState(init) {
-  
+
   let stateList = [];
   let listener = init;
 
@@ -20,10 +20,10 @@ function useState(init) {
     stateList = stateList.map(state => {
       return state.key === key? {
         key,
-        data: payload
+        data: payload.data
       } : state
     });;
-    listener();
+    listener(payload.props);
   }
 
   return { initData, getState, setState };

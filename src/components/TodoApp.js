@@ -1,17 +1,17 @@
 import DynamicDom from "../core/DynamicDom.js";
-import { app, todoState } from "../index.js";
+import { app, todoState, todoStore } from "../index.js";
 import { 
   deleteTodo,
   toggleTodoState,
   updateTodoTitle 
-} from "../store/store.js";
+} from "../store/index.js";
 
 function updateTodo(title, id) {
-  app.dispatch(updateTodoTitle(id, title));
+  todoStore.dispatch(updateTodoTitle(id, title));
 }
 
 function todoToggle(id) {
-  app.dispatch(toggleTodoState(id));
+  todoStore.dispatch(toggleTodoState(id));
 }
  
 function TodoView({todo, key}) {
@@ -36,14 +36,25 @@ function TodoInput({todo, key}) {
     value: todo.title,
     type: "text",
     onDblclick: () => {
-      setState(key, "");
+      setState(key, 
+        {
+          data: "", 
+          props: {
+            key,
+            stateId:todo.id
+        }});
     },
     onKeypress: (e)=>{
       if(e.keyCode === 13) {
         updateTodo(e.target.value, todo.id)
-        setState(key, "");
+        setState(key, 
+          {
+            data: "", 
+            props: {
+              key,
+              stateId: todo.id
+          }});
       }
-      console.log(e.target.value)
     }
   }, "")
 }
@@ -66,7 +77,13 @@ function TodoTitle({todo, key}) {
 
   return DynamicDom.createElement("label", {
     onDblclick: () => {
-      setState(key, "editing");
+      setState(key, 
+        { 
+          data:"editing", 
+          props: {
+            key,
+            stateId: todo.id
+        }});
     }
   }, `${todo.title}`)
 }
@@ -77,7 +94,7 @@ function TodoButton({id}) {
     id: id,
     onClick: (e) => {
       if(window.confirm("정말 삭제하시겠습니까?")) {
-        app.dispatch(deleteTodo(id));
+        todoStore.dispatch(deleteTodo(id));
       }
     }
   }, "")

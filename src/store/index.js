@@ -7,8 +7,8 @@ const UPDATE_TODO_TITEL = "UPDATA_TODO_TITLE";
 
 //actions
 
-export const addTodo = (id, title) =>
-  ({ type: ADD_TODO, payload: {id, title}});
+export const addTodo = (id, title, state) =>
+  ({ type: ADD_TODO, payload: {id, title, state}});
 
 export const deleteTodo = id =>
   ({ type: DELETE_TODO, payload: { id }});
@@ -34,7 +34,7 @@ export function reducer(state, { type, payload }) {
           {
             id: payload.id,
             title: payload.title,
-            state: "active",
+            state: payload.state,
           }
         ]
       });
@@ -91,10 +91,15 @@ export function reducer(state, { type, payload }) {
     break;
 
   default :
-    newState = state
+    const localTodos = localStorage.getItem("todo");
+    if(localTodos || localTodos == undefined) {
+      newState = JSON.parse(localTodos)
+    } else {
+      newState = state
+    }
   }
 
   localStorage.setItem("todo", JSON.stringify(newState));
 
-  return newState
+  return newState;
 }

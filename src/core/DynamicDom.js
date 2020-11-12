@@ -3,13 +3,9 @@ class DynamicDom {
   currentFiberList = [];
   nextFiberList = [];
 
-  // store
   state;
-  reducer;
-  listeners = [];
 
-  constructor(reducer) {
-    this.reducer = reducer
+  constructor() {
   }
 
   getState() {
@@ -18,29 +14,6 @@ class DynamicDom {
 
   setState(payload) {
     this.state = payload;
-  }
-
-  dispatch(action, listeners = null) {
-    this.setState(this.reducer(this.state, action));
-    this.publish(listeners);
-  }
-
-  publish(listeners) {
-    if(listeners) {
-      listeners.forEach(listener => {
-        listener();
-      })
-    } else {
-      this.listeners.forEach(({ subscriber })=> {
-        subscriber();
-      })
-    }
-  }
-
-  subscriber(subscriber) {
-    this.listeners.push({
-      subscriber
-    })
   }
 
   static createElement(type, props, ...children) {
@@ -159,7 +132,8 @@ class DynamicDom {
 
   removeDomList(keyList, fiberList, dom) {
     const removeList = fiberList.filter(fiber => 
-      !keyList.includes(Number(fiber.key)));
+        !keyList.includes(Number(fiber.key))
+      );
 
     removeList.forEach(child => {
       dom.removeChild(child.dom);
@@ -215,13 +189,21 @@ class DynamicDom {
     this.nextFiberList.push(fiber);
   }
 
-  render(container) {
+  render(container, element) {
+
+    if(Array.isArray(element)) {
+      element.forEach((ele, idx) => {
+        this.addFiberList(ele, idx);
+      })
+    } else {
+      this.addFiberList(ele, key = 1);
+    }
 
     const keyList = this.nextFiberList.map(fiber => fiber.key);
 
     this.removeDomList(keyList, this.currentFiberList, container)
 
-    this.nextFiberList.forEach((nextFiber)=>{
+    this.nextFiberList.forEach(( nextFiber )=>{
       const preFiber = this.currentFiberList.filter(fiber =>
           fiber.key === nextFiber.key
         )[0]
@@ -233,6 +215,13 @@ class DynamicDom {
     this.currentFiberList = [...this.nextFiberList];
 
     this.nextFiberList = [];
+  }
+
+  modifyFiber (element, key) {
+    const nextFiber = this.setFiber(element, key, this.currentFiberList);
+    this.currentFiberList = this.currentFiberList.map(fiber => 
+        fiber.key === key? nextFiber : fiber
+      );
   }
 
   findFiber(key) {    
