@@ -15,38 +15,42 @@ const $todoInput = document.querySelector(".new-todo");
 const $todoCount = document.querySelector(".todo-count").querySelector("strong");
 const $todoFilters = document.querySelector(".filters");
 
-const reActive = new RegExp("#active");
-const reCompleted = new RegExp("#completed");
-
-function todoList() {
+function validation() {
+  const reActive = new RegExp("#active");
+  const reCompleted = new RegExp("#completed");
   const URL = location.href;
+
   if(reActive.exec(URL)) {
-    return todoStore.getState().todos.filter( todo => 
-        todo.state === "active"
-      );
+    return "active"
   } else if(reCompleted.exec(URL)) {
-    return todoStore.getState().todos.filter( todo => 
-      todo.state === "completed"
-    );
+    return "completed"
   } else {
-    return todoStore.getState().todos
+    return "all"
   }
 }
 
-function init() {
-  const todoApp = todoList().map((todo, key) => 
-    TodoApp(todo, key)
-  );
-  app.render($todoContainer, todoApp);
-  $todoCount.innerHTML = todoList().length;
+function filterTodoList() {
+  const type = validation();
+
+  return type === "all"
+    ? todoStore.getState().todos
+    : todoStore.getState().todos.filter( todo => 
+        todo.state === type
+    );
 }
 
-function modify({key, stateId}) {
-  const unitTodoState = todoStore.getState().todos.filter(todo => todo.id === stateId)[0];
-  app.modifyFiber(TodoApp(unitTodoState, key), key);
-}
+function changeFiltersButtonStyle() {
+  const type = validation()
+  const $selected = $todoFilters.querySelector(".selected");
+  const $activeBtn = $todoFilters.getElementsByClassName(type)[0];
 
-export const todoState = new useState(modify);
+  if($selected) {
+    $selected.classList.remove("selected")
+  }
+  console.log($activeBtn)
+
+  $activeBtn.classList.add("selected");
+}
 
 function addTodoList(e) {
   if(e.keyCode === 13) {
@@ -62,17 +66,38 @@ function addTodoList(e) {
 
 function domEventListeners() {
   $todoInput.addEventListener("keypress", addTodoList);
-  $todoFilters.addEventListener("click", (e)=> {
-    // e.preventDefault();
-    if(e.target.tagName === "A") {
-      window.setTimeout(init, 0);
+  $todoFilters.addEventListener("click", ({target})=> {
+    if(target.tagName === "A") {
+      window.setTimeout(renderTodoApp, 0);
     }
   });
 }
 
-todoStore.dispatch({state: null,action: null});
-todoStore.subscribe(init);
+function renderTodoApp() {
+  const todoStateList = filterTodoList();
+  changeFiltersButtonStyle();
+  $todoCount.innerHTML = todoStateList.length;
+  const todoApp = todoStateList.map((todo, key) => 
+    TodoApp(todo, key)
+  );
+  app.render($todoContainer, todoApp);
+}
+
+function modify({key, stateId}) {
+  const unitTodoState = todoStore.getState().todos.filter(todo => todo.id === stateId)[0];
+  app.modifyFiber(TodoApp(unitTodoState, key), key);
+}
+
+export const todoState = new useState(modify);
+
+
+function init() {
+  todoStore.dispatch({state: null,action: null});
+  todoStore.subscribe(renderTodoApp);
+  renderTodoApp();
+  domEventListeners();
+}
 
 init();
-domEventListeners();
+
 

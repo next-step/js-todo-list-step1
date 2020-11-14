@@ -6,12 +6,45 @@ import {
   updateTodoTitle 
 } from "../store/index.js";
 
-function updateTodo(title, id) {
-  todoStore.dispatch(updateTodoTitle(id, title));
+function TodoToggleButton({todo}) {
+
+  return DynamicDom.createElement("input", {
+    className: "toggle",
+    type: "checkbox",
+    checked: todo.state === "completed" ? true : false,
+    onClick: ()=> {
+      todoStore.dispatch(toggleTodoState(todo.id));
+    }
+  }, "")
 }
 
-function todoToggle(id) {
-  todoStore.dispatch(toggleTodoState(id));
+function TodoTitle({todo, key}) {
+
+  const { setState } = todoState;
+
+  return DynamicDom.createElement("label", {
+    onDblclick: () => {
+      setState(key, 
+        { 
+          data:"editing", 
+          props: {
+            key,
+            stateId: todo.id
+        }});
+    }
+  }, `${todo.title}`)
+}
+
+function TodoDeleteButton({id}) {
+  return DynamicDom.createElement("button", {
+    className: "destroy",
+    id: id,
+    onClick: (e) => {
+      if(window.confirm("정말 삭제하시겠습니까?")) {
+        todoStore.dispatch(deleteTodo(id));
+      }
+    }
+  }, "")
 }
  
 function TodoView({todo, key}) {
@@ -21,9 +54,9 @@ function TodoView({todo, key}) {
       className: "view",
       id: todo.id
     }, 
-    TodoToggle({todo}),
+    TodoToggleButton({todo}),
     TodoTitle({todo, key}),
-    TodoButton({id: todo.id})
+    TodoDeleteButton({id: todo.id})
   )
 }
 
@@ -46,7 +79,9 @@ function TodoInput({todo, key}) {
     },
     onKeypress: (e)=>{
       if(e.keyCode === 13) {
-        updateTodo(e.target.value, todo.id)
+        todoStore.dispatch(
+          updateTodoTitle(todo.id, e.target.value)
+        );
         setState(key, 
           {
             data: "", 
@@ -54,47 +89,6 @@ function TodoInput({todo, key}) {
               key,
               stateId: todo.id
           }});
-      }
-    }
-  }, "")
-}
-
-function TodoToggle({todo}) {
-
-  return DynamicDom.createElement("input", {
-    className: "toggle",
-    type: "checkbox",
-    checked: todo.state === "completed" ? true : false,
-    onClick: ()=> {
-      todoToggle(todo.id)
-    }
-  }, "")
-}
-
-function TodoTitle({todo, key}) {
-
-  const { setState } = todoState;
-
-  return DynamicDom.createElement("label", {
-    onDblclick: () => {
-      setState(key, 
-        { 
-          data:"editing", 
-          props: {
-            key,
-            stateId: todo.id
-        }});
-    }
-  }, `${todo.title}`)
-}
-
-function TodoButton({id}) {
-  return DynamicDom.createElement("button", {
-    className: "destroy",
-    id: id,
-    onClick: (e) => {
-      if(window.confirm("정말 삭제하시겠습니까?")) {
-        todoStore.dispatch(deleteTodo(id));
       }
     }
   }, "")
