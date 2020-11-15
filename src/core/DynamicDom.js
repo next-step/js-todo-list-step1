@@ -8,14 +8,6 @@ class DynamicDom {
   constructor() {
   }
 
-  getState() {
-    return this.state;
-  }
-
-  setState(payload) {
-    this.state = payload;
-  }
-
   static createElement(type, props, ...children) {
     return {
       type: type,
@@ -38,6 +30,14 @@ class DynamicDom {
       },
       children: []
     }
+  }
+
+  getState() {
+    return this.state;
+  }
+
+  setState(payload) {
+    this.state = payload;
   }
 
   createFiber(element, key = 1) {

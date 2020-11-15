@@ -39,15 +39,14 @@ function filterTodoList() {
     );
 }
 
-function changeFiltersButtonStyle() {
-  const type = validation()
+function changeStyleFiltersButton() {
+  const type = validation();
   const $selected = $todoFilters.querySelector(".selected");
   const $activeBtn = $todoFilters.getElementsByClassName(type)[0];
 
   if($selected) {
     $selected.classList.remove("selected")
   }
-  console.log($activeBtn)
 
   $activeBtn.classList.add("selected");
 }
@@ -75,12 +74,14 @@ function domEventListeners() {
 
 function renderTodoApp() {
   const todoStateList = filterTodoList();
-  changeFiltersButtonStyle();
-  $todoCount.innerHTML = todoStateList.length;
-  const todoApp = todoStateList.map((todo, key) => 
-    TodoApp(todo, key)
+  changeStyleFiltersButton();
+  $todoCount.innerHTML = todoStateList? todoStateList.length : 0;
+  app.render(
+    $todoContainer, 
+    todoStateList.map((todo, key) => 
+      TodoApp(todo, key)
+    )
   );
-  app.render($todoContainer, todoApp);
 }
 
 function modify({key, stateId}) {
@@ -92,7 +93,10 @@ export const todoState = new useState(modify);
 
 
 function init() {
-  todoStore.dispatch({state: null,action: null});
+  todoStore.dispatch({
+    type: null,
+    payload: null
+  });
   todoStore.subscribe(renderTodoApp);
   renderTodoApp();
   domEventListeners();

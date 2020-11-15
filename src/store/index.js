@@ -92,10 +92,12 @@ export function reducer(state, { type, payload }) {
 
   default :
     const localTodos = localStorage.getItem("todo");
-    if(localTodos || localTodos == undefined) {
+    if(localTodos && localTodos !== "null") {
       newState = JSON.parse(localTodos)
     } else {
-      newState = state
+      newState = {
+        todos: []
+      }
     }
   }
 
