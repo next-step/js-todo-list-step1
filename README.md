@@ -41,6 +41,39 @@ live-server 폴더명
 
 <br>
 
+## Convention
+- Class : camelCase
+- Directory : camelCase
+- Components : PascalCase
+- DOM variable : use prefix "$"
+- Method
+    - camelCase
+    - DOM Method : use prefix "on"
+    - Other Methods : start with verb
+
+
+<br>
+
+## Directory Structure
+```
+components
+    App.js
+    TodoCount.js
+    TodoInput.js
+    TodoList.js
+    TodoTab.js
+utils
+    constants.js
+    validators.js
+domain
+    todo.js
+    todos.js
+    todoService.js
+index.js
+``` 
+
+<br>
+
 ## 🐞 Bug Report
 
 버그를 발견한다면, [Issues](https://github.com/EastjunDev/frontend/issues) 에 등록 후 @eastjun에게 dm을 보내주세요.
