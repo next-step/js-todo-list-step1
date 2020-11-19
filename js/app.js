@@ -1,104 +1,83 @@
-import todoItem from './todoItem.js';
-import filterItem from './filterItem.js';
-let ID = 0;
-let DATA = []; // {id, context, complete}
-let HASH = "all";
+import { TodoInput } from './TodoList/TodoInput.js'
+import { TodoList } from './TodoList/TodoList.js'
+import { TodoFilter } from './TodoList/TodoFilter.js'
+import { Template, TemplateEditing, TemplateCompleted } from './TodoList/Templates.js'
 
+class App {
+    constructor () {
+        this.ID = 0
+        this.STATUS = ''
+        this.item = [] // {id, context, complete}, {id: ID++, context: 'test', complete: false}
+        this.TodoInput = new TodoInput(this)
+        this.TodoList = new TodoList(this)
+        this.TodoFilter = new TodoFilter(this)
+        this.Template = Template
 
-
-/************* element select & event setting ****************/ 
-const $todoInputElement = document.getElementById('new-todo-title');
-const $todoListElement = document.getElementById('todo-list');
-const $filtersElement = document.querySelector('.filters');
-const $countElement = document.querySelector('.todo-count strong')
-
-$todoInputElement.addEventListener('keyup', (event) => {
-	const key = event.key;
-	const valueTrim = event.target.value.trim()
-
-    if (key === "Enter" && valueTrim) {
-        let data = {
-            id: ID++,
-            context: valueTrim,
-            complete: false
-		}
-		inputEvent(data)
-		render()
-		$todoInputElement.value = '';
+        this.$TodoList = document.getElementById('todo-list')
+        this.$TodoCount = document.querySelector('.todo-count strong')
     }
-})
-$todoListElement.addEventListener('keyup', (event) => {
-	const key = event.key;
-	const target = event.target;
-	const parent = target.parentElement;
-	const valueTrim = event.target.value.trim()
-	let labelElement = parent.querySelector('label')
 
-	if (key === 'Escape') {
-		parent.classList.remove('editing')
-		target.value = labelElement.innerHTML
-	} else if ( key === 'Enter' && valueTrim) {
-		let index = parent.id.split('-')[1]
-		DATA[index].context = valueTrim
-		render()
-	}
+    itemBeforeRender (renderItem) {
+        return renderItem.map(todoItem => {
+            switch (todoItem.complete) {
+                case true :
+                    return TemplateCompleted(todoItem)
+                case false :
+                    return Template(todoItem)
+            }
+        })
+    }
+    render(status) {
+        // 현재의 status값을 찾아서 사용해야 함. 
+        const targetItem = this.item.filter(todoItem => {
+            if (this.STATUS === '' ) return true
+            if (this.STATUS === 'active' && !todoItem.complete) return true
+            if (this.STATUS === 'completed' && todoItem.complete) return true
+        })
 
-})
-// toggle change event 
-$todoListElement.addEventListener('change', (event) => {
-	const target = event.target;
-	const targetId = target.parentElement.id
-
-	if (target.id) {
-		DATA.forEach((v, i, a) => {
-			if ( `item-${v.id}` === targetId ) {
-				v.complete = !v.complete;
-			}
-		})
-		render();
-	}
-})
-// button click event
-$todoListElement.addEventListener('click', (event) => {
-	const target = event.target
-	const targetId = target.parentElement.id
-	
-	if (target.className === 'destroy') {
-		DATA = DATA.filter((v) => {
-			return ( `item-${v.id}` === targetId ) ? false : true;
-		})
-		render();
-	}
-})
-
-
-// 입력된 값 수저하는 기능
-$todoListElement.addEventListener('dblclick', (event) => {
-	const target = event.target 
-	const parent = target.parentElement
-	parent.classList.add('editing')
-})
-window.addEventListener('hashchange', (event) => {
-	HASH = event.newURL.split('#')[1] || 'all'
-	render();
-})
-
-/**************** App logic ****************/
-const inputEvent = (newData) => {
-	DATA.push(newData)
+        const resultList = this.itemBeforeRender(targetItem)
+        const resultLength = resultList.length
+        const resultHTML = resultList.join()
+        this.$TodoList.innerHTML = ''
+        this.$TodoList.insertAdjacentHTML('beforeend', resultHTML)
+        this.$TodoCount.innerText = resultLength
+    }
+    
+    addItem (inputValue) {
+        const eachItem = {id: this.ID++, context: inputValue, complete: false}
+        this.item.push(eachItem)
+        this.render()
+    }
+    afterUpdateItem (targetElement, value) {
+        const itemId = targetElement.id.replace('item-', '')
+        this.item = this.item.map(todoItem => {
+            if ( parseInt(itemId) === todoItem.id) {
+                todoItem.context = value
+            }
+            return todoItem
+        })
+        this.render()
+    }
+    deleteItem (targetElement) {
+        const itemId = targetElement.id.replace('item-', '')
+        this.item = this.item.filter( todoItem =>  (parseInt(itemId) === todoItem.id) ? false : true )
+        this.render()
+    }
+    completeItem (targetElement) {
+        // item값 변경 
+        const itemId = targetElement.id.replace('item-', '')
+        this.item = this.item.map(todoItem => {
+            if ( todoItem.id === parseInt(itemId) ) {
+                todoItem.complete = !todoItem.complete
+            }
+            return todoItem
+        })
+        this.render()
+    }
+    changeStatus (status = '') {
+        this.STATUS = status
+        this.render()
+    }
 }
-const render =  () => {
-	let filteredData = DATA.filter((v) => {
-		if (HASH === 'completed') {
-			return (v.complete) ? true : false
-		} else if (HASH === 'active') {
-			return !(v.complete) ? true : false
-		} else {
-			return true
-		}
-	})
-	
-	$todoListElement.innerHTML = filteredData.map( (item) => todoItem(item) ).join('')
-	$countElement.innerHTML = filteredData.length;
-	$filtersElement.innerHTML = filterItem(HASH)
-}
+
+const todo = new App()
