@@ -1,7 +1,8 @@
-let id_No = 0;
+let id_No = localStorage.length;
 
 window.onload = () => {
-  localStorage.clear();
+  //   localStorage.clear();
+  todoList();
   saveTodos();
 };
 
@@ -34,8 +35,32 @@ const saveTodos = () => {
 const addTodos = (param) => {
   //   let main = document.getElementsByTagName("main")[0];
   const todoList = document.querySelector("#todo-list");
-  let li = document.createElement("li");
-  li.classList.add("new-todo");
+  let li = createli();
   li.innerHTML = param.value;
   todoList.append(li);
+};
+
+const todoList = () => {
+  let tList = createLocalStorageArray();
+  const todoList = document.querySelector("#todo-list");
+
+  tList.forEach((value) => {
+    let li = createli();
+    li.innerHTML = value;
+    todoList.append(li);
+  });
+};
+
+const createLocalStorageArray = () => {
+  let array = [];
+  for (let index = 0; index < localStorage.length; index++) {
+    array.push(localStorage.getItem(index));
+  }
+  return array;
+};
+
+const createli = () => {
+  const li = document.createElement("li");
+  li.classList.add("new-todo");
+  return li;
 };
