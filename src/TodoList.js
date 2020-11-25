@@ -7,7 +7,7 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
   this.setState = () => {
     this.render();
     this.bindEvents();
-  }
+  };
 
   this.updateItem = (nextData) => {
     this.data = [...nextData];
