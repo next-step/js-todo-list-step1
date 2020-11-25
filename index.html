@@ -34,5 +34,13 @@
         </div>
       </main>
     </div>
+    <script type="text/javascript" src="js/todo.js"></script>
+    <script type="text/javascript">
+      const todoList = new TodoList();
+      new TodoRegister({
+        el: document.querySelector("#new-todo-title"),
+        todoList,
+      });
+    </script>
   </body>
 </html>
