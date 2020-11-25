@@ -1,10 +1,29 @@
-// store
+const todoItemTempate = (text) => `<li>
+<div class="view">
+  <input class="toggle" type="checkbox"/>
+  <label class="label">${text}</label>
+  <button class="destroy"></button>
+</div>
+<input class="edit" value="${text}" />
+</li>`;
+
 class TodoList {
-  add(todoItem) {
-    console.log(todoItem);
+  constructor({ el }) {
+    if (!el) return;
+    this.el = el;
+    this.items = [];
   }
 
-  render() {}
+  add(todoItem) {
+    console.log(todoItem);
+    this.items.push(todoItem);
+    this.render();
+  }
+
+  render() {
+    const html = this.items.map((item) => todoItemTempate(item.text)).join("");
+    this.el.innerHTML = html;
+  }
 }
 
 class TodoRegister {
@@ -26,6 +45,7 @@ class TodoRegister {
   register() {
     if (!this.el.value) return;
     this.todoList.add(new TodoItem(this.el.value));
+    this.el.value = "";
   }
 }
 

@@ -36,7 +36,9 @@
     </div>
     <script type="text/javascript" src="js/todo.js"></script>
     <script type="text/javascript">
-      const todoList = new TodoList();
+      const todoList = new TodoList({
+        el: document.querySelector("#todo-list"),
+      });
       new TodoRegister({
         el: document.querySelector("#new-todo-title"),
         todoList,
