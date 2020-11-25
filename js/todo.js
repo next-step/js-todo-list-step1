@@ -6,11 +6,14 @@ const todoItemTempate = (text) => `<div class="view">
 <input class="edit" value="${text}" />`;
 
 class TodoList {
-  constructor({ el }) {
+  #onChange;
+
+  constructor({ el, onChange }) {
     if (!el) return;
     this.el = el;
     this.items = [];
     this.bindEvents();
+    this.#onChange = onChange;
   }
 
   bindEvents() {
@@ -50,6 +53,7 @@ class TodoList {
   render() {
     this.el.innerHTML = "";
     this.items.map((item) => this.el.append(item.el));
+    this.#onChange(this.items);
   }
 }
 

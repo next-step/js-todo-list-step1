@@ -38,6 +38,11 @@
     <script type="text/javascript">
       const todoList = new TodoList({
         el: document.querySelector("#todo-list"),
+        onChange: (items) => {
+          document.querySelector(
+            ".todo-count"
+          ).innerHTML = `총 <strong>${items.length}</strong> 개`;
+        },
       });
       new TodoRegister({
         el: document.querySelector("#new-todo-title"),
