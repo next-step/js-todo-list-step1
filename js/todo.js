@@ -10,6 +10,21 @@ class TodoList {
     if (!el) return;
     this.el = el;
     this.items = [];
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.el.addEventListener("dblclick", () => {
+      this.items.map((item) => item.startEditMode());
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      this.items.map((item) => item.cancelEditMode());
+    });
+    window.addEventListener("click", (e) => {
+      if (this.el.contains(e.target)) return;
+      this.items.map((item) => item.finishEditMode());
+    });
   }
 
   add(todoItem) {
@@ -21,6 +36,14 @@ class TodoList {
   remove(todoItemId) {
     console.log("delete!!");
     this.items = this.items.filter((item) => item.id !== todoItemId);
+    this.render();
+  }
+
+  updateItem(updatedItem) {
+    const { id } = updatedItem;
+    this.items = this.items.map((item) =>
+      item.id === id ? updatedItem : item
+    );
     this.render();
   }
 
@@ -39,9 +62,9 @@ class TodoRegister {
   }
 
   bindEvents() {
-    this.el.addEventListener("blur", this.register.bind(this));
     this.el.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") this.register.apply(this);
+      if (e.key !== "Enter") return;
+      this.register.apply(this);
     });
   }
 
@@ -56,13 +79,23 @@ class TodoRegister {
 
 class TodoItem {
   constructor({ text, todoList }) {
-    this.el = document.createElement("li");
-    this.el.innerHTML = todoItemTempate(text);
     this.id = new Date().getTime();
+    this.el = document.createElement("li");
+    this.text = text;
     this.todoList = todoList;
     this.completed = false;
-    this.editable = false;
     this.bindEvents();
+  }
+
+  set text(text) {
+    this.el.innerHTML = todoItemTempate(text);
+  }
+  get text() {
+    return this.el.querySelector(".label").textContent;
+  }
+
+  set editable(editable) {
+    this.el.classList.toggle("editing", editable);
   }
 
   bindEvents() {
@@ -80,5 +113,20 @@ class TodoItem {
 
   remove() {
     this.todoList.remove(this.id);
+  }
+
+  startEditMode() {
+    this.editable = true;
+  }
+
+  cancelEditMode() {
+    this.editable = false;
+    this.text = this.text;
+  }
+
+  finishEditMode() {
+    this.editable = false;
+    this.text = this.el.querySelector("input.edit").value;
+    this.todoList.updateItem(this);
   }
 }
