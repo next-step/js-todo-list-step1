@@ -107,3 +107,11 @@ This project is [MIT](https://github.com/next-step/js-todo-list-step1/blob/maste
 
 ### 🐞 버그
 - [x] todo item을 필터링할 때 원 배열의 인덱스도 같이 넘기기
+
+## 5기
+### ✨ Updates
+- Refactor
+- 해야할 일/완료한 일에서 토글하는 경우 해당 아이템이 없어지도록
+
+### 🐞 버그
+- [x] app 최초 실행 시 `this.state.data`가 `null`
