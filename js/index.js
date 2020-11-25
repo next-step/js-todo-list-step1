@@ -1,4 +1,34 @@
+// import { makeLocalStorageObject } from "makeLocalStorageObject.js";
+
 let id_No = localStorage.length;
+
+class makeLocalStorageObject {
+  constructor(id, value) {
+    this.id = 0;
+    this.value = "";
+  }
+
+  getId() {
+    return id;
+  }
+
+  getValue() {
+    return value;
+  }
+
+  setId(id) {
+    this.id = id;
+  }
+  setValue(value) {
+    this.value = value;
+  }
+
+  toString() {
+    console.log(this);
+  }
+}
+
+let storageObject = new makeLocalStorageObject();
 
 window.onload = () => {
   //   localStorage.clear();
@@ -7,48 +37,67 @@ window.onload = () => {
 };
 
 const setLocalStorage = (param) => {
-  console.log(param);
   localStorage.setItem(param.id, param.value);
 };
 
 const saveTodos = () => {
   const todos = document.querySelector("#new-todo-title");
 
-  let obj = {
-    id: "",
-    value: "",
-  };
+  todos.addEventListener("keypress", $onAddTodoHandle);
+};
 
-  todos.addEventListener("keypress", (event) => {
-    if (event.keyCode === 13) {
-      console.log(todos.value);
-      obj.id = id_No;
-      obj.value = todos.value;
-      addTodos(obj);
-      setLocalStorage(obj);
-      id_No++;
-    }
-  });
-  //   console.log(text);
+const $onAddTodoHandle = (event) => {
+  const todos = document.querySelector("#new-todo-title");
+
+  if (event.keyCode === 13) {
+    storageObject.setId(id_No);
+    storageObject.setValue(todos.value);
+    addTodos(storageObject);
+    setLocalStorage(storageObject);
+    id_No++;
+  }
 };
 
 const addTodos = (param) => {
-  //   let main = document.getElementsByTagName("main")[0];
   const todoList = document.querySelector("#todo-list");
-  let li = createli();
-  li.innerHTML = param.value;
-  todoList.append(li);
+  todoList.insertAdjacentHTML("beforeend", renderTodoItemli(param.value));
 };
 
 const todoList = () => {
-  let tList = createLocalStorageArray();
+  const items = createLocalStorageArray();
+  createLocalStorageObject();
+  console.log(items);
   const todoList = document.querySelector("#todo-list");
 
-  tList.forEach((value) => {
-    let li = createli();
-    li.innerHTML = value;
-    todoList.append(li);
+  items.forEach((item) => {
+    todoList.insertAdjacentHTML("beforeend", renderTodoItemli(item));
   });
+  checkedTodos();
+  deleteTodos();
+};
+
+const checkedTodos = () => {
+  const checkBoxes = document.querySelectorAll(".toggle");
+  checkBoxes.forEach((checkbox) => {
+    checkbox.addEventListener("click", $onCheckedTodoHandle);
+  });
+};
+
+const $onCheckedTodoHandle = (event) => {
+  let li = event.target.parentNode.parentNode;
+  li.classList.toggle("completed");
+};
+
+const deleteTodos = () => {
+  const deleteTodos = document.querySelectorAll(".destroy");
+  deleteTodos.forEach((deleteTodo) => {
+    deleteTodo.addEventListener("click", $onClickDeleteTodoHandle);
+  });
+};
+
+const $onClickDeleteTodoHandle = (event) => {
+  let li = event.target.parentNode.parentNode;
+  li.remove();
 };
 
 const createLocalStorageArray = () => {
@@ -59,8 +108,16 @@ const createLocalStorageArray = () => {
   return array;
 };
 
-const createli = () => {
-  const li = document.createElement("li");
-  li.classList.add("new-todo");
-  return li;
+const createLocalStorageObject = () => {
+  storageObject.toString();
+};
+
+const renderTodoItemli = (title) => {
+  return `<li>
+            <div class="view">
+              <input class="toggle" type="checkbox">
+              <label>${title}</label>
+              <button class="destroy"></button>
+            </div>
+          </li>`;
 };
