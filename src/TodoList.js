@@ -1,6 +1,6 @@
 import {KEY} from './constants.js';
 
-export default function TodoList($todoList, data, {removeItem, editItem}) {
+export default function TodoList($todoList, data, {removeItem, editItem, refreshItems}) {
   this.$todoList = $todoList;
   this.data = data;
 
@@ -30,6 +30,8 @@ export default function TodoList($todoList, data, {removeItem, editItem}) {
           const {index} = target.closest('.todo-item').dataset;
           removeItem(Number(index));
         }
+
+        refreshItems();
       });
 
       $item.addEventListener('dblclick', ({target}) => {
