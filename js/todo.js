@@ -1,11 +1,9 @@
-const todoItemTempate = (text) => `<li>
-<div class="view">
+const todoItemTempate = (text) => `<div class="view">
   <input class="toggle" type="checkbox"/>
   <label class="label">${text}</label>
   <button class="destroy"></button>
 </div>
-<input class="edit" value="${text}" />
-</li>`;
+<input class="edit" value="${text}" />`;
 
 class TodoList {
   constructor({ el }) {
@@ -21,8 +19,8 @@ class TodoList {
   }
 
   render() {
-    const html = this.items.map((item) => todoItemTempate(item.text)).join("");
-    this.el.innerHTML = html;
+    this.el.innerHTML = "";
+    this.items.map((item) => this.el.append(item.el));
   }
 }
 
@@ -36,10 +34,9 @@ class TodoRegister {
 
   bindEvents() {
     this.el.addEventListener("blur", this.register.bind(this));
-    this.el.addEventListener(
-      "keydown",
-      (e) => e.key === "Enter" && this.register.apply(this)
-    );
+    this.el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") this.register.apply(this);
+    });
   }
 
   register() {
@@ -51,8 +48,24 @@ class TodoRegister {
 
 class TodoItem {
   constructor(text) {
-    this.text = text;
+    this.el = document.createElement("li");
+    this.el.innerHTML = todoItemTempate(text);
     this.completed = false;
     this.editable = false;
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.el.addEventListener("click", (e) => {
+      if (e.target.className.includes("toggle")) this.toggle();
+    });
+  }
+
+  toggle() {
+    this.el.classList.toggle("completed");
+  }
+
+  delete() {
+    console.log("delete!");
   }
 }
