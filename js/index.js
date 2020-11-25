@@ -37,7 +37,8 @@ window.onload = () => {
 };
 
 const setLocalStorage = (param) => {
-  localStorage.setItem(param.id, param.value);
+  console.log(param);
+  localStorage.setItem(param.id, JSON.stringify(param));
 };
 
 const saveTodos = () => {
@@ -59,12 +60,13 @@ const $onAddTodoHandle = (event) => {
 };
 
 const addTodos = (param) => {
+  console.log(param);
   const todoList = document.querySelector("#todo-list");
-  todoList.insertAdjacentHTML("beforeend", renderTodoItemli(param.value));
+  todoList.insertAdjacentHTML("beforeend", renderTodoItemli(param));
 };
 
 const todoList = () => {
-  const items = createLocalStorageArray();
+  const items = createLocalStorageObject();
   createLocalStorageObject();
   console.log(items);
   const todoList = document.querySelector("#todo-list");
@@ -103,20 +105,24 @@ const $onClickDeleteTodoHandle = (event) => {
 const createLocalStorageArray = () => {
   let array = [];
   for (let index = 0; index < localStorage.length; index++) {
-    array.push(localStorage.getItem(index));
+    array.push(JSON.parse(localStorage.getItem(index)));
   }
   return array;
 };
 
 const createLocalStorageObject = () => {
-  storageObject.toString();
+  let array = [];
+  for (let index = 0; index < localStorage.length; index++) {
+    array.push(JSON.parse(localStorage.getItem(index)));
+  }
+  return array;
 };
 
-const renderTodoItemli = (title) => {
+const renderTodoItemli = ({ id, value }) => {
   return `<li>
             <div class="view">
               <input class="toggle" type="checkbox">
-              <label>${title}</label>
+              <label key=${id}>${value}</label>
               <button class="destroy"></button>
             </div>
           </li>`;
