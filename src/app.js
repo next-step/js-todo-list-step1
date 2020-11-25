@@ -10,7 +10,7 @@ function App() {
   const $todoCount = document.querySelector('.todo-count');
   const $todoFilter = document.querySelector('.filters');
 
-  this.state = localStorage['state'] === 'undefined'?
+  this.state = typeof localStorage['state'] === 'undefined'?
   {
     data: [],
     activeFilterType: FilterOptions.ALL,
