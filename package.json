@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "serve -p 3000"
+  },
+  "dependencies": {
+    "prettier": "^2.2.0",
+    "serve": "^11.3.2"
+  }
+}
