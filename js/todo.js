@@ -1,5 +1,6 @@
-const list = document.querySelector('#todo-list');
-const newTodo = document.querySelector('#new-todo-title');
+const $list = document.querySelector('#todo-list');
+const $newTodoTitle  = document.querySelector('#new-todo-title');
+let id = 0;
 
 /**
  * 투두 저장소
@@ -7,7 +8,6 @@ const newTodo = document.querySelector('#new-todo-title');
 const Todos = () => {
     let todos = [
         { id: 1, title: "투두리스트 만들기", done: false},
-        { id: 2, title: "정처기 공부", done: false}
     ];
     return {
         selectAll(){
@@ -59,37 +59,44 @@ const addTodo = (todo = {}) => {
                             <input class="edit" value=${todo.title} />
                         </li>`
 
-    list.insertAdjacentHTML('beforeend', todoInHTML);
+    $list.insertAdjacentHTML('beforeend', todoInHTML);
 }
 
 
 /**
- * 투두 리스트 페이지 진입 시 
+ * 투두 리스트 페이지 첫 진입 시 
  */
-const initTodoList = () => {
-    const todos = todosStore.selectAll();
-    todos.map(todo => addTodo(todo));
+const init = () => {
+    const initTodoList = () => {
+        const todos = todosStore.selectAll();
+        todos.map(todo => addTodo(todo));
+    }
+
+    // todo : 로컬스토리지에서 저장된 데이터 가지고 오는 로직 
+    
+    initTodoList();
 }
 
-initTodoList();
+init();
+
 
 
 /**
  * 투두 추가 이벤트 리스너
  */
-document.addEventListener('keyup', e => {
+$newTodoTitle.addEventListener('keyup', e => {
     // keyCode 가 deprecated?
     if(e.code === 'Enter'){
         const title = e.target.value;
         if(title){
             const todo = {
-                id: todosStore.selectCount() + 1,
+                id: id += 1,
                 title,
                 done: false,
             }
             todosStore.insertOne(todo) && addTodo(todo);
         }
-        newTodo.value = "";
+        $newTodoTitle.value = "";
     }
 })
 
