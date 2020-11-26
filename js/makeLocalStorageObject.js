@@ -1,4 +1,4 @@
-export default class makeLocalStorageObject {
+export class makeLocalStorageObject {
   constructor(id, value) {
     this.id = 0;
     this.value = "";

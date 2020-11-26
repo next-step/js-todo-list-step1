@@ -62,7 +62,7 @@ const $onAddTodoHandle = (event) => {
 const addTodos = (param) => {
   console.log(param);
   const todoList = document.querySelector("#todo-list");
-  todoList.insertAdjacentHTML("beforeend", renderTodoItemli(param));
+  todoList.insertAdjacentHTML("beforeend", renderTodoItem(param));
 };
 
 const todoList = () => {
@@ -72,7 +72,7 @@ const todoList = () => {
   const todoList = document.querySelector("#todo-list");
 
   items.forEach((item) => {
-    todoList.insertAdjacentHTML("beforeend", renderTodoItemli(item));
+    todoList.insertAdjacentHTML("beforeend", renderTodoItem(item));
   });
   checkedTodos();
   deleteTodos();
@@ -118,7 +118,7 @@ const createLocalStorageObject = () => {
   return array;
 };
 
-const renderTodoItemli = ({ id, value }) => {
+const renderTodoItem = ({ id, value }) => {
   return `<li>
             <div class="view">
               <input class="toggle" type="checkbox">
