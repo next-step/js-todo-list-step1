@@ -5,7 +5,7 @@ const App = () => {
   };
   let todoList;
   let input;
-  // 초기화
+
   const init = () => {
     todoList = document.querySelector(".todo-list");
     input = document.querySelector(".new-todo");
@@ -13,16 +13,16 @@ const App = () => {
     input.addEventListener("keypress", handleKeypress);
     render();
   };
-  // 데이터의 상태 변경
+
   const setState = (nextData) => {
     data = nextData;
     render();
   };
-  // 화면 렌더
+
   const render = () => {
     todoList.innerHTML = data.inputDatas
       .map((inputData) => {
-        return `<li>
+        return `<li class="item">
                     <div class="view">
                       <input class="toggle" type="checkbox"/>
                       <label class="label">${inputData}</label>
@@ -32,6 +32,18 @@ const App = () => {
                 </li>`;
       })
       .join(" ");
+
+    document.querySelectorAll('.item').forEach((item)=>{
+      item.addEventListener('click',(e)=>{
+        if(e.target.className === 'toggle'){
+          if(e.target.checked === true){
+            e.target.closest('li').classList.add('completed');
+          } else {
+            e.target.closest('li').classList.remove('completed');
+          }
+        }
+      })
+    })
   };
 
   const handleKeypress = (event) => {
