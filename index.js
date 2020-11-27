@@ -1,5 +1,6 @@
 const newTodoTitle = document.getElementById('new-todo-title');
 const todoList = document.getElementById('todo-list');
+const todoCount = document.querySelector('.todo-count > strong');
 
 const addTodo = title => {
   const li = document.createElement('li');
@@ -21,6 +22,7 @@ const addTodo = title => {
   view.append(toggle, label, destroy);
   li.append(view, edit);
   todoList.append(li);
+  todoCountUp();
 };
 
 const handleKeyDownNewTodoTitle = e => {
@@ -49,6 +51,7 @@ const destroyTodo = target => {
   const button = target;
   const li = button.parentNode.parentNode;
   li.remove();
+  todoCountDown();
 };
 
 const handleDblClickTodoList = e => {
@@ -85,6 +88,14 @@ const updateTodo = target => {
   const label = li.querySelector('div > label');
   label.innerText = input.value;
   li.classList.remove('editing');
+};
+
+const todoCountUp = () => {
+  todoCount.innerText = Number(todoCount.innerText) + 1;
+};
+
+const todoCountDown = () => {
+  todoCount.innerText = Number(todoCount.innerText) - 1;
 };
 
 newTodoTitle.addEventListener('keydown', handleKeyDownNewTodoTitle);
