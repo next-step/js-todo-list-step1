@@ -51,8 +51,46 @@ const destroyTodo = target => {
   li.remove();
 };
 
+const handleDblClickTodoList = e => {
+  if (e.target.tagName === 'LABEL') {
+    editTodo(e.target);
+  }
+};
+
+const editTodo = target => {
+  const label = target;
+  const li = label.parentNode.parentNode;
+  const edit = li.querySelector('.edit');
+  li.classList.add('editing');
+  edit.focus();
+};
+
+const handleKeydownTodoList = e => {
+  if (e.target.tagName === 'INPUT' && e.key === 'Escape') {
+    escapeEdit(e.target);
+  } else if (e.target.tagName === 'INPUT' && e.key === 'Enter') {
+    updateTodo(e.target);
+  }
+};
+
+const escapeEdit = target => {
+  const input = target;
+  const li = input.parentNode;
+  li.classList.remove('editing');
+};
+
+const updateTodo = target => {
+  const input = target;
+  const li = input.parentNode;
+  const label = li.querySelector('div > label');
+  label.innerText = input.value;
+  li.classList.remove('editing');
+};
+
 newTodoTitle.addEventListener('keydown', handleKeyDownNewTodoTitle);
 todoList.addEventListener('click', handleClickTodoList);
+todoList.addEventListener('dblclick', handleDblClickTodoList);
+todoList.addEventListener('keydown', handleKeydownTodoList);
 
 addTodo('test1');
 addTodo('test2');
