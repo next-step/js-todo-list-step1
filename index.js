@@ -31,6 +31,8 @@ const handleKeyDownNewTodoTitle = e => {
 const handleClickTodoList = e => {
   if (e.target.tagName === 'INPUT') {
     toggleComplete(e.target);
+  } else if (e.target.tagName === 'BUTTON') {
+    destroyTodo(e.target);
   }
 };
 
@@ -38,6 +40,12 @@ const toggleComplete = target => {
   const input = target;
   const li = input.parentNode.parentNode;
   li.classList.toggle('completed');
+};
+
+const destroyTodo = target => {
+  const button = target;
+  const li = button.parentNode.parentNode;
+  li.remove();
 };
 
 newTodoTitle.addEventListener('keydown', handleKeyDownNewTodoTitle);
