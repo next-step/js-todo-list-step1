@@ -29,10 +29,13 @@ const handleKeyDownNewTodoTitle = e => {
 };
 
 const handleClickTodoList = e => {
-  if (e.target.tagName !== 'INPUT') {
-    return;
+  if (e.target.tagName === 'INPUT') {
+    toggleComplete(e.target);
   }
-  const input = e.target;
+};
+
+const toggleComplete = target => {
+  const input = target;
   const li = input.parentNode.parentNode;
   li.classList.toggle('completed');
 };
