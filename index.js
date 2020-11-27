@@ -7,16 +7,19 @@ const addTodo = title => {
   const toggle = document.createElement('input');
   const label = document.createElement('label');
   const destroy = document.createElement('button');
+  const edit = document.createElement('input');
 
   view.classList.add('view');
   toggle.classList.add('toggle');
   label.classList.add('label');
   destroy.classList.add('destroy');
+  edit.classList.add('edit');
   toggle.setAttribute('type', 'checkbox');
   label.innerText = title;
+  edit.setAttribute('value', title);
 
   view.append(toggle, label, destroy);
-  li.append(view);
+  li.append(view, edit);
   todoList.append(li);
 };
 

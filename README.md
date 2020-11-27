@@ -17,3 +17,4 @@
 
 - [X] 할일을 추가할 때 제목이 없는 경우 추가 X
 - [X] toggleComplete 메서드 분리
+- [X] 누락된 edit input추가
