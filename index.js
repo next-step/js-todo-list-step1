@@ -22,7 +22,7 @@ const addTodo = title => {
 
 const handleKeyDownNewTodoTitle = e => {
   const title = e.target.value;
-  if (e.key === 'Enter') {
+  if (e.key === 'Enter' && title) {
     addTodo(title);
     e.target.value = '';
   }
