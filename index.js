@@ -28,4 +28,17 @@ const handleKeyDownNewTodoTitle = e => {
   }
 };
 
+const handleClickTodoList = e => {
+  if (e.target.tagName !== 'INPUT') {
+    return;
+  }
+  const input = e.target;
+  const li = input.parentNode.parentNode;
+  li.classList.toggle('completed');
+};
+
 newTodoTitle.addEventListener('keydown', handleKeyDownNewTodoTitle);
+todoList.addEventListener('click', handleClickTodoList);
+
+addTodo('test1');
+addTodo('test2');
