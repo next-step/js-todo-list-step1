@@ -1,5 +1,5 @@
-const TODO_TEMPLATE = ({ id, text, completed }) => `
-<li class="${completed ? "completed" : ""}" id=${id}>
+const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
+<li class="${completed ? "completed" : ""} ${editing ? "editing" : ""}" id=${id}>
   <div class="view">
     <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>
     <label class="label">${text}</label>
@@ -18,6 +18,21 @@ function app() {
   const $list = $todoApp.querySelector(".todo-list");
 
   const SUBMIT_KEY = "Enter";
+
+  const todoObj = (todo) => {
+    return { id: id++, text: todo, completed: false, editing: false };
+  };
+
+  const handleTodoEdit = (e) => {
+    if (!e.target.classList.contains("label")) {
+      return;
+    }
+
+    const todoId = parseInt(e.target.closest("li").id);
+    const targetTodo = todos.find((todo) => todo.id === todoId);
+    targetTodo.editing = true;
+    renderTodo();
+  }
 
   const handleTodoDelete = e => {
     if (!e.target.classList.contains("destroy")) {
@@ -40,10 +55,6 @@ function app() {
 
     targetTodo.completed = !targetTodo.completed;
     renderTodo();
-  };
-
-  const todoObj = (todo) => {
-    return { id: id++, text: todo, completed: false };
   };
 
   const addTodo = (todo) => {
@@ -71,5 +82,7 @@ function app() {
   $todoApp.addEventListener("keypress", handleTodoSubmit);
   $list.addEventListener("click", handleTodoToggle);
   $list.addEventListener("click", handleTodoDelete);
+  $list.addEventListener("dblclick", handleTodoEdit);
 }
+
 new app();
