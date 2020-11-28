@@ -16,6 +16,7 @@ function app() {
   const $todoApp = document.querySelector(".todoapp");
   const $input = $todoApp.querySelector(".new-todo");
   const $list = $todoApp.querySelector(".todo-list");
+  const $count = $todoApp.querySelector(".todo-count").querySelector("strong");
 
   const SUBMIT_KEY = "Enter";
   const CANCEL_KEY = "Escape";
@@ -98,9 +99,15 @@ function app() {
     }
   };
 
+  const countTodo = () => {
+    const length = todos.length;
+    $count.innerText = length;
+  }
+
   const renderTodo = () => {
     const allTodo = todos.map(TODO_TEMPLATE).join("");
     $list.innerHTML = allTodo;
+    countTodo();
   };
 
   $input.addEventListener("keypress", handleTodoSubmit);
