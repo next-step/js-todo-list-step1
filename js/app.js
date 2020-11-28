@@ -19,13 +19,24 @@ function app() {
 
   const SUBMIT_KEY = "Enter";
 
+  const handleTodoDelete = e => {
+    if (!e.target.classList.contains("destroy")) {
+      return;
+    }
+
+    const todoId = parseInt(e.target.closest("li").id);
+    const deleteTodoIndex = todos.findIndex(todo => todo.id === todoId);
+    todos.splice(deleteTodoIndex, 1);
+    renderTodo();
+  }
+
   const handleTodoToggle = (e) => {
     if (!e.target.classList.contains("toggle")) {
       return;
     }
 
-    const todoId = e.target.closest("li").id;
-    const targetTodo = todos.find((todo) => todo.id === parseInt(todoId));
+    const todoId = parseInt(e.target.closest("li").id);
+    const targetTodo = todos.find((todo) => todo.id === todoId);
 
     targetTodo.completed = !targetTodo.completed;
     renderTodo();
@@ -43,6 +54,9 @@ function app() {
 
   const handleTodoSubmit = (e) => {
     const todo = $input.value;
+    if (todo === "") {
+      return;
+    }
     if (e.key === SUBMIT_KEY) {
       addTodo(todo);
       $input.value = "";
@@ -56,5 +70,6 @@ function app() {
 
   $todoApp.addEventListener("keypress", handleTodoSubmit);
   $list.addEventListener("click", handleTodoToggle);
+  $list.addEventListener("click", handleTodoDelete);
 }
 new app();
