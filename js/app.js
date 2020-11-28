@@ -1,5 +1,8 @@
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
-<li class="${completed ? "completed" : ""} ${editing ? "editing" : ""}" id=${id}>
+<li 
+  class="${completed ? "completed" : ""} ${editing ? "editing" : ""}"
+  id=${id}
+>
   <div class="view">
     <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>
     <label class="label">${text}</label>
@@ -17,12 +20,39 @@ function app() {
   const $input = $todoApp.querySelector(".new-todo");
   const $list = $todoApp.querySelector(".todo-list");
   const $count = $todoApp.querySelector(".todo-count").querySelector("strong");
+  const $filter = $todoApp.querySelector(".filters");
 
   const SUBMIT_KEY = "Enter";
   const CANCEL_KEY = "Escape";
 
   const todoObj = (todo) => {
-    return { id: id++, text: todo, completed: false, editing: false };
+    return {
+      id: id++,
+      text: todo,
+      completed: false,
+      editing: false,
+    };
+  };
+
+  const toggleFilterSelected = (target) => {
+    const selected = $filter.querySelector(".selected");
+    selected.classList.remove("selected");
+    target.classList.add("selected");
+  };
+
+  const filterTodo = (targetClassList) => {
+    if (targetClassList.contains("all")) {
+      renderTodo(todos);
+    } else if (targetClassList.contains("active")) {
+      renderTodo(todos.filter((todo) => !todo.completed));
+    } else if (targetClassList.contains("completed")) {
+      renderTodo(todos.filter((todo) => todo.completed));
+    }
+  };
+
+  const handleTodoFiltering = (e) => {
+    toggleFilterSelected(e.target);
+    filterTodo(e.target.classList);
   };
 
   const handleEditingTodoSubmit = (e) => {
@@ -34,10 +64,10 @@ function app() {
     const targetTodo = todos.find((todo) => todo.id === todoId);
     targetTodo.text = e.target.value;
     targetTodo.editing = false;
-    renderTodo();
-  }
+    renderTodo(todos);
+  };
 
-  const handleEditingTodoCancel = e => {
+  const handleEditingTodoCancel = (e) => {
     if (e.key !== CANCEL_KEY) {
       return;
     }
@@ -45,8 +75,8 @@ function app() {
     const todoId = parseInt(e.target.closest("li").id);
     const targetTodo = todos.find((todo) => todo.id === todoId);
     targetTodo.editing = false;
-    renderTodo();
-  }
+    renderTodo(todos);
+  };
 
   const handleTodoEdit = (e) => {
     if (!e.target.classList.contains("label")) {
@@ -56,19 +86,19 @@ function app() {
     const todoId = parseInt(e.target.closest("li").id);
     const targetTodo = todos.find((todo) => todo.id === todoId);
     targetTodo.editing = true;
-    renderTodo();
-  }
+    renderTodo(todos);
+  };
 
-  const handleTodoDelete = e => {
+  const handleTodoDelete = (e) => {
     if (!e.target.classList.contains("destroy")) {
       return;
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const deleteTodoIndex = todos.findIndex(todo => todo.id === todoId);
+    const deleteTodoIndex = todos.findIndex((todo) => todo.id === todoId);
     todos.splice(deleteTodoIndex, 1);
-    renderTodo();
-  }
+    renderTodo(todos);
+  };
 
   const handleTodoToggle = (e) => {
     if (!e.target.classList.contains("toggle")) {
@@ -79,13 +109,13 @@ function app() {
     const targetTodo = todos.find((todo) => todo.id === todoId);
 
     targetTodo.completed = !targetTodo.completed;
-    renderTodo();
+    renderTodo(todos);
   };
 
   const addTodo = (todo) => {
     const newTodo = todoObj(todo);
     todos.push(newTodo);
-    renderTodo();
+    renderTodo(todos);
   };
 
   const handleTodoSubmit = (e) => {
@@ -99,15 +129,15 @@ function app() {
     }
   };
 
-  const countTodo = () => {
+  const countTodo = (todos) => {
     const length = todos.length;
     $count.innerText = length;
-  }
+  };
 
-  const renderTodo = () => {
+  const renderTodo = (todos) => {
     const allTodo = todos.map(TODO_TEMPLATE).join("");
     $list.innerHTML = allTodo;
-    countTodo();
+    countTodo(todos);
   };
 
   $input.addEventListener("keypress", handleTodoSubmit);
@@ -116,6 +146,7 @@ function app() {
   $list.addEventListener("dblclick", handleTodoEdit);
   $list.addEventListener("keydown", handleEditingTodoCancel);
   $list.addEventListener("keydown", handleEditingTodoSubmit);
+  $filter.addEventListener("click", handleTodoFiltering);
 }
 
 new app();
