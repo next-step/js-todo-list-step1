@@ -1,5 +1,5 @@
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
-<li 
+<li
   class="${completed ? "completed" : ""} ${editing ? "editing" : ""}"
   id=${id}
 >
@@ -13,7 +13,7 @@ const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 `;
 
 function app() {
-  const todos = [];
+  let todos = [];
   let id = 0;
 
   const $todoApp = document.querySelector(".todoapp");
@@ -24,6 +24,7 @@ function app() {
 
   const SUBMIT_KEY = "Enter";
   const CANCEL_KEY = "Escape";
+  const LOCAL_NAME = "TODOS";
 
   const todoObj = (todo) => {
     return {
@@ -134,11 +135,26 @@ function app() {
     $count.innerText = length;
   };
 
-  const renderTodo = (todos) => {
-    const allTodo = todos.map(TODO_TEMPLATE).join("");
+  const renderTodo = (todoItems) => {
+    const allTodo = todoItems.map(TODO_TEMPLATE).join("");
     $list.innerHTML = allTodo;
-    countTodo(todos);
+    saveStorage(todos);
+    countTodo(todoItems);
   };
+
+  const initStorage = () => {
+    const todoList = JSON.parse(localStorage.getItem(LOCAL_NAME));
+    if (todoList === null) {
+      return;
+    }
+    todos = todoList;
+    renderTodo(todoList);
+  }
+
+  const saveStorage = (todos) => {
+    localStorage.setItem(LOCAL_NAME, JSON.stringify(todos));
+    console.log(todos);
+  }
 
   $input.addEventListener("keypress", handleTodoSubmit);
   $list.addEventListener("click", handleTodoToggle);
@@ -147,6 +163,8 @@ function app() {
   $list.addEventListener("keydown", handleEditingTodoCancel);
   $list.addEventListener("keydown", handleEditingTodoSubmit);
   $filter.addEventListener("click", handleTodoFiltering);
+
+  initStorage();
 }
 
 new app();
