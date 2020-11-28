@@ -24,6 +24,18 @@ function app() {
     return { id: id++, text: todo, completed: false, editing: false };
   };
 
+  const handleEditingTodoSubmit = (e) => {
+    if (e.key !== SUBMIT_KEY) {
+      return;
+    }
+
+    const todoId = parseInt(e.target.closest("li").id);
+    const targetTodo = todos.find((todo) => todo.id === todoId);
+    targetTodo.text = e.target.value;
+    targetTodo.editing = false;
+    renderTodo();
+  }
+
   const handleEditingTodoCancel = e => {
     if (e.key !== CANCEL_KEY) {
       return;
@@ -96,6 +108,7 @@ function app() {
   $list.addEventListener("click", handleTodoDelete);
   $list.addEventListener("dblclick", handleTodoEdit);
   $list.addEventListener("keydown", handleEditingTodoCancel);
+  $list.addEventListener("keydown", handleEditingTodoSubmit);
 }
 
 new app();
