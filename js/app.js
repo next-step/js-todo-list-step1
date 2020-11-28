@@ -18,10 +18,22 @@ function app() {
   const $list = $todoApp.querySelector(".todo-list");
 
   const SUBMIT_KEY = "Enter";
+  const CANCEL_KEY = "Escape";
 
   const todoObj = (todo) => {
     return { id: id++, text: todo, completed: false, editing: false };
   };
+
+  const handleEditingTodoCancel = e => {
+    if (e.key !== CANCEL_KEY) {
+      return;
+    }
+
+    const todoId = parseInt(e.target.closest("li").id);
+    const targetTodo = todos.find((todo) => todo.id === todoId);
+    targetTodo.editing = false;
+    renderTodo();
+  }
 
   const handleTodoEdit = (e) => {
     if (!e.target.classList.contains("label")) {
@@ -79,10 +91,11 @@ function app() {
     $list.innerHTML = allTodo;
   };
 
-  $todoApp.addEventListener("keypress", handleTodoSubmit);
+  $input.addEventListener("keypress", handleTodoSubmit);
   $list.addEventListener("click", handleTodoToggle);
   $list.addEventListener("click", handleTodoDelete);
   $list.addEventListener("dblclick", handleTodoEdit);
+  $list.addEventListener("keydown", handleEditingTodoCancel);
 }
 
 new app();
