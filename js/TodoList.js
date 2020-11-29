@@ -1,6 +1,7 @@
 import TodoRegister from "./TodoRegister.js";
 import TodoItem from "./TodoItem.js";
 import TodoFilter from "./TodoFilter.js";
+import { setStorage, getStorage } from "./useStorage.js";
 
 export default class TodoList {
   static initialState = {
@@ -11,6 +12,8 @@ export default class TodoList {
   constructor({ el, counterEl, registerEl, filters }) {
     this.el = el;
     this.counterEl = counterEl;
+    this.items = TodoList.initialState.items;
+    this.filter = TodoList.initialState.filter;
 
     new TodoRegister({
       el: registerEl,
@@ -28,15 +31,14 @@ export default class TodoList {
         })
     );
 
-    // states
-    this.items = TodoList.initialState.items;
-    this.filter = TodoList.initialState.filter;
+    this.loadStorage();
   }
 
   set state(newState) {
     for (const state in newState) {
       this[state] = newState[state];
     }
+    setStorage("@todo/items", this.items);
     this.render();
   }
 
@@ -44,15 +46,20 @@ export default class TodoList {
     this.state = newState;
   }
 
+  loadStorage() {
+    const storedItems = getStorage("@todo/items");
+    this.setState({ items: storedItems || [] });
+  }
+
   addItem(text) {
     this.setState({
       items: [
         ...this.items,
-        new TodoItem({
+        {
+          id: new Date().getTime(),
           text,
-          onRemove: (id) => this.removeItem(id),
-          onUpdate: (item) => this.updateItem(item),
-        }),
+          completed: false,
+        },
       ],
     });
   }
@@ -63,10 +70,10 @@ export default class TodoList {
     });
   }
 
-  updateItem(newItem) {
+  updateItem(updatedItem) {
     this.setState({
       items: this.items.map((item) =>
-        item.id === newItem.id ? newItem : item
+        item.id === updatedItem.id ? updatedItem : item
       ),
     });
   }
@@ -75,24 +82,29 @@ export default class TodoList {
     this.filters.map((filter) => {
       filter.selected = filter.key === key && filter.value === value;
     });
-    if (!key) {
-      this.setState({ filter: null });
-      return;
-    }
-    this.setState({
-      filter: { [key]: value },
-    });
+    this.setState({ filter: key ? { [key]: value } : null });
   }
 
   render() {
     this.el.innerHTML = "";
     let itemsForRender = this.items;
+
     for (const key in this.filter) {
       itemsForRender = itemsForRender.filter(
         (item) => item[key] === this.filter[key]
       );
     }
-    itemsForRender.map((item) => this.el.append(item.render()));
+
+    itemsForRender.map((item) => {
+      this.el.append(
+        new TodoItem({
+          ...item,
+          onRemove: (id) => this.removeItem(id),
+          onUpdate: (item) => this.updateItem(item),
+        }).render()
+      );
+    });
+
     this.counterEl.innerHTML = itemsForRender.length;
   }
 }

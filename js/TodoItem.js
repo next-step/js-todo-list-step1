@@ -5,17 +5,14 @@ export default class TodoItem {
     editable: false,
   };
 
-  constructor({ text, onRemove, onUpdate }) {
-    this.id = new Date().getTime();
+  constructor({ id, text, completed, onRemove, onUpdate }) {
     this.el = document.createElement("fragment");
+    this.id = id;
+    this.text = text;
+    this.completed = completed || TodoItem.initialState.completed;
+    this.editable = TodoItem.initialState.editable;
     this.onRemove = onRemove;
     this.onUpdate = onUpdate;
-
-    // states
-    this.text = text;
-    this.completed = TodoItem.initialState.completed;
-    this.editable = TodoItem.initialState.editable;
-
     this.initialize();
   }
 

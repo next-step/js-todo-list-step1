@@ -13,7 +13,7 @@ export default class TodoRegister {
   }
 
   initialize() {
-    this.el.addEventListener("keydown", (e) => {
+    this.el.addEventListener("keyup", (e) => {
       if (e.key === "Enter") this.register();
     });
   }
