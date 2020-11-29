@@ -1,28 +1,12 @@
 import todo from "./todo.js";
 import filter from "./filter.js";
-import { FILTER, KEY } from "./constants.js";
+import { FILTER } from "./constants.js";
 
 import TodoInput from "./component/TodoInput.js";
-
-const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
-<li
-  class="${completed ? "completed" : ""} ${editing ? "editing" : ""}"
-  id=${id}
->
-  <div class="view">
-    <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>
-    <label class="label">${text}</label>
-    <button class="destroy"></button>
-  </div>
-  <input class="edit" value="${text}" />
-</li>
-`;
+import TodoList from "./component/TodoList.js";
 
 function app() {
-  let todos = todo.getItems();
-
   const $todoApp = document.querySelector(".todoapp");
-  const $list = $todoApp.querySelector(".todo-list");
   const $count = $todoApp.querySelector(".todo-count").querySelector("strong");
   const $filter = $todoApp.querySelector(".filters");
 
@@ -48,58 +32,6 @@ function app() {
     filterTodo(e.target.classList);
   };
 
-  const handleEditingTodoSubmit = (e) => {
-    if (e.key !== KEY.SUBMIT) {
-      return;
-    }
-
-    const todoId = parseInt(e.target.closest("li").id);
-    todo.editItem(todoId, e.target.value);
-    renderTodo();
-  };
-
-  const handleEditingTodoCancel = (e) => {
-    if (e.key !== KEY.CANCEL) {
-      return;
-    }
-
-    const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todo.findItem(todoId);
-    targetTodo.editing = false;
-    renderTodo();
-  };
-
-  const handleTodoEdit = (e) => {
-    if (!e.target.classList.contains("label")) {
-      return;
-    }
-
-    const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todo.findItem(todoId);
-    targetTodo.editing = true;
-    renderTodo();
-  };
-
-  const handleTodoDelete = (e) => {
-    if (!e.target.classList.contains("destroy")) {
-      return;
-    }
-
-    const todoId = parseInt(e.target.closest("li").id);
-    todo.deleteItem(todoId);
-    renderTodo();
-  };
-
-  const handleTodoToggle = (e) => {
-    if (!e.target.classList.contains("toggle")) {
-      return;
-    }
-
-    const todoId = parseInt(e.target.closest("li").id);
-    todo.toggleItem(todoId);
-    renderTodo();
-  };
-
   const countTodo = (todos) => {
     const length = todos.length;
     $count.innerText = length;
@@ -107,22 +39,17 @@ function app() {
 
   const renderTodo = () => {
     const filteredTodo = todo.filterItems();
-    $list.innerHTML = filteredTodo.map(TODO_TEMPLATE).join("");
+    todoList.renderTodoList(filteredTodo);
     countTodo(filteredTodo);
   };
 
   const init = () => {
-    $list.addEventListener("click", handleTodoToggle);
-    $list.addEventListener("click", handleTodoDelete);
-    $list.addEventListener("dblclick", handleTodoEdit);
-    $list.addEventListener("keydown", handleEditingTodoCancel);
-    $list.addEventListener("keydown", handleEditingTodoSubmit);
     $filter.addEventListener("click", handleTodoFiltering);
-
-    TodoInput(renderTodo);
-
-    renderTodo(todos);
+    renderTodo();
   };
+
+  new TodoInput(renderTodo);
+  const todoList = new TodoList(renderTodo);
   init();
 }
 
