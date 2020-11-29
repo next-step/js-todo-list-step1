@@ -1,3 +1,6 @@
-import App from "./App.js";
+import TodoApp from "./TodoApp.js";
 
-window.addEventListener("load", App().init());
+window.addEventListener(
+  "load",
+  new TodoApp(document.querySelector(".todoapp"))
+);

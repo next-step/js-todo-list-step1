@@ -3,7 +3,7 @@
     "start": "serve -p 3000"
   },
   "dependencies": {
-    "prettier": "^2.2.0",
+    "prettier": "^2.2.1",
     "serve": "^11.3.2"
   }
 }
