@@ -5,6 +5,192 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>이벤트 - TODOS</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
+  <script>
+    var todoItems = [];
+    var index = 0;
+    $(document).ready(function() {
+      console.log(localStorage.getItem("todo-items"));
+
+      if(localStorage.getItem("todo-items")  != null) {
+        var maxIndex = 0;
+        todoItems = JSON.parse(localStorage.getItem("todo-items"));
+        $.each(todoItems, function(index, item) {
+          maxIndex = (item.index > maxIndex) ? item.index : maxIndex;
+        })
+
+        index = maxIndex+1;
+        setAllData();
+      }
+
+      $("#new-todo-title").keyup(function(e) {
+        if(e.keyCode == 13) {
+          var todoTitle = $("#new-todo-title").val();
+          var completeCheck = isComplete(todoTitle);
+
+          if(completeCheck.finish) {
+            todoItems.push({
+              index: index,
+              value: $("#new-todo-title").val(),
+              status: ''
+            })
+
+            $("#todo-list").append(createItem(index, todoTitle, false));
+            $("#new-todo-title").val("");
+            setCountHtml(todoItems.length);
+            index = index + 1;
+            localStorage.setItem("todo-items", JSON.stringify(todoItems));
+          } else {
+            alert(completeCheck.reason);
+          }
+        } 
+      })
+
+      $(".all").click(function(e) {
+        $(".active").removeClass("selected");
+        $(".completed").removeClass("selected");
+        
+        if(!$(".all").hasClass("selected")) {
+          $(".all").addClass("selected");
+          setAllData();
+        }        
+      })
+
+      $(".active").click(function(e) {
+        $(".all").removeClass("selected");
+        $(".completed").removeClass("selected");
+        
+        if(!$(".active").hasClass("selected")) {
+          var html = "";
+          var count = 0;
+
+          $(".active").addClass("selected");
+          $.each(todoItems, function(index, item) {
+            if(item.status != "completed") {
+              html += createItem(index, item.value, item.status == "completed" ?  true : false);
+              count = count + 1;
+            }
+          })
+
+          $("#todo-list").html('');
+          $("#todo-list").prepend(html);
+          setCountHtml(count);
+        }       
+      });
+
+      $(".completed").click(function(e) {
+        $(".all").removeClass("selected");
+        $(".active").removeClass("selected");
+        
+        if(!$(".completed").hasClass("selected")) {
+          var html = "";
+          var count = 0;
+
+          $(".completed").addClass("selected");
+          $.each(todoItems, function(index, item) {
+            if(item.status == "completed") {
+              html += createItem(index, item.value, item.status == "completed" ?  true : false);
+              count = count + 1;
+            }
+          })
+
+          $("#todo-list").html('');
+          $("#todo-list").prepend(html);
+          setCountHtml(count);
+        }
+      });
+    });
+
+    function setAllData() {
+      var html = "";
+          var count = 0;
+          
+          $.each(todoItems, function(index, item) {
+            html += createItem(item.index, item.value, item.status == "completed" ?  true : false);
+            count = count + 1;
+          })
+
+          $("#todo-list").html('');
+          $("#todo-list").prepend(html);
+          setCountHtml(count);
+    }
+
+    function onDelete(index) {
+      var findIndex = todoItems.findIndex((element, idx, array) => element.index == index);
+      
+      if(findIndex >= 0) {
+        $("#todo-item"+index).remove();
+        todoItems.splice(findIndex, 1);
+        setCountHtml(todoItems.length);
+        localStorage.setItem("todo-items", JSON.stringify(todoItems));
+      }
+    }
+
+    function createItem(index, value, status) {
+      var returnValue = "<li id='todo-item"+ index + "' class='todo-item' ondblclick=editItem(" + index + ")>";
+      returnValue += "<input id='item-check" + index +"' type='checkbox' " + (status ? "checked = 'checked'" : '') + "'' onclick='onChecked(" + index +")'>";
+      returnValue += "<span id='todo-text"+index+"'>" + value + "</span>";
+      returnValue += "<button onclick=onDelete(" + index + ")>X</button></li>";
+      
+      return returnValue; 
+    }
+
+    function setCountHtml(count) {
+      $(".todo-count").html("총 <strong> " + count + " 개</strong>")
+    }
+
+    function onChecked(index) {
+      var findIndex = todoItems.findIndex((element, idx, array) => element.index == index);
+
+      if($("#item-check" + index).prop("checked")) {
+        todoItems[findIndex].status = "completed";
+        $("#todo-item" + index).addClass("completed");
+        $("#item-check" + index).attr("checked", "checked");
+      } else {
+        todoItems[findIndex].status = "";
+        $("#todo-item" + index).removeClass("completed");
+        $("#item-check" + index).removeAttr("checked");
+      }
+
+      localStorage.setItem("todo-items", JSON.stringify(todoItems));
+    }
+
+    function editItem(index) {
+      $("#todo-item"+index).addClass("editing");
+      $("#todo-text"+index).replaceWith("<input id='item-edit"+index+"' onkeyup=onKeyup(" + index + ") value=" +$("#todo-text"+index).text() +">"); 
+    }
+
+    function onKeyup(index) {
+      if(this.event.keyCode == 13) { // 'enter'
+        var findIndex = todoItems.findIndex((element, idx, array) => element.index == index);
+
+        todoItems[findIndex].value = $("#item-edit"+index).val();
+        $("#item-edit"+index).replaceWith("<span id='todo-text"+index+"''>" + $("#item-edit"+index).val() + "</span>")
+        $("#todo-item"+index).removeClass("editing");
+        localStorage.setItem("todo-items", JSON.stringify(todoItems));
+      } else if(this.event.keyCode == 27) { // 'esc'
+        var findIndex = todoItems.findIndex((element, idx, array) => element.index == index);
+      
+        $("#item-edit"+index).replaceWith("<span id='todo-text"+index+"''>" + todoItems[findIndex].value + "</span>");
+        $("#todo-item"+index).removeClass("editing");
+      } 
+    }
+
+    // Validation check 
+    function isComplete(value) {
+      var returnValue = {reason: "", finish: true};
+
+      if(value == '' || value == null) {
+        returnValue.reason = '할일을 입력해주세요.'
+        returnValue.finish = false;
+
+        return returnValue;
+      }
+
+      return returnValue;
+    }
+  </script>
   </head>
   <body>
     <div class="todoapp">
@@ -14,15 +200,16 @@
         class="new-todo"
         placeholder="할일을 추가해주세요"
         autofocus
-      />
+        maxlength="32"/>
       <main>
         <input class="toggle-all" type="checkbox" />
-        <ul id="todo-list" class="todo-list"></ul>
+        <ul id="todo-list" class="todo-list">
+        </ul>
         <div class="count-container">
           <span class="todo-count">총 <strong>0</strong> 개</span>
           <ul class="filters">
             <li>
-              <a class="all selected" href="/#">전체보기</a>
+              <a class="all selected" href="#all">전체보기</a>
             </li>
             <li>
               <a class="active" href="#active">해야할 일</a>
