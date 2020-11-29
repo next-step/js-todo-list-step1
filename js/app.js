@@ -1,2 +1,3 @@
-import './TodoList/index.js'
-console.log("hello world")
+import TodoListApp from './TodoListApp/index.js'
+
+new TodoListApp()

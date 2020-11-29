@@ -10,10 +10,10 @@ export default class Store {
         this.status = 'resting'
         this.events = new PubSub()
 
-        if (params.hasOwnProperty(action)) {
+        if (params.hasOwnProperty('actions')) {
             this.actions = params.actions
         }
-        if (params.hasOwnProperty(mutation)) {
+        if (params.hasOwnProperty('mutations')) {
             this.mutations = params.mutations
         }
 
