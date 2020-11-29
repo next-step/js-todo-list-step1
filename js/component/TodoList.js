@@ -33,8 +33,13 @@ export default function TodoList(render) {
       return;
     }
 
+    const text = target.value.trim();
+    if (text === "") {
+      return;
+    }
+
     const todoId = findTargetId(target);
-    $store.todo.editItem(todoId, target.value);
+    $store.todo.editItem(todoId, text);
     render();
   };
 
