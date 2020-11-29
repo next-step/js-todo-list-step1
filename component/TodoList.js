@@ -1,23 +1,11 @@
 import { createLocalStorageObject } from "../js/LocalStorageUtil.js";
-// import { renderTodoItem, checkedTodos, deleteTodos } from "./TodoItem.js";
-
-// const todoList = () => {
-//   const items = createLocalStorageObject();
-//   createLocalStorageObject();
-//   console.log(items);
-//   const $todoList = document.querySelector("#todo-list");
-
-//   items.forEach((item) => {
-//     $todoList.insertAdjacentHTML("beforeend", renderTodoItem(item));
-//   });
-//   checkedTodos();
-//   // deleteTodos();
-// };
 
 export class TodoList {
   constructor() {
     this.$todoList = document.querySelector("#todo-list");
-    // this.todoItem = todoItem;
+    this.$todoList.addEventListener("click", this.onClickHandle);
+    this.$todoList.addEventListener("dblclick", this.onDbClickHandle);
+    this.$todoList.addEventListener("keyup", this.onKeyUpHandle);
   }
 
   setState = (updateItems) => {
@@ -31,4 +19,38 @@ export class TodoList {
       this.$todoList.insertAdjacentHTML("beforeend", item.content);
     });
   };
+
+  onClickHandle = ({ target }) => {
+    // const target = event.target;
+    if (target.classList.value === "toggle") {
+      target.parentNode.parentNode.classList.toggle("completed");
+    }
+    if (target.classList.value === "destroy") {
+      const li = target.parentNode.parentNode;
+      li.remove();
+    }
+  };
+
+  onDbClickHandle = ({ target }) => {
+    // const target = event.target;
+    if (target.classList.value === "label") {
+      target.parentNode.parentNode.classList.add("editing");
+    }
+  };
+
+  onKeyUpHandle({ target }) {
+    // const target = event.target;
+    console.log(event);
+    if (target.tagName === "INPUT") {
+      if (event.key === "Escape") {
+        target.previousElementSibling.querySelector(".label").innerText;
+        target.parentNode.classList.remove("editing");
+      }
+      if (event.key === "Enter") {
+        target.previousElementSibling.querySelector(".label").innerText =
+          target.value;
+        target.parentNode.classList.remove("editing");
+      }
+    }
+  }
 }
