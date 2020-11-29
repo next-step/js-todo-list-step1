@@ -1,4 +1,4 @@
-import { KEY } from "../constants.js";
+import { EVENT, KEY } from "../constants.js";
 import todo from "../todo.js";
 
 export default function TodoInput(render) {
@@ -30,5 +30,5 @@ export default function TodoInput(render) {
     $input.value = "";
   };
 
-  $input.addEventListener("keypress", handleTodoSubmit);
+  $input.addEventListener(EVENT.KEYBOARD, handleTodoSubmit);
 }

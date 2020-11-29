@@ -1,4 +1,4 @@
-import { FILTER } from "../constants.js";
+import { FILTER, EVENT } from "../constants.js";
 import filter from "../filter.js";
 
 export default function TodoFilter(render) {
@@ -26,5 +26,5 @@ export default function TodoFilter(render) {
     filterTodo(e.target.classList);
   };
 
-  $filter.addEventListener("click", handleTodoFiltering);
+  $filter.addEventListener(EVENT.CLICK, handleTodoFiltering);
 }

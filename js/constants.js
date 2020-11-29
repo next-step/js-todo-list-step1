@@ -3,6 +3,12 @@ const KEY = {
   CANCEL: "Escape",
 };
 
+const EVENT = {
+  KEYBOARD: "keydown",
+  CLICK: "click",
+  DBLCLICK: "dblclick",
+};
+
 const FILTER = {
   ALL: "all",
   ACTIVE: "active",
@@ -11,4 +17,4 @@ const FILTER = {
 
 const STORAGE_NAME = "TODOS";
 
-export { KEY, FILTER, STORAGE_NAME };
+export { KEY, EVENT, FILTER, STORAGE_NAME };

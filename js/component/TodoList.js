@@ -1,4 +1,4 @@
-import { KEY } from "../constants.js";
+import { EVENT, KEY } from "../constants.js";
 import todo from "../todo.js";
 
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
@@ -74,11 +74,11 @@ export default function TodoList(render) {
     $list.innerHTML = todos.map(TODO_TEMPLATE).join("");
   };
 
-  $list.addEventListener("click", handleTodoToggle);
-  $list.addEventListener("click", handleTodoDelete);
-  $list.addEventListener("dblclick", handleTodoEdit);
-  $list.addEventListener("keydown", handleEditingTodoCancel);
-  $list.addEventListener("keydown", handleEditingTodoSubmit);
+  $list.addEventListener(EVENT.CLICK, handleTodoToggle);
+  $list.addEventListener(EVENT.CLICK, handleTodoDelete);
+  $list.addEventListener(EVENT.DBLCLICK, handleTodoEdit);
+  $list.addEventListener(EVENT.KEYBOARD, handleEditingTodoCancel);
+  $list.addEventListener(EVENT.KEYBOARD, handleEditingTodoSubmit);
 
   return { renderTodoList };
 }
