@@ -1,4 +1,4 @@
-import { STORAGE_NAME } from "../constants.js";
+import { STORAGE_NAME } from "../utils/constants.js";
 
 const storage = (() => {
   const getStorage = () => {

@@ -1,6 +1,6 @@
 import storage from "../storage.js";
 import filter from "./filter.js";
-import { FILTER } from "../../constants.js";
+import { FILTER } from "../../utils/constants.js";
 
 const todo = (() => {
   const items = storage.getStorage();

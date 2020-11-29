@@ -1,4 +1,4 @@
-import { FILTER } from "../../constants.js";
+import { FILTER } from "../../utils/constants.js";
 
 const filter = (() => {
   let state = FILTER.ALL;

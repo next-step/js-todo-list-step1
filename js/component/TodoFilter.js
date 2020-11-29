@@ -1,4 +1,4 @@
-import { FILTER, EVENT } from "../constants.js";
+import { FILTER, EVENT } from "../utils/constants.js";
 import $store from "../store/index.js";
 
 export default function TodoFilter(render) {

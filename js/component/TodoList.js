@@ -1,4 +1,4 @@
-import { EVENT, KEY } from "../constants.js";
+import { EVENT, KEY } from "../utils/constants.js";
 import $store from "../store/index.js";
 
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
