@@ -4,6 +4,12 @@ import $store from "../store/index.js";
 export default function TodoFilter(render) {
   const $filter = document.querySelector(".filters");
 
+  const initFilter = () => {
+    const targetClass = "." + $store.filter.getFilter();
+    const target = document.querySelector(targetClass);
+    toggleFilterSelected(target);
+  };
+
   const toggleFilterSelected = (target) => {
     const selected = $filter.querySelector(".selected");
     selected.classList.remove("selected");
@@ -27,4 +33,5 @@ export default function TodoFilter(render) {
   };
 
   $filter.addEventListener(EVENT.CLICK, handleTodoFiltering);
+  initFilter();
 }
