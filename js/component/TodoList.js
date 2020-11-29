@@ -24,7 +24,7 @@ export default function TodoList(render) {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    $store.editItem(todoId, e.target.value);
+    $store.todo.editItem(todoId, e.target.value);
     render();
   };
 
@@ -34,7 +34,7 @@ export default function TodoList(render) {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todo.findItem(todoId);
+    const targetTodo = $store.todo.findItem(todoId);
     targetTodo.editing = false;
     render();
   };
@@ -45,7 +45,7 @@ export default function TodoList(render) {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todo.findItem(todoId);
+    const targetTodo = $store.todo.findItem(todoId);
     targetTodo.editing = true;
     render();
   };
@@ -56,7 +56,7 @@ export default function TodoList(render) {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    todo.deleteItem(todoId);
+    $store.todo.deleteItem(todoId);
     render();
   };
 
@@ -66,7 +66,7 @@ export default function TodoList(render) {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    todo.toggleItem(todoId);
+    $store.todo.toggleItem(todoId);
     render();
   };
 

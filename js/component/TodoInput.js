@@ -6,7 +6,7 @@ export default function TodoInput(render) {
 
   const createTodoItem = (text) => {
     return {
-      id: todo.getNewId(),
+      id: $store.todo.getNewId(),
       text: text,
       completed: false,
       editing: false,
