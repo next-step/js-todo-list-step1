@@ -43,6 +43,7 @@ export default class TodoItem {
   }
 
   cancelEdit() {
+    if (!this.editable) return;
     this.setState({ editable: false });
   }
 
