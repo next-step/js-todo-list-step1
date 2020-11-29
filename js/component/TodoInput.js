@@ -20,7 +20,9 @@ export default function TodoInput(render) {
   };
 
   const handleTodoSubmit = (e) => {
-    if (e.key !== KEY.SUBMIT) return;
+    if (e.key !== KEY.SUBMIT) {
+      return;
+    }
 
     const text = $input.value.trim();
     if (text === "") {
