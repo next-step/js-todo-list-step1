@@ -1,25 +1,7 @@
-import { EVENT, KEY } from "../utils/constants.js";
 import $store from "../store/index.js";
 
-function createTodoItem({ id, text, completed, editing }) {
-  const classList = [completed ? "completed" : "", editing ? "editing" : ""]
-    .join(" ")
-    .trim();
-
-  return `
-    <li
-      class="${classList}"
-      data-id=${id}
-    >
-      <div class="view">
-        <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>
-        <label class="label">${text}</label>
-        <button class="destroy"></button>
-      </div>
-      <input class="edit" value="${text}" />
-    </li>
-  `;
-}
+import { EVENT, KEY } from "../utils/constants.js";
+import { todoTemplate } from "../utils/templates.js";
 
 export default function TodoList(render) {
   const $list = document.querySelector(".todo-list");
@@ -87,7 +69,7 @@ export default function TodoList(render) {
 
   const renderTodoList = () => {
     const todos = $store.todo.filterItems();
-    $list.innerHTML = todos.map(createTodoItem).join("");
+    $list.innerHTML = todos.map(todoTemplate).join("");
   };
 
   $list.addEventListener(EVENT.CLICK, handleTodoToggle);
