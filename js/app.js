@@ -1,5 +1,6 @@
 import todo from "./todo.js";
-import { KEY, FILTER } from "./constants.js";
+import filter from "./filter.js";
+import { FILTER, KEY } from "./constants.js";
 
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 <li
@@ -42,12 +43,13 @@ function app() {
 
   const filterTodo = (targetClassList) => {
     if (targetClassList.contains(FILTER.ALL)) {
-      renderTodo(todos);
+      filter.setFilter(FILTER.ALL);
     } else if (targetClassList.contains(FILTER.ACTIVE)) {
-      renderTodo(todos.filter((todo) => !todo.completed));
+      filter.setFilter(FILTER.ACTIVE);
     } else if (targetClassList.contains(FILTER.COMPLETED)) {
-      renderTodo(todos.filter((todo) => todo.completed));
+      filter.setFilter(FILTER.COMPLETED);
     }
+    renderTodo();
   };
 
   const handleTodoFiltering = (e) => {
@@ -62,7 +64,7 @@ function app() {
 
     const todoId = parseInt(e.target.closest("li").id);
     todo.editItem(todoId, e.target.value);
-    renderTodo(todos);
+    renderTodo();
   };
 
   const handleEditingTodoCancel = (e) => {
@@ -73,7 +75,7 @@ function app() {
     const todoId = parseInt(e.target.closest("li").id);
     const targetTodo = todo.findItem(todoId);
     targetTodo.editing = false;
-    renderTodo(todos);
+    renderTodo();
   };
 
   const handleTodoEdit = (e) => {
@@ -84,7 +86,7 @@ function app() {
     const todoId = parseInt(e.target.closest("li").id);
     const targetTodo = todo.findItem(todoId);
     targetTodo.editing = true;
-    renderTodo(todos);
+    renderTodo();
   };
 
   const handleTodoDelete = (e) => {
@@ -94,7 +96,7 @@ function app() {
 
     const todoId = parseInt(e.target.closest("li").id);
     todo.deleteItem(todoId);
-    renderTodo(todos);
+    renderTodo();
   };
 
   const handleTodoToggle = (e) => {
@@ -104,13 +106,13 @@ function app() {
 
     const todoId = parseInt(e.target.closest("li").id);
     todo.toggleItem(todoId);
-    renderTodo(todos);
+    renderTodo();
   };
 
   const addTodo = (text) => {
     const newTodo = todoObj(text);
     todo.addItem(newTodo);
-    renderTodo(todos);
+    renderTodo();
   };
 
   const handleTodoSubmit = (e) => {
@@ -129,10 +131,10 @@ function app() {
     $count.innerText = length;
   };
 
-  const renderTodo = (todoItems) => {
-    const allTodo = todoItems.map(TODO_TEMPLATE).join("");
-    $list.innerHTML = allTodo;
-    countTodo(todoItems);
+  const renderTodo = () => {
+    const filteredTodo = todo.filterItems();
+    $list.innerHTML = filteredTodo.map(TODO_TEMPLATE).join("");
+    countTodo(filteredTodo);
   };
 
   const init = () => {

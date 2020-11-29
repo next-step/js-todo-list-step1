@@ -1,4 +1,6 @@
 import storage from "./storage.js";
+import filter from "./filter.js";
+import { FILTER } from "./constants.js";
 
 const todo = (() => {
   const items = storage.getStorage();
@@ -35,6 +37,16 @@ const todo = (() => {
     storage.setStorage(items);
   };
 
+  const filterItems = () => {
+    if (filter.getFilter() === FILTER.ALL) {
+      return items;
+    } else if (filter.getFilter() === FILTER.ACTIVE) {
+      return items.filter((item) => !item.completed);
+    } else if (filter.getFilter() === FILTER.COMPLETED) {
+      return items.filter((item) => item.completed);
+    }
+  };
+
   return {
     addItem,
     getItems,
@@ -42,6 +54,7 @@ const todo = (() => {
     deleteItem,
     editItem,
     toggleItem,
+    filterItems,
   };
 })();
 
