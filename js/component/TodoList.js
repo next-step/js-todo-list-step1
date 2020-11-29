@@ -1,5 +1,5 @@
 import { EVENT, KEY } from "../constants.js";
-import todo from "../todo.js";
+import $store from "../store/index.js";
 
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 <li
@@ -24,7 +24,7 @@ export default function TodoList(render) {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    todo.editItem(todoId, e.target.value);
+    $store.editItem(todoId, e.target.value);
     render();
   };
 

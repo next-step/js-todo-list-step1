@@ -1,5 +1,5 @@
 import { FILTER, EVENT } from "../constants.js";
-import filter from "../filter.js";
+import $store from "../store/index.js";
 
 export default function TodoFilter(render) {
   const $filter = document.querySelector(".filters");
@@ -12,11 +12,11 @@ export default function TodoFilter(render) {
 
   const filterTodo = (targetClassList) => {
     if (targetClassList.contains(FILTER.ALL)) {
-      filter.setFilter(FILTER.ALL);
+      $store.filter.setFilter(FILTER.ALL);
     } else if (targetClassList.contains(FILTER.ACTIVE)) {
-      filter.setFilter(FILTER.ACTIVE);
+      $store.filter.setFilter(FILTER.ACTIVE);
     } else if (targetClassList.contains(FILTER.COMPLETED)) {
-      filter.setFilter(FILTER.COMPLETED);
+      $store.filter.setFilter(FILTER.COMPLETED);
     }
     render();
   };

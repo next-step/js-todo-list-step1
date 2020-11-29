@@ -1,5 +1,5 @@
 import { EVENT, KEY } from "../constants.js";
-import todo from "../todo.js";
+import $store from "../store/index.js";
 
 export default function TodoInput(render) {
   const $input = document.querySelector(".new-todo");
@@ -15,7 +15,7 @@ export default function TodoInput(render) {
 
   const addTodo = (text) => {
     const newTodo = createTodoItem(text);
-    todo.addItem(newTodo);
+    $store.todo.addItem(newTodo);
     render();
   };
 
