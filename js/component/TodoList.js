@@ -58,7 +58,8 @@ export default function TodoList(render) {
     render();
   };
 
-  const renderTodoList = (todos) => {
+  const renderTodoList = () => {
+    const todos = $store.todo.filterItems();
     $list.innerHTML = todos.map(TodoItem).join("");
   };
 

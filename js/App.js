@@ -1,5 +1,3 @@
-import $store from "./store/index.js";
-
 import TodoInput from "./component/TodoInput.js";
 import TodoList from "./component/TodoList.js";
 import TodoCount from "./component/TodoCount.js";
@@ -7,9 +5,8 @@ import TodoFilter from "./component/TodoFilter.js";
 
 function App() {
   const renderTodo = () => {
-    const filteredTodo = $store.todo.filterItems();
-    todoList.renderTodoList(filteredTodo);
-    todoCount.renderTodoCount(filteredTodo);
+    todoList.renderTodoList();
+    todoCount.renderTodoCount();
   };
 
   new TodoInput(renderTodo);
