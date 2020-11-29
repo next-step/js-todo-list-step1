@@ -2,6 +2,8 @@ import todo from "./todo.js";
 import filter from "./filter.js";
 import { FILTER, KEY } from "./constants.js";
 
+import TodoInput from "./component/TodoInput.js";
+
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 <li
   class="${completed ? "completed" : ""} ${editing ? "editing" : ""}"
@@ -18,22 +20,11 @@ const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 
 function app() {
   let todos = todo.getItems();
-  let id = 0;
 
   const $todoApp = document.querySelector(".todoapp");
-  const $input = $todoApp.querySelector(".new-todo");
   const $list = $todoApp.querySelector(".todo-list");
   const $count = $todoApp.querySelector(".todo-count").querySelector("strong");
   const $filter = $todoApp.querySelector(".filters");
-
-  const todoObj = (todo) => {
-    return {
-      id: id++,
-      text: todo,
-      completed: false,
-      editing: false,
-    };
-  };
 
   const toggleFilterSelected = (target) => {
     const selected = $filter.querySelector(".selected");
@@ -109,23 +100,6 @@ function app() {
     renderTodo();
   };
 
-  const addTodo = (text) => {
-    const newTodo = todoObj(text);
-    todo.addItem(newTodo);
-    renderTodo();
-  };
-
-  const handleTodoSubmit = (e) => {
-    const todo = $input.value;
-    if (todo === "") {
-      return;
-    }
-    if (e.key === KEY.SUBMIT) {
-      addTodo(todo);
-      $input.value = "";
-    }
-  };
-
   const countTodo = (todos) => {
     const length = todos.length;
     $count.innerText = length;
@@ -138,13 +112,14 @@ function app() {
   };
 
   const init = () => {
-    $input.addEventListener("keypress", handleTodoSubmit);
     $list.addEventListener("click", handleTodoToggle);
     $list.addEventListener("click", handleTodoDelete);
     $list.addEventListener("dblclick", handleTodoEdit);
     $list.addEventListener("keydown", handleEditingTodoCancel);
     $list.addEventListener("keydown", handleEditingTodoSubmit);
     $filter.addEventListener("click", handleTodoFiltering);
+
+    TodoInput(renderTodo);
 
     renderTodo(todos);
   };

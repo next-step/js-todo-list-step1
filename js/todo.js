@@ -47,6 +47,13 @@ const todo = (() => {
     }
   };
 
+  const getNewId = () => {
+    if (items.length === 0) {
+      return 0;
+    }
+    return items[items.length - 1].id + 1;
+  };
+
   return {
     addItem,
     getItems,
@@ -55,6 +62,7 @@ const todo = (() => {
     editItem,
     toggleItem,
     filterItems,
+    getNewId,
   };
 })();
 
