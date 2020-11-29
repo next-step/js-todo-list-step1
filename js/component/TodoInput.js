@@ -30,9 +30,5 @@ export default function TodoInput(render) {
     $input.value = "";
   };
 
-  const init = () => {
-    $input.addEventListener("keypress", handleTodoSubmit);
-  };
-
-  init();
+  $input.addEventListener("keypress", handleTodoSubmit);
 }

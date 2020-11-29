@@ -12,15 +12,12 @@ function App() {
     todoCount.renderTodoCount(filteredTodo);
   };
 
-  const init = () => {
-    renderTodo();
-  };
-
   new TodoInput(renderTodo);
   const todoList = new TodoList(renderTodo);
   const todoCount = new TodoCount(renderTodo);
   new TodoFilter(renderTodo);
-  init();
+
+  renderTodo();
 }
 
 new App();
