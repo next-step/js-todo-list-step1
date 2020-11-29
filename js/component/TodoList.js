@@ -6,12 +6,16 @@ import TodoItem from "./TodoItem.js";
 export default function TodoList(render) {
   const $list = document.querySelector(".todo-list");
 
+  const findTargetId = (target) => {
+    return parseInt(target.closest("li").id);
+  };
+
   const handleEditingTodoSubmit = ({ target, key }) => {
     if (key !== KEY.SUBMIT) {
       return;
     }
 
-    const todoId = parseInt(target.closest("li").id);
+    const todoId = findTargetId(target);
     $store.todo.editItem(todoId, target.value);
     render();
   };
@@ -21,7 +25,7 @@ export default function TodoList(render) {
       return;
     }
 
-    const todoId = parseInt(target.closest("li").id);
+    const todoId = findTargetId(target);
     const targetTodo = $store.todo.findItem(todoId);
     targetTodo.editing = false;
     render();
@@ -32,7 +36,7 @@ export default function TodoList(render) {
       return;
     }
 
-    const todoId = parseInt(target.closest("li").id);
+    const todoId = findTargetId(target);
     const targetTodo = $store.todo.findItem(todoId);
     targetTodo.editing = true;
     render();
@@ -43,7 +47,7 @@ export default function TodoList(render) {
       return;
     }
 
-    const todoId = parseInt(target.closest("li").id);
+    const todoId = findTargetId(target);
     $store.todo.deleteItem(todoId);
     render();
   };
@@ -53,7 +57,7 @@ export default function TodoList(render) {
       return;
     }
 
-    const todoId = parseInt(target.closest("li").id);
+    const todoId = findTargetId(target);
     $store.todo.toggleItem(todoId);
     render();
   };
