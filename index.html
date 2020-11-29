@@ -11,10 +11,9 @@
     var todoItems = [];
     var index = 0;
     $(document).ready(function() {
-      console.log(localStorage.getItem("todo-items"));
-
       if(localStorage.getItem("todo-items")  != null) {
         var maxIndex = 0;
+        
         todoItems = JSON.parse(localStorage.getItem("todo-items"));
         $.each(todoItems, function(index, item) {
           maxIndex = (item.index > maxIndex) ? item.index : maxIndex;
