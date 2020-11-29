@@ -14,6 +14,18 @@ class TodoList {
     this.items = [];
     this.bindEvents();
     this.#onChange = onChange;
+    this.filter = null;
+  }
+
+  setFilter(filter) {
+    this.filter = filter;
+    if (!filter) return this.render(this.items);
+    const filteredItems = this.items.filter((item) => {
+      for (const key in filter) {
+        return item[key] === filter[key];
+      }
+    });
+    this.render(filteredItems);
   }
 
   bindEvents() {
@@ -21,38 +33,34 @@ class TodoList {
       this.items.map((item) => item.startEditMode());
     });
     window.addEventListener("keydown", (e) => {
-      if (e.key !== "Escape") return;
-      this.items.map((item) => item.cancelEditMode());
-    });
-    window.addEventListener("click", (e) => {
-      if (this.el.contains(e.target)) return;
-      this.items.map((item) => item.finishEditMode());
+      if (e.key === "Escape") this.items.map((item) => item.cancelEditMode());
+      if (e.key === "Enter") this.items.map((item) => item.finishEditMode());
     });
   }
 
   add(todoItem) {
-    console.log(todoItem);
     this.items.push(todoItem);
-    this.render();
+    this.render(this.items);
   }
 
   remove(todoItemId) {
     console.log("delete!!");
     this.items = this.items.filter((item) => item.id !== todoItemId);
-    this.render();
+    this.render(this.items);
   }
 
-  updateItem(updatedItem) {
+  update(updatedItem) {
     const { id } = updatedItem;
     this.items = this.items.map((item) =>
       item.id === id ? updatedItem : item
     );
-    this.render();
+    this.render(this.items);
   }
 
-  render() {
+  render(items) {
+    console.log(items);
     this.el.innerHTML = "";
-    this.items.map((item) => this.el.append(item.el));
+    items.map((item) => this.el.append(item.el));
     this.#onChange(this.items);
   }
 }
@@ -78,6 +86,26 @@ class TodoRegister {
       new TodoItem({ text: this.el.value, todoList: this.todoList })
     );
     this.el.value = "";
+  }
+}
+
+class TodoFilter {
+  constructor({ el, filterKey, filterValue, todoList }) {
+    this.el = el;
+    this.todoList = todoList;
+    this.filterKey = filterKey;
+    this.filterValue = filterValue;
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.el.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log(this.todoList.filter);
+      if (this.filterKey === undefined || !this.filterValue === undefined)
+        return (this.todoList.filter = null);
+      this.todoList.setFilter({ [this.filterKey]: this.filterValue });
+    });
   }
 }
 
@@ -113,6 +141,7 @@ class TodoItem {
 
   toggle() {
     this.el.classList.toggle("completed");
+    this.completed = !this.completed;
   }
 
   remove() {
@@ -131,6 +160,6 @@ class TodoItem {
   finishEditMode() {
     this.editable = false;
     this.text = this.el.querySelector("input.edit").value;
-    this.todoList.updateItem(this);
+    this.todoList.update(this);
   }
 }
