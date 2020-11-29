@@ -1,4 +1,3 @@
-import storage from "./storage.js";
 import todo from "./todo.js";
 
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
@@ -106,9 +105,7 @@ function app() {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todo.findItem(todoId);
-
-    targetTodo.completed = !targetTodo.completed;
+    todo.toggleItem(todoId);
     renderTodo(todos);
   };
 
@@ -117,7 +114,6 @@ function app() {
     todo.addItem(newTodo);
     renderTodo(todos);
   };
-
 
   const handleTodoSubmit = (e) => {
     const todo = $input.value;
@@ -139,8 +135,6 @@ function app() {
     const allTodo = todoItems.map(TODO_TEMPLATE).join("");
     $list.innerHTML = allTodo;
     countTodo(todoItems);
-
-    storage.setStorage(todoItems);
   };
 
   const init = () => {
@@ -153,7 +147,7 @@ function app() {
     $filter.addEventListener("click", handleTodoFiltering);
 
     renderTodo(todos);
-  }
+  };
   init();
 }
 
