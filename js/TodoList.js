@@ -73,7 +73,13 @@ export default class TodoList {
   updateItem(updatedItem) {
     this.setState({
       items: this.items.map((item) =>
-        item.id === updatedItem.id ? updatedItem : item
+        item.id === updatedItem.id
+          ? {
+              id: updatedItem.id,
+              text: updatedItem.text,
+              completed: updatedItem.completed,
+            }
+          : item
       ),
     });
   }

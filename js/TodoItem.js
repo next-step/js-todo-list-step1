@@ -47,7 +47,7 @@ export default class TodoItem {
   }
 
   saveEdit(e) {
-    this.setState({ text: e.target.value });
+    this.setState({ text: e.target.value, editable: false });
     this.onUpdate(this);
   }
 
@@ -60,10 +60,10 @@ export default class TodoItem {
     this.el.addEventListener("keydown", (e) => {
       if (!e.target.className.includes("edit")) return;
       if (e.key === "Enter") this.saveEdit(e);
+      if (e.key === "Escape") this.cancelEdit();
     });
-    this.el.addEventListener("focusout", (e) => {
-      if (!e.target.className.includes("edit")) return;
-      this.cancelEdit();
+    window.addEventListener("click", (e) => {
+      if (!this.el.contains(e.target)) this.cancelEdit();
     });
   }
 
