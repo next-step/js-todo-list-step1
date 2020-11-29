@@ -1,19 +1,7 @@
 import { EVENT, KEY } from "../utils/constants.js";
 import $store from "../store/index.js";
 
-const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
-<li
-  class="${completed ? "completed" : ""} ${editing ? "editing" : ""}"
-  id=${id}
->
-  <div class="view">
-    <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>
-    <label class="label">${text}</label>
-    <button class="destroy"></button>
-  </div>
-  <input class="edit" value="${text}" />
-</li>
-`;
+import TodoItem from "./TodoItem.js";
 
 export default function TodoList(render) {
   const $list = document.querySelector(".todo-list");
@@ -71,7 +59,7 @@ export default function TodoList(render) {
   };
 
   const renderTodoList = (todos) => {
-    $list.innerHTML = todos.map(TODO_TEMPLATE).join("");
+    $list.innerHTML = todos.map(TodoItem).join("");
   };
 
   $list.addEventListener(EVENT.CLICK, handleTodoToggle);
