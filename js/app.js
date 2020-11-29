@@ -144,15 +144,19 @@ function app() {
     storage.setStorage(todoItems);
   };
 
-  $input.addEventListener("keypress", handleTodoSubmit);
-  $list.addEventListener("click", handleTodoToggle);
-  $list.addEventListener("click", handleTodoDelete);
-  $list.addEventListener("dblclick", handleTodoEdit);
-  $list.addEventListener("keydown", handleEditingTodoCancel);
-  $list.addEventListener("keydown", handleEditingTodoSubmit);
-  $filter.addEventListener("click", handleTodoFiltering);
 
-  renderTodo(todos);
+  const init = () => {
+    $input.addEventListener("keypress", handleTodoSubmit);
+    $list.addEventListener("click", handleTodoToggle);
+    $list.addEventListener("click", handleTodoDelete);
+    $list.addEventListener("dblclick", handleTodoEdit);
+    $list.addEventListener("keydown", handleEditingTodoCancel);
+    $list.addEventListener("keydown", handleEditingTodoSubmit);
+    $filter.addEventListener("click", handleTodoFiltering);
+
+    renderTodo(todos);
+  }
+  init();
 }
 
 new app();
