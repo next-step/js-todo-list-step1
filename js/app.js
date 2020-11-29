@@ -1,4 +1,5 @@
 import storage from "./storage.js";
+import todo from "./todo.js";
 
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 <li
@@ -15,7 +16,7 @@ const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 `;
 
 function app() {
-  let todos = storage.getStorage();
+  let todos = todo.getItems();
   let id = 0;
 
   const $todoApp = document.querySelector(".todoapp");
@@ -63,9 +64,7 @@ function app() {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todos.find((todo) => todo.id === todoId);
-    targetTodo.text = e.target.value;
-    targetTodo.editing = false;
+    todo.editItem(todoId, e.target.value);
     renderTodo(todos);
   };
 
@@ -75,7 +74,7 @@ function app() {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todos.find((todo) => todo.id === todoId);
+    const targetTodo = todo.findItem(todoId);
     targetTodo.editing = false;
     renderTodo(todos);
   };
@@ -86,7 +85,7 @@ function app() {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todos.find((todo) => todo.id === todoId);
+    const targetTodo = todo.findItem(todoId);
     targetTodo.editing = true;
     renderTodo(todos);
   };
@@ -97,8 +96,7 @@ function app() {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const deleteTodoIndex = todos.findIndex((todo) => todo.id === todoId);
-    todos.splice(deleteTodoIndex, 1);
+    todo.deleteItem(todoId);
     renderTodo(todos);
   };
 
@@ -108,17 +106,18 @@ function app() {
     }
 
     const todoId = parseInt(e.target.closest("li").id);
-    const targetTodo = todos.find((todo) => todo.id === todoId);
+    const targetTodo = todo.findItem(todoId);
 
     targetTodo.completed = !targetTodo.completed;
     renderTodo(todos);
   };
 
-  const addTodo = (todo) => {
-    const newTodo = todoObj(todo);
-    todos.push(newTodo);
+  const addTodo = (text) => {
+    const newTodo = todoObj(text);
+    todo.addItem(newTodo);
     renderTodo(todos);
   };
+
 
   const handleTodoSubmit = (e) => {
     const todo = $input.value;
@@ -143,7 +142,6 @@ function app() {
 
     storage.setStorage(todoItems);
   };
-
 
   const init = () => {
     $input.addEventListener("keypress", handleTodoSubmit);
