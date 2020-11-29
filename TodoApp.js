@@ -66,8 +66,5 @@ export default class TodoApp {
     this.data = nextData;
     this.$todoList.setState(nextData);
     this.$todoCount.setState({ count: [...nextData.todoItems].length });
-    this.render();
   }
-
-  render() {}
 }
