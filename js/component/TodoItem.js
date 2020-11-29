@@ -6,7 +6,7 @@ export default function TodoItem({ id, text, completed, editing }) {
   return `
     <li
       class="${classList}"
-      id=${id}
+      data-id=${id}
     >
       <div class="view">
         <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>

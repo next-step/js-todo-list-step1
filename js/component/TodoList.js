@@ -7,7 +7,7 @@ export default function TodoList(render) {
   const $list = document.querySelector(".todo-list");
 
   const findTargetId = (target) => {
-    return parseInt(target.closest("li").id);
+    return parseInt(target.closest("li").dataset.id);
   };
 
   const handleEditingTodoSubmit = ({ target, key }) => {
