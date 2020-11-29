@@ -3,11 +3,6 @@ import { TodoInput } from "./TodoInput.js";
 import { TodoItem } from "./TodoItem.js";
 import { TodoList } from "./TodoList.js";
 
-// import { renderTodoItem } from "./TodoItem.js";
-
-// const onAddTodoHandle = (event) => {
-//   const $todos = document.querySelector("#new-todo-title");
-
 //   if (event.keyCode === 13) {
 //     storageObject.setId(id_No);
 //     storageObject.setValue(todos.value);
@@ -15,18 +10,6 @@ import { TodoList } from "./TodoList.js";
 //     setLocalStorage(storageObject);
 //     id_No++;
 //   }
-// };
-
-// const addTodos = (param) => {
-//   console.log(param);
-//   const $todoList = document.querySelector("#todo-list");
-//   $todoList.insertAdjacentHTML("beforeend", renderTodoItem(param));
-// };
-
-// window.onload = () => {
-//   //   localStorage.clear();
-//   todoList();
-//   saveTodos();
 // };
 
 export class TodoApp {
