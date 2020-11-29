@@ -4,10 +4,10 @@ import { FILTER } from "./constants.js";
 
 import TodoInput from "./component/TodoInput.js";
 import TodoList from "./component/TodoList.js";
+import TodoCount from "./component/TodoCount.js";
 
 function app() {
   const $todoApp = document.querySelector(".todoapp");
-  const $count = $todoApp.querySelector(".todo-count").querySelector("strong");
   const $filter = $todoApp.querySelector(".filters");
 
   const toggleFilterSelected = (target) => {
@@ -32,15 +32,10 @@ function app() {
     filterTodo(e.target.classList);
   };
 
-  const countTodo = (todos) => {
-    const length = todos.length;
-    $count.innerText = length;
-  };
-
   const renderTodo = () => {
     const filteredTodo = todo.filterItems();
     todoList.renderTodoList(filteredTodo);
-    countTodo(filteredTodo);
+    todoCount.renderTodoCount(filteredTodo);
   };
 
   const init = () => {
@@ -50,6 +45,7 @@ function app() {
 
   new TodoInput(renderTodo);
   const todoList = new TodoList(renderTodo);
+  const todoCount = new TodoCount(renderTodo);
   init();
 }
 
