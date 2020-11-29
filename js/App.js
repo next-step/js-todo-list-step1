@@ -5,7 +5,7 @@ import TodoList from "./component/TodoList.js";
 import TodoCount from "./component/TodoCount.js";
 import TodoFilter from "./component/TodoFilter.js";
 
-function app() {
+function App() {
   const renderTodo = () => {
     const filteredTodo = todo.filterItems();
     todoList.renderTodoList(filteredTodo);
@@ -23,4 +23,4 @@ function app() {
   init();
 }
 
-new app();
+new App();
