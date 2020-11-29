@@ -1,4 +1,5 @@
 import { hasClass } from "./utils.js";
+import { ENTER_KEY, ESCAPE_KEY } from "./constants.js";
 
 export default class TodoList {
   $target = null;
@@ -39,12 +40,12 @@ export default class TodoList {
         editInput.value = "";
         editInput.value = originValue;
         editInput.addEventListener("keyup", (e) => {
-          if (e.key === "Escape") {
+          if (e.key === ESCAPE_KEY) {
             closestLi.classList.remove("editing");
             editInput.value = originValue;
           }
 
-          if (e.key === "Enter") {
+          if (e.key === ENTER_KEY) {
             this.onEdit(editInput.value, i);
           }
         });

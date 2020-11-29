@@ -3,13 +3,14 @@ import TodoInput from "./TodoInput.js";
 import TodoCount from "./TodoCount.js";
 import TodoFilter from "./TodoFilter.js";
 import { setStorage, getStorage } from "./utils.js";
+import { TODO_ITEMS_KEY } from "./constants.js";
 
 export default class TodoApp {
   $target = null;
   $todoList = null;
   $todoInput = null;
   $todoFilter = null;
-  data = { todoItems: [...(getStorage("todoItems") || [])] };
+  data = { todoItems: [...(getStorage(TODO_ITEMS_KEY) || [])] };
   originData = this.data;
   constructor($target) {
     this.$todoInput = new TodoInput({
@@ -60,7 +61,7 @@ export default class TodoApp {
 
   setState(nextData, isFilter = false) {
     if (!isFilter) {
-      setStorage("todoItems", [...nextData.todoItems]);
+      setStorage(TODO_ITEMS_KEY, [...nextData.todoItems]);
       this.originData = nextData;
     }
     this.data = nextData;
