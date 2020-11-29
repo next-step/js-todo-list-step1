@@ -1,4 +1,5 @@
 import todo from "./todo.js";
+import { KEY, FILTER } from "./constants.js";
 
 const TODO_TEMPLATE = ({ id, text, completed, editing }) => `
 <li
@@ -24,9 +25,6 @@ function app() {
   const $count = $todoApp.querySelector(".todo-count").querySelector("strong");
   const $filter = $todoApp.querySelector(".filters");
 
-  const SUBMIT_KEY = "Enter";
-  const CANCEL_KEY = "Escape";
-
   const todoObj = (todo) => {
     return {
       id: id++,
@@ -43,11 +41,11 @@ function app() {
   };
 
   const filterTodo = (targetClassList) => {
-    if (targetClassList.contains("all")) {
+    if (targetClassList.contains(FILTER.ALL)) {
       renderTodo(todos);
-    } else if (targetClassList.contains("active")) {
+    } else if (targetClassList.contains(FILTER.ACTIVE)) {
       renderTodo(todos.filter((todo) => !todo.completed));
-    } else if (targetClassList.contains("completed")) {
+    } else if (targetClassList.contains(FILTER.COMPLETED)) {
       renderTodo(todos.filter((todo) => todo.completed));
     }
   };
@@ -58,7 +56,7 @@ function app() {
   };
 
   const handleEditingTodoSubmit = (e) => {
-    if (e.key !== SUBMIT_KEY) {
+    if (e.key !== KEY.SUBMIT) {
       return;
     }
 
@@ -68,7 +66,7 @@ function app() {
   };
 
   const handleEditingTodoCancel = (e) => {
-    if (e.key !== CANCEL_KEY) {
+    if (e.key !== KEY.CANCEL) {
       return;
     }
 
@@ -120,7 +118,7 @@ function app() {
     if (todo === "") {
       return;
     }
-    if (e.key === SUBMIT_KEY) {
+    if (e.key === KEY.SUBMIT) {
       addTodo(todo);
       $input.value = "";
     }
