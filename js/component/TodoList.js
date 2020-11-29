@@ -6,54 +6,54 @@ import TodoItem from "./TodoItem.js";
 export default function TodoList(render) {
   const $list = document.querySelector(".todo-list");
 
-  const handleEditingTodoSubmit = (e) => {
-    if (e.key !== KEY.SUBMIT) {
+  const handleEditingTodoSubmit = ({ target, key }) => {
+    if (key !== KEY.SUBMIT) {
       return;
     }
 
-    const todoId = parseInt(e.target.closest("li").id);
-    $store.todo.editItem(todoId, e.target.value);
+    const todoId = parseInt(target.closest("li").id);
+    $store.todo.editItem(todoId, target.value);
     render();
   };
 
-  const handleEditingTodoCancel = (e) => {
-    if (e.key !== KEY.CANCEL) {
+  const handleEditingTodoCancel = ({ target, key }) => {
+    if (key !== KEY.CANCEL) {
       return;
     }
 
-    const todoId = parseInt(e.target.closest("li").id);
+    const todoId = parseInt(target.closest("li").id);
     const targetTodo = $store.todo.findItem(todoId);
     targetTodo.editing = false;
     render();
   };
 
-  const handleTodoEdit = (e) => {
-    if (!e.target.classList.contains("label")) {
+  const handleTodoEdit = ({ target }) => {
+    if (!target.classList.contains("label")) {
       return;
     }
 
-    const todoId = parseInt(e.target.closest("li").id);
+    const todoId = parseInt(target.closest("li").id);
     const targetTodo = $store.todo.findItem(todoId);
     targetTodo.editing = true;
     render();
   };
 
-  const handleTodoDelete = (e) => {
-    if (!e.target.classList.contains("destroy")) {
+  const handleTodoDelete = ({ target }) => {
+    if (!target.classList.contains("destroy")) {
       return;
     }
 
-    const todoId = parseInt(e.target.closest("li").id);
+    const todoId = parseInt(target.closest("li").id);
     $store.todo.deleteItem(todoId);
     render();
   };
 
-  const handleTodoToggle = (e) => {
-    if (!e.target.classList.contains("toggle")) {
+  const handleTodoToggle = ({ target }) => {
+    if (!target.classList.contains("toggle")) {
       return;
     }
 
-    const todoId = parseInt(e.target.closest("li").id);
+    const todoId = parseInt(target.closest("li").id);
     $store.todo.toggleItem(todoId);
     render();
   };

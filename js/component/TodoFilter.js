@@ -21,9 +21,9 @@ export default function TodoFilter(render) {
     render();
   };
 
-  const handleTodoFiltering = (e) => {
-    toggleFilterSelected(e.target);
-    filterTodo(e.target.classList);
+  const handleTodoFiltering = ({ target }) => {
+    toggleFilterSelected(target);
+    filterTodo(target.classList);
   };
 
   $filter.addEventListener(EVENT.CLICK, handleTodoFiltering);

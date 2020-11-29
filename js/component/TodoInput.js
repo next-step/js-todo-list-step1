@@ -19,17 +19,17 @@ export default function TodoInput(render) {
     render();
   };
 
-  const handleTodoSubmit = (e) => {
-    if (e.key !== KEY.SUBMIT) {
+  const handleTodoSubmit = ({ target, key }) => {
+    if (key !== KEY.SUBMIT) {
       return;
     }
 
-    const text = $input.value.trim();
+    const text = target.value.trim();
     if (text === "") {
       return;
     }
     addTodo(text);
-    $input.value = "";
+    target.value = "";
   };
 
   $input.addEventListener(EVENT.KEYBOARD, handleTodoSubmit);
