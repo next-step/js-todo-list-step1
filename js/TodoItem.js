@@ -47,7 +47,7 @@ export default class TodoItem {
   }
 
   saveEdit(e) {
-    this.text = e.target.value;
+    this.setState({ text: e.target.value });
     this.onUpdate(this);
   }
 
