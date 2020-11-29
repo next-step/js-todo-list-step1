@@ -34,36 +34,6 @@
         </div>
       </main>
     </div>
-    <script type="text/javascript" src="js/todo.js"></script>
-    <script type="text/javascript">
-      const todoList = new TodoList({
-        el: document.querySelector("#todo-list"),
-        onChange: (items) => {
-          document.querySelector(
-            ".todo-count"
-          ).innerHTML = `총 <strong>${items.length}</strong> 개`;
-        },
-      });
-      new TodoFilter({
-        el: document.querySelector("a.all"),
-        todoList,
-      });
-      new TodoFilter({
-        el: document.querySelector("a.active"),
-        filterKey: "completed",
-        filterValue: false,
-        todoList,
-      });
-      new TodoFilter({
-        el: document.querySelector("a.completed"),
-        filterKey: "completed",
-        filterValue: true,
-        todoList,
-      });
-      new TodoRegister({
-        el: document.querySelector("#new-todo-title"),
-        todoList,
-      });
-    </script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

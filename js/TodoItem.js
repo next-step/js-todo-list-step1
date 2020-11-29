@@ -1,0 +1,88 @@
+export default class TodoItem {
+  static initialState = {
+    text: "",
+    completed: false,
+    editable: false,
+  };
+
+  constructor({ text, onRemove, onUpdate }) {
+    this.id = new Date().getTime();
+    this.el = document.createElement("fragment");
+    this.onRemove = onRemove;
+    this.onUpdate = onUpdate;
+
+    // states
+    this.text = text;
+    this.completed = TodoItem.initialState.completed;
+    this.editable = TodoItem.initialState.editable;
+
+    this.initialize();
+  }
+
+  set state(newState) {
+    for (const state in newState) {
+      this[state] = newState[state];
+    }
+    this.render();
+  }
+
+  setState(newState) {
+    this.state = newState;
+  }
+
+  toggle() {
+    this.setState({ completed: !this.completed });
+    this.onUpdate(this);
+  }
+
+  remove() {
+    this.onRemove(this.id);
+  }
+
+  startEdit() {
+    this.setState({ editable: true });
+    const input = this.el.querySelector(".edit");
+    input.focus();
+  }
+
+  cancelEdit() {
+    this.setState({ editable: false });
+  }
+
+  saveEdit(e) {
+    this.text = e.target.value;
+    this.onUpdate(this);
+  }
+
+  initialize() {
+    this.el.addEventListener("click", (e) => {
+      if (e.target.className.includes("toggle")) this.toggle();
+      if (e.target.className.includes("destroy")) this.remove();
+    });
+    this.el.addEventListener("dblclick", () => this.startEdit());
+    this.el.addEventListener("keydown", (e) => {
+      if (!e.target.className.includes("edit")) return;
+      if (e.key === "Enter") this.saveEdit(e);
+    });
+    this.el.addEventListener("focusout", (e) => {
+      if (!e.target.className.includes("edit")) return;
+      this.cancelEdit();
+    });
+  }
+
+  render() {
+    this.el.innerHTML = `<li class="${this.completed ? "completed" : ""} ${
+      this.editable ? "editing" : ""
+    }">
+      <div class="view">
+        <input class="toggle" type="checkbox" ${
+          this.completed ? "checked" : ""
+        } />
+        <label class="label">${this.text}</label>
+        <button class="destroy"></button>
+      </div>
+      <input class="edit" value="${this.text}" />
+    </li>`;
+    return this.el;
+  }
+}
