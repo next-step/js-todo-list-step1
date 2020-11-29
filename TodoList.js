@@ -19,16 +19,16 @@ export default class TodoList {
 
   bindEvents = () => {
     document.querySelectorAll(".item").forEach((item, i) => {
-      item.addEventListener("click", (e) => {
-        if (hasClass(e.target, "toggle")) {
-          if (e.target.checked) {
+      item.addEventListener("click", ({ target }) => {
+        if (hasClass(target, "toggle")) {
+          if (target.checked) {
             this.onComplete("completed", i);
           } else {
             this.onComplete("active", i);
           }
         }
 
-        if (hasClass(e.target, "destroy")) this.onDelete(i);
+        if (hasClass(target, "destroy")) this.onDelete(i);
       });
 
       item.addEventListener("dblclick", (e) => {
