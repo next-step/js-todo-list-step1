@@ -63,6 +63,7 @@ export default class Store {
 
         self.status = 'mutation'
         let newState = self.mutations[mutationKey](self.state, payload)
+        console.group(newState)
         self.state = Object.assign(self.state, newState)
 
         console.groupEnd()

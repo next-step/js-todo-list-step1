@@ -1,5 +1,5 @@
 export default {
-  ID: 1,
+  ID: 2,
   // mutation 함수 작성
   addItem (state, payload) {
     /**
@@ -19,8 +19,11 @@ export default {
     /**
      * {String} context
      */
-    return (state.list.length) ? 
-      state.list.filter(v => v === payload) : 
-      []
+    const index  = state.list.findIndex(v => v.id === payload)
+
+    if (index === -1) return state
+
+    state.list.splice(index, 1)
+    return state
   }
 }

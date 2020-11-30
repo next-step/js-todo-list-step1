@@ -43,7 +43,7 @@ export default class TodoList extends Component {
       <ul id="todo-list" class="todo-list">
       ${store.state.list.map(item => {
         return `
-          <li>
+          <li data-id="${item.id}">
             <div class="view">
               <input class="toggle" type="checkbox" ${(item.complete) ? 'checked' : ''} />
               <label class="label">${item.context}</label>
@@ -57,10 +57,13 @@ export default class TodoList extends Component {
     `
     self.element.addEventListener('click', (ev) => {
       if (ev.target.className === 'destroy') {
+        // 본문이 같지만 다른 Todo인 경우가 있을수 있으므로, ID를 사용할 것.
         const parentElement = ev.target.closest('li')
+        const id = parentElement.dataset.id
+        console.log('', id, Number.isInteger(id), parentElement);
+        if (id !== undefined) store.dispatch('deleteItem', Number(id))
 
-        const label = parentElement.querySelector('.label').innerHTML
-        console.log('', label, parentElement);
+        // const label = parentElement.querySelector('.label').innerHTML
         // parent.deleteItem(parentElement)
     }
     })
