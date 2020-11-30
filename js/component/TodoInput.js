@@ -33,5 +33,5 @@ export default function TodoInput(render) {
     target.value = "";
   };
 
-  $input.addEventListener(EVENT.KEYBOARD, handleTodoSubmit);
+  $input.addEventListener(EVENT.KEYDOWN, handleTodoSubmit);
 }

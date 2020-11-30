@@ -75,8 +75,8 @@ export default function TodoList(render) {
   $list.addEventListener(EVENT.CLICK, handleTodoToggle);
   $list.addEventListener(EVENT.CLICK, handleTodoDelete);
   $list.addEventListener(EVENT.DBLCLICK, handleTodoEdit);
-  $list.addEventListener(EVENT.KEYBOARD, handleEditingTodoCancel);
-  $list.addEventListener(EVENT.KEYBOARD, handleEditingTodoSubmit);
+  $list.addEventListener(EVENT.KEYDOWN, handleEditingTodoCancel);
+  $list.addEventListener(EVENT.KEYPRESS, handleEditingTodoSubmit);
 
   return { renderTodoList };
 }

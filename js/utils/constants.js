@@ -4,7 +4,8 @@ const KEY = {
 };
 
 const EVENT = {
-  KEYBOARD: "keydown",
+  KEYPRESS: "keypress",
+  KEYDOWN: "keydown",
   CLICK: "click",
   DBLCLICK: "dblclick",
 };
