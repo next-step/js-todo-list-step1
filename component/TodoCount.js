@@ -1,10 +1,9 @@
 export class TodoCount {
-  constructor() {
+  constructor(todoItem) {
     this.$todoCountContainer = document.querySelector(".count-container");
     this.$todoCount = document.querySelector(".todo-count");
+    this.setState(todoItem);
   }
-
-  countTodoItem() {}
 
   setState = (updateItems) => {
     this.render(updateItems);

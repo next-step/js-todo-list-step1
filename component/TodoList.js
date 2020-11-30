@@ -1,15 +1,14 @@
-// import { createLocalStorageObject } from "../js/LocalStorageUtil.js";
+import { LocalStorageUtil } from "../js/LocalStorageUtil.js";
 
 export class TodoList {
-  constructor(todoItem, store) {
-    console.log("list :", store);
+  constructor(todoItem) {
+    this.storage = new LocalStorageUtil();
+    this.todoList = [...todoItem];
     this.$todoList = document.querySelector("#todo-list");
-    this.$todoList.addEventListener("click", (e) =>
-      this.onClickHandle(e, store)
-    );
-    this.$todoList.addEventListener("dblclick", this.onDbClickHandle);
-    this.$todoList.addEventListener("keyup", this.onKeyUpHandle);
-    this.render(todoItem);
+    this.$todoList.addEventListener("click", (e) => this.onClickHandle(e));
+    this.$todoList.addEventListener("dblclick", (e) => this.onDbClickHandle(e));
+    this.$todoList.addEventListener("keyup", (e) => this.onKeyUpHandle(e));
+    this.setState(todoItem);
   }
 
   setState = (updateItems) => {
@@ -30,27 +29,36 @@ export class TodoList {
     }
   }
 
-  onClickHandle(event, store) {
-    console.log(store);
-    let target = event.target;
-    // this.setState();
+  onClickHandle({ target }) {
+    const id = target.closest("li").dataset.id;
+    let data = JSON.parse(this.storage.getItem(id));
+    !data.state ? (data.state = true) : (data.state = false);
+    // let target = event.target;
     if (target.classList.value === "toggle") {
       target.parentNode.parentNode.classList.toggle("completed");
+      this.storage.setLocalStorage(data);
     }
     if (target.classList.value === "destroy") {
+      this.storage.removeLocalStarageData(id);
       const li = target.parentNode.parentNode;
       li.remove();
     }
   }
 
   onDbClickHandle({ target }) {
+    const id = target.closest("li").dataset.id;
+    let data = JSON.parse(this.storage.getItem(id));
     if (target.classList.value === "label") {
       target.parentNode.parentNode.classList.add("editing");
+      target.parentNode.nextElementSibling.focus();
     }
   }
 
   onKeyUpHandle({ target }) {
     // const target = event.target;
+    const id = target.closest("li").dataset.id;
+    let data = JSON.parse(this.storage.getItem(id));
+
     if (target.tagName === "INPUT") {
       if (event.key === "Escape") {
         target.previousElementSibling.querySelector(".label").innerText;
@@ -59,6 +67,8 @@ export class TodoList {
       if (event.key === "Enter") {
         target.previousElementSibling.querySelector(".label").innerText =
           target.value;
+        data.contents = target.value;
+        this.storage.setLocalStorage(data);
         target.parentNode.classList.remove("editing");
       }
     }

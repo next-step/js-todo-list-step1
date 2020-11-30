@@ -22,13 +22,13 @@ export class TodoItem {
     this.setState(state);
     this.setId(id);
     this.setText(contents);
-    return `<li>
+    return `<li data-id=${id} class="${state ? "completed" : ""}">
               <div class="view">
                 <input class="toggle" type="checkbox" ${state ? "checked" : ""}>
                 <label class="label">${contents}</label>
                 <button class="destroy"></button>
               </div>
-                <input class="edit" value="새로운 타이틀" />
+                <input class="edit" value="${contents}" />
             </li>`;
   };
 }

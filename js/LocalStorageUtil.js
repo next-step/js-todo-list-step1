@@ -8,24 +8,29 @@ export class LocalStorageUtil {
     this.localStorage.setItem(todoItem.id, JSON.stringify(todoItem));
   };
 
-  createLocalStorageObject = () => {};
-
   stringToJson() {
-    // let obj = [];
+    let localStorageArray = [];
     Object.values(this.localStorage).forEach((item) => {
-      this.localStorageArray.push(JSON.parse(item));
+      localStorageArray.push(JSON.parse(item));
     });
+    this.localStorageArray = [...localStorageArray];
     return this.localStorageArray;
   }
 
-  getLocalStoage = (todoItem) => {
-    const obj = { id: "", state: false, text: "" };
-    obj = { ...JSON.parse(this.localStorage.getItem(todoItem.id)) };
-    console.log(obj);
-    return obj;
+  getLocalStorage = (todoItem) => {
+    return JSON.parse(this.localStorage.getItem(todoItem.id));
   };
 
-  getLocalStoageArray() {
+  getItem = (id) => {
+    return this.localStorage.getItem(id);
+  };
+
+  getLocalStorageArray() {
     return this.localStorageArray;
+  }
+
+  removeLocalStarageData(id) {
+    this.localStorage.removeItem(id);
+    return this;
   }
 }
