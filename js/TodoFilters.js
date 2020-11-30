@@ -1,12 +1,18 @@
 `use strict`;
 
 class TodoFilters {
-    constructor() {
-        this.$filters = documenet.querySelector('.filters');
-        this.$all = this.$filters.querySElector('.all')
-        this.$active = this.$filters.querySelector('.active');
-        this.$completed = this.$filters.querySelector('.completed');
-    }
+  constructor() {
+    this.$filters = document.querySelector('.filters');
 
-    
+    this.$filters.addEventListener('click', this.onClick.bind(this));
+  }
+
+  onClick(event) {
+    if (event.target && event.target.nodeName === 'A') {
+      this.$filters.querySelector('.selected').classList.remove('selected');
+      event.target.classList.add('selected');
+    }
+  }
 }
+
+export default TodoFilters;

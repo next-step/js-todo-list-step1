@@ -6,7 +6,6 @@ class TodoItem {
     this._place = place;
     this._team;
     this._$item;
-    this._isCompleted = false;
   }
 
   createItem(text) {
@@ -26,6 +25,17 @@ class TodoItem {
     this._$item = div.firstElementChild;
     this._$item.addEventListener('keyup', this.onKeyUp.bind(this));
     return div.firstElementChild;
+  }
+
+  isCompleted() {
+    if (this._$item) {
+      let checkbox = this._$item.querySelector('input[type="checkbox"]');
+      if (checkbox.checked) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 
   onKeyUp(event) {
@@ -67,14 +77,6 @@ class TodoItem {
 
   get $item() {
     return this._$item;
-  }
-
-  set isCompleted(b) {
-    this._isCompleted = b;
-  }
-
-  get isCompleted() {
-    this._isCompleted;
   }
 }
 
