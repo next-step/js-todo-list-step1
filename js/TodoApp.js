@@ -28,7 +28,6 @@ class TodoApp {
   }
 
   onHashChange() {
-    console.log('this.todoItems', this.todoItems);
     if (location.hash === '' || location.hash === '#') {
       for (const todoItem of this.todoItems) {
         todoItem.$item.classList.remove('hidden');
