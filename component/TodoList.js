@@ -1,27 +1,39 @@
-import { createLocalStorageObject } from "../js/LocalStorageUtil.js";
+// import { createLocalStorageObject } from "../js/LocalStorageUtil.js";
 
 export class TodoList {
-  constructor() {
+  constructor(todoItem, store) {
+    console.log("list :", store);
     this.$todoList = document.querySelector("#todo-list");
-    this.$todoList.addEventListener("click", this.onClickHandle);
+    this.$todoList.addEventListener("click", (e) =>
+      this.onClickHandle(e, store)
+    );
     this.$todoList.addEventListener("dblclick", this.onDbClickHandle);
     this.$todoList.addEventListener("keyup", this.onKeyUpHandle);
+    this.render(todoItem);
   }
 
   setState = (updateItems) => {
-    console.log("TodoList state: ", updateItems);
     this.render(updateItems);
   };
 
-  render = (todoItems) => {
-    const copyItems = [...todoItems];
-    Object.values(copyItems).forEach((item) => {
-      this.$todoList.insertAdjacentHTML("beforeend", item.content);
+  render(todoItems) {
+    if (!todoItems) return;
+    this.clearTodoList();
+    Object.values(todoItems).forEach(({ contents }) => {
+      this.$todoList.insertAdjacentHTML("beforeend", contents);
     });
-  };
+  }
 
-  onClickHandle = ({ target }) => {
-    // const target = event.target;
+  clearTodoList() {
+    while (this.$todoList.firstChild) {
+      this.$todoList.removeChild(this.$todoList.lastChild);
+    }
+  }
+
+  onClickHandle(event, store) {
+    console.log(store);
+    let target = event.target;
+    // this.setState();
     if (target.classList.value === "toggle") {
       target.parentNode.parentNode.classList.toggle("completed");
     }
@@ -29,18 +41,16 @@ export class TodoList {
       const li = target.parentNode.parentNode;
       li.remove();
     }
-  };
+  }
 
-  onDbClickHandle = ({ target }) => {
-    // const target = event.target;
+  onDbClickHandle({ target }) {
     if (target.classList.value === "label") {
       target.parentNode.parentNode.classList.add("editing");
     }
-  };
+  }
 
   onKeyUpHandle({ target }) {
     // const target = event.target;
-    console.log(event);
     if (target.tagName === "INPUT") {
       if (event.key === "Escape") {
         target.previousElementSibling.querySelector(".label").innerText;

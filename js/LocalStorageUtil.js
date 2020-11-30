@@ -1,22 +1,31 @@
-const setLocalStorage = (param) => {
-  console.log(param);
-  localStorage.setItem(param.id, JSON.stringify(param));
-};
-
-const createLocalStorageArray = () => {
-  let array = [];
-  for (let index = 0; index < localStorage.length; index++) {
-    array.push(JSON.parse(localStorage.getItem(index)));
+export class LocalStorageUtil {
+  constructor() {
+    this.localStorage = localStorage;
+    this.localStorageArray = [];
   }
-  return array;
-};
 
-const createLocalStorageObject = () => {
-  let array = [];
-  for (let index = 0; index < localStorage.length; index++) {
-    array.push(JSON.parse(localStorage.getItem(index)));
+  setLocalStorage = (todoItem) => {
+    this.localStorage.setItem(todoItem.id, JSON.stringify(todoItem));
+  };
+
+  createLocalStorageObject = () => {};
+
+  stringToJson() {
+    // let obj = [];
+    Object.values(this.localStorage).forEach((item) => {
+      this.localStorageArray.push(JSON.parse(item));
+    });
+    return this.localStorageArray;
   }
-  return array;
-};
 
-export { setLocalStorage, createLocalStorageArray, createLocalStorageObject };
+  getLocalStoage = (todoItem) => {
+    const obj = { id: "", state: false, text: "" };
+    obj = { ...JSON.parse(this.localStorage.getItem(todoItem.id)) };
+    console.log(obj);
+    return obj;
+  };
+
+  getLocalStoageArray() {
+    return this.localStorageArray;
+  }
+}

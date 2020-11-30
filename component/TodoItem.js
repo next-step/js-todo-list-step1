@@ -1,13 +1,30 @@
 export class TodoItem {
-  constructor(contents, state) {
-    this.content = this.templateTodoItem(contents);
+  constructor(contents) {
+    this.contents = this.templateTodoItem(contents);
+    this.state;
+    this.id;
+    this.text;
   }
 
-  templateTodoItem = (contents) => {
-    console.log("template :", contents);
+  setState(state) {
+    return (this.state = state);
+  }
+
+  setId(id) {
+    return (this.id = id);
+  }
+
+  setText(text) {
+    return (this.text = text);
+  }
+
+  templateTodoItem = ({ contents, state, id }) => {
+    this.setState(state);
+    this.setId(id);
+    this.setText(contents);
     return `<li>
               <div class="view">
-                <input class="toggle" type="checkbox">
+                <input class="toggle" type="checkbox" ${state ? "checked" : ""}>
                 <label class="label">${contents}</label>
                 <button class="destroy"></button>
               </div>

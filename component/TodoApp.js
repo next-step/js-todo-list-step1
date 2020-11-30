@@ -1,37 +1,34 @@
-// import { todoList } from "./TodoList.js";
 import { TodoInput } from "./TodoInput.js";
 import { TodoItem } from "./TodoItem.js";
 import { TodoList } from "./TodoList.js";
-
-//   if (event.keyCode === 13) {
-//     storageObject.setId(id_No);
-//     storageObject.setValue(todos.value);
-//     addTodos(storageObject);
-//     setLocalStorage(storageObject);
-//     id_No++;
-//   }
-// };
+import { TodoCount } from "./TodoCount.js";
+import { LocalStorageUtil } from "../js/LocalStorageUtil.js";
+import { Store } from "../js/Store.js";
 
 export class TodoApp {
   constructor(todoItem) {
+    this.storage = new LocalStorageUtil();
     this.todoItem = todoItem || [];
     this.todoList = new TodoList();
-    console.log(this.todoItem);
-    // this.todoList = new todoList();
+    this.todoCount = new TodoCount();
+    this.store = new Store();
 
     new TodoInput({
       onAdd: (contents) => {
         let todoItem = new TodoItem(contents);
+        this.storage.setLocalStorage(todoItem);
+        this.store.addStore(todoItem);
+        // let todoItem2 = new TodoItem(this.storage.getLocalStoage(todoItem));
         this.todoItem.push(todoItem);
-        this.setState(this.todoItem);
-        this.todoItem = [];
+        this.setState(this.todoItem, this.store);
       },
     });
   }
 
   setState(updateItem) {
-    console.log("TodoApp state :", updateItem);
     this.todoItem = updateItem;
-    this.todoList.setState(this.todoItem);
+    console.log(this.store);
+    this.todoList.setState(this.todoItem, this.store);
+    this.todoCount.setState(this.todoItem, this.store);
   }
 }
