@@ -60,12 +60,20 @@ export default class TodoList extends Component {
         // 본문이 같지만 다른 Todo인 경우가 있을수 있으므로, ID를 사용할 것.
         const parentElement = ev.target.closest('li')
         const id = parentElement.dataset.id
-        console.log('', id, Number.isInteger(id), parentElement);
         if (id !== undefined) store.dispatch('deleteItem', Number(id))
+      }
 
-        // const label = parentElement.querySelector('.label').innerHTML
-        // parent.deleteItem(parentElement)
-    }
+      if (ev.target.className === 'toggle') {
+        console.log('toggle', );
+        const parentElement = ev.target.closest('li')
+        const id = parentElement.dataset.id
+        const complete = parentElement.querySelector('.toggle').checked
+        // console.log('TodoList', {id:Number(id), complete: complete});
+        if (id !== undefined) store.dispatch('toggleItem', {id:Number(id), complete: complete})
+      }
+    })
+    self.element.addEventListener('dblclick', (ev) => {
+      console.log('dblclick', );
     })
   }
 }

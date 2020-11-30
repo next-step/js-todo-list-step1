@@ -5,5 +5,10 @@ export default {
   },
   deleteItem(context, payload) {
     context.commit('deleteItem', payload)
-  }
+  },
+  toggleItem(context, payload) {
+    context.commit('toggleItem', payload)
+  },
+  updateItem(context, payload) {},
+  filterITem(context, payload) {},
 }

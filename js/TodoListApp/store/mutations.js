@@ -25,5 +25,23 @@ export default {
 
     state.list.splice(index, 1)
     return state
-  }
+  },
+  toggleItem(state, payload) {
+    /**
+     * {Mix} id, complete
+     * {Number} id
+     * {Boolean} complete
+     */
+    // console.log('commit', payload);
+    const index = state.list.findIndex(v => v.id === payload.id)
+    if (index === -1) return state
+    
+    let newList = [...state.list]
+    newList[index].complete = payload.complete
+    console.log('commit', newList);
+    // state.list = newList
+    return state
+  },
+  updateItem(state, payload) {},
+  filterITem(state, payload) {},
 }
