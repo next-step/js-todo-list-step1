@@ -12,69 +12,70 @@ const filterUlElement = document.getElementsByClassName('filters')[0]
 // event listner
 userInputArea.addEventListener('keydown', function(e) {
    if(e.key === 'Enter' ) {
-       if (e.target.value.replace(/\s| /gi, "").length ===0) {
-        clearInput(e);   
-        return
-       }
-        createToDoItem(e.target.value);
+        createToDoItem(e);
         clearInput(e);
    }
 });
 toDoUlElement.addEventListener('click', function(e) {
     const type = e.target.type;
+    const $closestLi = e.target.closest('li');
+    const list = store.list;
     if (type === 'checkbox') {
         if (e.target.checked) {
-            e.target.closest('li').classList.add('completed');
-            store.list.map(value => {if (value.id === Number(e.target.closest('li').id)) {value.status = 'completed';}});
+            $closestLi.classList.add('completed');
+            list.map(value => {if (value.id === Number($closestLi.id)) {value.status = 'completed';}});
         } else {
-            e.target.closest('li').classList.remove('completed');
-            store.list.map(value => {if (value.id === Number(e.target.closest('li').id)) {value.status = '';}});
+            $closestLi.classList.remove('completed');
+            list.map(value => {if (value.id === Number($closestLi.id)) {value.status = '';}});
         }
         showSelected(store.filtered);
     } else if (type === 'submit') {
-        this.removeChild(e.target.closest('li'));
-        store.list.map((value, idx) =>{
-            if (value.id === Number(e.target.closest('li').id)) {
-                store.list.splice(idx, 1);
+        this.removeChild($closestLi);
+        list.map((value, idx) =>{
+            if (value.id === Number($closestLi.id)) {
+                list.splice(idx, 1);
             }
         });
     }
-    localStorage.setItem('list', JSON.stringify(store.list));
+    setLocalStorage('list', list);
     renewalCount(store.filtered);
 });
 toDoUlElement.addEventListener('dblclick', function(e) {
+    const $closestLi = e.target.closest('li');
     if (e.target.tagName === 'LABEL') {
-        e.target.closest('li').classList.add('editing');
-        e.target.closest('li').querySelector('.edit').value = e.target.innerText;
+        $closestLi.classList.add('editing');
+        $closestLi.querySelector('.edit').value = e.target.innerText;
     }
 });
 toDoUlElement.addEventListener('keydown', function(e) {
+    const $closestLi = e.target.closest('li');
     if (e.key === 'Enter') {
         if (e.target.value.replace(/\s| /gi, "").length ===0) {
         clearInput(e);   
         return
        }
-        e.target.closest('li').classList.remove('editing');
-        e.target.closest('li').querySelector('label').innerHTML = e.target.value;
-        store.list.map(value => {if (value.id === Number(e.target.closest('li').id)) {value.value = e.target.value;}});
-        localStorage.setItem('list', JSON.stringify(store.list));
+        $closestLi.classList.remove('editing');
+        $closestLi.querySelector('label').innerHTML = e.target.value;
+        store.list.map(value => {if (value.id === Number($closestLi.id)) {value.value = e.target.value;}});
+        setLocalStorage('list', store.list);
     } else if (e.key === 'Escape') {
-        e.target.closest('li').classList.remove('editing');
+        $closestLi.classList.remove('editing');
     }
 });
 filterUlElement.addEventListener('click', function(e) {
     const ul = e.target.closest('ul').children;
+    const $classList = e.target.classList;
     for(let i = 0; ul.length > i; i++) {
         ul[i].children[0].classList.remove('selected');
     }
-    e.target.classList.add('selected');
-    if (e.target.classList.value.includes('active')) {
+    $classList.add('selected');
+    if ($classList.value.includes('active')) {
         showSelected('active');
         store.filtered = 'active';
-    } else if (e.target.classList.value.includes('completed')) {
+    } else if ($classList.value.includes('completed')) {
         showSelected('completed');
         store.filtered = 'completed';
-    } else if (e.target.classList.value.includes('all')) {
+    } else if ($classList.value.includes('all')) {
         showSelected('all');
         store.filtered = 'all';
     }
@@ -114,19 +115,28 @@ const toDoListLi = ({id ,value, status}) => {
 }
 
 // methods
-const createToDoItem = (value) => {
+const createToDoItem = (e) => {
+    if (e.target.value.replace(/\s| /gi, "").length ===0) {
+        clearInput(e);   
+        return
+    }
     let status = '';
     const filterChildren = filterUlElement.children[2].children[0].className;
     if (filterChildren.indexOf('selected') !== -1) {status = 'hidden'}
     const id = +new Date();
-    toDoUlElement.appendChild(toDoListLi({id, value, status}));
-    store.list.push({id, status: '', value});
-    localStorage.setItem('list', JSON.stringify(store.list));
+    toDoUlElement.appendChild(toDoListLi({id, value: e.target.value, status}));
+    store.list.push({id, status: '', value: e.target.value});
+    setLocalStorage('list', store.list);
     renewalCount(store.filtered);
 }
-
 const clearInput = (e) => {
     e.target.value = '';
+}
+const setLocalStorage = (to, what) => {
+    return localStorage.setItem(to, JSON.stringify(what));
+};
+const getLocalStorage = (from) => {
+    return JSON.parse(localStorage.getItem(from));
 }
 const renewalCount = (param) => {
     if (param === 'all') {
@@ -136,7 +146,6 @@ const renewalCount = (param) => {
     } else if (param === 'active'){
         toDoCount.innerText = store.list.filter(value => {return value.status !== 'completed'}).length;
     }
-    
 }
 const showSelected = (param) => {
     const toDoItems = toDoUlElement.children;
@@ -148,7 +157,6 @@ const showSelected = (param) => {
             toDoItems[i].classList.add('hidden');
             }
         }
-        renewalCount('completed');
     } else if (param === 'active') {
         for (let i = 0; toDoUlElement.children.length > i; i++) {
         if (toDoItems[i].className.includes('completed')) {
@@ -157,25 +165,25 @@ const showSelected = (param) => {
             toDoItems[i].classList.remove('hidden');
             }
         }
-        renewalCount('active');
-    } else {
+    } else if (param === 'all') {
         for (let i = 0; toDoItems.length > i; i++) {
             toDoItems[i].classList.remove('hidden');
         }
-        renewalCount('all');
     }
+    renewalCount(param);
 }
 
 
-window.onload = () => {
-    const list  = localStorage.getItem('list');
+const init = () => {
+    const list  = getLocalStorage('list');
     if (list === null) {return}
-    const listArr = JSON.parse(list);
-    if (listArr.length> 0) {
-        for (let i = 0; listArr.length > i; i++) {
-            store.list.push(listArr[i]);
-            toDoUlElement.appendChild(toDoListLi({id: listArr[i].id, value : listArr[i].value, status : listArr[i].status}));
+    if (list.length> 0) {
+        for (let i = 0; list.length > i; i++) {
+            store.list.push(list[i]);
+            toDoUlElement.appendChild(toDoListLi({id: list[i].id, value : list[i].value, status : list[i].status}));
         }
     }
-    renewalCount('all')
-}
+    renewalCount('all');
+};
+
+init();
