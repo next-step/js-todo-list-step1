@@ -12,6 +12,12 @@ function toggleItem(event) {
   target.classList.toggle('checked');  
 }
 
+function removeTodoItem(event) {
+  const target = event.target;
+  const list = target.parentElement.parentElement;
+  $todoList.removeChild(list);
+}
+
 function onAddTodoItem(event) {
   const todoTitle = event.target.value;
   if(event.key === ENTER_KEY && todoTitle !== "") {
@@ -28,8 +34,10 @@ function onAddTodoItem(event) {
     const label = document.createElement('label');
     label.className = "label";
     label.innerText = todoTitle;
+
     const button = document.createElement('button');
     button.className = "destroy";
+    button.addEventListener("click", removeTodoItem);
 
     div.appendChild(input);
     div.appendChild(label);
