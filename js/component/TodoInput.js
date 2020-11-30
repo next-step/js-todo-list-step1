@@ -1,5 +1,6 @@
-import { EVENT, KEY } from "../utils/constants.js";
 import $store from "../store/index.js";
+
+import { EVENT, KEY } from "../utils/constants.js";
 
 export default function TodoInput(render) {
   const $input = document.querySelector(".new-todo");
