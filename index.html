@@ -17,7 +17,8 @@
       />
       <main>
         <input class="toggle-all" type="checkbox" />
-        <ul id="todo-list" class="todo-list"></ul>
+        <ul id="todo-list" class="todo-list">
+        </ul>
         <div class="count-container">
           <span class="todo-count">총 <strong>0</strong> 개</span>
           <ul class="filters">
@@ -34,5 +35,89 @@
         </div>
       </main>
     </div>
+    <script>
+      const ENTER = 13;
+
+      function TodoApp() {
+        this.todoItems = [];
+        const todoList = new TodoList({
+            removeItem: index => {
+              const newItems = this.todoItems.filter(item => item !== this.todoItems[index]);
+              this.setState(newItems);
+            }
+        });
+
+        this.setState = data => {
+          this.todoItems = data;
+          todoList.setState(this.todoItems);
+        }
+
+        new TodoInput({
+          onAdd: contents => {
+            const newTodoItem = new TodoItem(contents);
+            this.todoItems.push(newTodoItem);
+            this.setState(this.todoItems);
+          }
+        });
+
+      }
+
+      function TodoList({ removeItem }) {
+        this.$todoList = document.querySelector('#todo-list');
+
+        this.$todoList.addEventListener('click', e => {
+          console.log(e.target.tagName);
+          if (e.target.tagName === 'BUTTON') {
+            const index = e.target.getAttribute('data-idx');
+            removeItem(parseInt(index));
+          }
+        })
+
+        this.setState = data => {
+          this.todoItems = data;
+          this.render(this.todoItems);
+        }
+
+        this.render = items => {
+          const template = items.map(todoItemTemplate);
+          this.$todoList.innerHTML = template.join("");
+        }
+      }
+
+      function todoItemTemplate(item, index) {
+        return `
+            <li>
+              <div class="view">
+                <input class="toggle" type="checkbox" ${item.checked ? 'checked': ''}>
+                <label class="label">${item.contents}</label>
+                <button class="destroy" data-idx="${index}"></button>
+              </div>
+              <input class="edit" value="${item.contents}" />
+            </li>
+        `;
+      }
+
+      function TodoItem(contents) {
+        this.contents = contents;
+        this.checked = false;
+      }
+
+      function TodoInput({ onAdd }) {
+        const $todoInput = document.querySelector("#new-todo-title");
+
+        $todoInput.addEventListener("keydown", event => {
+          if (event.keyCode == ENTER && event.target.value) {
+            this.addTodoItem(event);
+          }
+        });
+
+        this.addTodoItem = event => {
+          const $newTodoTarget = event.target;
+          onAdd($newTodoTarget.value);
+          $newTodoTarget.value = "";
+        };
+      }
+      const todoApp = new TodoApp();
+    </script>
   </body>
 </html>
