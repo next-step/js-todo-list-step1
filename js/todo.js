@@ -8,9 +8,9 @@ const $count = document.querySelector('#strong-count');
  * 투두 더미 데이터
  */
 let dummies = [
-    { id: 1, title: "투두리스트 만들기", isChecked: false},
-    { id: 2, title: "코로나 종식시키기", isChecked: false},
-    { id: 3, title: "컴퓨터 구매하기", isChecked: true},
+    { id: 1, title: "투두리스트 만들기", isDone: false},
+    { id: 2, title: "코로나 종식시키기", isDone: false},
+    { id: 3, title: "컴퓨터 구매하기", isDone: true},
 ]
 
 /**
@@ -50,8 +50,12 @@ const Todos = () => {
         setToLocalStorage(){
             // LocalStorage.set
         },
-        selectAll(){
-            return [...todos];
+        selectAll(isDone){
+            switch(isDone){
+                case true:  return todos.filter(todo => todo.isDone === true); break;
+                case false: return todos.filter(todo => todo.isDone !== true); break;
+                default : return [...todos];
+            }
         },
         deleteAll(){
             return todos = [];
@@ -76,7 +80,7 @@ const Todos = () => {
             id = parseInt(id);
             const todo = todos.find(todo => todo.id === id);
             if(todo){
-                todo.isChecked = !todo.isChecked;
+                todo.isDone = !todo.isDone;
                 return true;
             }
             return false;
@@ -124,12 +128,11 @@ const renderTodo = (todo) => {
     if(!todo){
         return;
     }
-    const {id, isChecked, title} = todo;
-    console.log("투두",todo);
+    const {id, isDone, title} = todo;
     
-    const todoInHTML = `<li id=${id} class="todoItem ${isChecked? 'completed' : ''}">
+    const todoInHTML = `<li id=${id} class="todoItem ${isDone? 'completed' : ''}">
                             <div class="view">
-                                <input class="toggle" type="checkbox" ${isChecked? 'checked': ''}/>
+                                <input class="toggle" type="checkbox" ${isDone? 'checked': ''}/>
                                 <label class="label">${title}</label>
                                 <button class="destroy"></button>
                             </div>
@@ -156,15 +159,18 @@ const init = () => {
     const initTodoList = () => {
         // todo : 로컬스토리지에서 저장된 데이터 가지고 오는 로직 
         // todosStore.getFromLocalStorage();
+
+        state.setState( { 
+            onEdit : false,
+            filterType :  'all',
+        });
+        
         const todos = todosStore.selectAll();
         todos.map(todo => renderTodo(todo));
 
         renderCount();
-
-        state.setState( { onEdit:false} );
     }
 
-    
     initTodoList();
 }
 
@@ -216,6 +222,8 @@ const editTodo = (baseElement, targetElement) => {
     const escape = () => {
         classList.contains('editing') && classList.remove('editing');
     }
+
+    inputField.select();
     
     inputField.addEventListener('keyup', e => {
         if(e.code === 'Enter'){
@@ -234,16 +242,10 @@ const editTodo = (baseElement, targetElement) => {
         }
     })
 
-    // inputField.addEventListener('pointerout', e => {
-    //     escape();
-    //     state.setState({ onEdit:false });
-    // })
-
-    // inputField.addEventListener('click', e => {
-    //     console.log(e.target);
-    //     console.log(inputField);
-    //     if(e.target !== inputField) escape();
-    // });
+    inputField.addEventListener('focusout', e => {
+        escape();
+        state.setState({ onEdit:false });
+    })
 }
 
 
@@ -258,7 +260,7 @@ $newTodoTitle.addEventListener('keyup', e => {
             const todo = {
                 id : idGenerator().generateId(),
                 title,
-                isChecked : false,
+                isDone : false,
             }
             executeWhenTrue(todosStore.insertOne(todo))(() => {renderTodo(todo); renderCount()});
         }
@@ -299,12 +301,14 @@ $list.addEventListener("dblclick", e => {
     if(className === 'label'){
         editTodo(baseElement, targetElement);
         state.setState({onEdit:true});
-        setTimeout(() => targetElement.focus(), 0);
+        // setTimeout(() => targetElement.focus(), 0);
     }
 })
 
 
-
+const filterTodo = (filterType) => {
+    
+}
 
 
 
