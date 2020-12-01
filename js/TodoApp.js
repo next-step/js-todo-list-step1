@@ -1,12 +1,14 @@
 const $todoCount = document.querySelector('.todo-count strong');
 const $todoList = document.getElementById('todo-list');
 const filterOptions = document.querySelector('.filters');
+
 const TODO_LS = "todos";
+let todos = JSON.parse(localStorage.getItem(TODO_LS));
 
 filterOptions.addEventListener('click', filterTodos);
 
 function updateCount() {
-    const totalCount = $todoList.childElementCount;
+    const totalCount = todos.length;
     $todoCount.innerHTML = totalCount;
 }
 
@@ -17,8 +19,7 @@ function filterTodos(event) {
     selected[0].classList.remove('selected');
     event.target.classList.add('selected');
     */
-    const todos = $todoList.childNodes;
-    todos.forEach(function(todoEl) {
+    $todoList.childNodes.forEach(function(todoEl) {
       if (todoEl.nodeName === "LI") {
         switch (event.target.className) {
           case "all selected":
@@ -52,18 +53,25 @@ function toggleItem(event) {
     list.classList.toggle('completed');
     event.target.removeEventListener("dblclick", showEditor);
     target.classList.toggle('checked');
-
   }  
 function removeTodoItem(event) {
     if (confirm("정말 삭제하시겠습니까?")){
       const target = event.target;
       const list = target.parentElement.parentElement;
       $todoList.removeChild(list);
+
+      // remove item from localStorage    
+      const cleanTodos = todos.filter(function(toDo) {
+        return toDo.label !== list.textContent;
+      });
+      todos = cleanTodos;
+      localStorage.setItem(TODO_LS,JSON.stringify(todos));
+
       updateCount();
     }else{
         return;
     }
-  }
+}
 function showEditor(event) {
     const div = event.target.parentElement;
     const list = div.parentElement;
