@@ -1,29 +1,70 @@
 const $list = document.querySelector('#todo-list');
 const $newTodoTitle  = document.querySelector('#new-todo-title');
-let id = 0;
+const $todoList = document.querySelector('#todo-list');
+const $countContainer = document.querySelector('#count-container');
+const $count = document.querySelector('#strong-count');
+
+/**
+ * 투두 더미 데이터
+ */
+let dummies = [
+    { id: 1, title: "투두리스트 만들기", isChecked: false},
+    { id: 2, title: "코로나 종식시키기", isChecked: false},
+    { id: 3, title: "컴퓨터 구매하기", isChecked: true},
+]
+
+/**
+ * 전역 상태 관리
+ */
+const State = () => {
+    let state = {};
+    
+    return {
+        setState(obj){
+            if(typeof obj === 'object'){
+                Object.assign(state, obj);
+                return true;
+            }
+            return false;
+        },
+        getState(){
+            return copiedState = state;
+        }
+    }
+}
+
+const state = State();
+
 
 /**
  * 투두 저장소
  */
 const Todos = () => {
-    let todos = [
-        { id: 1, title: "투두리스트 만들기", done: false},
-    ];
+    // let todos = [];
+    let todos = dummies;
+
     return {
+        getFromLocalStorage(){
+            // LocalStorage.get
+        },
+        setToLocalStorage(){
+            // LocalStorage.set
+        },
         selectAll(){
             return [...todos];
         },
         deleteAll(){
             return todos = [];
         },
-        insertOne(todo = {}){
+        insertOne(todo){
             if(todo){
                 todos.push(todo);
                 return true;
             } 
             return false;
         },
-        deleteOne(id = ''){
+        removeOne(id){
+            id = parseInt(id);
             if(id){
                 const index = todos.findIndex(todo => todo.id === id);
                 (index > -1) && todos.splice(index, 1);
@@ -31,53 +72,179 @@ const Todos = () => {
             }
             return false;
         },
-        updateOne(){
-            
+        checkOne(id){
+            id = parseInt(id);
+            const todo = todos.find(todo => todo.id === id);
+            if(todo){
+                todo.isChecked = !todo.isChecked;
+                return true;
+            }
+            return false;
         },
+        editOne(id, title){
+            id = parseInt(id);
+            const todo = todos.find(todo => todo.id === id)
+            if(todo){
+                todo.title = title;
+                return true
+            }
+            return false;
+        }, 
         selectCount(){
             return todos.length;
         }
     }
 }
 
-const todosStore = Todos(); 
 
 /**
- * 투두 추가 함수
+ * 투두 아이디 관리 generator
+ */
+const idGenerator = () => {
+    let id = dummies.length
+
+    return {
+        getCurrentId() {
+            return copiedId = id;
+        },
+        generateId() {
+            return copiedId = ++id;
+        }
+    }
+}
+
+const todosStore = Todos(); 
+
+
+/**
+ * 렌더링 함수
  * @param {*} todo 
  */
-const addTodo = (todo = {}) => {
+const renderTodo = (todo) => {
     if(!todo){
         return;
     }
-    const todoInHTML = `<li id=${todo.id} class="todoItem">
-                            <div class="view>
-                                <input class="toggle" type="checkbox" />
-                                <label class="lable">${todo.title}</label>
-                                <button class="destory"></button>
+    const {id, isChecked, title} = todo;
+    console.log("투두",todo);
+    
+    const todoInHTML = `<li id=${id} class="todoItem ${isChecked? 'completed' : ''}">
+                            <div class="view">
+                                <input class="toggle" type="checkbox" ${isChecked? 'checked': ''}/>
+                                <label class="label">${title}</label>
+                                <button class="destroy"></button>
                             </div>
-                            <input class="edit" value=${todo.title} />
+                            <input type="text" class="edit" value=${title+""} />
                         </li>`
 
     $list.insertAdjacentHTML('beforeend', todoInHTML);
+
+    const count = todosStore.selectCount();
+    count && renderCount(count);
 }
 
+/**
+ * 갯수 렌더링 함수
+ */
+const renderCount = () => {
+    $count.innerText = todosStore.selectCount();
+}
 
 /**
  * 투두 리스트 페이지 첫 진입 시 
  */
 const init = () => {
     const initTodoList = () => {
+        // todo : 로컬스토리지에서 저장된 데이터 가지고 오는 로직 
+        // todosStore.getFromLocalStorage();
         const todos = todosStore.selectAll();
-        todos.map(todo => addTodo(todo));
+        todos.map(todo => renderTodo(todo));
+
+        renderCount();
+
+        state.setState( { onEdit:false} );
     }
 
-    // todo : 로컬스토리지에서 저장된 데이터 가지고 오는 로직 
     
     initTodoList();
 }
 
 init();
+
+/**
+ * 첫번째 인자가 true 일때만 함수를 실행시켜 주는 헬퍼 함수
+ * @param {*} isTrue 
+ */
+const executeWhenTrue = isTrue => fn => {
+    if(isTrue){
+        fn();
+    }
+}
+
+/**
+ * 투두 체크
+ * @param {*} param0 
+ * @param {*} targetElement 
+ */
+const checkTodo = ({id, classList}, targetElement) => {
+    executeWhenTrue(todosStore.checkOne(id))(() => {
+        classList.toggle('completed') &&
+        !targetElement.checked ? 
+        targetElement.removeAttribute('checked') : 
+        targetElement.setAttribute('checked', '')
+    })
+}
+
+/**
+ * 투두 삭제
+ * @param {*} baseElement 
+ */
+const removeTodo = (baseElement) => {
+    executeWhenTrue(todosStore.removeOne(baseElement.id))(() => {baseElement.parentNode.removeChild(baseElement); renderCount()});
+}
+
+
+/**
+ * 투두 갱신 
+ * @param {*} baseElement 
+ * @param {*} targetElement 
+ */
+const editTodo = (baseElement, targetElement) => {
+    const {id, classList} = baseElement;
+    const inputField = baseElement.querySelector('input.edit');
+    classList.toggle('editing');    
+
+    const escape = () => {
+        classList.contains('editing') && classList.remove('editing');
+    }
+    
+    inputField.addEventListener('keyup', e => {
+        if(e.code === 'Enter'){
+            const title = e.target.value;
+            if(title){
+                executeWhenTrue(todosStore.editOne(id, title))(() => {
+                    targetElement.innerText = title;
+                    baseElement.querySelector('input.edit').value = title;
+                    escape();
+                });
+                state.setState({ onEdit:false });
+            }
+        }else if(e.code === 'Escape'){
+            escape();
+            state.setState({ onEdit:false });
+        }
+    })
+
+    // inputField.addEventListener('pointerout', e => {
+    //     escape();
+    //     state.setState({ onEdit:false });
+    // })
+
+    // inputField.addEventListener('click', e => {
+    //     console.log(e.target);
+    //     console.log(inputField);
+    //     if(e.target !== inputField) escape();
+    // });
+}
 
 
 /**
@@ -89,13 +256,50 @@ $newTodoTitle.addEventListener('keyup', e => {
         const title = e.target.value;
         if(title){
             const todo = {
-                id: id += 1,
+                id : idGenerator().generateId(),
                 title,
-                done: false,
+                isChecked : false,
             }
-            todosStore.insertOne(todo) && addTodo(todo);
+            executeWhenTrue(todosStore.insertOne(todo))(() => {renderTodo(todo); renderCount()});
         }
         $newTodoTitle.value = "";
+    }
+})
+
+
+/**
+ * 투두 클릭 이벤트 리스너
+ */
+$list.addEventListener("click", e => {
+    const targetElement = e.target;
+    const className = targetElement.classList.value;
+    const baseElement = targetElement.closest('li.todoItem');
+
+    if(className === 'toggle'){
+        checkTodo(baseElement, targetElement);
+    }else if(className === 'destroy'){
+        removeTodo(baseElement);
+    }else{
+        return;
+    }
+})
+
+
+/**
+ * 투두 더블클릭 이벤트 리스너
+ */
+$list.addEventListener("dblclick", e => {
+    if(state.getState().onEdit){
+        return;
+    }
+    const targetElement = e.target;
+    const className = targetElement.classList.value;
+    const baseElement = targetElement.closest('li.todoItem');
+
+    if(className === 'label'){
+        editTodo(baseElement, targetElement);
+        state.setState({onEdit:true});
+        setTimeout(() => targetElement.focus(), 0);
     }
 })
 
