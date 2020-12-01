@@ -1,10 +1,12 @@
 // const $todoList = document.getElementById('todo-list');
 // const $todoFilter = document.querySelector('.filters');
 
+const todos = [];
 const ENTER_KEY = "Enter";
 const ESC_KEY = "Escape";
 
 function toggleItem(event) {
+    //filterTodos(event);
     const target = event.target;
     const list = target.parentElement.parentElement;
     list.classList.toggle('completed');

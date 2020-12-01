@@ -1,4 +1,5 @@
 const $todoTitle = document.getElementById('new-todo-title');
+
 $todoTitle.addEventListener("keyup", onAddTodoItem);
 
 function onAddTodoItem(event) {
@@ -27,6 +28,14 @@ function onAddTodoItem(event) {
       div.appendChild(button);
       list.appendChild(div);
       $todoList.appendChild(list);
+      
+      // add item to localStorage
+      const todo = {
+        label: todoTitle,
+        completed: false
+      };
+      todos.push(todo);
+      localStorage.setItem(TODO_LS,JSON.stringify(todos));
 
       event.target.value = "";
       updateCount();
