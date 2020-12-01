@@ -58,7 +58,7 @@ const createTodo = (e) => {
   const {target, key} = e;
 
   let todoId = localStorage.getItem('todoId');
-  if (target.value === '') return false;
+  if (target.value.trim().length === 0) return false;
   if (key === 'Enter') {
     const todo = {
       id: todoId,
