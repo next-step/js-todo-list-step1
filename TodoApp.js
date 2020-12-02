@@ -13,7 +13,7 @@ export const TodoApp = () => {
   const newTodoTitle = document.getElementById('new-todo-title');
 
   // let state = { count: 3, selectedFilter: 'all', todoItems: dummy };
-  let state = {
+  let state = JSON.parse(localStorage.getItem('state')) || {
     todoItems: [],
     selectedFilter: 'all',
     filteredTodoItems: [],
@@ -21,6 +21,7 @@ export const TodoApp = () => {
 
   const setState = updatedStates => {
     state = updatedStates;
+    localStorage.setItem('state', JSON.stringify(state));
     render();
     console.log(state);
   };
