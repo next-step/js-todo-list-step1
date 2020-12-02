@@ -166,53 +166,64 @@ export const TodoApp = () => {
     );
   };
 
-  const handleKeydownNewTodoTitle = e => {
-    const title = e.target.value;
-    if (e.key === 'Enter' && title) {
-      addTodo(title);
-      e.target.value = '';
+  const handleKeydownNewTodoTitle = ({ target, key, target: { value } }) => {
+    if (key === 'Enter' && value) {
+      addTodo(value);
+      target.value = '';
     }
   };
 
-  const handleClickTodoList = e => {
-    const input = e.target;
-    const li = input.parentNode.parentNode;
-    if (e.target.classList.contains('toggle')) {
+  const handleClickTodoList = ({
+    target: {
+      classList,
+      tagName,
+      parentNode: { parentNode },
+    },
+  }) => {
+    const li = parentNode;
+    if (classList.contains('toggle')) {
       const id = Number(li.getAttribute('id'));
       toggleTodo(id);
       return;
     }
 
-    if (e.target.tagName === 'BUTTON') {
+    if (tagName === 'BUTTON') {
       const id = Number(li.getAttribute('id'));
       removeTodo(id);
     }
   };
 
-  const handleClickFilter = e => {
-    const filter = e.target.classList[0];
+  const handleClickFilter = ({ target: { classList } }) => {
+    const filter = classList[0];
     setFilter(filter);
   };
 
-  const handleDblClickTodoList = e => {
-    if (e.target.tagName === 'LABEL') {
-      const label = e.target;
-      const li = label.parentNode.parentNode;
+  const handleDblClickTodoList = ({
+    target: {
+      tagName,
+      parentNode: { parentNode },
+    },
+  }) => {
+    if (tagName === 'LABEL') {
+      const li = parentNode;
       const id = Number(li.getAttribute('id'));
       toggleEditTodo(id);
     }
   };
 
-  const handleKeydownTodoList = e => {
-    const li = e.target.parentNode;
+  const handleKeydownTodoList = ({
+    target: { tagName, parentNode, value },
+    key,
+  }) => {
+    const li = parentNode;
     const id = Number(li.getAttribute('id'));
-    if (e.target.tagName === 'INPUT' && e.key === 'Escape') {
+    if (tagName === 'INPUT' && key === 'Escape') {
       toggleEditTodo(id);
       return;
     }
 
-    if (e.target.tagName === 'INPUT' && e.key === 'Enter') {
-      updateTodo(id, e.target.value);
+    if (tagName === 'INPUT' && key === 'Enter') {
+      updateTodo(id, value);
     }
   };
 
