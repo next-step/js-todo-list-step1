@@ -1,18 +1,11 @@
 import { TodoList, TodoCount, TodoFilters } from './components/index.js';
 
-// const dummy = [
-//   { title: 'test1', isCompleted: true, editing: false },
-//   { title: 'test2', isCompleted: false, editing: false },
-//   { title: 'test3', isCompleted: true, editing: false },
-// ];
-
 export const TodoApp = () => {
   const todoList = document.getElementById('todo-list');
   const todoCount = document.querySelector('.todo-count');
   const filters = document.querySelector('.filters');
   const newTodoTitle = document.getElementById('new-todo-title');
 
-  // let state = { count: 3, selectedFilter: 'all', todoItems: dummy };
   let state = JSON.parse(localStorage.getItem('state')) || {
     todoItems: [],
     selectedFilter: 'all',
