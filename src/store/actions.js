@@ -1,12 +1,16 @@
 export default {
-    addItem(context, payload){
-        context.commit('addItem', payload);
+    addToDo(context, payload){
+        context.commit('addToDo', payload);
     },
-    clearItem(context, payload){
-        context.commit('clearItem', payload);
+    destroyToDo(context, payload){
+        context.commit('destroyToDo', payload);
     },
-    toggleItem(context, payload){
-        context.commit('toggleItem', payload);
+    toggleToDo(context, payload){
+        context.commit('toggleToDo', payload);
+    },
+    editToDo(context, payload){
+        context.commit('editToDo', payload);
+
     }
 
 }

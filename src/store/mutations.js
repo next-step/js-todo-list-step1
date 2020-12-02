@@ -1,14 +1,19 @@
 export default {
-    addItem(state, payload){
+    addToDo(state, payload){
         state.items.push(payload);
         return state;
     },
-    clearItem(state, payload){
-        state.items.splice(payload.index, 1); //인덱스 배열 삭제
+    destroyToDo(state, payload){
+        state.items.splice(payload-1, 1); //인덱스 배열 삭제
         return state;
     },
-    toggleItem(state, payload){
-        console.log(payload)
+    toggleToDo(state, payload){
+        payload.completed = !payload.completed; //토글
+        state.items.splice(payload.id-1, 1, payload);
+        return state;
+    },
+    editToDo(state, payload){
+        state.items.splice(payload.id-1, 1, payload);
         return state;
     }
 }

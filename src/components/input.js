@@ -11,7 +11,7 @@ const Input = class extends Component {
     
     
     render(){
-        const toDos = store.state.items
+        const toDos = store.state.items;
         this.element.addEventListener('keyup',(event) =>{
             //엔터 키에만 수행
             if(event.key !== "Enter" || this.element.value.replace(/(\s*)/g, "")==""){
@@ -22,9 +22,9 @@ const Input = class extends Component {
             const toDoObj = {
                 id: toDoId, 
                 text: text,
-                tDClass : ''
+                completed : false
             };
-            store.dispatch('addItem', toDoObj);
+            store.dispatch('addToDo', toDoObj);
             this.element.value = '';
             this.element.focus();
         });

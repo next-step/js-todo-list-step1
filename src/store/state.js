@@ -3,17 +3,17 @@ export default {
         {
             id : 1,
             text : '할 일 1번',
-            tDClass : ''
+            completed : false
         },
         {
             id : 2,
             text : '할 일 2번',
-            tDClass : 'completed'
+            completed : true
         },
         {
             id : 3,
             text : '할 일 3번',
-            tDClass : ''
+            completed : false
         }
 
     ]

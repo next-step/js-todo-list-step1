@@ -40,6 +40,8 @@ const Store = class {
         this.status = 'action';
         //action key에 맞는 함수를 store와 payload를 받아서 수행 
         this.actions[actionKey](this, payload);
+        
+        console.groupEnd();//콘솔 그룹 묶은거 풀음
 
         return true;
     }
