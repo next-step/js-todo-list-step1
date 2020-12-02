@@ -1,4 +1,4 @@
-import { TodoList, TodoCount, TodoFilters } from './src/components/index.js';
+import { TodoList, TodoCount, TodoFilters } from './components/index.js';
 
 // const dummy = [
 //   { title: 'test1', isCompleted: true, editing: false },
