@@ -13,7 +13,11 @@ export const TodoApp = () => {
   const newTodoTitle = document.getElementById('new-todo-title');
 
   // let state = { count: 3, selectedFilter: 'all', todoItems: dummy };
-  let state = { count: 0, selectedFilter: 'all', todoItems: [] };
+  let state = {
+    todoItems: [],
+    selectedFilter: 'all',
+    filteredTodoItems: [],
+  };
 
   const setState = updatedStates => {
     state = updatedStates;
@@ -24,57 +28,84 @@ export const TodoApp = () => {
   const addTodo = title => {
     setState({
       ...state,
-      count: state.count + 1,
       todoItems: [
         ...state.todoItems,
-        { title, isCompleted: false, editing: false },
+        {
+          id: new Date().getTime(),
+          title,
+          isCompleted: false,
+          editing: false,
+        },
       ],
     });
+
+    setFilteredTodoItems();
   };
 
-  const toggleTodo = key => {
-    setState({
-      ...state,
-      todoItems: state.todoItems.map((todoItem, idx) => {
-        if (idx === key) {
-          todoItem.isCompleted = !todoItem.isCompleted;
-        }
-        return todoItem;
-      }),
-    });
+  const findIndexById = id => {
+    for (const todoItem of state.todoItems) {
+      if (todoItem.id === id) {
+        return state.todoItems.indexOf(todoItem);
+      }
+    }
   };
 
-  const removeTodo = key => {
+  const toggleTodo = id => {
+    const index = findIndexById(id);
+    const targetTodo = state.todoItems[index];
     setState({
       ...state,
-      count: state.count - 1,
-      todoItems: state.todoItems.filter((todoItem, idx) => idx !== key),
+      todoItems: [
+        ...state.todoItems.slice(0, index),
+        { ...targetTodo, isCompleted: !targetTodo.isCompleted },
+        ...state.todoItems.slice(index + 1),
+      ],
     });
+
+    setFilteredTodoItems();
   };
 
-  const updateTodo = (key, value) => {
+  const removeTodo = id => {
+    const index = findIndexById(id);
     setState({
       ...state,
-      todoItems: state.todoItems.map((todoItem, idx) => {
-        if (idx === key) {
-          todoItem.title = value;
-          todoItem.editing = false;
-        }
-        return todoItem;
-      }),
+      todoItems: [
+        ...state.todoItems.slice(0, index),
+        ...state.todoItems.slice(index + 1),
+      ],
     });
+
+    setFilteredTodoItems();
   };
 
-  const toggleEditTodo = key => {
+  const updateTodo = (id, value) => {
+    const index = findIndexById(id);
+    const targetTodo = state.todoItems[index];
     setState({
       ...state,
-      todoItems: state.todoItems.map((todoItem, idx) => {
-        if (idx === key) {
-          todoItem.editing = !todoItem.editing;
-        }
-        return todoItem;
-      }),
+      todoItems: [
+        ...state.todoItems.slice(0, index),
+        { ...targetTodo, title: value, editing: !targetTodo.editing },
+        ...state.todoItems.slice(index + 1),
+      ],
     });
+
+    setFilteredTodoItems();
+  };
+
+  const toggleEditTodo = id => {
+    const index = findIndexById(id);
+    const targetTodo = state.todoItems[index];
+    setState({
+      ...state,
+      todoItems: [
+        ...state.todoItems.slice(0, index),
+        { ...targetTodo, editing: !targetTodo.editing },
+        ...state.todoItems.slice(index + 1),
+      ],
+    });
+
+    setFilteredTodoItems();
   };
 
   const setFilter = filter => {
@@ -82,19 +113,11 @@ export const TodoApp = () => {
       ...state,
       selectedFilter: filter,
     });
+
+    setFilteredTodoItems();
   };
 
-  const render = () => {
-    renderTodoList();
-    renderTodoCount();
-    renderTodoFilters();
-  };
-
-  const renderTodoList = () => {
-    while (todoList.firstChild) {
-      todoList.removeChild(todoList.firstChild);
-    }
-
+  const setFilteredTodoItems = () => {
     const filteredTodoItems = state.todoItems.filter(todoItem => {
       if (state.selectedFilter === 'all') {
         return true;
@@ -109,10 +132,22 @@ export const TodoApp = () => {
       }
     });
 
+    setState({ ...state, filteredTodoItems });
+  };
+
+  const render = () => {
+    renderTodoList();
+    renderTodoCount();
+    renderTodoFilters();
+  };
+
+  const renderTodoList = () => {
+    while (todoList.firstChild) {
+      todoList.removeChild(todoList.firstChild);
+    }
+
     todoList.append(
-      ...filteredTodoItems.map((todoItem, idx) =>
-        TodoList({ ...todoItem, idx })
-      )
+      ...state.filteredTodoItems.map(todoItem => TodoList({ ...todoItem }))
     );
   };
 
@@ -121,7 +156,7 @@ export const TodoApp = () => {
       todoCount.removeChild(todoCount.firstChild);
     }
 
-    todoCount.append(TodoCount({ count: state.count }));
+    todoCount.append(TodoCount({ count: state.filteredTodoItems.length }));
   };
 
   const renderTodoFilters = () => {
@@ -137,7 +172,7 @@ export const TodoApp = () => {
     );
   };
 
-  const handleKeyDownNewTodoTitle = e => {
+  const handleKeydownNewTodoTitle = e => {
     const title = e.target.value;
     if (e.key === 'Enter' && title) {
       addTodo(title);
@@ -149,14 +184,14 @@ export const TodoApp = () => {
     const input = e.target;
     const li = input.parentNode.parentNode;
     if (e.target.classList.contains('toggle')) {
-      const key = Number(li.getAttribute('key'));
-      toggleTodo(key);
+      const id = Number(li.getAttribute('id'));
+      toggleTodo(id);
       return;
     }
 
     if (e.target.tagName === 'BUTTON') {
-      const key = Number(li.getAttribute('key'));
-      removeTodo(key);
+      const id = Number(li.getAttribute('id'));
+      removeTodo(id);
     }
   };
 
@@ -169,25 +204,25 @@ export const TodoApp = () => {
     if (e.target.tagName === 'LABEL') {
       const label = e.target;
       const li = label.parentNode.parentNode;
-      const key = Number(li.getAttribute('key'));
-      toggleEditTodo(key);
+      const id = Number(li.getAttribute('id'));
+      toggleEditTodo(id);
     }
   };
 
   const handleKeydownTodoList = e => {
     const li = e.target.parentNode;
-    const key = Number(li.getAttribute('key'));
+    const id = Number(li.getAttribute('id'));
     if (e.target.tagName === 'INPUT' && e.key === 'Escape') {
-      toggleEditTodo(key);
+      toggleEditTodo(id);
       return;
     }
 
     if (e.target.tagName === 'INPUT' && e.key === 'Enter') {
-      updateTodo(key, e.target.value);
+      updateTodo(id, e.target.value);
     }
   };
 
-  newTodoTitle.addEventListener('keydown', handleKeyDownNewTodoTitle);
+  newTodoTitle.addEventListener('keydown', handleKeydownNewTodoTitle);
   todoList.addEventListener('click', handleClickTodoList);
   todoList.addEventListener('dblclick', handleDblClickTodoList);
   todoList.addEventListener('keydown', handleKeydownTodoList);

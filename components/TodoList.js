@@ -1,4 +1,4 @@
-export const TodoList = ({ title, isCompleted, editing, idx }) => {
+export const TodoList = ({ title, isCompleted, editing, id }) => {
   const li = document.createElement('li');
   const view = document.createElement('div');
   const toggle = document.createElement('input');
@@ -14,7 +14,7 @@ export const TodoList = ({ title, isCompleted, editing, idx }) => {
   toggle.setAttribute('type', 'checkbox');
   label.innerText = title;
   edit.setAttribute('value', title);
-  li.setAttribute('key', idx);
+  li.setAttribute('id', id);
   if (isCompleted) {
     li.classList.add('completed');
     toggle.setAttribute('checked', true);
