@@ -12,6 +12,6 @@
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
     "max-depth": ["error", 1],
-    "max-lines-per-function": ["error", 15]
+    "max-lines-per-function": ["error", 10]
   }
 }

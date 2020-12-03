@@ -1,3 +1,5 @@
+import { countTodoItem } from './countTodoItem.js';
+
 const newTodoTemplate = (text) => {
   return `<li>
             <div class="view">
@@ -19,6 +21,7 @@ const addNewTodoItem = ({ key, target }) => {
   if (key === 'Enter' && target.value.length) {
     addNewTodoTemplate(target.value);
     target.value = '';
+    countTodoItem();
   }
 };
 
