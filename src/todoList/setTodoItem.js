@@ -1,3 +1,5 @@
+import { countTodoItem } from './countTodoItem.js';
+
 const editTodoItem = (todoItem) => {
   todoItem.setAttribute('class', 'editing');
 };
@@ -20,6 +22,8 @@ const triggerClickEvent = ({ target }) => {
   if (target.className === 'destroy') {
     removeTodoItem(target.closest('li'));
   }
+  countTodoItem();
+};
 
 const triggerDobuleClickEvent = ({ target }) => {
   if (target.className === 'label') {
