@@ -8,7 +8,7 @@ const newTodoTemplate = (text) => {
               <label class="label">${text}</label>
               <button class="destroy"></button>
             </div>
-            <input class="edit" value="새로운 타이틀" />
+            <input class="edit" value="${text}" />
           </li>`;
 };
 

@@ -4,7 +4,7 @@ const changCompletedTodoItem = (todoItem) => {
   if (todoItem.className === '') {
     return todoItem.setAttribute('class', 'completed');
   }
-  todoItem.removeAttribute('class');
+  return todoItem.removeAttribute('class');
 };
 
 const removeTodoItem = (todoItem) => {
