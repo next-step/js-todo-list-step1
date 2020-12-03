@@ -5,12 +5,16 @@ const changCompletedTodoItem = (todoItem) => {
   todoItem.removeAttribute('class');
 };
 
+const removeTodoItem = (todoItem) => {
+  todoItem.remove();
 };
 
 const triggerClickEvent = ({ target }) => {
   if (target.className === 'toggle') {
     changCompletedTodoItem(target.closest('li'));
   }
+  if (target.className === 'destroy') {
+    removeTodoItem(target.closest('li'));
   }
 };
 
