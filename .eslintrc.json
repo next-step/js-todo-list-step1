@@ -11,7 +11,6 @@
     "import/extensions": "off",
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
-    "commonjs": "true",
     "max-depth": ["error", 1],
     "max-lines-per-function": ["error", 10]
   }
