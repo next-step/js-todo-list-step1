@@ -1,9 +1,7 @@
-import { addTodoItem } from './todoList/addTodoItem.js';
-import { setTodoItem } from './todoList/setTodoItem.js';
+import { setTodoList } from './todoList/setTodoList.js';
 
 const todoApp = () => {
-  addTodoItem();
-  setTodoItem();
+  setTodoList();
 };
 
 todoApp();
