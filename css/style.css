@@ -137,8 +137,16 @@ main {
 
 .todo-list li {
     position: relative;
-    font-size: 24px;
+    font-size: 16px;
     border-bottom: 1px solid #ededed;
+    padding: 6px;
+}
+
+.todo-list li .delete-btn {
+    cursor: pointer;
+    color: dodgerblue;
+    font-weight: bold;
+    margin-left: 15px;
 }
 
 .todo-list li:last-child {
