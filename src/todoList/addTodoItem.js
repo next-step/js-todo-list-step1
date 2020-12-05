@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { countTodoItem } from './countTodoItem.js';
 
 const newTodoTemplate = (text) => {
