@@ -3,7 +3,7 @@ import { STORAGE_NAME } from "../utils/constants.js";
 const storage = (() => {
   const getStorage = () => {
     const storedItems = localStorage.getItem(STORAGE_NAME);
-    return JSON.parse(storedItems);
+    return storedItems ? JSON.parse(storedItems) : [];
   };
 
   const setStorage = (todos) => {
