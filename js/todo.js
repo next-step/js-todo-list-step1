@@ -1,8 +1,6 @@
 const $list = document.querySelector('#todo-list');
 const $newTodoTitle  = document.querySelector('#new-todo-title');
-const $todoList = document.querySelector('#todo-list');
-const $countContainer = document.querySelector('#count-container');
-const $count = document.querySelector('#strong-count');
+// const $count = document.querySelector('#strong-count');
 
 /**
  * 투두 더미 데이터
@@ -10,8 +8,135 @@ const $count = document.querySelector('#strong-count');
 let dummies = [
     { id: 1, title: "투두리스트 만들기", isDone: false},
     { id: 2, title: "코로나 종식시키기", isDone: false},
-    { id: 3, title: "컴퓨터 구매하기", isDone: true},
+    { id: 3, title: "여자친구 선물사기", isDone: true},
 ]
+
+
+
+
+/**
+ *  투두 리스트 컨테이너
+ * @param {*} data 
+ * @param {*} elementId 
+ */
+const TodoList = (data, elementId) => {
+    let todos = data;
+
+    const addTodo = ({target}) => {
+
+    }
+
+    return {
+        render() {
+            document.querySelector('#todo-list').innerHTML =
+                todos.map(todo => Todo(todo)).join('\n'); 
+            document.querySelector('.todo-count>strong').innerHTML = 
+                todos.length;
+        },
+        setState(data) {
+            todos = [...todos,...data];
+            this.render();
+        }
+    }
+}
+
+/**
+ * 투두 컴포넌트
+ * @param {*} param0 
+ */
+const Todo = ({id, title, isDone}) => {
+
+    return todoInHTML = 
+        `<li id=${id} class="todoItem ${isDone? 'completed' : ''}">
+            <div class="view">
+                <input class="toggle" type="checkbox" ${isDone? 'checked': ''}/>
+                <label class="label">${title}</label>
+                <button class="destroy"></button>
+            </div>
+            <input type="text" class="edit" value=${title+""} />
+        </li>`;
+}
+
+/**
+ * 이벤트 추가 함수
+ * @param {*} elementId 
+ * @param {*} action 
+ * @param {*} fn 
+ */
+const addEvent = (elementId, action, fn) => {
+    document.querySelector(elementId).addEventListener(action, fn);
+}
+
+
+const init = () => {
+    // TODO 로컬호스트에서 저장된 값 불러오기
+    const $newTodoTitle  = document.querySelector('#new-todo-title');
+
+    const todoList = TodoList(dummies);
+    todoList.render();
+
+    addEvent('#new-todo-title', 'keyup', (e) => {
+        if(e.code === 'Enter'){
+            const title = e.target.value.trim();
+            if(title){
+                const todo = {
+                    id : idGenerator().generateId(),
+                    title,
+                    isDone : false,
+                }
+                todoList.setState([
+                    todo
+                ])
+            }
+            $newTodoTitle.value = "";
+        }
+    })
+}
+
+init();
+
+/**
+ * 투두 추가 이벤트 리스너
+ */
+$newTodoTitle.addEventListener('keyup', e => {
+    // keyCode 가 deprecated?
+    if(e.code === 'Enter'){
+        const title = e.target.value;
+        if(title){
+            const todo = {
+                id : idGenerator().generateId(),
+                title,
+                isDone : false,
+            }
+            executeWhenTrue(todosStore.insertOne(todo))(() => {renderTodo(todo); renderCount()});
+        }
+        $newTodoTitle.value = "";
+    }
+})
+
+// /**
+//  * 렌더링 투두 함수
+//  * @param {*} todo 
+//  */
+// const renderTodo = ({id, isDone, title}) => {
+//     const todoInHTML = `<li id=${id} class="todoItem ${isDone? 'completed' : ''}">
+//                             <div class="view">
+//                                 <input class="toggle" type="checkbox" ${isDone? 'checked': ''}/>
+//                                 <label class="label">${title}</label>
+//                                 <button class="destroy"></button>
+//                             </div>
+//                             <input type="text" class="edit" value=${title+""} />
+//                         </li>`
+
+//     $list.insertAdjacentHTML('beforeend', todoInHTML);
+
+//     const 
+
+//     const count = todosStore.selectCount();
+//     count && renderCount(count);
+// }
+
+
 
 /**
  * 전역 상태 관리
@@ -120,30 +245,7 @@ const idGenerator = () => {
 const todosStore = Todos(); 
 
 
-/**
- * 렌더링 함수
- * @param {*} todo 
- */
-const renderTodo = (todo) => {
-    if(!todo){
-        return;
-    }
-    const {id, isDone, title} = todo;
-    
-    const todoInHTML = `<li id=${id} class="todoItem ${isDone? 'completed' : ''}">
-                            <div class="view">
-                                <input class="toggle" type="checkbox" ${isDone? 'checked': ''}/>
-                                <label class="label">${title}</label>
-                                <button class="destroy"></button>
-                            </div>
-                            <input type="text" class="edit" value=${title+""} />
-                        </li>`
 
-    $list.insertAdjacentHTML('beforeend', todoInHTML);
-
-    const count = todosStore.selectCount();
-    count && renderCount(count);
-}
 
 /**
  * 갯수 렌더링 함수
@@ -155,26 +257,26 @@ const renderCount = () => {
 /**
  * 투두 리스트 페이지 첫 진입 시 
  */
-const init = () => {
-    const initTodoList = () => {
-        // todo : 로컬스토리지에서 저장된 데이터 가지고 오는 로직 
-        // todosStore.getFromLocalStorage();
+// const init = () => {
+//     const initTodoList = () => {
+//         // todo : 로컬스토리지에서 저장된 데이터 가지고 오는 로직 
+//         // todosStore.getFromLocalStorage();
 
-        state.setState( { 
-            onEdit : false,
-            filterType :  'all',
-        });
+//         state.setState( { 
+//             onEdit : false,
+//             filterType :  'all',
+//         });
         
-        const todos = todosStore.selectAll();
-        todos.map(todo => renderTodo(todo));
+//         const todos = todosStore.selectAll();
+//         todos.map(todo => renderTodo(todo));
 
-        renderCount();
-    }
+//         renderCount();
+//     }
 
-    initTodoList();
-}
+//     initTodoList();
+// }
 
-init();
+
 
 /**
  * 첫번째 인자가 true 일때만 함수를 실행시켜 주는 헬퍼 함수
@@ -273,9 +375,11 @@ $newTodoTitle.addEventListener('keyup', e => {
  * 투두 클릭 이벤트 리스너
  */
 $list.addEventListener("click", e => {
+    e.preventDefault();
     const targetElement = e.target;
     const className = targetElement.classList.value;
     const baseElement = targetElement.closest('li.todoItem');
+    console.log("click")
 
     if(className === 'toggle'){
         checkTodo(baseElement, targetElement);
@@ -291,6 +395,7 @@ $list.addEventListener("click", e => {
  * 투두 더블클릭 이벤트 리스너
  */
 $list.addEventListener("dblclick", e => {
+    console.log("dblclick")
     if(state.getState().onEdit){
         return;
     }
