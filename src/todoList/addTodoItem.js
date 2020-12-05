@@ -18,15 +18,10 @@ const addNewTodoTemplate = (text) => {
   $todoList.insertAdjacentHTML('beforeend', newTodoTemplate(text));
 };
 
-const addNewTodoItem = ({ key, target }) => {
+export const addTodoItem = ({ key, target }) => {
   if (key === 'Enter' && target.value.length) {
     addNewTodoTemplate(target.value);
     target.value = '';
     countTodoItem();
   }
-};
-
-export const addTodoItem = () => {
-  const $newTodo = document.querySelector('.new-todo');
-  $newTodo.addEventListener('keyup', addNewTodoItem);
 };

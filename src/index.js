@@ -3,12 +3,12 @@ import { triggerDoubleClickEvent } from './event/triggerDoubleClickEvent.js';
 import { addTodoItem } from './todoList/addTodoItem.js';
 
 const todoApp = () => {
+  const $todoApp = document.querySelector('.todoapp');
+  const $newTodo = document.querySelector('.new-todo');
   const $todoList = document.querySelector('.todo-list');
-  const $filters = document.querySelector('.filters');
 
-  addTodoItem();
-  $filters.addEventListener('click', triggerClickEvent);
-  $todoList.addEventListener('click', triggerClickEvent);
+  $newTodo.addEventListener('keyup', addTodoItem);
+  $todoApp.addEventListener('click', triggerClickEvent);
   $todoList.addEventListener('dblclick', triggerDoubleClickEvent);
 };
 

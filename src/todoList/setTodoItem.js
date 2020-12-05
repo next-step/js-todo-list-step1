@@ -12,5 +12,3 @@ export const changCompletedTodoItem = (todoItem) => {
 export const removeTodoItem = (todoItem) => {
   return todoItem.remove();
 };
-
-//, input 태그에 checked 속성 추가
