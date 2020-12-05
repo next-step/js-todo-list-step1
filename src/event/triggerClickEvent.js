@@ -1,15 +1,9 @@
 import { countTodoItem } from '../todoList/countTodoItem.js';
-
-const changCompletedTodoItem = (todoItem) => {
-  if (todoItem.className === '') {
-    return todoItem.setAttribute('class', 'completed');
-  }
-  return todoItem.removeAttribute('class');
-};
-
-const removeTodoItem = (todoItem) => {
-  return todoItem.remove();
-};
+import {
+  changCompletedTodoItem,
+  removeTodoItem,
+} from '../todoList/setTodoItem.js';
+import { hashChangeEvent } from './hashChangeEvent.js';
 
 export const triggerClickEvent = ({ target }) => {
   if (target.className === 'toggle') {
@@ -17,6 +11,9 @@ export const triggerClickEvent = ({ target }) => {
   }
   if (target.className === 'destroy') {
     removeTodoItem(target.closest('li'));
+  }
+  if (target.tagName === 'A') {
+    hashChangeEvent(target);
   }
   countTodoItem();
 };
