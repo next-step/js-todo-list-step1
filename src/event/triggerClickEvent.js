@@ -3,7 +3,7 @@ import {
   removeTodoItem,
   toggleCompletedTodoItem,
 } from '../todoList/setTodoItem.js';
-import { hashChangeEvent } from './hashChangeEvent.js';
+import { setViewTodo } from '../todoList/setViewTodo.js';
 
 export const triggerClickEvent = ({ target }) => {
   if (target.className === 'toggle') {
@@ -13,7 +13,7 @@ export const triggerClickEvent = ({ target }) => {
     removeTodoItem(target.closest('li'));
   }
   if (target.tagName === 'A') {
-    hashChangeEvent(target);
+    setViewTodo(target);
   }
   countTodoItem();
 };
