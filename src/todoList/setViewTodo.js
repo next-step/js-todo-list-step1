@@ -9,7 +9,7 @@ const viewAll = () => {
 const viewActive = () => {
   document.querySelectorAll('.todo-list > li').forEach((li) => {
     if (li.className === '') {
-      li.style.display = 'inline';
+      li.style.display = 'block';
     }
   });
 };
@@ -17,7 +17,7 @@ const viewActive = () => {
 const viewCompleted = () => {
   document.querySelectorAll('.todo-list > li').forEach((li) => {
     if (li.className === 'completed') {
-      li.style.display = 'inline';
+      li.style.display = 'block';
     }
   });
 };
