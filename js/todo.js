@@ -1,51 +1,107 @@
-const $list = document.querySelector('#todo-list');
-const $newTodoTitle  = document.querySelector('#new-todo-title');
-// const $count = document.querySelector('#strong-count');
-
-/**
- * 투두 더미 데이터
- */
-let dummies = [
-    { id: 1, title: "투두리스트 만들기", isDone: false},
-    { id: 2, title: "코로나 종식시키기", isDone: false},
-    { id: 3, title: "여자친구 선물사기", isDone: true},
-]
-
-
-
 
 /**
  *  투두 리스트 컨테이너
  * @param {*} data 
  * @param {*} elementId 
  */
-const TodoList = (data, elementId) => {
+const TodoList = (data) => {
     let todos = data;
+    let filter = 'all';
 
-    const addTodo = ({target}) => {
+    const setLocalStorage = () => {
+        localStorage.setItem('todoList', JSON.stringify(todos));
+    };
 
+    const render = () => {
+
+        let filteredTodo = [...todos];
+        if ( filter === 'active' ) {
+            filteredTodo = todos.filter(todo => !todo.isDone);
+        }else if (filter === 'completed') {
+            filteredTodo = todos.filter(todo => todo.isDone)
+        }
+
+        document.querySelector('#todo-list').innerHTML =
+        filteredTodo.map(todo => Todo(todo)).join('\n'); 
+        document.querySelector('.todo-count>strong').innerHTML = 
+        filteredTodo.length;
     }
 
+
+    /* todo 수정 */
+    addEvent('#todo-list', 'dblclick', e => {
+        const { target } = e;
+        if(target.classList.contains('label') && target.nodeName === "LABEL"){
+            const $li = target.closest("li");
+            if(!$li.classList.contains('completed')){
+                $li.classList.add("editing");
+                const $input = $li.querySelector('input.edit');
+                const escape = () => {
+                    $li.classList.contains('editing') && $li.classList.remove('editing');
+                }
+                $input.select();
+                $input.addEventListener('focusout', () => escape());
+                $input.addEventListener('keyup', e => {
+                    if(e.code === 'Enter'){
+                        todos.find(todo => todo.id == $li.id).title = e.target.value || "";
+                        target.value = title;
+                        escape();
+                    }else if(e.code === 'Escape'){
+                        escape();
+                    }
+                })
+            }
+        }
+    })
+
+    /* todo 체크 | todo 삭제 */
+    addEvent('#todo-list', 'click', e => {
+        const { target } = e;
+        if(target.classList.contains('toggle') && target.nodeName === "INPUT"){
+            const $li = target.closest("li");
+            if(target.checked){
+                $li.classList.add('completed');
+                todos.find(todo => todo.id == $li.id).isDone = true;
+            }else{
+                $li.classList.remove('completed');
+                todos.find(todo => todo.id == $li.id).isDone = false;                
+            }   
+            setLocalStorage();
+        }else if(target.classList.contains('destroy') && target.nodeName === "BUTTON"){
+            const $li = target.closest("li");
+            const index = todos.findIndex(todo => todo.id == $li.id);
+            (index > -1) && todos.splice(index, 1);
+            render();
+            setLocalStorage();
+        }
+    });
+
     return {
-        render() {
-            document.querySelector('#todo-list').innerHTML =
-                todos.map(todo => Todo(todo)).join('\n'); 
-            document.querySelector('.todo-count>strong').innerHTML = 
-                todos.length;
-        },
-        setState(data) {
+        render,
+        setLocalStorage,
+        addTodo(data) {
             todos = [...todos,...data];
             this.render();
+            this.setLocalStorage();
+        },
+        setFilter(param){
+            filter = param;
+        },
+        getFilter(){
+            return filter;
+        },
+        getTodosLength(){
+            return todos.length;
         }
     }
 }
+
 
 /**
  * 투두 컴포넌트
  * @param {*} param0 
  */
 const Todo = ({id, title, isDone}) => {
-
     return todoInHTML = 
         `<li id=${id} class="todoItem ${isDone? 'completed' : ''}">
             <div class="view">
@@ -53,9 +109,10 @@ const Todo = ({id, title, isDone}) => {
                 <label class="label">${title}</label>
                 <button class="destroy"></button>
             </div>
-            <input type="text" class="edit" value=${title+""} />
+            <input class="edit" value=${title} />
         </li>`;
 }
+
 
 /**
  * 이벤트 추가 함수
@@ -68,352 +125,65 @@ const addEvent = (elementId, action, fn) => {
 }
 
 
+/**
+ * 시작 함수
+ */
 const init = () => {
-    // TODO 로컬호스트에서 저장된 값 불러오기
-    const $newTodoTitle  = document.querySelector('#new-todo-title');
+    const savedTodoList = JSON.parse(localStorage.getItem('todoList')) || [];
 
-    const todoList = TodoList(dummies);
+    const todoList = TodoList(savedTodoList);
     todoList.render();
 
-    addEvent('#new-todo-title', 'keyup', (e) => {
+    const idGenerator = () => {
+        let id = todoList.getTodosLength();
+        return { 
+            generateId() {
+                return ++id;
+            }
+        }
+    } 
+
+    const idGen = idGenerator();
+
+    /* todo 등록 */
+    addEvent('#new-todo-title', 'keyup', e => {
         if(e.code === 'Enter'){
             const title = e.target.value.trim();
             if(title){
                 const todo = {
-                    id : idGenerator().generateId(),
+                    id : idGen.generateId(),
                     title,
                     isDone : false,
                 }
-                todoList.setState([
-                    todo
+                todoList.addTodo([
+                    todo,
                 ])
             }
-            $newTodoTitle.value = "";
+            e.target.value = "";
+        }
+    });
+
+    /* 투두 리스트 필터 */
+    addEvent('.filters', 'click', e => {
+        const { target } = e;
+        if(target.nodeName === 'A'){
+            const className = target.classList[0];
+            const filter = todoList.getFilter()
+            if(className === filter){
+                return false;
+            }else{
+                target.closest("ul").querySelector('.' + filter).classList.remove('selected');
+                target.classList.add('selected');
+                todoList.setFilter(className);
+                todoList.render();
+            }
         }
     })
 }
 
 init();
 
-/**
- * 투두 추가 이벤트 리스너
- */
-$newTodoTitle.addEventListener('keyup', e => {
-    // keyCode 가 deprecated?
-    if(e.code === 'Enter'){
-        const title = e.target.value;
-        if(title){
-            const todo = {
-                id : idGenerator().generateId(),
-                title,
-                isDone : false,
-            }
-            executeWhenTrue(todosStore.insertOne(todo))(() => {renderTodo(todo); renderCount()});
-        }
-        $newTodoTitle.value = "";
-    }
-})
 
-// /**
-//  * 렌더링 투두 함수
-//  * @param {*} todo 
-//  */
-// const renderTodo = ({id, isDone, title}) => {
-//     const todoInHTML = `<li id=${id} class="todoItem ${isDone? 'completed' : ''}">
-//                             <div class="view">
-//                                 <input class="toggle" type="checkbox" ${isDone? 'checked': ''}/>
-//                                 <label class="label">${title}</label>
-//                                 <button class="destroy"></button>
-//                             </div>
-//                             <input type="text" class="edit" value=${title+""} />
-//                         </li>`
-
-//     $list.insertAdjacentHTML('beforeend', todoInHTML);
-
-//     const 
-
-//     const count = todosStore.selectCount();
-//     count && renderCount(count);
-// }
-
-
-
-/**
- * 전역 상태 관리
- */
-const State = () => {
-    let state = {};
-    
-    return {
-        setState(obj){
-            if(typeof obj === 'object'){
-                Object.assign(state, obj);
-                return true;
-            }
-            return false;
-        },
-        getState(){
-            return copiedState = state;
-        }
-    }
-}
-
-const state = State();
-
-
-/**
- * 투두 저장소
- */
-const Todos = () => {
-    // let todos = [];
-    let todos = dummies;
-
-    return {
-        getFromLocalStorage(){
-            // LocalStorage.get
-        },
-        setToLocalStorage(){
-            // LocalStorage.set
-        },
-        selectAll(isDone){
-            switch(isDone){
-                case true:  return todos.filter(todo => todo.isDone === true); break;
-                case false: return todos.filter(todo => todo.isDone !== true); break;
-                default : return [...todos];
-            }
-        },
-        deleteAll(){
-            return todos = [];
-        },
-        insertOne(todo){
-            if(todo){
-                todos.push(todo);
-                return true;
-            } 
-            return false;
-        },
-        removeOne(id){
-            id = parseInt(id);
-            if(id){
-                const index = todos.findIndex(todo => todo.id === id);
-                (index > -1) && todos.splice(index, 1);
-                return true;
-            }
-            return false;
-        },
-        checkOne(id){
-            id = parseInt(id);
-            const todo = todos.find(todo => todo.id === id);
-            if(todo){
-                todo.isDone = !todo.isDone;
-                return true;
-            }
-            return false;
-        },
-        editOne(id, title){
-            id = parseInt(id);
-            const todo = todos.find(todo => todo.id === id)
-            if(todo){
-                todo.title = title;
-                return true
-            }
-            return false;
-        }, 
-        selectCount(){
-            return todos.length;
-        }
-    }
-}
-
-
-/**
- * 투두 아이디 관리 generator
- */
-const idGenerator = () => {
-    let id = dummies.length
-
-    return {
-        getCurrentId() {
-            return copiedId = id;
-        },
-        generateId() {
-            return copiedId = ++id;
-        }
-    }
-}
-
-const todosStore = Todos(); 
-
-
-
-
-/**
- * 갯수 렌더링 함수
- */
-const renderCount = () => {
-    $count.innerText = todosStore.selectCount();
-}
-
-/**
- * 투두 리스트 페이지 첫 진입 시 
- */
-// const init = () => {
-//     const initTodoList = () => {
-//         // todo : 로컬스토리지에서 저장된 데이터 가지고 오는 로직 
-//         // todosStore.getFromLocalStorage();
-
-//         state.setState( { 
-//             onEdit : false,
-//             filterType :  'all',
-//         });
-        
-//         const todos = todosStore.selectAll();
-//         todos.map(todo => renderTodo(todo));
-
-//         renderCount();
-//     }
-
-//     initTodoList();
-// }
-
-
-
-/**
- * 첫번째 인자가 true 일때만 함수를 실행시켜 주는 헬퍼 함수
- * @param {*} isTrue 
- */
-const executeWhenTrue = isTrue => fn => {
-    if(isTrue){
-        fn();
-    }
-}
-
-/**
- * 투두 체크
- * @param {*} param0 
- * @param {*} targetElement 
- */
-const checkTodo = ({id, classList}, targetElement) => {
-    executeWhenTrue(todosStore.checkOne(id))(() => {
-        classList.toggle('completed') &&
-        !targetElement.checked ? 
-        targetElement.removeAttribute('checked') : 
-        targetElement.setAttribute('checked', '')
-    })
-}
-
-/**
- * 투두 삭제
- * @param {*} baseElement 
- */
-const removeTodo = (baseElement) => {
-    executeWhenTrue(todosStore.removeOne(baseElement.id))(() => {baseElement.parentNode.removeChild(baseElement); renderCount()});
-}
-
-
-/**
- * 투두 갱신 
- * @param {*} baseElement 
- * @param {*} targetElement 
- */
-const editTodo = (baseElement, targetElement) => {
-    const {id, classList} = baseElement;
-    const inputField = baseElement.querySelector('input.edit');
-    classList.toggle('editing');    
-
-    const escape = () => {
-        classList.contains('editing') && classList.remove('editing');
-    }
-
-    inputField.select();
-    
-    inputField.addEventListener('keyup', e => {
-        if(e.code === 'Enter'){
-            const title = e.target.value;
-            if(title){
-                executeWhenTrue(todosStore.editOne(id, title))(() => {
-                    targetElement.innerText = title;
-                    baseElement.querySelector('input.edit').value = title;
-                    escape();
-                });
-                state.setState({ onEdit:false });
-            }
-        }else if(e.code === 'Escape'){
-            escape();
-            state.setState({ onEdit:false });
-        }
-    })
-
-    inputField.addEventListener('focusout', e => {
-        escape();
-        state.setState({ onEdit:false });
-    })
-}
-
-
-/**
- * 투두 추가 이벤트 리스너
- */
-$newTodoTitle.addEventListener('keyup', e => {
-    // keyCode 가 deprecated?
-    if(e.code === 'Enter'){
-        const title = e.target.value;
-        if(title){
-            const todo = {
-                id : idGenerator().generateId(),
-                title,
-                isDone : false,
-            }
-            executeWhenTrue(todosStore.insertOne(todo))(() => {renderTodo(todo); renderCount()});
-        }
-        $newTodoTitle.value = "";
-    }
-})
-
-
-/**
- * 투두 클릭 이벤트 리스너
- */
-$list.addEventListener("click", e => {
-    e.preventDefault();
-    const targetElement = e.target;
-    const className = targetElement.classList.value;
-    const baseElement = targetElement.closest('li.todoItem');
-    console.log("click")
-
-    if(className === 'toggle'){
-        checkTodo(baseElement, targetElement);
-    }else if(className === 'destroy'){
-        removeTodo(baseElement);
-    }else{
-        return;
-    }
-})
-
-
-/**
- * 투두 더블클릭 이벤트 리스너
- */
-$list.addEventListener("dblclick", e => {
-    console.log("dblclick")
-    if(state.getState().onEdit){
-        return;
-    }
-    const targetElement = e.target;
-    const className = targetElement.classList.value;
-    const baseElement = targetElement.closest('li.todoItem');
-
-    if(className === 'label'){
-        editTodo(baseElement, targetElement);
-        state.setState({onEdit:true});
-        // setTimeout(() => targetElement.focus(), 0);
-    }
-})
-
-
-const filterTodo = (filterType) => {
-    
-}
 
 
 
