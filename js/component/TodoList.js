@@ -6,15 +6,13 @@ export default class  TodoList {
     $todoCount = null;
     $todoEdit = null;
     $todoFilters = null;
-    $todoItemsChecks = null;
 
-    constructor({data, todoList, todoItems, todoItemsChecks}) {
+    constructor({data, todoList, todoItems}) {
         this.data = data;
         this.$todoList = todoList;
         this.$todoItems = todoItems;
         this.$todoEdit = document.querySelectorAll(".edit");
         this.$todoCount = document.querySelector(".todo-count strong");
-        this.$todoItemsChecks = todoItemsChecks;
         this.$todoFilters = document.querySelectorAll(".filters a");
         this.$todoFilters.forEach(data => {
             data.addEventListener("click", event => this.onFilterClick(event));
@@ -56,7 +54,7 @@ export default class  TodoList {
         let deleteIndex = -1;
         let deleteId = event.target.offsetParent.getAttribute('id');
         let count = 0;
-
+        
         for(let i=0;this.showData.length;i++) {
             if(this.showData[i].code == deleteId) {
                 this.showData.splice(i, 1);
@@ -82,7 +80,7 @@ export default class  TodoList {
     }
 
     onKeyup(event) {
-        if(event.keyCode === 13) { // enter
+        if(event.key === "Enter") {
             let index = this.data.findIndex(data => {
                 return data.code === event.target.offsetParent.getAttribute('id');
             });
@@ -91,7 +89,7 @@ export default class  TodoList {
             event.target.offsetParent.setAttribute("class", "");    
             this.setAllData();
             localStorage.setItem("todoData", JSON.stringify(this.data));
-        } else if(event.keyCode === 27) { // esc
+        } else if(event.key === "Escape") {
             let index = this.data.findIndex(data => {
                 return data.code === event.target.offsetParent.getAttribute('id');
             });
@@ -220,7 +218,7 @@ export default class  TodoList {
                 <input class="edit" value="${event.title}"/>
             </li>`;
         this.data.push(event);
-        this.showData.push(event);
+        
         localStorage.setItem("todoData", JSON.stringify(this.data));
         this.setRendor(appendHtml);
         this.setCount(this.data.length);

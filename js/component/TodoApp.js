@@ -7,8 +7,6 @@ export default class TodoApp {
   $todoList = null;
   $todoItems = null;
   $todoCount = null;
-  $todoItemsChecks = null;
-
   todoInput = null;
   todoList = null;
   todoItems = [];
@@ -18,7 +16,6 @@ export default class TodoApp {
     this.$todoList = document.querySelector("#todo-list");
     this.$todoItems = document.querySelectorAll("#todo-list li");
     this.$todoCount = document.querySelector(".todo-count");
-    this.$todoItemsChecks = document.querySelectorAll("#todo-list .toggle");
     
     if(localStorage.getItem("todoData") !== null && localStorage.getItem("todoData") !== undefined) {
       this.todoItems = JSON.parse(localStorage.getItem("todoData"));
@@ -32,6 +29,7 @@ export default class TodoApp {
           isComplete: false
         }
 
+        console.log(data);
         this.onItemAdd(data);
         localStorage.setItem("todoData", JSON.stringify(this.todoItems));
       })
@@ -41,7 +39,6 @@ export default class TodoApp {
       data: this.todoItems,
       todoList: this.$todoList,
       todoItems: this.$todoItems,
-      todoItemsChecks: this.$todoItemsChecks,
     })   
   }
 
@@ -52,6 +49,7 @@ export default class TodoApp {
   getUUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+
       return v.toString(16);
     });
   }
