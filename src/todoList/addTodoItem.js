@@ -1,5 +1,3 @@
-import { countTodoItem } from './countTodoItem.js';
-
 const newTodoTemplate = (text) => {
   return `<li>
             <div class="view">
@@ -11,16 +9,8 @@ const newTodoTemplate = (text) => {
           </li>`;
 };
 
-const addNewTodoTemplate = (text) => {
+export const addTodoItem = (text) => {
   const $todoList = document.querySelector('.todo-list');
 
   $todoList.insertAdjacentHTML('beforeend', newTodoTemplate(text));
-};
-
-export const addTodoItem = ({ key, target }) => {
-  if (key === 'Enter' && target.value.length) {
-    addNewTodoTemplate(target.value);
-    target.value = '';
-    countTodoItem();
-  }
 };
