@@ -53,12 +53,11 @@ export default class  TodoList {
     }
 
     onDelete(event) {
-        var deleteIndex = -1;
-        var deleteId = event.target.offsetParent.getAttribute('id');
-        var count = 0;
+        let deleteIndex = -1;
+        let deleteId = event.target.offsetParent.getAttribute('id');
+        let count = 0;
 
-        console.log(this.showData);
-        for(var i=0;this.showData.length;i++) {
+        for(let i=0;this.showData.length;i++) {
             if(this.showData[i].code == deleteId) {
                 this.showData.splice(i, 1);
                 event.target.offsetParent.remove();
@@ -66,7 +65,7 @@ export default class  TodoList {
             }
         }
 
-        for(var i=0;i<this.data.length;i++) {
+        for(let i=0;i<this.data.length;i++) {
             if(this.data[i].code === deleteId) {
                 
                 this.data.splice(i, 1);
@@ -83,18 +82,18 @@ export default class  TodoList {
     }
 
     onKeyup(event) {
-        if(event.keyCode == 13) { // enter
+        if(event.keyCode === 13) { // enter
             let index = this.data.findIndex(data => {
-                return data.code == event.target.offsetParent.getAttribute('id');
+                return data.code === event.target.offsetParent.getAttribute('id');
             });
 
             this.data[index].title = event.target.value;
             event.target.offsetParent.setAttribute("class", "");    
             this.setAllData();
             localStorage.setItem("todoData", JSON.stringify(this.data));
-        } else if(event.keyCode == 27) { // esc
+        } else if(event.keyCode === 27) { // esc
             let index = this.data.findIndex(data => {
-                return data.code == event.target.offsetParent.getAttribute('id');
+                return data.code === event.target.offsetParent.getAttribute('id');
             });
 
             event.target.offsetParent.setAttribute("class", "");    
@@ -104,8 +103,8 @@ export default class  TodoList {
     }
 
     onFilterClick(event) {
-        var index = 0;
-        var targetClass = event.target.getAttribute("class");
+        let index = 0;
+        let targetClass = event.target.getAttribute("class");
         this.$todoFilters.forEach(data => {
             index = data.getAttribute("class").indexOf("selected")
         
@@ -126,7 +125,7 @@ export default class  TodoList {
 
 
     setAllData() {
-        var addItemHtml = ""
+        let addItemHtml = ""
         this.showData = this.data;
         this.$todoList.innerHTML = "";
         this.data.forEach(data => {
@@ -146,8 +145,8 @@ export default class  TodoList {
     }
 
     setFilterData(complete) {
-        var addItemHtml = ""
-        var count = 0;
+        let addItemHtml = ""
+        let count = 0;
         this.showData = [];
         this.$todoList.innerHTML = "";
 
@@ -211,7 +210,7 @@ export default class  TodoList {
     }
 
     onAdd(event) {
-        var appendHtml = 
+        let appendHtml = 
             `<li id="${event.code}" class="">
                 <div class="view">
                     <input class="toggle" type="checkbox"/>
@@ -223,7 +222,6 @@ export default class  TodoList {
         this.data.push(event);
         this.showData.push(event);
         localStorage.setItem("todoData", JSON.stringify(this.data));
-        console.log(localStorage.getItem("todoData"));
         this.setRendor(appendHtml);
         this.setCount(this.data.length);
     }
