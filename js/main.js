@@ -142,14 +142,14 @@ init();
 $newTodo.addEventListener('keydown', createTodo);
 $filter.addEventListener('click', changeSelection);
 $todoList.addEventListener('click', e => {
+  e.preventDefault();
   const isClickEvent = e.detail === 1;
   if (isClickEvent) {
-    timer = setTimeout(() => {
       handleTodo(e)
-    }, 200)
-  }
+    }
+
 })
 $todoList.addEventListener('dblclick', e => {
-    clearTimeout(timer)
+  console.log('11', e)
     changeEditMode(e)
 })
