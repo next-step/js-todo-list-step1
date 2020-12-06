@@ -10,7 +10,8 @@ export default {
     },
     editToDo(context, payload){
         context.commit('editToDo', payload);
-
+    },
+    setFilterType(context, payload){
+        context.commit('setFilterType', payload);
     }
-
 }
