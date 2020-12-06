@@ -1,6 +1,14 @@
 export const countTodoItem = () => {
-  const $todoList = document.querySelectorAll('.todo-list > li');
+  const $todoCount = document.querySelector('.todo-count > strong');
 
-  console.log($todoList);
-  // console.log($todoList);
+  const $todoList = document.querySelectorAll('.todo-list > li');
+  const $todoListHidden = document.querySelectorAll(
+    '.todo-list > li[class="hidden"]',
+  );
+  const $todoListCompletedHidden = document.querySelectorAll(
+    '.todo-list > li[class="completed hidden"]',
+  );
+
+  $todoCount.innerHTML =
+    $todoList.length - $todoListHidden.length - $todoListCompletedHidden.length;
 };
