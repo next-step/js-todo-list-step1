@@ -1,6 +1,6 @@
 export const countTodoItem = () => {
-  const $todoList = document.querySelector('.todo-list');
-  const $countTodoItem = document.querySelector('strong');
+  const $todoList = document.querySelectorAll('.todo-list > li');
 
-  $countTodoItem.innerHTML = $todoList.childElementCount;
+  console.log($todoList);
+  // console.log($todoList);
 };
