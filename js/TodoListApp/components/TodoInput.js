@@ -27,6 +27,5 @@ export default class TodoInput extends Component {
         store.dispatch('addItem', targetValue)
       }
     })
-    console.log('keyCode', ESC, ENTER)
   }
 }

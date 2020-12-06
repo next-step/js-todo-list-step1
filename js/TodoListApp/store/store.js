@@ -24,14 +24,21 @@ export default class Store {
                 self.events.publish('stateChange', self.state)
 
                 if (self.status !== 'mutation') {
-                    console.error('You should use a muatation')
+                    console.error(`You should use a muatation. ${self.status}`)
                 }
-
-                self.status = 'resting'
                 
                 return true
             }
         })
+
+        self.getters = {
+            filteredItem () {
+                return self.state.list.filter(v => (self.state.filteredType === '') ||
+                    (self.state.filteredType === 'active' && !v.complete) || 
+                    (self.state.filteredType === 'completed' && v.complete))
+                // return self.state.list
+            }
+        }
     }
 
     dispatch (actionKey, payload) {
@@ -55,7 +62,7 @@ export default class Store {
         let self = this;
 
         if (typeof self.mutations[mutationKey] !== 'function') {
-            console.error(`Mutation ${mutationKey} doesn't exist`)
+            console.error(`Mutation ${mutationKey} doesn't exist. ${self.status}`)
             return false
         }
 
@@ -63,11 +70,10 @@ export default class Store {
 
         self.status = 'mutation'
         let newState = self.mutations[mutationKey](self.state, payload)
-        console.group(newState)
         self.state = Object.assign(self.state, newState)
 
         console.groupEnd()
-
+        self.status = 'resting'
         return true
     }
 }

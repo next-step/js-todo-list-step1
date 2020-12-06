@@ -11,7 +11,6 @@ export default {
       context: payload,
       complete: false
     }
-    console.log('mutation: ', target);
     state.list.push(target)
     return state
   },
@@ -32,16 +31,35 @@ export default {
      * {Number} id
      * {Boolean} complete
      */
-    // console.log('commit', payload);
     const index = state.list.findIndex(v => v.id === payload.id)
     if (index === -1) return state
     
     let newList = [...state.list]
     newList[index].complete = payload.complete
-    console.log('commit', newList);
-    // state.list = newList
     return state
   },
-  updateItem(state, payload) {},
-  filterITem(state, payload) {},
+  resetItem(state) {
+    /** */
+    let newList = [...state.list]
+    state.list = newList
+    return state
+  },
+  updateItem(state, payload) {
+    /** */
+    let index = state.list.findIndex((item) => item.id === parseInt(payload.id, 10))
+
+    if (index === -1) {
+      return state
+    }
+
+    if (index !== -1) {
+      state.list[index].context = payload.context
+      return state
+    }
+  },
+  setFilteredType(state, payload) {
+    let newState = Object.assign({}, state)
+    newState.filteredType = payload
+    return newState
+  }
 }

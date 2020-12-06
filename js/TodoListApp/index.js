@@ -7,7 +7,6 @@ export default class TodoListApp {
     this.list = new TodoList()
     this.filter = new TodoFilter() 
     this.input = new TodoInput()
-    console.log('TodoListApp constructor', );
 
     this.list.render()
     this.filter.render()

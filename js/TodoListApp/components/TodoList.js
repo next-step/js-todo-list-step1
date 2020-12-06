@@ -1,5 +1,6 @@
 import store from '../store/index.js'
 import Component from '../lib/component.js'
+import { ESC, ENTER } from './../util/keyCode.js'
 
 export default class TodoList extends Component {
   constructor () {
@@ -10,40 +11,11 @@ export default class TodoList extends Component {
   }
   render () {
     let self = this;
-    // self.element.innerHTML = `
-    //   <ul id="todo-list" class="todo-list">
-    //     <li>
-    //       <div class="view">
-    //         <input class="toggle" type="checkbox"/>
-    //         <label class="label">새로운 타이틀</label>
-    //         <button class="destroy"></button>
-    //       </div>
-    //       <input class="edit" value="새로운 타이틀" />
-    //     </li>
-    //     <li class="editing">
-    //       <div class="view">
-    //         <input class="toggle" type="checkbox" />
-    //         <label class="label">완료된 타이틀</label>
-    //         <button class="destroy"></button>
-    //       </div>
-    //       <input class="edit" value="완료된 타이틀" />
-    //     </li>
-    //     <li class="completed">
-    //       <div class="view">
-    //         <input class="toggle" type="checkbox" checked/>
-    //         <label class="label">완료된 타이틀</label>
-    //         <button class="destroy"></button>
-    //       </div>
-    //       <input class="edit" value="완료된 타이틀" />
-    //     </li>
-    //   </ul>
-    // `
-
     self.element.innerHTML = `
       <ul id="todo-list" class="todo-list">
-      ${store.state.list.map(item => {
+      ${store.getters.filteredItem().map(item => {
         return `
-          <li data-id="${item.id}">
+          <li data-id="${item.id}" class="${(item.complete) ? 'completed' : ''}">
             <div class="view">
               <input class="toggle" type="checkbox" ${(item.complete) ? 'checked' : ''} />
               <label class="label">${item.context}</label>
@@ -64,16 +36,53 @@ export default class TodoList extends Component {
       }
 
       if (ev.target.className === 'toggle') {
-        console.log('toggle', );
         const parentElement = ev.target.closest('li')
         const id = parentElement.dataset.id
         const complete = parentElement.querySelector('.toggle').checked
-        // console.log('TodoList', {id:Number(id), complete: complete});
         if (id !== undefined) store.dispatch('toggleItem', {id:Number(id), complete: complete})
       }
     })
+
     self.element.addEventListener('dblclick', (ev) => {
-      console.log('dblclick', );
+      const parentElement = ev.target.closest('li')
+      const index = parentElement.className.indexOf('editing')
+      if (index < 0) {
+        parentElement.className = 'editing'
+      } else {
+        // parentElement.className = ''
+      }
+    })
+    
+    self.element.addEventListener('keyup', (ev) => {
+      if (ev.code === ENTER) {
+        let targetValue = ev.target.value.trim()
+        ev.target.value = ''
+
+        if (!targetValue) {
+          store.dispatch('resetItem')
+          return
+        } 
+
+        const parentElement = ev.target.closest('li')
+        const id = parentElement.dataset.id
+        const data = {
+          id: id,
+          context: targetValue
+        }
+        
+        if (targetValue) {
+          store.dispatch('updateItem', data)
+        }
+
+        return 
+      }
+      if (ev.code === ESC) {
+        let parentElement = ev.target.closest('li')
+        parentElement.className = parentElement.className.replace('editing', '')
+        store.dispatch('resetItem')
+
+        return
+      }
     })
   }
 }
