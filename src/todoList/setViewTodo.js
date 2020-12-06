@@ -1,5 +1,3 @@
-import { countTodoItem } from './countTodoItem.js';
-
 const viewAll = () => {
   document
     .querySelectorAll('.todo-list > li')
