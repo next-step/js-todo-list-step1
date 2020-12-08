@@ -14,6 +14,6 @@ export const triggerClickEvent = ({ target }) => {
   }
   if (target.tagName === 'A') {
     setViewTodo(target);
-    countTodoItem();
   }
+  countTodoItem();
 };
