@@ -47,11 +47,11 @@ const todo = (() => {
   };
 
   const filterItems = () => {
-    if (filter.getFilter() === FILTER.ALL) {
+    if (filter.isAll()) {
       return items;
-    } else if (filter.getFilter() === FILTER.ACTIVE) {
+    } else if (filter.isActive()) {
       return items.filter((item) => !item.completed);
-    } else if (filter.getFilter() === FILTER.COMPLETED) {
+    } else if (filter.isCompleted()) {
       return items.filter((item) => item.completed);
     }
   };

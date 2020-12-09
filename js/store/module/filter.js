@@ -22,6 +22,18 @@ const filter = (() => {
     }
   };
 
+  const isAll = () => {
+    return state === FILTER.ALL;
+  };
+
+  const isActive = () => {
+    return state === FILTER.ACTIVE;
+  };
+
+  const isCompleted = () => {
+    return state === FILTER.COMPLETED;
+  };
+
   const setFilter = (newState) => {
     filter.state = newState;
   };
@@ -31,8 +43,11 @@ const filter = (() => {
   };
 
   return {
-    initFilter,
     defineSetter,
+    initFilter,
+    isAll,
+    isActive,
+    isCompleted,
     getFilter,
     setFilter,
   };
