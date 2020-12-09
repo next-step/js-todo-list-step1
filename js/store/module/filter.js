@@ -14,11 +14,11 @@ const filter = (() => {
 
   const initFilter = () => {
     if (location.hash.includes(FILTER.ACTIVE)) {
-      setFilter(FILTER.ACTIVE);
+      state = FILTER.ACTIVE;
     } else if (location.hash.includes(FILTER.COMPLETED)) {
-      setFilter(FILTER.COMPLETED);
+      state = FILTER.COMPLETED;
     } else {
-      setFilter(FILTER.ALL);
+      state = FILTER.ALL;
     }
   };
 
@@ -42,9 +42,10 @@ const filter = (() => {
     return state;
   };
 
+  initFilter();
+
   return {
     defineSetter,
-    initFilter,
     isAll,
     isActive,
     isCompleted,

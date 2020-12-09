@@ -18,7 +18,6 @@ function App() {
 
   $store.todo.defineSetter(renderTodo);
   $store.filter.defineSetter(renderTodo);
-  $store.filter.initFilter();
 
   renderTodo();
 }
