@@ -3,7 +3,7 @@ import $store from "../store/index.js";
 import { EVENT, KEY } from "../utils/constants.js";
 import { todoTemplate } from "../utils/templates.js";
 
-export default function TodoList(render) {
+export default function TodoList() {
   const $list = document.querySelector(".todo-list");
 
   const findTargetId = (target) => {
@@ -22,7 +22,6 @@ export default function TodoList(render) {
 
     const todoId = findTargetId(target);
     $store.todo.editItem(todoId, text);
-    render();
   };
 
   const handleEditingTodoCancel = ({ target, key }) => {
@@ -33,7 +32,6 @@ export default function TodoList(render) {
     const todoId = findTargetId(target);
     const targetTodo = $store.todo.findItem(todoId);
     targetTodo.editing = false;
-    render();
   };
 
   const handleTodoEdit = ({ target }) => {
@@ -54,7 +52,6 @@ export default function TodoList(render) {
 
     const todoId = findTargetId(target);
     $store.todo.deleteItem(todoId);
-    render();
   };
 
   const handleTodoToggle = ({ target }) => {
@@ -64,7 +61,6 @@ export default function TodoList(render) {
 
     const todoId = findTargetId(target);
     $store.todo.toggleItem(todoId);
-    render();
   };
 
   const renderTodoList = () => {

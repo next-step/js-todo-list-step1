@@ -2,7 +2,7 @@ import $store from "../store/index.js";
 
 import { EVENT, KEY } from "../utils/constants.js";
 
-export default function TodoInput(render) {
+export default function TodoInput() {
   const $input = document.querySelector(".new-todo");
 
   const createTodoItem = (text) => {
@@ -17,7 +17,6 @@ export default function TodoInput(render) {
   const addTodo = (text) => {
     const newTodo = createTodoItem(text);
     $store.todo.addItem(newTodo);
-    render();
   };
 
   const handleTodoSubmit = ({ target, key }) => {

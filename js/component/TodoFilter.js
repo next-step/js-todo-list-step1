@@ -1,7 +1,7 @@
 import { FILTER, EVENT } from "../utils/constants.js";
 import $store from "../store/index.js";
 
-export default function TodoFilter(render) {
+export default function TodoFilter() {
   const $filter = document.querySelector(".filters");
 
   const initFilter = () => {
@@ -24,7 +24,6 @@ export default function TodoFilter(render) {
     } else if (targetClassList.contains(FILTER.COMPLETED)) {
       $store.filter.setFilter(FILTER.COMPLETED);
     }
-    render();
   };
 
   const handleTodoFiltering = ({ target }) => {

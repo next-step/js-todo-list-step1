@@ -5,13 +5,22 @@ import { FILTER } from "../../utils/constants.js";
 const todo = (() => {
   const items = storage.getStorage();
 
+  const defineSetter = (method) => {
+    Object.defineProperty(todo, "items", {
+      set: function (value) {
+        storage.setStorage(value);
+        method();
+      },
+    });
+  };
+
   const getItems = () => {
     return items;
   };
 
   const addItem = (item) => {
     items.push(item);
-    storage.setStorage(items);
+    todo.items = items;
   };
 
   const findItem = (itemId) => {
@@ -21,20 +30,20 @@ const todo = (() => {
   const deleteItem = (itemId) => {
     const deleteItemIndex = items.findIndex((item) => item.id === itemId);
     items.splice(deleteItemIndex, 1);
-    storage.setStorage(items);
+    todo.items = items;
   };
 
   const editItem = (id, text) => {
     const item = findItem(id);
     item.text = text;
     item.editing = false;
-    storage.setStorage(items);
+    todo.items = items;
   };
 
   const toggleItem = (itemId) => {
     const item = findItem(itemId);
     item.completed = !item.completed;
-    storage.setStorage(items);
+    todo.items = items;
   };
 
   const filterItems = () => {
@@ -55,6 +64,7 @@ const todo = (() => {
   };
 
   return {
+    defineSetter,
     addItem,
     getItems,
     findItem,

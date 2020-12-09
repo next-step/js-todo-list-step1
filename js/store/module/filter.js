@@ -3,6 +3,15 @@ import { FILTER } from "../../utils/constants.js";
 const filter = (() => {
   let state = FILTER.ALL;
 
+  const defineSetter = (method) => {
+    Object.defineProperty(filter, "state", {
+      set: function (value) {
+        state = value;
+        method();
+      },
+    });
+  };
+
   const initFilter = () => {
     if (location.hash.includes(FILTER.ACTIVE)) {
       setFilter(FILTER.ACTIVE);
@@ -14,16 +23,16 @@ const filter = (() => {
   };
 
   const setFilter = (newState) => {
-    state = newState;
+    filter.state = newState;
   };
 
   const getFilter = () => {
     return state;
   };
 
-  initFilter();
-
   return {
+    initFilter,
+    defineSetter,
     getFilter,
     setFilter,
   };
