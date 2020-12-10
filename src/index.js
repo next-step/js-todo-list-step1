@@ -2,7 +2,7 @@ import { triggerKeyupEvent } from './event/triggerKeyupEvent.js';
 import { triggerClickEvent } from './event/triggerClickEvent.js';
 import { triggerDoubleClickEvent } from './event/triggerDoubleClickEvent.js';
 
-const todoApp = () => {
+export const todoApp = () => {
   const $todoApp = document.querySelector('.todoapp');
   const $newTodo = document.querySelector('.new-todo');
   const $todoList = document.querySelector('.todo-list');
