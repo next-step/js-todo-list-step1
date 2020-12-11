@@ -20,11 +20,16 @@ export class TodoItem {
 
   templateTodoItem = ({ contents, state, id }) => {
     this.setState(state);
+    console.log("state ", state);
     this.setId(id);
     this.setText(contents);
-    return `<li data-id=${id} class="${state ? "completed" : ""}">
+    return `<li data-id=${id} class="${
+      state === "completed" ? "completed" : ""
+    }">
               <div class="view">
-                <input class="toggle" type="checkbox" ${state ? "checked" : ""}>
+                <input class="toggle" type="checkbox" ${
+                  state === "completed" ? "completed" : ""
+                }">
                 <label class="label">${contents}</label>
                 <button class="destroy"></button>
               </div>

@@ -1,3 +1,4 @@
+import { TodoItem } from "../component/TodoItem.js";
 export class LocalStorageUtil {
   constructor() {
     this.localStorage = localStorage;
@@ -8,13 +9,20 @@ export class LocalStorageUtil {
     this.localStorage.setItem(todoItem.id, JSON.stringify(todoItem));
   };
 
-  stringToJson() {
+  stringToJson = () => {
     let localStorageArray = [];
     Object.values(this.localStorage).forEach((item) => {
       localStorageArray.push(JSON.parse(item));
     });
     this.localStorageArray = [...localStorageArray];
     return this.localStorageArray;
+  };
+
+  storageTodo() {
+    const storageTodo = this.stringToJson();
+    return storageTodo.map((item) => {
+      return new TodoItem(item);
+    });
   }
 
   getLocalStorage = (todoItem) => {

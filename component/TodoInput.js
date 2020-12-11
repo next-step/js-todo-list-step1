@@ -10,7 +10,7 @@ export class TodoInput {
       this.onAdd({
         id: Math.floor(Math.random() * 100),
         contents: target.value,
-        state: false,
+        state: "active",
       });
       target.value = "";
     }

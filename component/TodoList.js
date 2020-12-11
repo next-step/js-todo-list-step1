@@ -32,8 +32,11 @@ export class TodoList {
   onClickHandle({ target }) {
     const id = target.closest("li").dataset.id;
     let data = JSON.parse(this.storage.getItem(id));
-    !data.state ? (data.state = true) : (data.state = false);
-    // let target = event.target;
+
+    data.state === "active"
+      ? (data.state = "completed")
+      : (data.state = "active");
+
     if (target.classList.value === "toggle") {
       target.parentNode.parentNode.classList.toggle("completed");
       this.storage.setLocalStorage(data);
