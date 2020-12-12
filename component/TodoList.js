@@ -1,9 +1,11 @@
 import { LocalStorageUtil } from "../js/LocalStorageUtil.js";
+import {TodoCount} from "./TodoCount.js";
+
 
 export class TodoList {
   constructor(todoItem) {
     this.storage = new LocalStorageUtil();
-    this.todoList = [...todoItem];
+    this.todoCount = new TodoCount();
     this.$todoList = document.querySelector("#todo-list");
     this.$todoList.addEventListener("click", (e) => this.onClickHandle(e));
     this.$todoList.addEventListener("dblclick", (e) => this.onDbClickHandle(e));
@@ -12,6 +14,7 @@ export class TodoList {
   }
 
   setState = (updateItems) => {
+    this.todoCount.setState(updateItems);
     this.render(updateItems);
   };
 

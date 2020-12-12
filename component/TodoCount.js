@@ -1,6 +1,5 @@
 export class TodoCount {
   constructor(todoItem) {
-    this.$todoCountContainer = document.querySelector(".count-container");
     this.$todoCount = document.querySelector(".todo-count");
     this.setState(todoItem);
   }
@@ -9,8 +8,8 @@ export class TodoCount {
     this.render(updateItems);
   };
 
-  render({ length }) {
-    console.log(length);
-    this.$todoCount.querySelector("strong").innerHTML = length;
+  render(items) {
+    if(!items) return;
+    this.$todoCount.querySelector("strong").innerHTML = items.length;
   }
 }

@@ -23,17 +23,15 @@ export class TodoItem {
     console.log("state ", state);
     this.setId(id);
     this.setText(contents);
-    return `<li data-id=${id} class="${
-      state === "completed" ? "completed" : ""
-    }">
+    return `
+    <li data-id=${id} class="${state === 'completed' ? 'completed' : ''}">
               <div class="view">
-                <input class="toggle" type="checkbox" ${
-                  state === "completed" ? "completed" : ""
-                }">
+                <input class="toggle" type="checkbox" ${state === 'completed' ? 'checked' : ''}>
                 <label class="label">${contents}</label>
                 <button class="destroy"></button>
               </div>
                 <input class="edit" value="${contents}" />
-            </li>`;
+            </li>
+      `;
   };
 }

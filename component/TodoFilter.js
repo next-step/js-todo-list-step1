@@ -6,21 +6,30 @@ export class TodoFilter {
     this.$filter = document.querySelector(".filters");
     this.$filter.addEventListener("click", this.onClickFilter);
     this.todoList = new TodoList(new LocalStorageUtil().storageTodo());
-    console.log(this.todoList);
   }
 
   setState(updateItems) {
     const todoItems = updateItems;
     this.todoList.setState(todoItems);
-    this.render(this.todoList);
-  }
-
-  render(item) {
-    console.log("render item :", item);
   }
 
   onClickFilter(e) {
-    const state = e.target.getAttribute("href");
-    const test = new LocalStorageUtil().storageTodo();
+    e.preventDefault();
+    const state = e.target.getAttribute("href").replace(/\#/g,'');
+    let todoItems = new LocalStorageUtil().storageTodo();
+
+    switch (state){
+      case 'active':
+        todoItems = todoItems.filter(item => item.state === "active");
+        new TodoList().setState(todoItems);
+        break;
+      case 'completed':
+        todoItems = todoItems.filter(item => item.state === "completed");
+        new TodoList().setState(todoItems);
+        break;
+      default:
+        new TodoList().setState(todoItems);
+    }
   }
+
 }
