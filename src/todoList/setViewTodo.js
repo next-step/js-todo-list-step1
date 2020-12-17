@@ -1,43 +1,15 @@
-const viewAll = () => {
-  document
-    .querySelectorAll('.todo-list > li')
-    .forEach((li) => li.classList.remove('hidden'));
-};
-
-const viewActive = () => {
-  document.querySelectorAll('.todo-list > li').forEach((li) => {
-    if (li.className === 'hidden') {
-      li.classList.remove('hidden');
-    }
-  });
-};
-
-const viewCompleted = () => {
-  document.querySelectorAll('.todo-list > li').forEach((li) => {
-    if (li.className === 'completed hidden') {
-      li.classList.remove('hidden');
-    }
-  });
-};
-
-const resetScreen = () => {
-  document.querySelectorAll('a').forEach((a) => a.classList.remove('selected'));
-  document
-    .querySelectorAll('.todo-list > li')
-    .forEach((li) => li.classList.add('hidden'));
-};
+import { render, renderCompleted, renderIncompleted } from './render.js';
 
 export const setViewTodo = (target) => {
-  resetScreen();
-
   if (target.className === 'all') {
-    viewAll();
+    render();
   }
   if (target.className === 'active') {
-    viewActive();
+    renderIncompleted();
   }
   if (target.className === 'completed') {
-    viewCompleted();
+    renderCompleted();
   }
+  document.querySelectorAll('a').forEach((a) => a.classList.remove('selected'));
   target.classList.add('selected');
 };

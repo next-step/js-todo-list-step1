@@ -11,6 +11,30 @@ const todoTemplate = (todo) => {
            </li>`;
 };
 
+export const renderIncompleted = () => {
+  const todos = JSON.parse(localStorage.getItem('todos'));
+  const $todoList = document.querySelector('.todo-list');
+
+  $todoList.innerHTML = '';
+  todos.forEach((todo) => {
+    if (todo.completed === false)
+      $todoList.insertAdjacentHTML('beforeend', todoTemplate(todo));
+  });
+  countTodoItem();
+};
+
+export const renderCompleted = () => {
+  const todos = JSON.parse(localStorage.getItem('todos'));
+  const $todoList = document.querySelector('.todo-list');
+
+  $todoList.innerHTML = '';
+  todos.forEach((todo) => {
+    if (todo.completed === true)
+      $todoList.insertAdjacentHTML('beforeend', todoTemplate(todo));
+  });
+  countTodoItem();
+};
+
 export const render = () => {
   const todos = JSON.parse(localStorage.getItem('todos'));
   const $todoList = document.querySelector('.todo-list');

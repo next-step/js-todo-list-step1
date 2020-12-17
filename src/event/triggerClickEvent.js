@@ -1,4 +1,3 @@
-import { countTodoItem } from '../todoList/countTodoItem.js';
 import {
   removeTodoItem,
   toggleCompletedTodoItem,
@@ -15,5 +14,4 @@ export const triggerClickEvent = ({ target }) => {
   if (target.tagName === 'A') {
     setViewTodo(target);
   }
-  countTodoItem();
 };
