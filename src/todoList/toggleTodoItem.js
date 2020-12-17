@@ -1,14 +1,23 @@
 import { render } from './render.js';
 
+const toggleCompleted = (todo) => {
+  if (todo.completed === false) {
+    return (todo.completed = true);
+  }
+  return (todo.completed = false);
+};
+
 export const toggleTodoItem = (todoItem) => {
   const todos = JSON.parse(localStorage.getItem('todos'));
-  const target = todoItem.dataset.id;
+  const targetID = todoItem.dataset.id;
 
-  if (todos[target].completed === false) {
-    todos[target].completed = true;
-  } else {
-    todos[target].completed = false;
-  }
+  todos.map((todo) => {
+    if (todo.id === targetID) {
+      return toggleCompleted(todo);
+    }
+    return todo;
+  });
+
   localStorage.setItem('todos', JSON.stringify(todos));
   render();
 };
