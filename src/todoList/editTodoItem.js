@@ -1,12 +1,13 @@
-import { render } from './render.js';
+import { render } from '../render/render.js';
 
 const updateTodoItem = (text, id) => {
   const todos = JSON.parse(localStorage.getItem('todos'));
 
   todos.map((todo) => {
     if (todo.id === id) {
-      todo.text = text;
+      return (todo.text = text);
     }
+    return todo;
   });
 
   localStorage.setItem('todos', JSON.stringify(todos));

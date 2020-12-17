@@ -1,4 +1,4 @@
-import { render } from './render.js';
+import { render } from '../render/render.js';
 
 const toggleCompleted = (todo) => {
   if (todo.completed === false) {

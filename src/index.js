@@ -1,7 +1,7 @@
 import { triggerKeyupEvent } from './event/triggerKeyupEvent.js';
 import { triggerClickEvent } from './event/triggerClickEvent.js';
 import { triggerDoubleClickEvent } from './event/triggerDoubleClickEvent.js';
-import { render } from './todoList/render.js';
+import { render } from './render/render.js';
 
 const initLocalStorage = () => {
   if (localStorage.getItem('todos') === null) {

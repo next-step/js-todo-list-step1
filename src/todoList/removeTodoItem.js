@@ -1,4 +1,4 @@
-import { render } from './render.js';
+import { render } from '../render/render.js';
 
 export const removeTodoItem = (todoItem) => {
   const todos = JSON.parse(localStorage.getItem('todos'));

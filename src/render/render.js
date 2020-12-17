@@ -1,4 +1,4 @@
-import { countTodoItem } from './countTodoItem.js';
+import { countTodoItem } from '../todoList/countTodoItem.js';
 
 const todoTemplate = (todo) => {
   return `<li class="${todo.completed ? 'completed' : ''}" data-id=${todo.id}>
@@ -13,7 +13,7 @@ const todoTemplate = (todo) => {
            </li>`;
 };
 
-export const renderIncompleted = () => {
+const renderActive = () => {
   const todos = JSON.parse(localStorage.getItem('todos'));
   const $todoList = document.querySelector('.todo-list');
 
@@ -25,7 +25,7 @@ export const renderIncompleted = () => {
   countTodoItem();
 };
 
-export const renderCompleted = () => {
+const renderCompleted = () => {
   const todos = JSON.parse(localStorage.getItem('todos'));
   const $todoList = document.querySelector('.todo-list');
 
@@ -37,7 +37,7 @@ export const renderCompleted = () => {
   countTodoItem();
 };
 
-export const render = () => {
+const renderAll = () => {
   const todos = JSON.parse(localStorage.getItem('todos'));
   const $todoList = document.querySelector('.todo-list');
 
@@ -45,5 +45,31 @@ export const render = () => {
   todos.forEach((todo) => {
     $todoList.insertAdjacentHTML('beforeend', todoTemplate(todo));
   });
+};
+
+const renderSelected = (target) => {
+  if (target === 'all') {
+    renderAll();
+  }
+  if (target === 'active') {
+    renderActive();
+  }
+  if (target === 'completed') {
+    renderCompleted();
+  }
+};
+
+export const render = (target = '') => {
+  if (target) {
+    document
+      .querySelectorAll('a')
+      .forEach((a) => a.classList.remove('selected'));
+    target.classList.add('selected');
+    localStorage.setItem('selected', JSON.stringify(target.className));
+  }
+
+  const selected = JSON.parse(localStorage.getItem('selected')).split(' ')[0];
+
+  renderSelected(selected);
   countTodoItem();
 };
