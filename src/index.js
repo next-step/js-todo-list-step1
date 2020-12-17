@@ -1,6 +1,13 @@
 import { triggerKeyupEvent } from './event/triggerKeyupEvent.js';
 import { triggerClickEvent } from './event/triggerClickEvent.js';
 import { triggerDoubleClickEvent } from './event/triggerDoubleClickEvent.js';
+import { render } from './todoList/render.js';
+
+const initLocalStorage = () => {
+  if (localStorage.getItem('todos') === null) {
+    localStorage.setItem('todos', []);
+  }
+};
 
 export const todoApp = () => {
   const $todoApp = document.querySelector('.todoapp');
@@ -10,6 +17,9 @@ export const todoApp = () => {
   $newTodo.addEventListener('keyup', triggerKeyupEvent);
   $todoApp.addEventListener('click', triggerClickEvent);
   $todoList.addEventListener('dblclick', triggerDoubleClickEvent);
+
+  initLocalStorage();
+  render();
 };
 
 todoApp();
