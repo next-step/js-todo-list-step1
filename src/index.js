@@ -5,7 +5,10 @@ import { render } from './todoList/render.js';
 
 const initLocalStorage = () => {
   if (localStorage.getItem('todos') === null) {
-    localStorage.setItem('todos', []);
+    localStorage.setItem('todos', '[]');
+  }
+  if (localStorage.getItem('ID_NUMBER') === null) {
+    localStorage.setItem('ID_NUMBER', 0);
   }
 };
 
