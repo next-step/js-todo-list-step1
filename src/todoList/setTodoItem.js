@@ -1,20 +1,3 @@
-export const toggleCompletedTodoItem = (todoItem) => {
-  const target = todoItem.dataset.id;
-  console.log(target);
-  const $checkbox = todoItem.querySelector('input');
-
-  if (todoItem.className === '') {
-    $checkbox.setAttribute('checked', true);
-    return todoItem.setAttribute('class', 'completed');
-  }
-  $checkbox.removeAttribute('checked');
-  return todoItem.removeAttribute('class');
-};
-
-export const removeTodoItem = (todoItem) => {
-  return todoItem.remove();
-};
-
 const exitEditTodoItem = ({ target, key }) => {
   const todoItem = target.closest('li');
   if (key === 'Escape') {

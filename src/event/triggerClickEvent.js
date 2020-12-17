@@ -1,4 +1,4 @@
-import { removeTodoItem } from '../todoList/setTodoItem.js';
+import { removeTodoItem } from '../todoList/removeTodoItem.js';
 import { setViewTodo } from '../todoList/setViewTodo.js';
 import { toggleTodoItem } from '../todoList/toggleTodoItem.js';
 
