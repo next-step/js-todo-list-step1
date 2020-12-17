@@ -1,4 +1,4 @@
-import { editTodoItem } from '../todoList/setTodoItem.js';
+import { editTodoItem } from '../todoList/editTodoItem.js';
 
 export const triggerDoubleClickEvent = ({ target }) => {
   if (target.className === 'label') {
