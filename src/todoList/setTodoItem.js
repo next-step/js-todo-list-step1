@@ -1,4 +1,6 @@
 export const toggleCompletedTodoItem = (todoItem) => {
+  const target = todoItem.dataset.id;
+  console.log(target);
   const $checkbox = todoItem.querySelector('input');
 
   if (todoItem.className === '') {

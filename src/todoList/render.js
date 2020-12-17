@@ -1,9 +1,11 @@
 import { countTodoItem } from './countTodoItem.js';
 
 const todoTemplate = (todo) => {
-  return `<li class="${todo.checked ? 'completed' : ''}" data-id=${todo.id}>
+  return `<li class="${todo.completed ? 'completed' : ''}" data-id=${todo.id}>
             <div class="view">
-              <input class="toggle" type="checkbox" checkd=${todo.checked}/>
+              <input class="toggle" type="checkbox" ${
+                todo.completed ? 'checked' : ''
+              }/>
               <label class="label">${todo.text}</label>
               <button class="destroy"></button>
             </div>

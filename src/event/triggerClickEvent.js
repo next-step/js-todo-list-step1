@@ -1,12 +1,10 @@
-import {
-  removeTodoItem,
-  toggleCompletedTodoItem,
-} from '../todoList/setTodoItem.js';
+import { removeTodoItem } from '../todoList/setTodoItem.js';
 import { setViewTodo } from '../todoList/setViewTodo.js';
+import { toggleTodoItem } from '../todoList/toggleTodoItem.js';
 
 export const triggerClickEvent = ({ target }) => {
   if (target.className === 'toggle') {
-    toggleCompletedTodoItem(target.closest('li'));
+    toggleTodoItem(target.closest('li'));
   }
   if (target.className === 'destroy') {
     removeTodoItem(target.closest('li'));
