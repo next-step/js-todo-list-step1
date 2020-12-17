@@ -11,32 +11,4 @@
 
 ## 🚀🚀 심화 요구사항
 
-- [ ] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
-
-## 🗂 디렉토리 구조
-```plaintext
-├── LICENSE
-├── README.md
-├── package.json
-├── package-lock.json
-├── .gitignore
-├── .prettierrc
-├── .eslintrc.json
-├── index.html
-├── css
-│   └── style.css
-│
-└── src
-    ├── index.js // 이벤트리스너를 등록하는 메인 모듈
-    │
-    ├── event // Event와 관련된 모듈을 모아놓은 폴더
-    │   ├── triggerKeyupEvent.js // keyup 이벤트를 받았을 때 실행하는 모듈
-    │   ├── triggerClickEvent.js // 클릭 이벤트를 받았을 때 실행하는 모듈
-    │   └── triggerDoubleClickEvent.js // 더블 클릭 이벤트를 받았을 때 실행하는 모듈  
-    │
-    └── todoList // todo list 조작과 관련된 모듈을 모아놓은 폴더
-        ├── addTodoItem.js // 새로운 todo item을 추가하는 모듈
-        ├── countTodoItem.js // 현재 화면의 todo item의 개수를 구해서 보여주는 모듈
-        ├── setTodoItem.js // todo item의 상태를 변경하는 모듈
-        └── setViewTodo.js // 현재 선택 된 카테고리에 따라 해당 카테고리에 맞는 todo item을 화면에 보여주는 모듈
-```
+- [X] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
