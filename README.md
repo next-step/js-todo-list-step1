@@ -6,7 +6,7 @@
 
 <br>
 
-블랙커피처럼 서로를 자극해주고, 동기부여 해주며, 그 성장과정으로 인해 의미있는 가치를 만들어내고자 하는   
+블랙커피처럼 서로를 자극해주고, 동기부여 해주며, 그 성장과정으로 인해 의미있는 가치를 만들어내고자 하는
 **프론트엔드 코드리뷰 모임** ☕️ **Black Coffee**입니다.
 
 <br>
@@ -17,8 +17,8 @@
 
 ## 🚀 기본 요구사항
 
-- [ ] todo list에 todoItem을 키보드로 입력하여 추가하기
-- [ ] todo list의 체크박스를 클릭하여 complete 상태로 변경. (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
+- [x] todo list에 todoItem을 키보드로 입력하여 추가하기
+- [x] todo list의 체크박스를 클릭하여 complete 상태로 변경. (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
 - [ ] todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
 - [ ]  todo list를 더블클릭했을 때 input 모드로 변경. (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
 - [ ] todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
@@ -49,7 +49,7 @@ live-server 폴더명
 <br>
 
 ## 👨‍💻 Code Review 👩‍💻
-아래 링크들에 있는 리뷰 가이드를 보고, 좋은 코드 리뷰 문화를 만들어 나가려고 합니다.  
+아래 링크들에 있는 리뷰 가이드를 보고, 좋은 코드 리뷰 문화를 만들어 나가려고 합니다.
 - [코드리뷰 가이드1](https://edykim.com/ko/post/code-review-guide/)
 - [코드리뷰 가이드2](https://wiki.lucashan.space/code-review/01.intro.html#_1-code%EB%A5%BC-%EB%A6%AC%EB%B7%B0%ED%95%98%EB%8A%94-%EC%82%AC%EB%9E%8C%EB%93%A4%EC%9D%80-%EC%96%B4%EB%96%A4%EA%B2%83%EC%9D%84-%EC%A4%91%EC%A0%90%EC%A0%81%EC%9C%BC%EB%A1%9C-%EC%82%B4%ED%8E%B4%EC%95%BC%ED%95%98%EB%8A%94%EA%B0%80)
 
@@ -61,7 +61,7 @@ live-server 폴더명
 <br>
 
 ## 👏 Contributing
-만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요. 
+만약 미션 수행 중에 개선사항이 보인다면, 언제든 자유롭게 PR을 보내주세요.
 
 <br>
 

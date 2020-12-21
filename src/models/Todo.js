@@ -26,8 +26,21 @@ export default class Todo {
     todoStorage().setStorage(this.todoItems);
   }
 
+  saveTodoItems() {
+    todoStorage().setStorage(this.todoItems);
+  }
+
+  changeCompletedState(todoItemId) {
+    this.getTodoItemById(todoItemId).complete = !this.getTodoItemById(todoItemId).complete;
+    this.saveTodoItems();
+  }
+
   getNewId() {
     const todoListLen = this.todoItems.length;
     return todoListLen === 0 ? 0 : this.todoItems[todoListLen - 1].id + 1;
+  }
+
+  getTodoItemById(todoItemId) {
+    return this.todoItems.find((todoItem) => todoItem.id === parseInt(todoItemId));
   }
 }
