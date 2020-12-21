@@ -41,11 +41,24 @@ export default class TodoInputView extends Views {
         this.onTodoItemToggleHandler(e.target);
       })
     );
+
+    this.$resultTodoList.querySelectorAll('.destroy').forEach((checkbox) =>
+      checkbox.addEventListener(EVENT.CLICK, (e) => {
+        e.stopPropagation();
+        this.onTodoItemRemoveHandler(e.target);
+      })
+    );
   }
 
   onTodoItemToggleHandler(checkboxTag) {
     console.log(`${tag} onTodoItemToggleHandler()`);
     const targetTodoItemId = checkboxTag.closest('li').id;
     this.emit('changeTodoState', targetTodoItemId);
+  }
+
+  onTodoItemRemoveHandler(checkboxTag) {
+    console.log(`${tag} onTodoItemRemoveHandler()`);
+    const targetTodoItemId = checkboxTag.closest('li').id;
+    this.emit('removeTodoItem', targetTodoItemId);
   }
 }

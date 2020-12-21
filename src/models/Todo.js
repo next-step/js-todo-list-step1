@@ -35,6 +35,11 @@ export default class Todo {
     this.saveTodoItems();
   }
 
+  removeTodoItem(todoItemId) {
+    this.todoItems = this.todoItems.filter((todoItem) => todoItem.id !== parseInt(todoItemId));
+    this.saveTodoItems();
+  }
+
   getNewId() {
     const todoListLen = this.todoItems.length;
     return todoListLen === 0 ? 0 : this.todoItems[todoListLen - 1].id + 1;

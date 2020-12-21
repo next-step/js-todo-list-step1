@@ -15,7 +15,8 @@ export default class TodoApp {
 
     this.todoListResultView = new TodoListResultView()
       .setupRenderResult(this.todoList.getTodos())
-      .on('changeTodoState', (e) => this.onChangeTodoStateHandler(e.detail));
+      .on('changeTodoState', (e) => this.onChangeTodoStateHandler(e.detail))
+      .on('removeTodoItem', (e) => this.onRemoveTodoStateHandler(e.detail));
   }
 
   onSubmitNewTodoHandler(todoItem) {
@@ -31,6 +32,12 @@ export default class TodoApp {
   onChangeTodoStateHandler(todoItemId) {
     console.log(`${tag} onChangeTodoStateHandler()`);
     this.todoList.changeCompletedState(todoItemId);
+    this.renderTodoList();
+  }
+
+  onRemoveTodoStateHandler(todoItemId) {
+    console.log(`${tag} onRemoveTodoStateHandler()`);
+    this.todoList.removeTodoItem(todoItemId);
     this.renderTodoList();
   }
 }
