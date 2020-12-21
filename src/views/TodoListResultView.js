@@ -56,9 +56,10 @@ export default class TodoInputView extends Views {
     this.emit('changeTodoState', targetTodoItemId);
   }
 
-  onTodoItemRemoveHandler(checkboxTag) {
+  onTodoItemRemoveHandler(deleteBtnTag) {
     console.log(`${tag} onTodoItemRemoveHandler()`);
-    const targetTodoItemId = checkboxTag.closest('li').id;
+    console.log(deleteBtnTag);
+    const targetTodoItemId = deleteBtnTag.closest('li').id;
     this.emit('removeTodoItem', targetTodoItemId);
   }
 }
