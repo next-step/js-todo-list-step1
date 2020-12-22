@@ -32,26 +32,23 @@ export default class TodoListResultView extends Views {
   }
 
   bindClickTodoItemEvent() {
-    this.$element.querySelectorAll('.toggle').forEach((checkbox) =>
-      checkbox.addEventListener(EVENT.CLICK, (e) => {
-        e.stopPropagation();
-        this.onToggleTodoItemHandler(e.target);
-      })
-    );
+    this.$element
+      .querySelectorAll('.toggle')
+      .forEach((checkbox) =>
+        checkbox.addEventListener(EVENT.CLICK, (e) => this.onToggleTodoItemHandler(e.target))
+      );
 
-    this.$element.querySelectorAll('.destroy').forEach((deleteBtn) =>
-      deleteBtn.addEventListener(EVENT.CLICK, (e) => {
-        e.stopPropagation();
-        this.onRemoveTodoItemHandler(e.target);
-      })
-    );
+    this.$element
+      .querySelectorAll('.destroy')
+      .forEach((deleteBtn) =>
+        deleteBtn.addEventListener(EVENT.CLICK, (e) => this.onRemoveTodoItemHandler(e.target))
+      );
 
-    this.$element.querySelectorAll('.label').forEach((todoItem) =>
-      todoItem.addEventListener(EVENT.DOUBLE_CLICK, (e) => {
-        e.stopPropagation();
-        this.onEditTodoHandler(e.target);
-      })
-    );
+    this.$element
+      .querySelectorAll('.label')
+      .forEach((todoItem) =>
+        todoItem.addEventListener(EVENT.DOUBLE_CLICK, (e) => this.onEditTodoHandler(e.target))
+      );
   }
 
   onToggleTodoItemHandler(checkboxTag) {
