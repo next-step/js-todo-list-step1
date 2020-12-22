@@ -19,7 +19,8 @@ export default class TodoApp {
     this.todoListResultView = new TodoListResultView()
       .setupRenderResult(this.todoList.getTodos())
       .on('changeTodoState', (e) => this.onChangeTodoStateHandler(e.detail))
-      .on('removeTodoItem', (e) => this.onRemoveTodoStateHandler(e.detail));
+      .on('removeTodoItem', (e) => this.onRemoveTodoStateHandler(e.detail))
+      .on('editTodoItem', (e) => this.onEditTodoItemHandler(e.detail));
 
     this.todoCountView = new TodoCountView().setupTodoCount();
 
@@ -64,5 +65,10 @@ export default class TodoApp {
     }
 
     this.todoFilterView.addSelectedClass(filter);
+  }
+
+  onEditTodoItemHandler(todoItem) {
+    this.todoList.editTodoItem(todoItem);
+    this.renderTodoList(this.todoList.getTodos());
   }
 }

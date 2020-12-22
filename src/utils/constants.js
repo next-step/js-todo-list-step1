@@ -15,6 +15,7 @@ export const FILTERS = {
 
 export const CLASS = {
   SELECTED: 'selected',
+  EDIT: 'editing',
 };
 
 export const LOCALSTORAGE_NAME = 'TODOLIST';

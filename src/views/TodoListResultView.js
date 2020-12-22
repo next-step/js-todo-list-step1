@@ -1,9 +1,9 @@
 import Views from './Views.js';
 
-import { EVENT } from '../utils/constants.js';
+import { EVENT, CLASS } from '../utils/constants.js';
 
-const tag = `[TodoInputView]`;
-export default class TodoInputView extends Views {
+const tag = `[TodoListResultView]`;
+export default class TodoListResultView extends Views {
   setupRenderResult(todoList) {
     console.log(`${tag} setupRenderResult()`);
     this.$resultTodoList = document.querySelector('#todo-list');
@@ -13,8 +13,7 @@ export default class TodoInputView extends Views {
   }
 
   renderTodoList(todoList) {
-    this.$resultTodoList.innerHTML = this.getTodoListHTML(todoList);
-    this.$todoItemToggleBtn = this.$resultTodoList.querySelector('.toggle');
+    this.$element.innerHTML = this.getTodoListHTML(todoList);
     this.bindClickTodoItemEvent();
     return this;
   }
@@ -30,22 +29,29 @@ export default class TodoInputView extends Views {
           <label class="label">${todoItem.name}</label>
           <button class="destroy"></button>
         </div>
-        <input class="edit" value="새로운 타이틀" />
+        <input class="edit" value=${todoItem.name} />
       </li>`;
   }
 
   bindClickTodoItemEvent() {
-    this.$resultTodoList.querySelectorAll('.toggle').forEach((checkbox) =>
+    this.$element.querySelectorAll('.toggle').forEach((checkbox) =>
       checkbox.addEventListener(EVENT.CLICK, (e) => {
         e.stopPropagation();
         this.onTodoItemToggleHandler(e.target);
       })
     );
 
-    this.$resultTodoList.querySelectorAll('.destroy').forEach((checkbox) =>
-      checkbox.addEventListener(EVENT.CLICK, (e) => {
+    this.$element.querySelectorAll('.destroy').forEach((deleteBtn) =>
+      deleteBtn.addEventListener(EVENT.CLICK, (e) => {
         e.stopPropagation();
         this.onTodoItemRemoveHandler(e.target);
+      })
+    );
+
+    this.$element.querySelectorAll('.label').forEach((todoItem) =>
+      todoItem.addEventListener(EVENT.DOUBLE_CLICK, (e) => {
+        e.stopPropagation();
+        this.onEditTodoHandler(e.target);
       })
     );
   }
@@ -61,5 +67,31 @@ export default class TodoInputView extends Views {
     console.log(deleteBtnTag);
     const targetTodoItemId = deleteBtnTag.closest('li').id;
     this.emit('removeTodoItem', targetTodoItemId);
+  }
+
+  onEditTodoHandler(todoItemTag) {
+    const todoItem = todoItemTag.closest('li');
+    todoItem.classList.add(CLASS.EDIT);
+    todoItem.addEventListener(EVENT.EVENT_KEYUP, (e) => {
+      if (e.key === EVENT.ENTER) {
+        this.onSubmitEditTodoHandler(e.key, todoItem);
+      }
+      if (e.key === EVENT.ESC) {
+        this.onCancelEditTodoHandler(e.key, todoItem);
+      }
+    });
+  }
+
+  onCancelEditTodoHandler(keyboardKey, todoItem) {
+    todoItem.classList.remove(CLASS.EDIT);
+  }
+
+  onSubmitEditTodoHandler(keyboardKey, todoItem) {
+    const targetTodoItem = {
+      id: todoItem.id,
+      value: todoItem.querySelector('.edit').value,
+    };
+
+    this.emit('editTodoItem', targetTodoItem);
   }
 }
