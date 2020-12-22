@@ -1,7 +1,8 @@
 import TodoInputView from '../views/TodoInputView.js';
+import TodoListResultView from '../views/TodoListResultView.js';
+import TodoCountView from '../views/TodoCountView.js';
 
 import Todo from '../models/Todo.js';
-import TodoListResultView from '../views/TodoListResultView.js';
 
 const tag = `[todoApp]`;
 export default class TodoApp {
@@ -17,27 +18,31 @@ export default class TodoApp {
       .setupRenderResult(this.todoList.getTodos())
       .on('changeTodoState', (e) => this.onChangeTodoStateHandler(e.detail))
       .on('removeTodoItem', (e) => this.onRemoveTodoStateHandler(e.detail));
+
+    this.todoCountView = new TodoCountView().setupTodoCount();
+    this.renderTodoList(this.todoList);
   }
 
   onSubmitNewTodoHandler(todoItem) {
     console.log(`${tag} onSubmitNewTodoHandler()`);
     this.todoList.addTodoItem(todoItem);
-    this.renderTodoList();
+    this.renderTodoList(this.todoList);
   }
 
-  renderTodoList() {
+  renderTodoList(todoList) {
     this.todoListResultView.renderTodoList(this.todoList.getTodos());
+    this.todoCountView.getTodoCountHTML(todoList);
   }
 
   onChangeTodoStateHandler(todoItemId) {
     console.log(`${tag} onChangeTodoStateHandler()`);
     this.todoList.changeCompletedState(todoItemId);
-    this.renderTodoList();
+    this.renderTodoList(this.todoList);
   }
 
   onRemoveTodoStateHandler(todoItemId) {
     console.log(`${tag} onRemoveTodoStateHandler()`);
     this.todoList.removeTodoItem(todoItemId);
-    this.renderTodoList();
+    this.renderTodoList(this.todoList);
   }
 }
