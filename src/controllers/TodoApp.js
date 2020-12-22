@@ -6,10 +6,8 @@ import TodoFilterView from '../views/TodoFilterView.js';
 import Todo from '../models/Todo.js';
 import { FILTERS } from '../utils/constants.js';
 
-const tag = `[todoApp]`;
 export default class TodoApp {
   init() {
-    console.log(`${tag} init()`);
     this.todoList = new Todo();
 
     new TodoInputView()
@@ -32,7 +30,6 @@ export default class TodoApp {
   }
 
   onSubmitNewTodoHandler(todoItem) {
-    console.log(`${tag} onSubmitNewTodoHandler()`);
     this.todoList.addTodoItem(todoItem);
     this.renderTodoList(this.todoList.getTodos());
   }
@@ -43,19 +40,16 @@ export default class TodoApp {
   }
 
   onChangeTodoStateHandler(todoItemId) {
-    console.log(`${tag} onChangeTodoStateHandler()`);
     this.todoList.changeCompletedState(todoItemId);
     this.renderTodoList(this.todoList.getTodos());
   }
 
   onRemoveTodoStateHandler(todoItemId) {
-    console.log(`${tag} onRemoveTodoStateHandler()`);
     this.todoList.removeTodoItem(todoItemId);
     this.renderTodoList(this.todoList.getTodos());
   }
 
   onChangeFilterHandler(filter) {
-    console.log(`${tag} onChangeFilterHandler()`);
     if (filter === FILTERS.ALL) {
       this.renderTodoList(this.todoList.getTodos());
     } else if (filter === FILTERS.ACTIVE) {

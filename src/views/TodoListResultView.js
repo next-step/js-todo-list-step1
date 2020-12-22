@@ -2,10 +2,8 @@ import Views from './Views.js';
 
 import { EVENT, CLASS } from '../utils/constants.js';
 
-const tag = `[TodoListResultView]`;
 export default class TodoListResultView extends Views {
   setupRenderResult(todoList) {
-    console.log(`${tag} setupRenderResult()`);
     this.$resultTodoList = document.querySelector('#todo-list');
     this.init(this.$resultTodoList);
     this.renderTodoList(todoList);
@@ -57,14 +55,11 @@ export default class TodoListResultView extends Views {
   }
 
   onTodoItemToggleHandler(checkboxTag) {
-    console.log(`${tag} onTodoItemToggleHandler()`);
     const targetTodoItemId = checkboxTag.closest('li').id;
     this.emit('changeTodoState', targetTodoItemId);
   }
 
   onTodoItemRemoveHandler(deleteBtnTag) {
-    console.log(`${tag} onTodoItemRemoveHandler()`);
-    console.log(deleteBtnTag);
     const targetTodoItemId = deleteBtnTag.closest('li').id;
     this.emit('removeTodoItem', targetTodoItemId);
   }

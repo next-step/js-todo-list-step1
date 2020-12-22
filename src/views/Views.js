@@ -15,14 +15,4 @@ export default class View {
     this.$element.dispatchEvent(newEvent);
     return this;
   }
-
-  hide() {
-    this.$element.style.display = 'none';
-    return this;
-  }
-
-  show() {
-    this.$element.style.display = '';
-    return this;
-  }
 }

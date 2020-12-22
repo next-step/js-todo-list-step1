@@ -2,10 +2,8 @@ import Views from './Views.js';
 
 import { EVENT, CLASS } from '../utils/constants.js';
 
-const tag = `[TodoFilterView]`;
 export default class TodoFilterView extends Views {
   setupFilterTodo() {
-    console.log(`${tag} setupRenderResult()`);
     this.$todoFilters = document.querySelector('.filters');
     this.init(this.$todoFilters);
     this.bindChangeFilterEvent();
