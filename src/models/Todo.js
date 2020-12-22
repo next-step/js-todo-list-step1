@@ -12,6 +12,14 @@ export default class Todo {
     return this.todoItems;
   }
 
+  getActiveTodos() {
+    return this.todoItems.filter((todoItem) => !todoItem.complete);
+  }
+
+  getCompletedTodos() {
+    return this.todoItems.filter((todoItem) => todoItem.complete);
+  }
+
   setTodos(newTodoName) {
     return {
       id: this.getNewId(),

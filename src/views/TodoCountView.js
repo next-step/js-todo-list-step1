@@ -10,6 +10,6 @@ export default class TodoCountView extends Views {
   }
 
   getTodoCountHTML(todoList) {
-    this.$element.querySelector('.todo-count > strong').innerText = todoList.todoItems.length;
+    this.$element.querySelector('.todo-count > strong').innerText = todoList.length;
   }
 }
