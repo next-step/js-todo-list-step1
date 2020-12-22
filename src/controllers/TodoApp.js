@@ -31,6 +31,7 @@ export default class TodoApp {
 
   onSubmitNewTodoHandler(todoItem) {
     this.todoList.addTodoItem(todoItem);
+    this.todoFilterView.addSelectedClass(FILTERS.ALL);
     this.renderTodoList(this.todoList.getTodos());
   }
 
