@@ -20,7 +20,7 @@ export default class Todo {
   setTodos(newTodoName) {
     return {
       id: this.getNewId(),
-      name: newTodoName,
+      value: newTodoName,
       complete: false,
     };
   }
@@ -45,7 +45,7 @@ export default class Todo {
   }
 
   editTodoItem(todoItem) {
-    this.getTodoItemById(todoItem.id).name = todoItem.value;
+    this.getTodoItemById(todoItem.id).value = todoItem.value;
     this.saveTodoItems();
   }
 

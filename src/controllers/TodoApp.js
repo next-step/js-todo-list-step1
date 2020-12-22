@@ -13,25 +13,16 @@ export default class TodoApp {
     new TodoInputView()
       .setupInputSubmit()
       .on('submitInputTodo', (e) => this.onSubmitNewTodoHandler(e.detail));
-
     this.todoListResultView = new TodoListResultView()
       .setupRenderResult(this.todoList.getTodos())
       .on('changeTodoState', (e) => this.onChangeTodoStateHandler(e.detail))
-      .on('removeTodoItem', (e) => this.onRemoveTodoStateHandler(e.detail))
+      .on('removeTodoItem', (e) => this.onRemoveTodoItemHandler(e.detail))
       .on('editTodoItem', (e) => this.onEditTodoItemHandler(e.detail));
-
     this.todoCountView = new TodoCountView().setupTodoCount();
-
     this.todoFilterView = new TodoFilterView()
       .setupFilterTodo()
       .on('filterTodo', (e) => this.onChangeFilterHandler(e.detail));
 
-    this.renderTodoList(this.todoList.getTodos());
-  }
-
-  onSubmitNewTodoHandler(todoItem) {
-    this.todoList.addTodoItem(todoItem);
-    this.todoFilterView.addSelectedClass(FILTERS.ALL);
     this.renderTodoList(this.todoList.getTodos());
   }
 
@@ -40,12 +31,18 @@ export default class TodoApp {
     this.todoCountView.getTodoCountHTML(todoList);
   }
 
+  onSubmitNewTodoHandler(todoItem) {
+    this.todoList.addTodoItem(todoItem);
+    this.todoFilterView.addSelectedClass(FILTERS.ALL);
+    this.renderTodoList(this.todoList.getTodos());
+  }
+
   onChangeTodoStateHandler(todoItemId) {
     this.todoList.changeCompletedState(todoItemId);
     this.renderTodoList(this.todoList.getTodos());
   }
 
-  onRemoveTodoStateHandler(todoItemId) {
+  onRemoveTodoItemHandler(todoItemId) {
     this.todoList.removeTodoItem(todoItemId);
     this.renderTodoList(this.todoList.getTodos());
   }

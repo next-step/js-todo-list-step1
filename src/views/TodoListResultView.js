@@ -24,10 +24,10 @@ export default class TodoListResultView extends Views {
     return `<li id=${todoItem.id} class=${todoItem.complete ? 'completed' : ''}>
         <div class="view">
           <input class="toggle" type="checkbox" ${todoItem.complete ? 'checked' : ''}/>
-          <label class="label">${todoItem.name}</label>
+          <label class="label">${todoItem.value}</label>
           <button class="destroy"></button>
         </div>
-        <input class="edit" value=${todoItem.name} />
+        <input class="edit" value=${todoItem.value} />
       </li>`;
   }
 
@@ -35,14 +35,14 @@ export default class TodoListResultView extends Views {
     this.$element.querySelectorAll('.toggle').forEach((checkbox) =>
       checkbox.addEventListener(EVENT.CLICK, (e) => {
         e.stopPropagation();
-        this.onTodoItemToggleHandler(e.target);
+        this.onToggleTodoItemHandler(e.target);
       })
     );
 
     this.$element.querySelectorAll('.destroy').forEach((deleteBtn) =>
       deleteBtn.addEventListener(EVENT.CLICK, (e) => {
         e.stopPropagation();
-        this.onTodoItemRemoveHandler(e.target);
+        this.onRemoveTodoItemHandler(e.target);
       })
     );
 
@@ -54,12 +54,12 @@ export default class TodoListResultView extends Views {
     );
   }
 
-  onTodoItemToggleHandler(checkboxTag) {
+  onToggleTodoItemHandler(checkboxTag) {
     const targetTodoItemId = checkboxTag.closest('li').id;
     this.emit('changeTodoState', targetTodoItemId);
   }
 
-  onTodoItemRemoveHandler(deleteBtnTag) {
+  onRemoveTodoItemHandler(deleteBtnTag) {
     const targetTodoItemId = deleteBtnTag.closest('li').id;
     this.emit('removeTodoItem', targetTodoItemId);
   }
