@@ -1,0 +1,19 @@
+{
+  "env": {
+    "browser": true
+  },
+  "extends": ["airbnb-base", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "rules": {
+    "no-new": "off",
+    "no-console": "off",
+    "no-alert": "off",
+    "no-return-assign": "off",
+    "import/extensions": "off",
+    "import/named": "off",
+    "import/prefer-default-export": "off",
+    "no-param-reassign": "off",
+    "max-depth": ["error", 1],
+    "max-lines-per-function": ["error", 20]
+  }
+}
