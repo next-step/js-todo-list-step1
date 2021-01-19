@@ -10,12 +10,12 @@ function App() {
   const $todoCount = document.querySelector('.todo-count');
   const $todoFilter = document.querySelector('.filters');
 
-  this.state = localStorage['state'] !== 'undefined'?
-  JSON.parse(localStorage.getItem('state')) :
+  this.state = typeof localStorage['state'] === 'undefined'?
   {
     data: [],
     activeFilterType: FilterOptions.ALL,
-  };
+  } :
+  JSON.parse(localStorage.getItem('state'));
 
   this.addItem = (text) => {
     this.state.data.push({
@@ -40,6 +40,10 @@ function App() {
     this.filterItems(this.state.activeFilterType);
   };
 
+  this.refreshItems = () => {
+    this.filterItems(this.state.activeFilterType);
+  };
+
   this.filterItems = (type) => {
     this.state.activeFilterType = type;
     this.todoList.updateItem(this.getFilteredItem());
@@ -59,6 +63,7 @@ function App() {
   this.todoList = new TodoList($todoList, this.state.data, {
     removeItem: (index) => this.removeItem(index),
     editItem: (index, text) => this.editItem(index, text),
+    refreshItems: () => this.refreshItems(),
   });
   this.todoInput = new TodoInput($todoInput, (text) => {
     this.addItem(text);
