@@ -12,7 +12,7 @@ class NewTodoInput {
   addEventAddNewTodoOnEnter() {
     this.$newTodoInput.addEventListener('keyup', (e) => {
       const todoTitle = e.target.value;
-      if (e.keyCode === 13 && todoTitle.trim() !== '') {
+      if (e.key === 'Enter' && todoTitle.trim() !== '') {
         $todoList.addNewTodoItem(e.target.value);
         e.target.value = '';
       }
