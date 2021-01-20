@@ -9,10 +9,12 @@ export default class App {
     this.$todoList = document.querySelector('#todo-list');
     this.$newTodoTitle = document.querySelector('#new-todo-title');
     this.$count = document.querySelector('strong');
+    this.$filters = document.querySelector('.filters');
 
     this.$newTodoTitle.addEventListener('keyup', this.addTodo);
     this.$todoList.addEventListener('dblclick', this.editTodo);
     this.$todoList.addEventListener('click', this.changeTodo);
+    this.$filters.addEventListener('click', this.filterTodo);
   }
 
   todoTemplate = (todo) => {
@@ -27,12 +29,32 @@ export default class App {
             </li>`;
   };
 
-  loadTodo = () => {
+  loadTodo = (option = ALL) => {
     this.$todoList.innerHTML = '';
-    this.todos.forEach((todo) => {
-      this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
-    });
-    this.$count.innerHTML = this.todos.length;
+    if (option === ALL) {
+      this.todos.forEach((todo) => {
+        this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
+      });
+    } else if (option === ACTIVE) {
+      this.todos.forEach((todo) => {
+        if (!todo.completed) {
+          this.$todoList.insertAdjacentHTML(
+            'beforeend',
+            this.todoTemplate(todo),
+          );
+        }
+      });
+    } else if (option === COMPLETED) {
+      this.todos.forEach((todo) => {
+        if (todo.completed) {
+          this.$todoList.insertAdjacentHTML(
+            'beforeend',
+            this.todoTemplate(todo),
+          );
+        }
+      });
+    }
+    this.$count.innerHTML = this.$todoList.querySelectorAll('li').length;
   };
 
   addTodo = ({ target, key }) => {
@@ -87,6 +109,17 @@ export default class App {
         }
       });
       this.loadTodo();
+    }
+  };
+
+  filterTodo = ({ target }) => {
+    if (target.nodeName === 'A') {
+      target
+        .closest('ul')
+        .querySelectorAll('a')
+        .forEach((target) => target.classList.remove('selected'));
+      target.classList.add('selected');
+      this.loadTodo(target.id);
     }
   };
 }
