@@ -14,6 +14,7 @@
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
     "max-depth": ["error", 1],
-    "max-lines-per-function": ["error", 20]
+    "max-lines-per-function": ["error", 20],
+    "parser": "babel-eslint"
   }
 }
