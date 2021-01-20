@@ -12,6 +12,8 @@ let selectedFilter = null
 
 let todoElementsNameArray = null
 const ToDoElementStorage = window.localStorage
+const ENTER_KEYCODE = 13
+const ESC_KEYCODE = 27
 const KEYWORD = "gTZ5JMw51a"
 
 
@@ -45,8 +47,9 @@ function init(){
 }
 
 function addNewTodo(event){
-    if (event.keyCode != 13) return
+    if (event.keyCode != ENTER_KEYCODE) return
     text = newTodoInput.value
+    newTodoInput.value = ''
     if(todoElementsNameArray.indexOf(text) >= 0){
         alert('That ToDo is already exist!')
         return;
@@ -63,7 +66,6 @@ function addNewTodo(event){
 }
 
 function drawNewTodo(text, isDone=false){
-    newTodoInput.value = ''
     let newTodoElement = document.createElement('li')
     let newTodoElementViewBox = document.createElement('div')
 
@@ -108,8 +110,7 @@ function filterAllViewChange(event){
     }
     filterAll.classList.add('selected')
     
-    elementCount = todoElements.length
-    for(index=0;index<elementCount;index++){
+    for(index=0;index<todoListCount;index++){
         todoElements[index].style.display = ""
     }
 }
@@ -121,8 +122,7 @@ function filterActiveViewChange(event){
     }
     filterActive.classList.add('selected')
     
-    elementCount = todoElements.length
-    for(index=0;index<elementCount;index++){
+    for(index=0;index<todoListCount;index++){
         if(todoElements[index].querySelector('div input').getAttribute('checked') != null){
             todoElements[index].style.display = "none"
         } else {
@@ -138,8 +138,7 @@ function filterCompletedViewChange(event){
     }
     filterCompleted.classList.add('selected')
     
-    elementCount = todoElements.length
-    for(index=0;index<elementCount;index++){
+    for(index=0;index<todoListCount;index++){
         if(todoElements[index].querySelector('div input').getAttribute('checked') == null){
             todoElements[index].style.display = "none"
         } else {
@@ -160,9 +159,9 @@ function removeCurrentTodoElement(event){
 
 function updateTodoEdit(event){
     todoElementLI = event.target.parentNode
-    if(event.keyCode == 27){
+    if(event.keyCode == ESC_KEYCODE){
         todoElementLI.classList.toggle('editing')
-    } else if (event.keyCode == 13){
+    } else if (event.keyCode == ENTER_KEYCODE){
         updatedTodoName = todoElementLI.querySelector('div label').innerText
         status = ToDoElementStorage.getItem(updatedTodoName)
         ToDoElementStorage.removeItem(updatedTodoName)
