@@ -2,7 +2,6 @@ let newTodoInput = null
 let todoList = null
 let todoElements = null
 let todoListCount = 0
-let todoListCountText = null
 let filters = null
 let filterAll = null
 let filterActive = null
@@ -21,7 +20,6 @@ function init(){
     newTodoInput = document.getElementById('new-todo-title')
     todoList = document.getElementById('todo-list')
     todoElements = todoList.children
-    todoListCountText = document.querySelector('span.todo-count strong')
     filters = document.querySelector('ul.filters')
     filterAll = filters.querySelector('li a.all')
     filterActive = filters.querySelector('li a.active')
@@ -48,7 +46,12 @@ function init(){
 
 function addNewTodo(event){
     if (event.keyCode != ENTER_KEYCODE) return
-    text = newTodoInput.value
+    text = newTodoInput.value.trimStart().trimEnd()
+    if(text.length == 0){
+        newTodoInput.focus()
+        return;
+    }
+
     newTodoInput.value = ''
     if(todoElementsNameArray.indexOf(text) >= 0){
         alert('That ToDo is already exist!')
@@ -162,13 +165,29 @@ function updateTodoEdit(event){
     if(event.keyCode == ESC_KEYCODE){
         todoElementLI.classList.toggle('editing')
     } else if (event.keyCode == ENTER_KEYCODE){
-        updatedTodoName = todoElementLI.querySelector('div label').innerText
-        status = ToDoElementStorage.getItem(updatedTodoName)
-        ToDoElementStorage.removeItem(updatedTodoName)
-        ToDoElementStorage.setItem(event.target.value, status)
-        todoElementsNameArray.splice(todoElementsNameArray.indexOf(updatedTodoName), 1, event.target.value)
+        newTodoText = event.target.value.trimStart().trimEnd()
+        updatedTodoText = todoElementLI.querySelector('div label').innerText
+
+        if(newTodoText.length == 0){
+            event.target.focus()
+        }
+        is_dup = false
+        todoElementsNameArray.forEach(element => {
+            if(element == newTodoText){
+                is_dup = true
+            }
+        })
+        if(is_dup){
+            alert('That ToDo is already exist!')
+            return;
+        }
+
+        status = ToDoElementStorage.getItem(updatedTodoText)
+        ToDoElementStorage.removeItem(updatedTodoText)
+        ToDoElementStorage.setItem(newTodoText, status)
+        todoElementsNameArray.splice(todoElementsNameArray.indexOf(updatedTodoText), 1, newTodoText)
         ToDoElementStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
-        todoElementLI.querySelector('div label').innerText = event.target.value
+        todoElementLI.querySelector('div label').innerText = newTodoText
         todoElementLI.classList.toggle('editing')
     }
 }
@@ -179,6 +198,7 @@ function updateView(){
 
 function updateCountText(change=0){
     todoListCount += change
+    todoListCountText = document.querySelector('span.todo-count strong')
     todoListCountText.innerText = todoListCount
 }
 
