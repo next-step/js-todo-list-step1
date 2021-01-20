@@ -5,15 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>이벤트 - TODOS</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script src="application.js"></script>
   </head>
-  <body>
+  <body onload="init()">
     <div class="todoapp">
       <h1>TODOS</h1>
       <input
         id="new-todo-title"
         class="new-todo"
         placeholder="할일을 추가해주세요"
-        autofocus
+        autofocus"
       />
       <main>
         <input class="toggle-all" type="checkbox" />
