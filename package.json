@@ -1,0 +1,26 @@
+{
+  "name": "js-todo-list-step1",
+  "version": "1.0.0",
+  "description": "블랙커피 스터디 레벨1 6기",
+  "main": "index.js",
+  "scripts": {
+    "start": "live-server",
+    "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx,js,jsx}'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hwookim/js-todo-list-step1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hwookim/js-todo-list-step1/issues"
+  },
+  "devDependencies": {
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "^2.2.1"
+  }
+}
