@@ -7,6 +7,7 @@ class TodoList {
 
   init() {
     this.addEventCheckToggle();
+    this.addEventDeleteTodoItem();
   }
 
   addNewTodoItem(taskTitle) {
@@ -17,6 +18,15 @@ class TodoList {
     this.$todoList.addEventListener('change', (e) => {
       const closestLi = e.target.closest('li');
       closestLi.classList.toggle('completed');
+    });
+  }
+
+  addEventDeleteTodoItem() {
+    this.$todoList.addEventListener('click', (e) => {
+      if (e.target.classList.contains('destroy')) {
+        const closestLi = e.target.closest('li');
+        closestLi.remove();
+      }
     });
   }
 }
