@@ -8,6 +8,7 @@ export default class App {
     this.selected = ALL;
     this.$todoList = document.querySelector('#todo-list');
     this.$newTodoTitle = document.querySelector('#new-todo-title');
+    this.$count = document.querySelector('strong');
 
     this.$newTodoTitle.addEventListener('keyup', this.addTodo);
     this.$todoList.addEventListener('dblclick', this.editTodo);
@@ -31,6 +32,7 @@ export default class App {
     this.todos.forEach((todo) => {
       this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
     });
+    this.$count.innerHTML = this.todos.length;
   };
 
   addTodo = ({ target, key }) => {
@@ -43,6 +45,10 @@ export default class App {
       target.value = '';
       this.loadTodo();
     }
+  };
+
+  editItem = ({ target }) => {
+    console.log(target.value);
   };
 
   editTodo = ({ target }) => {
