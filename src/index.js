@@ -3,7 +3,7 @@ import { ALL, ACTIVE, COMPLETED } from './constant/state.js';
 export default class App {
   constructor() {
     this.todos = [
-      { id: String(Date.now()), title: 'dummy data', complete: false },
+      { id: String(Date.now()), title: 'dummy data', completed: false },
     ];
     this.selected = ALL;
     this.$todoList = document.querySelector('#todo-list');
@@ -17,7 +17,8 @@ export default class App {
   todoTemplate = (todo) => {
     return `<li id=${todo.id} class=${todo.completed && 'completed'} >
                 <div class="view">
-                    <input class="toggle" type="checkbox" id=${todo.id} />
+                    <input class="toggle" type="checkbox" 
+                      id=${todo.id} ${todo.completed && 'checked'} />
                     <label class="label">${todo.title}</label>
                     <button class="destroy" id=${todo.id}></button>
                 </div>
@@ -26,7 +27,6 @@ export default class App {
   };
 
   loadTodo = () => {
-    console.log('init');
     this.$todoList.innerHTML = '';
     this.todos.forEach((todo) => {
       this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
@@ -59,11 +59,14 @@ export default class App {
           todo.completed = !todo.completed;
         }
       });
-      console.log(this.todos);
-
       this.loadTodo();
     } else if (target.className === 'destroy') {
-      console.log('삭제');
+      this.todos = this.todos.filter((todo) => {
+        if (todo.id !== target.id) {
+          return todo;
+        }
+      });
+      this.loadTodo();
     }
   };
 }
