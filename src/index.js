@@ -2,9 +2,8 @@ import { ALL, ACTIVE, COMPLETED } from './constant/state.js';
 
 export default class App {
   constructor() {
-    this.todos = [
-      { id: String(Date.now()), title: 'dummy data', completed: false },
-    ];
+    this.todos = JSON.parse(localStorage.getItem('todos')) ?? [];
+
     this.selected = ALL;
     this.$todoList = document.querySelector('#todo-list');
     this.$newTodoTitle = document.querySelector('#new-todo-title');
@@ -65,6 +64,7 @@ export default class App {
         completed: false,
       });
       target.value = '';
+      localStorage.setItem('todos', JSON.stringify(this.todos));
       this.loadTodo();
     }
   };
@@ -76,7 +76,7 @@ export default class App {
           todo.title = value;
         }
       });
-      console.log(this.todos);
+      localStorage.setItem('todos', JSON.stringify(this.todos));
       this.loadTodo();
     };
 
@@ -101,6 +101,7 @@ export default class App {
           todo.completed = !todo.completed;
         }
       });
+      localStorage.setItem('todos', JSON.stringify(this.todos));
       this.loadTodo();
     } else if (target.className === 'destroy') {
       this.todos = this.todos.filter((todo) => {
@@ -108,6 +109,7 @@ export default class App {
           return todo;
         }
       });
+      localStorage.setItem('todos', JSON.stringify(this.todos));
       this.loadTodo();
     }
   };
