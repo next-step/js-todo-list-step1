@@ -47,14 +47,28 @@ export default class App {
     }
   };
 
-  editItem = ({ target }) => {
-    console.log(target.value);
-  };
-
   editTodo = ({ target }) => {
+    const updatedTodoItem = (id, value) => {
+      this.todos.map((todo) => {
+        if (todo.id === id) {
+          todo.title = value;
+        }
+      });
+      console.log(this.todos);
+      this.loadTodo();
+    };
+
+    const edit = ({ target, key }) => {
+      if (key === 'Enter') {
+        updatedTodoItem(target.closest('li').id, target.value);
+      } else if (key === 'Escape') {
+        target.closest('li').classList.remove('editing');
+      }
+    };
+
     if (target.className === 'label') {
-      console.log(target.closest('li'));
       target.closest('li').classList.add('editing');
+      target.closest('li').addEventListener('keyup', edit);
     }
   };
 
