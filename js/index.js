@@ -33,6 +33,7 @@ function AddNewList(e) {  // 새로운 항목을 추가하는 기능
         alert("불필요한 공백을 제거해주세요!"); 
     }
   }
+  renewStrong();
 }
 
 function workCheck(e) {  // 등록된 항목들을 체크하거나 푸는 기능 
@@ -223,8 +224,6 @@ function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목
   li.appendChild(div);
   li.appendChild(inputforChange);
   todoList.appendChild(li);
-
-  renewStrong();
 
   return li;
 }
