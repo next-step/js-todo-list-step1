@@ -1,7 +1,7 @@
-const renderTodoItem = ({ id, value, done }) => `
-  <li class="${done ? "completed" : ""}">
+const renderTodoItem = ({ id, value, completed }) => `
+  <li class="${completed ? "completed" : ""}">
     <div class="view" data-item-id="${id}">
-      <input class="toggle" type="checkbox" ${done ? "checked" : ""}>
+      <input class="toggle" type="checkbox" ${completed ? "checked" : ""}>
       <label class="label">${value}</label>
       <button class="destroy"></button>
     </div>

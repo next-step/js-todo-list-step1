@@ -20,7 +20,7 @@ export default function TodoApp(appEl, items) {
 
   this.render = function () {
     const filtered = this.items.filter(
-      ({ done }) => this.filter === null || done === this.filter
+      ({ completed }) => this.filter === null || completed === this.filter
     );
 
     this.todoList.render(filtered);
