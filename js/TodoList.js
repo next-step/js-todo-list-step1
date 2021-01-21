@@ -1,10 +1,12 @@
-const renderTodoItem = ({ id, value, done }) => `<li>
+const renderTodoItem = ({ id, value, done }) => `
+  <li class="${done ? "completed" : ""}">
     <div class="view" data-item-id="${id}">
-        <input class="toggle" type="checkbox" ${done ? "checked" : ""}>
-        <label class="label">${value}</label>
-        <button class="destroy"></button>
+      <input class="toggle" type="checkbox" ${done ? "checked" : ""}>
+      <label class="label">${value}</label>
+      <button class="destroy"></button>
     </div>
-</li>`;
+  </li>
+`;
 
 export default function TodoList(listEl, todoApp) {
   this.render = function (items) {
