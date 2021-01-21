@@ -37,6 +37,13 @@ function workCheck(e) {  // 등록된 항목들을 체크하거나 푸는 기능
   }
 }
 
+function workDelete(e) {  // 등록된 항목들을 제거하는 기능
+  let li = e.target.parentNode.parentNode;
+  console.log(li);
+  console.log(li.parentNode);
+  li.parentNode.removeChild(li);
+}
+
 
 
 function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목을 생성하는 기능
@@ -59,6 +66,7 @@ function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목
 
   let button = document.createElement("button");
   button.classList.add("destroy");
+  button.addEventListener("click", workDelete);
 
   div.appendChild(checkbox);
   div.appendChild(label);
