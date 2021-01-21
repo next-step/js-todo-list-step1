@@ -51,19 +51,18 @@ function init(){
 // 사용자 입력으로 새로운 할 일이 추가되는 함수
 function addNewTodo(event){
     // 기본적인 예외 처리(공백 문자열, 중복 할 일 등)
-    if (event.keyCode != ENTER_KEYCODE) return
     text = newTodoInput.value.trimStart().trimEnd()
-    if(text.length == 0){
+    if(event.keyCode != ENTER_KEYCODE || text.length == 0){
         newTodoInput.focus()
         return;
     }
 
-    newTodoInput.value = ''
     if(todoElementsNameArray.indexOf(text) >= 0){
         alert('That ToDo is already exist!')
         return;
     }
 
+    newTodoInput.value = ''
     // 별 문제가 없다면 입력된 내용으로 새로운 할 일을 추가.
     drawNewTodo({'text':text,'isDone':'false'})
     // 브라우저 localStorage에도 해당 할 일 저장 후 현재 선택된 필터에 맞게 가시성 조절.
