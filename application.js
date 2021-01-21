@@ -11,8 +11,6 @@ let filterContainer = null
 let selectedFilter = null
 // 자주 사용되는 객체, 상수값을 저장해두기 위한 변수
 let todoElementsNameArray = null
-const ENTER_KEYCODE = 13
-const ESC_KEYCODE = 27
 const KEYWORD = "gTZ5JMw51a"
 
 // 웹페이지 로드 시 실행되는 함수
@@ -26,7 +24,7 @@ function init(){
     filterActive = filters.querySelector('li a.active')
     filterCompleted = filters.querySelector('li a.completed')
     // 해당 변수들에 대한 적절한 이벤트 처리기 등록
-    newTodoInput.addEventListener('keydown', addNewTodo)
+    newTodoInput.addEventListener('keyup', addNewTodo)
     filterAll.addEventListener('click', filterAllViewChange)
     filterActive.addEventListener('click', filterActiveViewChange)
     filterCompleted.addEventListener('click', filterCompletedViewChange)
@@ -51,7 +49,7 @@ function init(){
 function addNewTodo(event){
     // 기본적인 예외 처리(공백 문자열, 중복 할 일 등)
     text = newTodoInput.value.trimStart().trimEnd()
-    if(event.keyCode != ENTER_KEYCODE || text.length == 0){
+    if(event.key != 'Enter' || text.length == 0){
         newTodoInput.focus()
         return;
     }
@@ -97,7 +95,7 @@ function drawNewTodo(todo){
                 <label class="label" ondblclick="toggleTodoElementMode(event)">${todo.text}</label>
                 <button class="destroy" onclick="removeCurrentTodoElement(event)"></button>
             </div>
-            <input class="edit" onkeydown="updateTodoEdit(event)" value=${todo.text}></input>
+            <input class="edit" onkeyup="updateTodoEdit(event)" value=${todo.text}></input>
         </li>
     `
     todoList.innerHTML += newTodoHTMLElement
@@ -169,9 +167,9 @@ function removeCurrentTodoElement(event){
 function updateTodoEdit(event){
     todoElementLI = event.target.parentNode
     // ESC를 눌렀다면 편집 모드 종료, Enter를 눌렀다면 편집 적용.
-    if(event.keyCode == ESC_KEYCODE){
+    if(event.key == 'Escape'){
         todoElementLI.classList.toggle('editing')
-    } else if (event.keyCode == ENTER_KEYCODE){
+    } else if (event.key == 'Enter'){
         // 각각 변경된 할 일 텍스트, 원래 할 일 텍스트.
         newTodoText = event.target.value.trimStart().trimEnd()
         updatedTodoText = todoElementLI.querySelector('div label').innerText
