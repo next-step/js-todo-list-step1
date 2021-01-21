@@ -26,6 +26,17 @@ function AddNewList(e) {  // 새로운 항목을 추가하는 기능
   }
 }
 
+function workCheck(e) {  // 등록된 항목들을 체크하거나 푸는 기능 
+  let li = e.target.parentNode.parentNode;
+  if (e.target.checked) {
+    e.target.setAttribute("checked", "");
+    li.classList.add("completed");
+  } else {
+    e.target.removeAttribute("checked");
+    li.classList.remove("completed");
+  }
+}
+
 
 
 function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목을 생성하는 기능
@@ -36,6 +47,7 @@ function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목
   let checkbox = document.createElement("input");
   checkbox.classList.add("toggle");
   checkbox.setAttribute("type", "checkbox");
+  checkbox.addEventListener("click", workCheck);
 
   let label = document.createElement("label");
   label.classList.add("label");
