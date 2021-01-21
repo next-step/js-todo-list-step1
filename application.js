@@ -12,6 +12,8 @@ let selectedFilter = null
 let todoElementsNameArray = null
 const KEYWORD = "gTZ5JMw51a"
 
+window.onload = () => init()
+
 // 웹페이지 로드 시 실행되는 함수
 function init(){
     // 초기화되지 않은 변수들을 HTML 요소로 초기화
