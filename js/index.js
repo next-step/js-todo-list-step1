@@ -3,13 +3,16 @@ var todoList = document.getElementById("todo-list"); // 작성한 할 일이 삽
 var viewAllList = document.querySelector(".all"); // 전체 보기 버튼
 var viewTodoList = document.querySelector(".active"); // 해야할 일 보기 버튼
 var viewCompleteList = document.querySelector(".completed"); // 완료한 일 보기 버튼
-
+ 
 function init() {   // 페이지 로드 시 이벤트 리스너 부착
   getWork.addEventListener("keypress", AddNewList);
 
   viewAllList.addEventListener("click", viewAll);
   viewTodoList.addEventListener("click", viewTodo);
   viewCompleteList.addEventListener("click", viewDone);
+
+  window.addEventListener("beforeunload", saveLocalStorage);
+  window.addEventListener("DOMContentLoaded", loadLocalStorage);
 }
 
 function AddNewList(e) {  // 새로운 항목을 추가하는 기능 
@@ -41,6 +44,8 @@ function workCheck(e) {  // 등록된 항목들을 체크하거나 푸는 기능
     e.target.removeAttribute("checked");
     li.classList.remove("completed");
   }
+  if (/(active)/.exec(window.location.href)) viewTodo();
+  else if (/(completed)/.exec(window.location.href)) viewDone();
 }
 
 function workDelete(e) {  // 등록된 항목들을 제거하는 기능
@@ -48,7 +53,6 @@ function workDelete(e) {  // 등록된 항목들을 제거하는 기능
   console.log(li);
   console.log(li.parentNode);
   li.parentNode.removeChild(li);
-
   renewStrong();
 }
 
@@ -147,6 +151,47 @@ function reflectView() {    // 현재 누른 버튼에 대한 뷰를 반영하�
   renewStrong();
 }
 
+function saveLocalStorage() {   // 페이지 종료 시 현재 리스트를 저장하는 기능
+  let list = document.querySelectorAll("#todo-list>li");
+  let listArray = [];
+
+  for (let i = 0; i < list.length; i++) {
+    let dataset = { liClass: "", Checked: "", label: "" };
+    if (list[i].classList.contains("completed")) {
+      dataset.liClass = "completed";
+      dataset.Checked = "checked";
+    }
+    dataset.label = list[i].firstChild.childNodes[1].innerText;
+    listArray.push(dataset);
+  }
+
+  let jsonArray = JSON.stringify(listArray);
+
+  localStorage.setItem("json", jsonArray);
+}
+
+function loadLocalStorage() {   // 페이지 실행 시 현재 리스트를 불러오는 기능
+  var load = JSON.parse(localStorage.getItem("json"));
+  for (let i in load) {
+    getLocalStorageList(load[i]);
+  }
+  if (/(active)/.exec(window.location.href)) viewTodo();
+  else if (/(completed)/.exec(window.location.href)) viewDone();
+  else viewAll();
+  
+}
+
+function getLocalStorageList(e) {   // 페이지 실행 시 현재 리스트를 불러오는 기능
+  let liClass = e["liClass"];
+  let Checked = e["Checked"];
+  let Label = e["label"];
+
+  let li = listAssemble(Label);
+  let checkbox = li.firstChild.firstChild;
+
+  if (Checked === "checked") checkbox.setAttribute("checked", "");
+  if (liClass === "completed") li.classList.add("completed");
+}
 
 function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목을 생성하는 기능
   let li = document.createElement("li");
