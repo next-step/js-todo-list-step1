@@ -44,6 +44,30 @@ function workDelete(e) {  // 등록된 항목들을 제거하는 기능
   li.parentNode.removeChild(li);
 }
 
+function workContentCopy(e) {   // 등록된 항목의 수정을 위해 내용을 입력칸에 복사하는 기능
+  let li = e.target.parentNode.parentNode;
+  li.classList.add("editing");
+  let chginput = e.target.parentNode.nextSibling;
+  chginput.value = e.target.innerText;
+}
+
+function workUpdate(e) {      // 등록된 항목을 수정하는 기능
+  let li = e.target.parentNode;
+  if (e.keyCode == 27) {
+    li.classList.remove("editing");
+  }
+  if (e.keyCode == 13) {
+    if (e.target.value !== "" && !/^\s+|\s+$/g.exec(e.target.value)) {
+      let label = e.target.previousSibling.childNodes[1];
+      label.innerText = e.target.value;
+      e.target.value = "";
+      li.classList.remove("editing");
+    } else {
+      alert("불필요한 공백을 제거해주세요!");
+    }
+  }
+}
+
 
 
 function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목을 생성하는 기능
@@ -59,10 +83,12 @@ function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목
   let label = document.createElement("label");
   label.classList.add("label");
   label.innerText = content;
+  label.addEventListener("dblclick", workContentCopy);
 
   let inputforChange = document.createElement("input");
   inputforChange.classList.add("edit");
   inputforChange.setAttribute("value", "완료된 타이틀");
+  inputforChange.addEventListener("keydown", workUpdate);
 
   let button = document.createElement("button");
   button.classList.add("destroy");
