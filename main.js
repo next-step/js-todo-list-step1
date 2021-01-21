@@ -28,6 +28,32 @@ function createTodoItem(inputVal) {
   $label.innerText = inputVal;
 
   $button.classList.add("destroy");
+  
+  $button.addEventListener('click', ()=>{
+      const $ul2 = document.querySelector('#todo-list');
+      $ul2.removeChild($li);
+  })
+
+  $label.addEventListener('dblclick', () => {
+        console.log('dbclick')
+        $li.classList.toggle('editing');
+  })
+
+    $inputOther.addEventListener('keydown', (e) => {
+        if (e.keyCode === 13) {
+            console.log('enter');
+            let tempVal = e.target.value;
+            $label.innerText = tempVal;
+            $li.classList.toggle('editing');
+        } else if (e.keyCode === 27) {
+            console.log('esc')
+            $li.classList.toggle('editing');
+        }
+    })
+
+
+
+
   $div.classList.add("view");
 
   $input.type = "checkbox";
