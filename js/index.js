@@ -42,6 +42,8 @@ function workDelete(e) {  // 등록된 항목들을 제거하는 기능
   console.log(li);
   console.log(li.parentNode);
   li.parentNode.removeChild(li);
+
+  renewStrong();
 }
 
 function workContentCopy(e) {   // 등록된 항목의 수정을 위해 내용을 입력칸에 복사하는 기능
@@ -66,6 +68,12 @@ function workUpdate(e) {      // 등록된 항목을 수정하는 기능
       alert("불필요한 공백을 제거해주세요!");
     }
   }
+}
+
+function renewStrong() {      // 리스트 하단의 총 목록 갯수를 갱신하는 기능
+  let list = document.querySelectorAll("#todo-list>li.selected");
+  let items = document.querySelector("strong");
+  items.innerText = list.length;
 }
 
 
@@ -100,6 +108,8 @@ function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목
   li.appendChild(div);
   li.appendChild(inputforChange);
   todoList.appendChild(li);
+
+  renewStrong();
 
   return li;
 }
