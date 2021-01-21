@@ -8,12 +8,22 @@ export default function TodoApp(appEl, items) {
   const countContainerEl = appEl.querySelector(".count-container");
 
   this.items = items;
+  this.filter = null;
   this.todoInput = new TodoInput(inputEl, this);
   this.todoList = new TodoList(listEl, this);
   this.todoCountContainer = new TodoCountContainer(countContainerEl, this);
 
+  this.setFilter = function (filter = null) {
+    this.filter = filter;
+    this.render();
+  };
+
   this.render = function () {
-    this.todoList.render(this.items);
-    this.todoCountContainer.render(this.items);
+    const filtered = this.items.filter(
+      ({ done }) => this.filter === null || done === this.filter
+    );
+
+    this.todoList.render(filtered);
+    this.todoCountContainer.render(filtered);
   };
 }
