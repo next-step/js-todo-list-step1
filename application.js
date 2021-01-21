@@ -2,7 +2,6 @@
 let newTodoInput = null
 let todoList = null
 let todoElements = null
-let todoListCount = 0
 let filters = null
 let filterAll = null
 let filterActive = null
@@ -99,9 +98,10 @@ function drawNewTodo(todo){
         </li>
     `
     todoList.innerHTML += newTodoHTMLElement
-    updateCountText(1)
+    updateCountText()
     if(todo.isDone === 'true'){
-        todoList.children[todoList.children.length - 1].querySelector('li div input.toggle').dispatchEvent(new Event('click'))
+        // todoList.children[todoList.children.length - 1].querySelector('li div input.toggle').dispatchEvent(new Event('click'))
+        todoList.querySelector('li:last-child div input.toggle').dispatchEvent(new Event('click'))
     }
 }
 
@@ -113,9 +113,11 @@ function filterAllViewChange(event){
     }
     filterAll.classList.add('selected')
     // display 속성을 조절하여 가시성 토글. 다른 필터링도 동일.
+    todoListCount = todoList.querySelectorAll('li').length
     for(index=0;index<todoListCount;index++){
         todoElements[index].style.display = ""
     }
+    updateCountText()
 }
 // 해야할 일 필터링
 function filterActiveViewChange(event){
@@ -125,6 +127,7 @@ function filterActiveViewChange(event){
     }
     filterActive.classList.add('selected')
     
+    todoListCount = todoList.querySelectorAll('li').length
     for(index=0;index<todoListCount;index++){
         if(todoElements[index].querySelector('div input').getAttribute('checked') != null){
             todoElements[index].style.display = "none"
@@ -132,6 +135,7 @@ function filterActiveViewChange(event){
             todoElements[index].style.display = ""
         }
     }
+    updateCountText()
 }
 // 완료한 일 필터링
 function filterCompletedViewChange(event){
@@ -140,7 +144,8 @@ function filterCompletedViewChange(event){
         filterContainer[i].classList.remove('selected')
     }
     filterCompleted.classList.add('selected')
-    
+
+    todoListCount = todoList.querySelectorAll('li').length
     for(index=0;index<todoListCount;index++){
         if(todoElements[index].querySelector('div input').getAttribute('checked') == null){
             todoElements[index].style.display = "none"
@@ -148,6 +153,7 @@ function filterCompletedViewChange(event){
             todoElements[index].style.display = ""
         }
     }
+    updateCountText()
 }
 
 // 할 일 삭제 이벤트 처리기.
@@ -159,8 +165,9 @@ function removeCurrentTodoElement(event){
     localStorage.removeItem(removedTodoName)
     localStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
     // 실제로 HTML 요소를 삭제하고 카운터 업데이트.
-    event.target.parentNode.parentNode.remove()
-    updateCountText(-1)
+    // event.target.parentNode.parentNode.remove()
+    event.target.closest('li').remove()
+    updateCountText()
 }
 
 // 할 일 변경 이벤트 처리기.
@@ -208,10 +215,18 @@ function updateView(){
 }
 
 // 할 일이 몇 개 있는지 출력하는 텍스트(총 n 개)를 업데이트하는 로직.
-function updateCountText(change=0){
-    todoListCount += change
+function updateCountText(){
     todoListCountText = document.querySelector('span.todo-count strong')
-    todoListCountText.innerText = todoListCount
+    switch(selectedFilter){
+        case filterAll:
+            todoListCountText.innerText = todoList.querySelectorAll('li').length
+            break
+        case filterActive:
+            todoListCountText.innerText = todoList.querySelectorAll('li').length - todoList.querySelectorAll('li.completed').length
+            break
+        case filterCompleted:
+            todoListCountText.innerText = todoList.querySelectorAll('li.completed').length
+    }
 }
 
 // 할 일을 더블클릭 했을 때 편집 모드 토글 로직.
