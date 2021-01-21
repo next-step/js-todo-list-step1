@@ -30,6 +30,7 @@ function AddNewList(e) {  // 새로운 항목을 추가하는 기능
       }
     }
     else{
+
         alert("불필요한 공백을 제거해주세요!"); 
     }
   }
@@ -50,11 +51,13 @@ function workCheck(e) {  // 등록된 항목들을 체크하거나 푸는 기능
 }
 
 function workDelete(e) {  // 등록된 항목들을 제거하는 기능
-  let li = e.target.parentNode.parentNode;
+  if(confirm("정말 삭제하시겠습니까?")){
+    let li = e.target.parentNode.parentNode;
   console.log(li);
   console.log(li.parentNode);
   li.parentNode.removeChild(li);
   renewStrong();
+  }
 }
 
 function workContentCopy(e) {   // 등록된 항목의 수정을 위해 내용을 입력칸에 복사하는 기능
