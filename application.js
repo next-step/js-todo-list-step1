@@ -106,6 +106,7 @@ function drawNewTodo(text, isDone=false){
     let newTodoElement = document.createElement('li') 
     // 할 일 항목의 완료 여부, 내용, 삭제 버튼이 담기는 <div>
     let newTodoElementViewBox = document.createElement('div') 
+    newTodoElementViewBox.className = 'view'
 
     // 할 일 항목의 완료 여부를 조작하는 <input>
     let newTodoElementInput = document.createElement('input')
