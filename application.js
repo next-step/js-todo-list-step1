@@ -43,7 +43,7 @@ function init(){
     todoElementsNameArray = JSON.parse(todos)
     // 저장된 할 일 항목 각각에 대해 할일 추가 로직 수행.
     todoElementsNameArray.forEach(elementName =>
-        drawNewTodo(elementName, localStorage.getItem(elementName)=='true')
+        drawNewTodo({'text':elementName, 'isDone':localStorage.getItem(elementName)})
     )
     
 }
@@ -65,7 +65,7 @@ function addNewTodo(event){
     }
 
     // 별 문제가 없다면 입력된 내용으로 새로운 할 일을 추가.
-    drawNewTodo(text)
+    drawNewTodo({'text':text,'isDone':'false'})
     // 브라우저 localStorage에도 해당 할 일 저장 후 현재 선택된 필터에 맞게 가시성 조절.
     ToDoElementStorage.setItem(text, false)
     selectedFilter.dispatchEvent(new Event('click'))
@@ -91,60 +91,21 @@ function addNewTodo(event){
 }
 
 // 할 일 추가 시 실제로 HTML 요소를 그리는 함수
-/**
- * <li>
- *   <div>
- *     <input class="toggle" type="checkbox">
- *     <label class="label">Sample Todos</label>
- *     <button class="destroy"></button>
- *   </div>
- *   <input class="edit">
- * </li>
- */
-function drawNewTodo(text, isDone=false){
-    // 각각의 할 일 항목이 담기는 <li>
-    let newTodoElement = document.createElement('li') 
-    // 할 일 항목의 완료 여부, 내용, 삭제 버튼이 담기는 <div>
-    let newTodoElementViewBox = document.createElement('div') 
-    newTodoElementViewBox.className = 'view'
-
-    // 할 일 항목의 완료 여부를 조작하는 <input>
-    let newTodoElementInput = document.createElement('input')
-    newTodoElementInput.className = 'toggle'
-    newTodoElementInput.type = 'checkbox'
-    newTodoElementInput.addEventListener('click', toggleTodoElementStatus)
-
-    // 할 일 항목의 내용을 보여주는 <label>
-    let newTodoElementLabel = document.createElement('label')
-    newTodoElementLabel.className = 'label'
-    newTodoElementLabel.textContent = text
-    newTodoElementLabel.addEventListener('dblclick', toggleTodoElementMode)
-
-    // 할 일 항목을 삭제하는 <button>
-    let newTodoElementButton = document.createElement('button')
-    newTodoElementButton.className = 'destroy'
-    newTodoElementButton.addEventListener('click', removeCurrentTodoElement)
-
-    // <input>, <label>, <button>은 <div> 내부에 포함되어야 함.
-    newTodoElementViewBox.appendChild(newTodoElementInput)
-    newTodoElementViewBox.appendChild(newTodoElementLabel)
-    newTodoElementViewBox.appendChild(newTodoElementButton)
-
-    // 할 일 항목을 수정할 때 나타나는 <input>
-    let newTodoElementEditInput = document.createElement('input')
-    newTodoElementEditInput.className = 'edit'
-    newTodoElementEditInput.value = text
-    newTodoElementEditInput.addEventListener('keydown', updateTodoEdit)
-
-    // 수정 <input>과 정보 <div>는 모두 <li> 내부에 포함되어야 함.
-    newTodoElement.appendChild(newTodoElementViewBox)
-    newTodoElement.appendChild(newTodoElementEditInput)
-    
-    // <li>를 <li>들이 담기는 <ul>에 추가. 카운터 업데이트. 완료 여부에 따라 상태 전환.
-    todoList.append(newTodoElement)
+function drawNewTodo(todo){
+    newTodoHTMLElement = `
+        <li>
+            <div class="view">
+                <input class="toggle" type="checkbox" onclick="toggleTodoElementStatus(event)">
+                <label class="label" ondblclick="toggleTodoElementMode(event)">${todo.text}</label>
+                <button class="destroy" onclick="removeCurrentTodoElement(event)"></button>
+            </div>
+            <input class="edit" onkeydown="updateTodoEdit(event)" value=${todo.text}></input>
+        </li>
+    `
+    todoList.innerHTML += newTodoHTMLElement
     updateCountText(1)
-    if(isDone){
-        newTodoElementInput.dispatchEvent(new Event('click'))
+    if(todo.isDone === 'true'){
+        todoList.children[todoList.children.length - 1].querySelector('li div input.toggle').dispatchEvent(new Event('click'))
     }
 }
 
