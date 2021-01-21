@@ -1,9 +1,15 @@
 var getWork = document.getElementById("new-todo-title"); // 할 일을 적는 input 태그
 var todoList = document.getElementById("todo-list"); // 작성한 할 일이 삽입되는 ul 태그
+var viewAllList = document.querySelector(".all"); // 전체 보기 버튼
+var viewTodoList = document.querySelector(".active"); // 해야할 일 보기 버튼
+var viewCompleteList = document.querySelector(".completed"); // 완료한 일 보기 버튼
 
 function init() {   // 페이지 로드 시 이벤트 리스너 부착
   getWork.addEventListener("keypress", AddNewList);
 
+  viewAllList.addEventListener("click", viewAll);
+  viewTodoList.addEventListener("click", viewTodo);
+  viewCompleteList.addEventListener("click", viewDone);
 }
 
 function AddNewList(e) {  // 새로운 항목을 추가하는 기능 
@@ -76,6 +82,70 @@ function renewStrong() {      // 리스트 하단의 총 목록 갯수를 갱신
   items.innerText = list.length;
 }
 
+function viewAll() {    // "전체보기" 버튼 클릭 시의 기능
+  let list = document.querySelectorAll("#todo-list>li");
+  for (let i = 0; i < list.length; i++) {
+    list[i].classList.add("selected");
+  }
+  changeBox(viewAllList);
+  reflectView();
+}
+
+function viewTodo() {     // "해야할 일" 버튼 클릭 시의 기능
+  let list = document.querySelectorAll("#todo-list>li");
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].firstChild.firstChild.hasAttribute("checked")) {
+      list[i].classList.remove("selected");
+    } else {
+      list[i].classList.add("selected");
+    }
+  }
+  changeBox(viewTodoList);
+  reflectView();
+}
+
+function viewDone() {       // "완료한 일" 버튼 클릭 시의 기능
+  let list = document.querySelectorAll("#todo-list>li");
+  for (let i = 0; i < list.length; i++) {
+    if (!list[i].firstChild.firstChild.hasAttribute("checked")) {
+      list[i].classList.remove("selected");
+    } else {
+      list[i].classList.add("selected");
+    }
+  }
+  changeBox(viewCompleteList);
+  reflectView();
+}
+
+function changeBox(box) {   // 선택한 버튼을 표시하는 기능
+  console.log(box);
+  if (box.classList.contains("all")) {
+    viewAllList.classList.add("selected");
+    viewTodoList.classList.remove("selected");
+    viewCompleteList.classList.remove("selected");
+  } else if (box.classList.contains("active")) {
+    viewAllList.classList.remove("selected");
+    viewTodoList.classList.add("selected");
+    viewCompleteList.classList.remove("selected");
+  } else if (box.classList.contains("completed")) {
+    viewAllList.classList.remove("selected");
+    viewTodoList.classList.remove("selected");
+    viewCompleteList.classList.add("selected");
+  }
+}
+
+function reflectView() {    // 현재 누른 버튼에 대한 뷰를 반영하는 기능
+  let list = document.querySelectorAll("#todo-list>li");
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].classList.contains("selected")) {
+      list[i].style.display = "block";
+    } else {
+      list[i].style.display = "none";
+    }
+  }
+  renewStrong();
+}
 
 
 function listAssemble(content) {  // 인자로 받은 텍스트에 대한 항목을 생성하는 기능
