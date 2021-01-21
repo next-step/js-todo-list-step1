@@ -11,7 +11,6 @@ let filterContainer = null
 let selectedFilter = null
 // 자주 사용되는 객체, 상수값을 저장해두기 위한 변수
 let todoElementsNameArray = null
-const ToDoElementStorage = window.localStorage
 const ENTER_KEYCODE = 13
 const ESC_KEYCODE = 27
 const KEYWORD = "gTZ5JMw51a"
@@ -35,10 +34,10 @@ function init(){
     selectedFilter = filterAll
 
     // 저장된 할 일 항목이 있는지 확인, 있다면 불러오고 없다면 초기화.
-    todos = ToDoElementStorage.getItem(KEYWORD)
+    todos = localStorage.getItem(KEYWORD)
     if(todos == null){
         todos = JSON.stringify([])
-        ToDoElementStorage.setItem(KEYWORD, todos)
+        localStorage.setItem(KEYWORD, todos)
     }
     todoElementsNameArray = JSON.parse(todos)
     // 저장된 할 일 항목 각각에 대해 할일 추가 로직 수행.
@@ -66,11 +65,11 @@ function addNewTodo(event){
     // 별 문제가 없다면 입력된 내용으로 새로운 할 일을 추가.
     drawNewTodo({'text':text,'isDone':'false'})
     // 브라우저 localStorage에도 해당 할 일 저장 후 현재 선택된 필터에 맞게 가시성 조절.
-    ToDoElementStorage.setItem(text, false)
+    localStorage.setItem(text, false)
     selectedFilter.dispatchEvent(new Event('click'))
     // 내부적으로 유지하고 있는 할 일 리스트에도 저장 후 이 리스트 역시 localStorage에 저장.
     todoElementsNameArray.push(text)
-    ToDoElementStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
+    localStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
     /**
      * 왜 localStorage에도 저장하고 할 일 리스트에도 저장 후 다시 리스트를 localStorage에도 저장하는가?
      * --> 현재 localStorage에는 다음과 같은 항목들이 저장됨.
@@ -159,8 +158,8 @@ function removeCurrentTodoElement(event){
     removedTodoName = event.target.parentNode.querySelector('label').innerText
     todoElementsNameArray.splice(todoElementsNameArray.indexOf(removedTodoName), 1)
     // localStorage에 저장된 할 일 데이터를 지우고 할 일 목록을 업데이트.
-    ToDoElementStorage.removeItem(removedTodoName)
-    ToDoElementStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
+    localStorage.removeItem(removedTodoName)
+    localStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
     // 실제로 HTML 요소를 삭제하고 카운터 업데이트.
     event.target.parentNode.parentNode.remove()
     updateCountText(-1)
@@ -193,13 +192,13 @@ function updateTodoEdit(event){
         }
 
         // localStorage에서 해당 할 일의 완료 여부를 가져와서 따로 저장 후 해당 할 일 삭제.
-        status = ToDoElementStorage.getItem(updatedTodoText)
-        ToDoElementStorage.removeItem(updatedTodoText)
+        status = localStorage.getItem(updatedTodoText)
+        localStorage.removeItem(updatedTodoText)
         // localStorage에 변경된 할 일의 텍스트로 새로운 항목 저장. 위에서 따로 저장해둔 완료 여부를 적용.
-        ToDoElementStorage.setItem(newTodoText, status)
+        localStorage.setItem(newTodoText, status)
         // 할 일 목록에서도 변경사항 적용 및 localStorage에 반영.
         todoElementsNameArray.splice(todoElementsNameArray.indexOf(updatedTodoText), 1, newTodoText)
-        ToDoElementStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
+        localStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
         // HTML 요소에서도 변경사항 적용.
         todoElementLI.querySelector('div label').innerText = newTodoText
         todoElementLI.classList.toggle('editing')
@@ -229,10 +228,10 @@ function toggleTodoElementStatus(event){
     todoElementLI = event.target.parentNode.parentNode
     if (isChecked == null){
         event.target.setAttribute('checked', '')
-        ToDoElementStorage.setItem(todoElementLI.querySelector('div label').innerText, true)
+        localStorage.setItem(todoElementLI.querySelector('div label').innerText, true)
     } else {
         event.target.removeAttribute('checked', '')
-        ToDoElementStorage.setItem(todoElementLI.querySelector('div label').innerText, false)
+        localStorage.setItem(todoElementLI.querySelector('div label').innerText, false)
     }
     todoElementLI.classList.toggle('completed')
     selectedFilter.dispatchEvent(new Event('click'))
