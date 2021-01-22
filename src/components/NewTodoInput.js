@@ -1,4 +1,4 @@
-import $todoList from './TodoList.js';
+import $todoList from './TodoList.js.js';
 
 class NewTodoInput {
   constructor() {
