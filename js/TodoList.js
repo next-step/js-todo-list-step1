@@ -33,6 +33,12 @@ export default function TodoList(listEl, todoApp) {
     todoApp.setEditingId();
   };
 
+  this.updateValue = (value) => {
+    const item = todoApp.getItem(todoApp.editingId);
+    todoApp.updateItem({ ...item, value });
+    this.convertToViewer();
+  };
+
   this.render = (items) => {
     listEl.innerHTML = items
       .map((item) => renderTodoItem(item, todoApp.editingId))
@@ -60,5 +66,12 @@ export default function TodoList(listEl, todoApp) {
 
   listEl.addEventListener("focusout", (event) => {
     this.convertToViewer();
+  });
+
+  listEl.addEventListener("keypress", (event) => {
+    const value = event.target.value.trimEnd();
+    if (event.code === "Enter" && value) {
+      this.updateValue(value);
+    }
   });
 }
