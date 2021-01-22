@@ -45,6 +45,13 @@ export class App {
                     this.cancelEditMode($item);
                 })
             }
+            if (event.key === 'Enter') {
+                this.$todoList.querySelectorAll('li').forEach(($item, index) => {
+                    if ($item.classList.contains('editing')) {
+                        this.editTodo($item, index);
+                    }
+                })
+            }
         })
 
         this.$seeAllButton.addEventListener('click', () => {
@@ -166,7 +173,6 @@ export class App {
     }
 
     render = () => {
-        console.log('render');
         this.$todoList.innerHTML = ``;
 
         if (this.todoFilter === 'all') {
@@ -210,5 +216,12 @@ export class App {
         if (editing) {
             $todoItem.classList.remove('editing');
         }
+    }
+    editTodo = ($item, index) => {
+        $item.classList.remove('editing');
+        this.todoList[index] = $item.querySelector('input.edit').value;
+        $item.querySelector('label.label').innerText = this.todoList[index];
+        $item.querySelector('input.edit').value = '';
+        this.updateLocalStorage();
     }
 }
