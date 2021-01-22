@@ -39,7 +39,7 @@ function AddNewList(e) {
 
 function workCheck(e) {
   // 등록된 항목들을 체크하거나 푸는 기능
-  let li = e.target.parentNode.parentNode;
+  let li = e.target.closest('li');
   li.classList.toggle("completed");
 
   if (e.target.checked) e.target.setAttribute("checked", "");
@@ -52,7 +52,7 @@ function workCheck(e) {
 function workDelete(e) {
   // 등록된 항목들을 제거하는 기능
   if (confirm("정말 삭제하시겠습니까?")) {
-    let li = e.target.parentNode.parentNode;
+    let li = e.target.closest('li');
     li.parentNode.removeChild(li);
     renewStrong();
   }
@@ -60,7 +60,7 @@ function workDelete(e) {
 
 function workContentCopy(e) {
   // 등록된 항목의 수정을 위해 내용을 입력칸에 복사하는 기능
-  let li = e.target.parentNode.parentNode;
+  let li = e.target.closest('li');
   li.classList.add("editing");
   let chginput = li.querySelector(".edit");
   chginput.value = e.target.innerText;
@@ -68,7 +68,7 @@ function workContentCopy(e) {
 
 function workUpdate(e) {
   // 등록된 항목을 수정하는 기능
-  let li = e.target.parentNode;
+  let li = e.target.closest('li');
   if (e.keyCode == 27) {
     li.classList.remove("editing");
   }
