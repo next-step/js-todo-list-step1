@@ -1,8 +1,8 @@
-var getWork = document.getElementById("new-todo-title"); // 할 일을 적는 input 태그
-var todoList = document.getElementById("todo-list"); // 작성한 할 일이 삽입되는 ul 태그
-var viewAllList = document.querySelector(".all"); // 전체 보기 버튼
-var viewTodoList = document.querySelector(".active"); // 해야할 일 보기 버튼
-var viewCompleteList = document.querySelector(".completed"); // 완료한 일 보기 버튼
+const getWork = document.getElementById("new-todo-title"); // 할 일을 적는 input 태그
+const todoList = document.getElementById("todo-list"); // 작성한 할 일이 삽입되는 ul 태그
+const viewAllList = document.querySelector(".all"); // 전체 보기 버튼
+const viewTodoList = document.querySelector(".active"); // 해야할 일 보기 버튼
+const viewCompleteList = document.querySelector(".completed"); // 완료한 일 보기 버튼
  
 function init() {   // 페이지 로드 시 이벤트 리스너 부착
   getWork.addEventListener("keypress", AddNewList);
