@@ -1,6 +1,7 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 import TodoCountContainer from "./TodoCountContainer.js";
+import { generateId } from "./utils.js";
 
 export default function TodoApp(appEl, items) {
   const inputEl = appEl.querySelector("#new-todo-title");
@@ -12,6 +13,27 @@ export default function TodoApp(appEl, items) {
   this.todoInput = new TodoInput(inputEl, this);
   this.todoList = new TodoList(listEl, this);
   this.todoCountContainer = new TodoCountContainer(countContainerEl, this);
+
+  this.setItems = (items) => {
+    this.items = items;
+    this.render();
+  };
+
+  this.getItem = (targetId) => this.items.find(({ id }) => id === targetId);
+
+  this.addItem = (value) =>
+    this.setItems([
+      { id: generateId(), value, completed: false },
+      ...this.items,
+    ]);
+
+  this.updateItem = (item) =>
+    this.setItems(
+      this.items.map((_item) => (_item.id !== item.id ? _item : item))
+    );
+
+  this.deleteItem = (targetId) =>
+    this.setItems(this.items.filter(({ id }) => id !== targetId));
 
   this.setFilter = (filter = null) => {
     this.filter = filter;
