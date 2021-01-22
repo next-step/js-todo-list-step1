@@ -2,18 +2,18 @@ class TodoItem {
   constructor(title, index) {
     this.title = title;
     this.index = index;
-    this.status = 1; // 1 - active / 0 - completed
+    this.isCompleted = false; // 1 - active / 0 - completed
   }
 
-  render() {
+  static render(itemObject) {
     return `
-      <li ${this.status === 0 ? 'class="completed' : ''}>
+      <li ${itemObject.isCompleted ? 'class="completed"' : ''} data-index="${itemObject.index}">
         <div class="view">
             <input class="toggle" type="checkbox"/>
-            <label class="label">${this.title}</label>
+            <label class="label">${itemObject.title}</label>
             <button class="destroy"></button>
         </div>
-      <input class="edit" value="${this.title}" />
+      <input class="edit" value="${itemObject.title}" />
     </li>`;
   }
 }
