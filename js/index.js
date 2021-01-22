@@ -40,13 +40,11 @@ function AddNewList(e) {
 function workCheck(e) {
   // 등록된 항목들을 체크하거나 푸는 기능
   let li = e.target.parentNode.parentNode;
-  if (e.target.checked) {
-    e.target.setAttribute("checked", "");
-    li.classList.add("completed");
-  } else {
-    e.target.removeAttribute("checked");
-    li.classList.remove("completed");
-  }
+  li.classList.toggle("completed");
+
+  if (e.target.checked) e.target.setAttribute("checked", "");
+  else e.target.removeAttribute("checked");
+  
   if (/(active)/.exec(window.location.href)) viewTodo();
   else if (/(completed)/.exec(window.location.href)) viewDone();
 }
