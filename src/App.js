@@ -1,5 +1,6 @@
 import AddTodo from './components/AddTodo.js';
 import ChangeTodo from './components/ChangeTodo.js';
+import EditTodo from './components/EditTodo.js';
 import { ALL, ACTIVE, COMPLETED } from './constant/state.js';
 
 export default class App {
@@ -13,8 +14,7 @@ export default class App {
     this.changeTodo = new ChangeTodo(this.$todoList, {
       loadTodo: this.loadTodo,
     });
-
-    this.$todoList.addEventListener('dblclick', this.editTodo);
+    this.editTodo = new EditTodo(this.$todoList, { loadTodo: this.loadTodo });
     this.$filters.addEventListener('click', this.filterTodo);
   }
 
@@ -59,31 +59,6 @@ export default class App {
       });
     }
     this.$count.innerHTML = this.$todoList.querySelectorAll('li').length;
-  };
-
-  editTodo = ({ target }) => {
-    const updatedTodoItem = (id, value) => {
-      this.todos.map((todo) => {
-        if (todo.id === id) {
-          todo.title = value;
-        }
-      });
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.loadTodo();
-    };
-
-    const edit = ({ target, key }) => {
-      if (key === 'Enter') {
-        updatedTodoItem(target.closest('li').id, target.value);
-      } else if (key === 'Escape') {
-        target.closest('li').classList.remove('editing');
-      }
-    };
-
-    if (target.className === 'label') {
-      target.closest('li').classList.add('editing');
-      target.closest('li').addEventListener('keyup', edit);
-    }
   };
 
   filterTodo = ({ target }) => {
