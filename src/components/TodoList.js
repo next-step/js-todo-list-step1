@@ -1,22 +1,37 @@
 import TodoItem from './TodoItem.js';
+import Observer from '../subjects/Observer.js';
+import todosData from '../model/TodosModel.js';
 
-class TodoList {
+class TodoList extends Observer {
   constructor() {
-    this.$todoList = document.querySelector('#todo-list');
+    super();
+    this.todoList = document.querySelector('#todo-list');
   }
 
   init() {
     this.addEventCheckToggle();
     this.addEventDeleteTodoItem();
     this.addEventEditTodoItem();
+
+    this.renderTodos();
+  }
+
+  renderTodos() {
+    this.todoList.innerHTML = Object.keys(todosData.data)
+      .map((key) => TodoItem.render(todosData.data[key]))
+      .join('\n');
+  }
+
+  update() {
+    this.renderTodos();
   }
 
   addNewTodoItem(taskTitle) {
-    this.$todoList.innerHTML += new TodoItem(taskTitle).render();
+    this.todoList.innerHTML += new TodoItem(taskTitle).render();
   }
 
   addEventCheckToggle() {
-    this.$todoList.addEventListener('change', (e) => {
+    this.todoList.addEventListener('change', (e) => {
       if (e.target.type === 'checkbox') {
         const closestLi = e.target.closest('li');
         closestLi.classList.toggle('completed');
@@ -25,7 +40,7 @@ class TodoList {
   }
 
   addEventDeleteTodoItem() {
-    this.$todoList.addEventListener('click', (e) => {
+    this.todoList.addEventListener('click', (e) => {
       if (e.target.classList.contains('destroy')) {
         const closestLi = e.target.closest('li');
         closestLi.remove();
@@ -34,7 +49,7 @@ class TodoList {
   }
 
   addEventEditTodoItem() {
-    this.$todoList.addEventListener('dblclick', (e) => {
+    this.todoList.addEventListener('dblclick', (e) => {
       const closestLi = e.target.closest('li');
       const inputEdit = closestLi.querySelector('input.edit');
       inputEdit.style.display = 'block';
@@ -44,7 +59,7 @@ class TodoList {
       closestLi.querySelector('div.view').style.display = 'none';
     });
 
-    this.$todoList.addEventListener('keyup', (e) => {
+    this.todoList.addEventListener('keyup', (e) => {
       const closestLi = e.target.closest('li');
 
       function switchBackToView() {
@@ -65,7 +80,7 @@ class TodoList {
   }
 }
 
-const $todoList = new TodoList();
-$todoList.init();
+const todoList = new TodoList();
+todoList.init();
 
-export default $todoList;
+export default todoList;
