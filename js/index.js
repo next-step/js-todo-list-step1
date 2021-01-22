@@ -127,18 +127,15 @@ function viewDone() {       // "완료한 일" 버튼 클릭 시의 기능
 }
 
 function changeBox(box) {   // 선택한 버튼을 표시하는 기능
-  console.log(box);
+  viewAllList.classList.remove("selected");
+  viewTodoList.classList.remove("selected");
+  viewCompleteList.classList.remove("selected");
+
   if (box.classList.contains("all")) {
     viewAllList.classList.add("selected");
-    viewTodoList.classList.remove("selected");
-    viewCompleteList.classList.remove("selected");
-  } else if (box.classList.contains("active")) {
-    viewAllList.classList.remove("selected");
+  } else if (box.classList.contains("active")) { 
     viewTodoList.classList.add("selected");
-    viewCompleteList.classList.remove("selected");
   } else if (box.classList.contains("completed")) {
-    viewAllList.classList.remove("selected");
-    viewTodoList.classList.remove("selected");
     viewCompleteList.classList.add("selected");
   }
 }
