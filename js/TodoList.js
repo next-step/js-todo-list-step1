@@ -36,7 +36,6 @@ export default function TodoList(listEl, todoApp) {
   this.updateValue = (value) => {
     const item = todoApp.getItem(todoApp.editingId);
     todoApp.updateItem({ ...item, value });
-    this.convertToViewer();
   };
 
   this.render = (items) => {
@@ -69,9 +68,14 @@ export default function TodoList(listEl, todoApp) {
   });
 
   listEl.addEventListener("keypress", (event) => {
+    if (event.code === "Escape") {
+      this.convertToViewer();
+    }
+
     const value = event.target.value.trimEnd();
     if (event.code === "Enter" && value) {
       this.updateValue(value);
+      this.convertToViewer();
     }
   });
 }
