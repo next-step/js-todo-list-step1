@@ -1,4 +1,5 @@
 import AddTodo from './components/AddTodo.js';
+import ChangeTodo from './components/ChangeTodo.js';
 import { ALL, ACTIVE, COMPLETED } from './constant/state.js';
 
 export default class App {
@@ -9,9 +10,11 @@ export default class App {
     this.$filters = document.querySelector('.filters');
 
     this.addTodo = new AddTodo(this.$newTodoTitle, { loadTodo: this.loadTodo });
+    this.changeTodo = new ChangeTodo(this.$todoList, {
+      loadTodo: this.loadTodo,
+    });
 
     this.$todoList.addEventListener('dblclick', this.editTodo);
-    this.$todoList.addEventListener('click', this.changeTodo);
     this.$filters.addEventListener('click', this.filterTodo);
   }
 
@@ -80,26 +83,6 @@ export default class App {
     if (target.className === 'label') {
       target.closest('li').classList.add('editing');
       target.closest('li').addEventListener('keyup', edit);
-    }
-  };
-
-  changeTodo = ({ target }) => {
-    if (target.className === 'toggle') {
-      this.todos.map((todo) => {
-        if (todo.id === target.id) {
-          todo.completed = !todo.completed;
-        }
-      });
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.loadTodo();
-    } else if (target.className === 'destroy') {
-      this.todos = this.todos.filter((todo) => {
-        if (todo.id !== target.id) {
-          return todo;
-        }
-      });
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.loadTodo();
     }
   };
 
