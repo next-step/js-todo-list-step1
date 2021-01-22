@@ -13,12 +13,12 @@ export default function TodoApp(appEl, items) {
   this.todoList = new TodoList(listEl, this);
   this.todoCountContainer = new TodoCountContainer(countContainerEl, this);
 
-  this.setFilter = function (filter = null) {
+  this.setFilter = (filter = null) => {
     this.filter = filter;
     this.render();
   };
 
-  this.render = function () {
+  this.render = () => {
     const filtered = this.items.filter(
       ({ completed }) => this.filter === null || completed === this.filter
     );

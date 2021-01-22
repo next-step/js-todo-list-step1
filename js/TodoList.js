@@ -9,7 +9,7 @@ const renderTodoItem = ({ id, value, completed }) => `
 `;
 
 export default function TodoList(listEl, todoApp) {
-  this.render = function (items) {
+  this.render = (items) => {
     listEl.innerHTML = items.map(renderTodoItem).join("");
   };
 }
