@@ -1,6 +1,7 @@
 import AddTodo from './components/AddTodo.js';
 import ChangeTodo from './components/ChangeTodo.js';
 import EditTodo from './components/EditTodo.js';
+import FilterTodo from './components/FilterTodo.js';
 import { ALL, ACTIVE, COMPLETED } from './constant/state.js';
 
 export default class App {
@@ -15,7 +16,9 @@ export default class App {
       loadTodo: this.loadTodo,
     });
     this.editTodo = new EditTodo(this.$todoList, { loadTodo: this.loadTodo });
-    this.$filters.addEventListener('click', this.filterTodo);
+    this.filterTodo = new FilterTodo(this.$filters, {
+      loadTodo: this.loadTodo,
+    });
   }
 
   todoTemplate = (todo) => {
@@ -31,8 +34,6 @@ export default class App {
   };
 
   loadTodo = (option = ALL) => {
-    console.log('init');
-
     this.todos = JSON.parse(localStorage.getItem('todos')) ?? [];
     this.$todoList.innerHTML = '';
     if (option === ALL) {
@@ -59,17 +60,6 @@ export default class App {
       });
     }
     this.$count.innerHTML = this.$todoList.querySelectorAll('li').length;
-  };
-
-  filterTodo = ({ target }) => {
-    if (target.nodeName === 'A') {
-      target
-        .closest('ul')
-        .querySelectorAll('a')
-        .forEach((target) => target.classList.remove('selected'));
-      target.classList.add('selected');
-      this.loadTodo(target.id);
-    }
   };
 }
 
