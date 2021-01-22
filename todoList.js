@@ -1,72 +1,64 @@
-var num = 0
+const $TodoInput = document.querySelector('#new-todo-title'); // 
+const $TodoList = document.querySelector('#todo-list');
 
-function enterkey() {
-    if(window.event.keyCode == 13) {
-        
-        const inputTodo = document.querySelector('#new-todo-title')
-        const ul = document.querySelector('#todo-list')
-        const li = document.createElement('li')
-        const div = document.createElement('div')
-        const close = document.createElement('button')
-        const checkBox = document.createElement('input')
-        const label = document.createElement('label')
-        const editInput = document.createElement('input')
-        const count = document.querySelector('.todo-count')
-        
+function init() {
+    $TodoInput.addEventListener('keypress', addTodo);
 
-        checkBox.setAttribute('class', 'toggle')
-        checkBox.setAttribute('type', 'checkbox')
-        close.setAttribute('class', 'destroy')
-        label.textContent = inputTodo.value;
-        li.appendChild(div, editInput)
-        div.append(checkBox, label, close)
-        ul.appendChild(li)
+};
 
-        
-        inputTodo.value = ''
+let TodoItemList = []; // $TodoInput에 입력되는 내용들을 저장
 
-        num++
-        count.textContent = "총 " + num + "개"
-        
-        //체크박스
-        checkBox.addEventListener('click', function() {
-            checkBox.setAttribute('checked', 'checked')
-            li.classList.add('completed')
-        })
+const addTodo = (e) => {
+    
+    if(e.key === 'Enter') { // Enter키가 눌렸을 경우
+        e.preventDefault();
 
-        
-        //수정 시
-        li.addEventListener('dblclick' , function() {
-            li.classList.add('editing')
-            editInput.classList.add('edit')
-            div.setAttribute('class', 'view')
-            li.append(editInput)
-            editInput.value = label.textContent
-        })
+        const TodoItem = $TodoInput.value;
+    
+        if(TodoItem.lenght !== 0) {
+            TodoItemList.push(TodoItem);
+            addList(TodoItemList);
+        }
 
-        //ESC가 눌렸을 때
-        editInput.addEventListener('keydown', function(){
-            if(window.event.keyCode == 27) {
-                li.classList.remove('editing')
-                editInput.classList.remove('edit')
-                label.classList.remove('view')
-                label.textContent = editInput.value
-                li.removeChild(editInput)
-            }
-        })
-
-        
-        
-
-        // 삭제 버튼
-        close.addEventListener('click', function() {
-            const answer = confirm("정말로 삭제하시겠습니까?")
-            if(answer){
-                ul.removeChild(li)
-                num--
-                count.textContent = "총 " + num + "개"
-             }
-        })
-
+        $TodoInput.value = '';
     }
 }
+
+const addList = (TodoItemList) => { // 입력된 내용을 항목 추가
+    $TodoList.innerHTML = '';
+
+    TodoItemList.forEach(function(item) {
+
+    $TodoList.insertAdjacentHTML('beforeend', // ul의 요소가 끝나기 전에 내용 삽입
+    `
+    <li>
+    <div class="view">
+      <input class="toggle" type="checkbox"/>
+      <label class="label">${item}</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="새로운 타이틀" />
+  </li>
+  <li class="editing hidden">
+    <div class="view">
+      <input class="toggle" type="checkbox" />
+      <label class="label">${item}</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="${item}" />
+  </li>
+  <li class="completed hidden">
+    <div class="view">
+      <input class="toggle" type="checkbox" checked/>
+      <label class="label">${item}</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="${item}" />
+  </li>
+    `);
+});
+
+};
+
+
+init();
