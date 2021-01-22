@@ -23,7 +23,7 @@ export default function TodoApp(appEl, items) {
 
   this.addItem = (value) =>
     this.setItems([
-      { id: generateId(), value, completed: false },
+      { id: generateId(), value, completed: this.filter ?? false },
       ...this.items,
     ]);
 
