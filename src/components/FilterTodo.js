@@ -1,18 +1,17 @@
 export default class FilterTodo {
   constructor($filters, loadTodo) {
-    $filters.addEventListener('click', ({ target }) => {
-      this.filterTodo({ target }, loadTodo);
-    });
+    this.loadTodo = loadTodo;
+    $filters.addEventListener('click', this.filterTodo);
   }
 
-  filterTodo = ({ target }, loadTodo) => {
+  filterTodo = ({ target }) => {
     if (target.nodeName === 'A') {
       target
         .closest('ul')
         .querySelectorAll('a')
         .forEach((target) => target.classList.remove('selected'));
       target.classList.add('selected');
-      loadTodo(target.id);
+      this.loadTodo(target.id);
     }
   };
 }

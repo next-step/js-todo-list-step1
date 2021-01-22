@@ -1,7 +1,6 @@
 export default class EditTodo {
   constructor($todoList, loadTodo) {
     this.loadTodo = loadTodo;
-
     $todoList.addEventListener('dblclick', this.editTodo);
   }
 

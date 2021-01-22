@@ -1,11 +1,10 @@
 export default class ChangeTodo {
   constructor($todoList, loadTodo) {
-    $todoList.addEventListener('click', ({ target }) => {
-      this.changeTodo({ target }, loadTodo);
-    });
+    this.loadTodo = loadTodo;
+    $todoList.addEventListener('click', this.changeTodo);
   }
 
-  changeTodo = ({ target }, loadTodo) => {
+  changeTodo = ({ target }) => {
     this.todos = JSON.parse(localStorage.getItem('todos'));
     if (target.className === 'toggle') {
       this.todos.map((todo) => {
@@ -14,7 +13,7 @@ export default class ChangeTodo {
         }
       });
       localStorage.setItem('todos', JSON.stringify(this.todos));
-      loadTodo();
+      this.loadTodo();
     } else if (target.className === 'destroy') {
       this.todos = this.todos.filter((todo) => {
         if (todo.id !== target.id) {
@@ -22,7 +21,7 @@ export default class ChangeTodo {
         }
       });
       localStorage.setItem('todos', JSON.stringify(this.todos));
-      loadTodo();
+      this.loadTodo();
     }
   };
 }

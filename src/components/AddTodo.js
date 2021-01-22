@@ -1,11 +1,10 @@
 export default class AddTodo {
   constructor($newTodoTitle, loadTodo) {
-    $newTodoTitle.addEventListener('keyup', ({ target, key }) =>
-      this.addTodo({ target, key }, loadTodo),
-    );
+    this.loadTodo = loadTodo;
+    $newTodoTitle.addEventListener('keyup', this.addTodo);
   }
 
-  addTodo = ({ target, key }, loadTodo) => {
+  addTodo = ({ target, key }) => {
     if (key === 'Enter' && target.value) {
       this.todos = JSON.parse(localStorage.getItem('todos')) ?? [];
       this.todos.push({
@@ -15,7 +14,7 @@ export default class AddTodo {
       });
       target.value = '';
       localStorage.setItem('todos', JSON.stringify(this.todos));
-      loadTodo();
+      this.loadTodo();
     }
   };
 }
