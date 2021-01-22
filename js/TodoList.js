@@ -72,7 +72,7 @@ export default function TodoList(listEl, todoApp) {
       this.convertToViewer();
     }
 
-    const value = event.target.value.trimEnd();
+    const value = event.target.value.trim();
     if (event.code === "Enter" && value) {
       this.updateValue(value);
       this.convertToViewer();
