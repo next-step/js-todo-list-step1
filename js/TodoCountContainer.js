@@ -21,7 +21,6 @@ export default function TodoCountContainer(countContainerEl, todoApp) {
       );
     });
 
-    todoApp.todoInput.focus();
     event.preventDefault();
   });
 }

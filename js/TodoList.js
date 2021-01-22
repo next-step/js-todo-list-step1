@@ -1,10 +1,13 @@
-const renderTodoItem = ({ id, value, completed }) => `
-  <li class="${completed ? "completed" : ""}" data-id="${id}">
+const renderTodoItem = ({ id, value, completed }, editingId) => `
+  <li class="${
+    id === editingId ? "editing" : completed ? "completed" : ""
+  }" data-id="${id}">
     <div class="view">
       <input class="toggle" type="checkbox" ${completed ? "checked" : ""}>
       <label class="label">${value}</label>
       <button class="destroy"></button>
     </div>
+    <input class="edit" value="${value}" ${id === editingId ? "autofocus" : ""}>
   </li>
 `;
 
@@ -21,7 +24,9 @@ export default function TodoList(listEl, todoApp) {
   };
 
   this.render = (items) => {
-    listEl.innerHTML = items.map(renderTodoItem).join("");
+    listEl.innerHTML = items
+      .map((item) => renderTodoItem(item, todoApp.editingId))
+      .join("");
   };
 
   listEl.addEventListener("click", (event) => {
@@ -31,6 +36,5 @@ export default function TodoList(listEl, todoApp) {
     if (event.target.classList.contains("destroy")) {
       this.deleteItem(event);
     }
-    todoApp.todoInput.focus();
   });
 }

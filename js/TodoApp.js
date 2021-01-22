@@ -10,6 +10,8 @@ export default function TodoApp(appEl, items) {
 
   this.items = items;
   this.filter = null;
+  this.editingId = null;
+
   this.todoInput = new TodoInput(inputEl, this);
   this.todoList = new TodoList(listEl, this);
   this.todoCountContainer = new TodoCountContainer(countContainerEl, this);
@@ -45,6 +47,7 @@ export default function TodoApp(appEl, items) {
       ({ completed }) => this.filter === null || completed === this.filter
     );
 
+    this.todoInput.render();
     this.todoList.render(filtered);
     this.todoCountContainer.render(filtered);
   };
