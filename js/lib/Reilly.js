@@ -1,12 +1,16 @@
+import ReillyDOM from "./ReillyDOM.js";
+
 /**
- * @typedef { Record<keyof Node, Node[keyof Node]> | null } PropsType
+ * @typedef { Object } ReillyNode
+ * @property { ReillyNodeType } nodeType
+ * @property { PropsType } [props]
+ * @property { ReillyNodeChildren } children
  */
 
 /**
- * @typedef {Object} PseudoNode
- * @property {(string | Function)} nodeType
- * @property { PropsType } [props]
- * @property { PseudoNode[] | string} children
+ * @typedef {string | Function} ReillyNodeType
+ * @typedef { Record<keyof Node, Node[keyof Node]> | null } PropsType
+ * @typedef { ReillyNode[] | string } ReillyNodeChildren
  */
 
 /**
@@ -14,12 +18,11 @@
  */
 class Reilly {
   /**
-   * @desc resolves params into tree of `PseudoNode` recursively
-   * @param { string | Function } nodeType - HTMLElement nodeType string or function of class Component identifier
+   * @desc resolves params into tree of `ReillyNode` recursively
+   * @param { NodeType } nodeType - HTMLElement nodeType string or function of class Component identifier
    * @param { PropsType } [props] - Node interface members
-   * @param { PseudoNode[] | string } children - `PseudoNode`s in Array
-   * @returns {PseudoNode} `PseudoNode`
-   *
+   * @param { ReillyNodeChildren } children - `ReillyNode`s in Array
+   * @returns { ReillyNode } `ReillyNode`
    * @example
    *    createElement('div', {id: 1})
    *    createElement(App, null, createElement(UList, null, ListItem1,ListItem2))
@@ -30,30 +33,35 @@ class Reilly {
         const component = new nodeType({ ...props, children });
         return component.render();
       }
-      return nodeType(props, ...children);
+      return nodeType({ ...props, children });
     }
-
-    return { nodeType, props, children };
+    return {
+      nodeType,
+      props,
+      children
+    };
   }
 
   /**
    * @abstract basic implementation of Reilly Component
    */
   static Component = class Component {
-    state = {};
-
-    constructor(props) {
+    _owner = document.getElementById("root");
+    constructor(props = {}) {
       this.props = props;
     }
 
     setState(newState) {
-      console.warn("stateChanged!", newState);
-      this.state = newState;
-      this.render();
+      this.state = { ...this.state, ...newState };
+      ReillyDOM.render(this.render());
     }
 
-    render() {}
+    render() {
+      console.warn(`Not Implemented, plz override this`);
+    }
   };
 }
+
+export const createElement = Reilly.createElement.bind(Reilly);
 
 export default Reilly;

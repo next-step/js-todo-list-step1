@@ -1,6 +1,6 @@
 /**
  * @typedef { Record<keyof Node, Node[keyof Node]> | null } PropsType
- * @typedef {{nodeType: (string | Function), props: PropsType, children: PseudoNode[] | string }} PseudoNode
+ * @typedef {{nodeType: (string | Function), props: PropsType, children: ReillyNode[] | string }} ReillyNode
  */
 
 /**
@@ -9,31 +9,56 @@
  */
 class ReillyDOM {
   /**
-   * @param {PseudoNode} pseudoNode - represents a root Node which contains children
-   * @param {HTMLElement} container - container node for `pseudoNode`
+   * @param {ReillyNode} reillyNode - represents a root Node which contains children
+   * @param {HTMLElement} container - container node for `reillyNode`
    */
-  static render(pseudoNode, container) {
-    container.appendChild(this.renderElement(pseudoNode));
+  static render(reillyNode, container) {
+    const $root = document.getElementById("root");
+    const htmlElement = this.renderElement(reillyNode);
+
+    if (!container) container = htmlElement.parentElement || $root;
+
+    container.innerHTML = "";
+    container.appendChild(htmlElement);
   }
 
   /**
-   * @param {PseudoNode} pseudoNode
-   * @returns {HTMLElement} HTML element referred by the `pseudoNode`
+   * @param {ReillyNode} reillyNode
+   * @returns {HTMLElement} HTML element referred by the `reillyNode`
    */
-  static renderElement(pseudoNode) {
-    if (typeof pseudoNode === "string") {
-      return document.createTextNode(pseudoNode);
+  static renderElement(reillyNode) {
+    if (typeof reillyNode === "string" || typeof reillyNode === "number") {
+      return document.createTextNode(reillyNode);
     }
 
-    const $element = document.createElement(pseudoNode.nodeType);
+    let $element;
+    if (reillyNode.nodeType === "fragment")
+      $element = document.createDocumentFragment();
+    else $element = document.createElement(reillyNode.nodeType);
 
-    for (let [key, value] of Object.entries(pseudoNode.props ?? {})) {
+    for (let [key, value] of Object.entries(reillyNode.props ?? {})) {
+      if (key === "children") continue;
+
+      if (key === "className" || key.startsWith("on")) {
+        $element[key] = value;
+        $element[key] = value;
+        continue;
+      }
+
       $element[key] = value;
+      $element.setAttribute(key, value);
     }
 
-    pseudoNode.children.map(this.renderElement.bind(this)).forEach((elem) => {
-      $element.appendChild(elem);
-    });
+    reillyNode.children
+      .map((child) => {
+        if (child.constructor === Object) child._container = $element;
+        return Object.assign(this.renderElement.call(this, child), {
+          _container: $element
+        });
+      })
+      .forEach((elem) => {
+        $element.appendChild(elem);
+      });
 
     return $element;
   }
