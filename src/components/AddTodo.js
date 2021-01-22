@@ -1,5 +1,5 @@
 export default class AddTodo {
-  constructor($newTodoTitle, { loadTodo }) {
+  constructor($newTodoTitle, loadTodo) {
     $newTodoTitle.addEventListener('keyup', ({ target, key }) =>
       this.addTodo({ target, key }, loadTodo),
     );

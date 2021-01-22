@@ -1,5 +1,5 @@
 export default class FilterTodo {
-  constructor($filters, { loadTodo }) {
+  constructor($filters, loadTodo) {
     $filters.addEventListener('click', ({ target }) => {
       this.filterTodo({ target }, loadTodo);
     });

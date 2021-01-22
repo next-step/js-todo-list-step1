@@ -11,14 +11,10 @@ export default class App {
     this.$count = document.querySelector('strong');
     this.$filters = document.querySelector('.filters');
 
-    this.addTodo = new AddTodo(this.$newTodoTitle, { loadTodo: this.loadTodo });
-    this.changeTodo = new ChangeTodo(this.$todoList, {
-      loadTodo: this.loadTodo,
-    });
-    this.editTodo = new EditTodo(this.$todoList, { loadTodo: this.loadTodo });
-    this.filterTodo = new FilterTodo(this.$filters, {
-      loadTodo: this.loadTodo,
-    });
+    this.addTodo = new AddTodo(this.$newTodoTitle, this.loadTodo);
+    this.changeTodo = new ChangeTodo(this.$todoList, this.loadTodo);
+    this.editTodo = new EditTodo(this.$todoList, this.loadTodo);
+    this.filterTodo = new FilterTodo(this.$filters, this.loadTodo);
   }
 
   todoTemplate = (todo) => {

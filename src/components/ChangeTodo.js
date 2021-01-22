@@ -1,5 +1,5 @@
 export default class ChangeTodo {
-  constructor($todoList, { loadTodo }) {
+  constructor($todoList, loadTodo) {
     $todoList.addEventListener('click', ({ target }) => {
       this.changeTodo({ target }, loadTodo);
     });
