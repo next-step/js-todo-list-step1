@@ -33,33 +33,47 @@ export default class App {
             </li>`;
   };
 
+  viewAll = () => {
+    this.todos.forEach((todo) => {
+      this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
+    });
+  };
+
+  viewActive = () => {
+    this.todos.forEach((todo) => {
+      if (!todo.completed) {
+        this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
+      }
+    });
+  };
+
+  viewCompleted = () => {
+    this.todos.forEach((todo) => {
+      if (todo.completed) {
+        this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
+      }
+    });
+  };
+
+  updateTodoCount = () => {
+    this.$count.innerHTML = this.$todoList.querySelectorAll('li').length;
+  };
+
   loadTodo = (option = ALL) => {
     this.todos = JSON.parse(localStorage.getItem('todos')) ?? [];
     this.$todoList.innerHTML = '';
-    if (option === ALL) {
-      this.todos.forEach((todo) => {
-        this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
-      });
-    } else if (option === ACTIVE) {
-      this.todos.forEach((todo) => {
-        if (!todo.completed) {
-          this.$todoList.insertAdjacentHTML(
-            'beforeend',
-            this.todoTemplate(todo),
-          );
-        }
-      });
-    } else if (option === COMPLETED) {
-      this.todos.forEach((todo) => {
-        if (todo.completed) {
-          this.$todoList.insertAdjacentHTML(
-            'beforeend',
-            this.todoTemplate(todo),
-          );
-        }
-      });
+
+    switch (option) {
+      case ALL:
+        this.viewAll();
+        break;
+      case ACTIVE:
+        this.viewActive();
+        break;
+      case COMPLETED:
+        this.viewCompleted();
     }
-    this.$count.innerHTML = this.$todoList.querySelectorAll('li').length;
+    this.updateTodoCount();
   };
 }
 
