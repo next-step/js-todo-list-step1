@@ -4,24 +4,34 @@ export default class ChangeTodo {
     $todoList.addEventListener('click', this.changeTodo);
   }
 
+  toggleTodo = (target) => {
+    this.todos.map((todo) => {
+      if (todo.id === target.id) {
+        todo.completed = !todo.completed;
+      }
+    });
+  };
+
+  removeTodo = (target) => {
+    this.todos = this.todos.filter((todo) => {
+      if (todo.id !== target.id) {
+        return todo;
+      }
+    });
+  };
+
   changeTodo = ({ target }) => {
     this.todos = JSON.parse(localStorage.getItem('todos'));
-    if (target.className === 'toggle') {
-      this.todos.map((todo) => {
-        if (todo.id === target.id) {
-          todo.completed = !todo.completed;
-        }
-      });
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.loadTodo();
-    } else if (target.className === 'destroy') {
-      this.todos = this.todos.filter((todo) => {
-        if (todo.id !== target.id) {
-          return todo;
-        }
-      });
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.loadTodo();
+
+    switch (target.className) {
+      case 'toggle':
+        this.toggleTodo(target);
+        break;
+      case 'destroy':
+        this.removeTodo(target);
     }
+
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.loadTodo();
   };
 }
