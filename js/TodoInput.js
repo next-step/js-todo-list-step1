@@ -5,11 +5,9 @@ export default function TodoInput(inputEl, todoApp) {
     inputEl.value = "";
   };
 
-  this.focus = () => inputEl.focus();
-
   this.render = () => {
     if (!todoApp.editingId) {
-      this.focus();
+      inputEl.focus();
     }
   };
 
