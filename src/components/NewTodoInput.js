@@ -1,4 +1,4 @@
-import $todoList from './TodoList.js.js';
+import todosSubject from '../subjects/TodosSubject.js';
 
 class NewTodoInput {
   constructor() {
@@ -13,7 +13,8 @@ class NewTodoInput {
     this.$newTodoInput.addEventListener('keyup', (e) => {
       const todoTitle = e.target.value;
       if (e.key === 'Enter' && todoTitle.trim() !== '') {
-        $todoList.addNewTodoItem(e.target.value);
+        // notify
+        todosSubject.createTodo(e.target.value);
         e.target.value = '';
       }
     });

@@ -1,3 +1,3 @@
-import newTodoInput from './components/newTodoInput.js';
+import newTodoInput from '../components/NewTodoInput.js';
 
 newTodoInput.init();
