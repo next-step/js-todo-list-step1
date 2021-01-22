@@ -1,16 +1,15 @@
+import AddTodo from './components/AddTodo.js';
 import { ALL, ACTIVE, COMPLETED } from './constant/state.js';
 
 export default class App {
   constructor() {
-    this.todos = JSON.parse(localStorage.getItem('todos')) ?? [];
-
-    this.selected = ALL;
     this.$todoList = document.querySelector('#todo-list');
     this.$newTodoTitle = document.querySelector('#new-todo-title');
     this.$count = document.querySelector('strong');
     this.$filters = document.querySelector('.filters');
 
-    this.$newTodoTitle.addEventListener('keyup', this.addTodo);
+    this.addTodo = new AddTodo(this.$newTodoTitle, { loadTodo: this.loadTodo });
+
     this.$todoList.addEventListener('dblclick', this.editTodo);
     this.$todoList.addEventListener('click', this.changeTodo);
     this.$filters.addEventListener('click', this.filterTodo);
@@ -29,6 +28,9 @@ export default class App {
   };
 
   loadTodo = (option = ALL) => {
+    console.log('init');
+
+    this.todos = JSON.parse(localStorage.getItem('todos')) ?? [];
     this.$todoList.innerHTML = '';
     if (option === ALL) {
       this.todos.forEach((todo) => {
@@ -54,19 +56,6 @@ export default class App {
       });
     }
     this.$count.innerHTML = this.$todoList.querySelectorAll('li').length;
-  };
-
-  addTodo = ({ target, key }) => {
-    if (key === 'Enter' && target.value) {
-      this.todos.push({
-        id: String(Date.now()),
-        title: target.value,
-        completed: false,
-      });
-      target.value = '';
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.loadTodo();
-    }
   };
 
   editTodo = ({ target }) => {
