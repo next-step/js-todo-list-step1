@@ -51,7 +51,9 @@ export default function TodoList(listEl, todoApp) {
   listEl.addEventListener("click", (event) => {
     if (event.target.classList.contains("toggle")) {
       this.toggleCompleted(event);
+      return;
     }
+
     if (event.target.classList.contains("destroy")) {
       this.deleteTodo(event);
     }
@@ -70,6 +72,7 @@ export default function TodoList(listEl, todoApp) {
   listEl.addEventListener("keypress", (event) => {
     if (event.code === "Escape") {
       this.convertToViewer();
+      return;
     }
 
     const value = event.target.value.trim();
