@@ -7,7 +7,7 @@ const renderTodoItem = ({ id, value, completed }, editingId) => `
       <label class="label">${value}</label>
       <button class="destroy"></button>
     </div>
-    <input class="edit" value="${value}" ${id === editingId ? "autofocus" : ""}>
+    <input class="edit" value="${value}">
   </li>
 `;
 
@@ -23,10 +23,24 @@ export default function TodoList(listEl, todoApp) {
     todoApp.deleteItem(itemEl.dataset.id);
   };
 
+  this.convertToEditor = (event) => {
+    const itemEl = event.target.parentElement.parentElement;
+    const { id } = itemEl.dataset;
+    todoApp.setEditingId(id);
+  };
+
+  this.convertToViewer = () => {
+    todoApp.setEditingId();
+  };
+
   this.render = (items) => {
     listEl.innerHTML = items
       .map((item) => renderTodoItem(item, todoApp.editingId))
       .join("");
+
+    if (todoApp.editingId) {
+      listEl.querySelector(`li[data-id="${todoApp.editingId}"] .edit`)?.focus();
+    }
   };
 
   listEl.addEventListener("click", (event) => {
@@ -36,5 +50,15 @@ export default function TodoList(listEl, todoApp) {
     if (event.target.classList.contains("destroy")) {
       this.deleteItem(event);
     }
+  });
+
+  listEl.addEventListener("dblclick", (event) => {
+    if (event.target.classList.contains("label")) {
+      this.convertToEditor(event);
+    }
+  });
+
+  listEl.addEventListener("focusout", (event) => {
+    this.convertToViewer();
   });
 }

@@ -42,6 +42,11 @@ export default function TodoApp(appEl, items) {
     this.render();
   };
 
+  this.setEditingId = (id = null) => {
+    this.editingId = id;
+    this.render();
+  };
+
   this.render = () => {
     const filtered = this.items.filter(
       ({ completed }) => this.filter === null || completed === this.filter
