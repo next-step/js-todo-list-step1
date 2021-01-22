@@ -2,7 +2,7 @@ class TodoItem {
   constructor(title, index) {
     this.title = title;
     this.index = index;
-    this.isCompleted = false; // 1 - active / 0 - completed
+    this.isCompleted = false;
   }
 
   static render(itemObject) {
