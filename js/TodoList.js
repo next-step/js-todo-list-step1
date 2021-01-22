@@ -14,13 +14,13 @@ const renderTodoItem = ({ id, value, completed }, editingId) => `
 export default function TodoList(listEl, todoApp) {
   this.toggleCompleted = (event) => {
     const itemEl = event.target.parentElement.parentElement;
-    const item = todoApp.getItem(itemEl.dataset.id);
-    todoApp.updateItem({ ...item, completed: !item.completed });
+    const todo = todoApp.getTodo(itemEl.dataset.id);
+    todoApp.updateTodo({ ...todo, completed: !todo.completed });
   };
 
-  this.deleteItem = (event) => {
+  this.deleteTodo = (event) => {
     const itemEl = event.target.parentElement.parentElement;
-    todoApp.deleteItem(itemEl.dataset.id);
+    todoApp.deleteTodo(itemEl.dataset.id);
   };
 
   this.convertToEditor = (event) => {
@@ -34,13 +34,13 @@ export default function TodoList(listEl, todoApp) {
   };
 
   this.updateValue = (value) => {
-    const item = todoApp.getItem(todoApp.editingId);
-    todoApp.updateItem({ ...item, value });
+    const todo = todoApp.getTodo(todoApp.editingId);
+    todoApp.updateTodo({ ...todo, value });
   };
 
-  this.render = (items) => {
-    listEl.innerHTML = items
-      .map((item) => renderTodoItem(item, todoApp.editingId))
+  this.render = (todos) => {
+    listEl.innerHTML = todos
+      .map((todo) => renderTodoItem(todo, todoApp.editingId))
       .join("");
 
     if (todoApp.editingId) {
@@ -53,7 +53,7 @@ export default function TodoList(listEl, todoApp) {
       this.toggleCompleted(event);
     }
     if (event.target.classList.contains("destroy")) {
-      this.deleteItem(event);
+      this.deleteTodo(event);
     }
   });
 

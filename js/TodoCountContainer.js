@@ -3,8 +3,8 @@ export default function TodoCountContainer(countContainerEl, todoApp) {
   const filtersEl = countContainerEl.querySelector(".filters");
   const filterEls = filtersEl.querySelectorAll("a");
 
-  this.render = function (items) {
-    countEl.innerHTML = `총 <strong>${items.length}</strong> 개`;
+  this.render = function (todos) {
+    countEl.innerHTML = `총 <strong>${todos.length}</strong> 개`;
   };
 
   filtersEl.addEventListener("click", (event) => {

@@ -11,7 +11,7 @@ export default function TodoInput(inputEl, todoApp) {
     const value = inputEl.value.trimEnd();
     if (event.code === "Enter" && value) {
       inputEl.dispatchEvent(new CompositionEvent("compositionend"));
-      todoApp.addItem(value);
+      todoApp.addTodo(value);
       inputEl.value = "";
     }
   });
