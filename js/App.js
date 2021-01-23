@@ -6,7 +6,7 @@ import { Todo } from "./types/index.js";
 
 class App extends Reilly.Component {
   state = {
-    todos: [{ id: 1, content: "Typescript", completed: false }],
+    todos: [],
     mode: "all"
   };
 
@@ -25,7 +25,7 @@ class App extends Reilly.Component {
     return createElement(
       "div",
       { className: "todoapp" },
-      createElement(Title, null, "☀️ Tasks ☀️"),
+      createElement(Title, null, "todos"),
       createElement(TodoForm, { onsubmit: this.addTodo }),
       createElement(Main, { todoState: this.state })
     );
