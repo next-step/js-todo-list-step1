@@ -13,13 +13,13 @@ const renderTodoItem = ({ id, value, completed }, editingId) => `
 
 export default function TodoList(listEl, todoApp) {
   this.toggleCompleted = (event) => {
-    const itemEl = event.target.parentElement.parentElement;
+    const itemEl = event.target.closest("li");
     const todo = todoApp.getTodo(itemEl.dataset.id);
     todoApp.updateTodo({ ...todo, completed: !todo.completed });
   };
 
   this.deleteTodo = (event) => {
-    const itemEl = event.target.parentElement.parentElement;
+    const itemEl = event.target.closest("li");
     todoApp.deleteTodo(itemEl.dataset.id);
   };
 
@@ -65,7 +65,7 @@ export default function TodoList(listEl, todoApp) {
     }
   });
 
-  listEl.addEventListener("focusout", (event) => {
+  listEl.addEventListener("focusout", () => {
     this.convertToViewer();
   });
 
