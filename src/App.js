@@ -1,17 +1,13 @@
 import Todo from "./domain/Todo.js";
 import TodoInput from "./component/TodoInput.js";
+import TodoList from "./component/TodoList.js";
 
 export default function App() {
   const todos = [];
   let nextId = 0;
-  const $list = document.querySelector(".todo-list");
-
-  const init = () => {
-    TodoInput({ addTodo });
-  };
 
   const setState = () => {
-    $list.innerHTML = todos.map((todo) => todo.render()).join("");
+    todoList.render(todos);
   };
 
   const addTodo = (contents) => {
@@ -19,5 +15,6 @@ export default function App() {
     setState();
   };
 
-  init();
+  TodoInput({ addTodo });
+  const todoList = TodoList();
 }
