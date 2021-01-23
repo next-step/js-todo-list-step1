@@ -12,84 +12,16 @@ export class App {
         this.$seeActiveButton = document.querySelector('a.active');
         this.$seeCompletedButton = document.querySelector('a.completed');
 
-        this.$newTodo.addEventListener('keyup', event => {
-            if (event.key === 'Enter') {
-                this.addTodo(this.$newTodo.value);
-            }
-        })
-
-        this.$todoList.addEventListener('click', event => {
-            this.$todoList.querySelectorAll('.toggle').forEach(($item, index) => {
-                if ($item.contains(event.target)) {
-                    this.toggleCheckbox($item, index);
-                }
-            })
-            this.$todoList.querySelectorAll('.destroy').forEach(($item, index) => {
-                if ($item.contains(event.target)) {
-                    this.deleteTodo($item, index);
-                }
-            })
-        })
-
-        this.$todoList.addEventListener('dblclick', event => {
-            this.$todoList.querySelectorAll('li').forEach($item => {
-                if ($item.contains(event.target)) {
-                    this.convertToEditMode($item);
-                }
-            })
-        })
-
-        document.addEventListener('keyup', event => {
-            if (event.key === 'Escape') {
-                this.$todoList.querySelectorAll('li').forEach($item => {
-                    this.cancelEditMode($item);
-                })
-            }
-            if (event.key === 'Enter') {
-                this.$todoList.querySelectorAll('li').forEach(($item, index) => {
-                    if ($item.classList.contains('editing')) {
-                        this.editTodo($item, index);
-                    }
-                })
-            }
-        })
-
-        this.$seeAllButton.addEventListener('click', () => {
-            this.todoFilter = 'all';
-            this.$seeAllButton.classList.add('selected');
-            if (this.$seeActiveButton.classList.contains('selected')) {
-                this.$seeActiveButton.classList.remove('selected');
-            }
-            if (this.$seeCompletedButton.classList.contains('selected')) {
-                this.$seeCompletedButton.classList.remove('selected');
-            }
-            this.render();
-        });
-        this.$seeActiveButton.addEventListener('click', () => {
-            this.todoFilter = 'active';
-            this.$seeActiveButton.classList.add('selected');
-            if (this.$seeAllButton.classList.contains('selected')) {
-                this.$seeAllButton.classList.remove('selected');
-            }
-            if (this.$seeCompletedButton.classList.contains('selected')) {
-                this.$seeCompletedButton.classList.remove('selected');
-            }
-            this.render();
-        });
-        this.$seeCompletedButton.addEventListener('click', () => {
-            this.todoFilter = 'completed';
-            this.$seeCompletedButton.classList.add('selected');
-            if (this.$seeAllButton.classList.contains('selected')) {
-                this.$seeAllButton.classList.remove('selected');
-            }
-            if (this.$seeActiveButton.classList.contains('selected')) {
-                this.$seeActiveButton.classList.remove('selected');
-            }
-            this.render();
-        });
+        this.$newTodo.addEventListener('keyup', this.inputNewTodo);
+        this.$todoList.addEventListener('click', this.toggleOrDestroy);
+        this.$todoList.addEventListener('dblclick', this.modifyTodo);
+        document.addEventListener('keyup', this.escapeOrEnter);
+        this.$seeAllButton.addEventListener('click', this.pressSeeAllButton);
+        this.$seeActiveButton.addEventListener('click', this.pressSeeActiveButton);
+        this.$seeCompletedButton.addEventListener('click', this.pressSeeCompletedButton);
 
         let localStorageItem = localStorage.getItem('todoList');
-        if (localStorageItem === '') {
+        if (localStorageItem === '' || localStorageItem === null) {
             this.todoList = [];
             localStorage.setItem('todoList', JSON.stringify(this.todoList));
         }
@@ -98,7 +30,7 @@ export class App {
         }
 
         localStorageItem = localStorage.getItem('todoComplete');
-        if (localStorageItem === null) {
+        if (localStorageItem === '' || localStorageItem === null) {
             this.todoComplete = [];
             localStorage.setItem('todoComplete', JSON.stringify(this.todoComplete));
         }
@@ -107,7 +39,78 @@ export class App {
         }
 
         this.render();
+    }
 
+    inputNewTodo = event => {
+        if (event.key === 'Enter') {
+            this.addTodo(this.$newTodo.value);
+        }
+    }
+    toggleOrDestroy = event => {
+        this.$todoList.querySelectorAll('.toggle').forEach(($item, index) => {
+            if ($item.contains(event.target)) {
+                this.toggleCheckbox($item, index);
+            }
+        })
+        this.$todoList.querySelectorAll('.destroy').forEach(($item, index) => {
+            if ($item.contains(event.target)) {
+                this.deleteTodo($item, index);
+            }
+        })
+    }
+    modifyTodo = event => {
+        this.$todoList.querySelectorAll('li').forEach($item => {
+            if ($item.contains(event.target)) {
+                this.convertToEditMode($item);
+            }
+        })
+    }
+    escapeOrEnter = event => {
+        if (event.key === 'Escape') {
+            this.$todoList.querySelectorAll('li').forEach($item => {
+                this.cancelEditMode($item);
+            })
+        }
+        if (event.key === 'Enter') {
+            this.$todoList.querySelectorAll('li').forEach(($item, index) => {
+                if ($item.classList.contains('editing')) {
+                    this.editTodo($item, index);
+                }
+            })
+        }
+    }
+    pressSeeAllButton = () => {
+        this.todoFilter = 'all';
+        this.$seeAllButton.classList.add('selected');
+        if (this.$seeActiveButton.classList.contains('selected')) {
+            this.$seeActiveButton.classList.remove('selected');
+        }
+        if (this.$seeCompletedButton.classList.contains('selected')) {
+            this.$seeCompletedButton.classList.remove('selected');
+        }
+        this.render();
+    }
+    pressSeeActiveButton = () => {
+        this.todoFilter = 'active';
+        this.$seeActiveButton.classList.add('selected');
+        if (this.$seeAllButton.classList.contains('selected')) {
+            this.$seeAllButton.classList.remove('selected');
+        }
+        if (this.$seeCompletedButton.classList.contains('selected')) {
+            this.$seeCompletedButton.classList.remove('selected');
+        }
+        this.render();
+    }
+    pressSeeCompletedButton = () => {
+        this.todoFilter = 'completed';
+        this.$seeCompletedButton.classList.add('selected');
+        if (this.$seeAllButton.classList.contains('selected')) {
+            this.$seeAllButton.classList.remove('selected');
+        }
+        if (this.$seeActiveButton.classList.contains('selected')) {
+            this.$seeActiveButton.classList.remove('selected');
+        }
+        this.render();
     }
 
     addTodo = todo => {
