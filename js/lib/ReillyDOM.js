@@ -41,12 +41,9 @@ class ReillyDOM {
 
       if (key === "className" || key.startsWith("on")) {
         $element[key] = value;
-        $element[key] = value;
-        continue;
+      } else {
+        $element.setAttribute(key, value);
       }
-
-      $element[key] = value;
-      $element.setAttribute(key, value);
     }
 
     reillyNode.children
