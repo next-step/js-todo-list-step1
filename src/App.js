@@ -39,7 +39,7 @@ export class App {
             })
         })
 
-        document.addEventListener('keydown', event => {
+        document.addEventListener('keyup', event => {
             if (event.key === 'Escape') {
                 this.$todoList.querySelectorAll('li').forEach($item => {
                     this.cancelEditMode($item);
@@ -174,6 +174,7 @@ export class App {
 
     render = () => {
         this.$todoList.innerHTML = ``;
+        let cnt = 0;
 
         if (this.todoFilter === 'all') {
             this.todoList.forEach(($item, index) => {
@@ -182,12 +183,14 @@ export class App {
                     $todoItem.classList.add('completed');
                     $todoItem.querySelector('input.toggle').setAttribute('checked', true);
                 }
+                cnt++;
             })
         }
         else if (this.todoFilter === 'active') {
             this.todoList.forEach(($item, index) => {
                 if (!this.todoComplete[index]) {
                     this.renderTodo($item);
+                    cnt++;
                 }
             })
         }
@@ -197,10 +200,11 @@ export class App {
                     const $todoItem = this.renderTodo($item);
                     $todoItem.classList.add('completed');
                     $todoItem.querySelector('input.toggle').setAttribute('checked', true);
+                    cnt++;
                 }
             })
         }
-        this.updateTodoCount(this.todoList.length);
+        this.updateTodoCount(cnt);
     }
 
     convertToEditMode = $todoItem => {
