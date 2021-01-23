@@ -6,14 +6,14 @@ import { ALL, ACTIVE, COMPLETED } from './constant/state.js';
 
 export default class App {
   constructor() {
-    this.$todoList = document.querySelector('#todo-list');
-    this.$newTodoTitle = document.querySelector('#new-todo-title');
     this.$count = document.querySelector('strong');
     this.$filters = document.querySelector('.filters');
+    this.$todoList = document.querySelector('#todo-list');
+    this.$newTodoTitle = document.querySelector('#new-todo-title');
 
     this.addTodo = new AddTodo(this.$newTodoTitle, this.loadTodo);
-    this.changeTodo = new ChangeTodo(this.$todoList, this.loadTodo);
     this.editTodo = new EditTodo(this.$todoList, this.loadTodo);
+    this.changeTodo = new ChangeTodo(this.$todoList, this.loadTodo);
     this.filterTodo = new FilterTodo(this.$filters, this.loadTodo);
   }
 

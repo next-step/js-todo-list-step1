@@ -10,6 +10,8 @@ export default class ChangeTodo {
         todo.completed = !todo.completed;
       }
     });
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.loadTodo();
   };
 
   removeTodo = (target) => {
@@ -18,6 +20,8 @@ export default class ChangeTodo {
         return todo;
       }
     });
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+    this.loadTodo();
   };
 
   changeTodo = ({ target }) => {
@@ -30,8 +34,5 @@ export default class ChangeTodo {
       case 'destroy':
         this.removeTodo(target);
     }
-
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-    this.loadTodo();
   };
 }

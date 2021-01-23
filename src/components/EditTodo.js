@@ -14,11 +14,12 @@ export default class EditTodo {
     this.loadTodo();
   };
 
-  editTodoItem = ({ target, key }) => {
+  editTodoItem = ({ target, key }, originalValue) => {
     switch (key) {
       case 'Enter':
         return this.updateTodoItem(target.closest('li').id, target.value);
       case 'Escape':
+        target.value = originalValue;
         return target.closest('li').classList.remove('editing');
     }
   };
@@ -27,8 +28,13 @@ export default class EditTodo {
     this.todos = JSON.parse(localStorage.getItem('todos'));
 
     if (target.className === 'label') {
+      const originalValue = target.innerText;
       target.closest('li').classList.add('editing');
-      target.closest('li').addEventListener('keyup', this.editTodoItem);
+      target
+        .closest('li')
+        .addEventListener('keyup', ({ target, key }) =>
+          this.editTodoItem({ target, key }, originalValue),
+        );
     }
   };
 }
