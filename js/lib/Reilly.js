@@ -27,14 +27,19 @@ class Reilly {
    *    createElement('div', {id: 1})
    *    createElement(App, null, createElement(UList, null, ListItem1,ListItem2))
    */
+
   static createElement(nodeType, props, ...children) {
     if (typeof nodeType === "function") {
       if (nodeType.prototype instanceof this.Component) {
         const component = new nodeType({ ...props, children });
+        if (component.constructor.name === "App")
+          component._owner = document.querySelector("#root");
+        else component._owner = document.querySelector(".view");
         return component.render();
       }
       return nodeType({ ...props, children });
     }
+
     return {
       nodeType,
       props,
@@ -46,14 +51,14 @@ class Reilly {
    * @abstract basic implementation of Reilly Component
    */
   static Component = class Component {
-    _owner = document.getElementById("root");
     constructor(props = {}) {
       this.props = props;
     }
 
     setState(newState) {
       this.state = { ...this.state, ...newState };
-      ReillyDOM.render(this.render());
+
+      ReillyDOM.render(this.render(), this._owner);
     }
 
     render() {
