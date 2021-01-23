@@ -10,9 +10,9 @@ class CountContainer extends Reilly.Component {
       Reilly.createElement(
         "span",
         { className: "todo-count" },
-        "총",
+        "총 ",
         Reilly.createElement("strong", null, length),
-        "개"
+        " 개"
       ),
       Reilly.createElement(FilterList, { mode })
     );

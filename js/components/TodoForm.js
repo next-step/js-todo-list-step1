@@ -8,8 +8,7 @@ function TodoForm(props) {
       id: "new-todo-title",
       name: "new-todo",
       className: "new-todo",
-      placeholder: "할일을 추가해주세요",
-      autofocus: true
+      placeholder: "할일을 추가해주세요"
     })
   );
 }
