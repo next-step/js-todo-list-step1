@@ -4,29 +4,31 @@ import TodoList from "./components/TodoList.js";
 import TodoFilter from "./components/TodoFilter.js";
 export default class TodoApp extends Component {
   setup() {
-    this.$state = {
-      typeOfFilter: "all",
-      todos: [
-        {
-          seq: 1,
-          contents: "todo 1",
-          state: "doing",
-          edit: "",
-        },
-        {
-          seq: 2,
-          contents: "todo 2",
-          state: "doing",
-          edit: "",
-        },
-        {
-          seq: 3,
-          contents: "todo 3",
-          state: "completed",
-          edit: "",
-        },
-      ],
-    };
+    this.$state = localStorage.getItem("state")
+      ? JSON.parse(localStorage.getItem("state"))
+      : {
+          typeOfFilter: "all",
+          todos: [
+            {
+              seq: 1,
+              contents: "todo 1",
+              state: "doing",
+              edit: "",
+            },
+            {
+              seq: 2,
+              contents: "todo 2",
+              state: "doing",
+              edit: "",
+            },
+            {
+              seq: 3,
+              contents: "todo 3",
+              state: "completed",
+              edit: "",
+            },
+          ],
+        };
   }
   template() {
     return `

@@ -21,6 +21,9 @@ export default class Component {
   setEvent() {}
   setState(newState) {
     this.$state = { ...this.$state, ...newState };
+    localStorage.removeItem("state");
+    localStorage.setItem("state", JSON.stringify(this.$state));
+    console.log(localStorage.getItem("state"));
     this.render();
   }
   addEvent(eventType, selector, callback) {
