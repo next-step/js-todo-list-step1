@@ -15,6 +15,8 @@ export default class App {
     this.editTodo = new EditTodo(this.$todoList, this.loadTodo);
     this.changeTodo = new ChangeTodo(this.$todoList, this.loadTodo);
     this.filterTodo = new FilterTodo(this.$filters, this.loadTodo);
+
+    this.loadTodo();
   }
 
   todoTemplate = (todo) => {
@@ -74,5 +76,5 @@ export default class App {
 }
 
 window.onload = () => {
-  new App().loadTodo();
+  new App();
 };
