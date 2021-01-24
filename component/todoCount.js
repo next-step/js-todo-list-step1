@@ -14,6 +14,24 @@ export const handleCount=(length)=>{
     todoCountEl.innerHTML = `총 <strong>${length}</strong> 개`
 }
 
+export const renderActiveItems = () => {
+    todoListEl.innerHTML = "";
+    const activeItems = toDos.filter(item => item.completed === false );
+    activeItems.forEach((item) => {
+        addToDos(item)
+    });
+    handleCount(activeItems.length);
+}
+
+export const renderCompleteItems = () =>{
+    
+    todoListEl.innerHTML = "";
+    let completedItems = toDos.filter(item => item.completed === true );
+    completedItems.forEach((item) => {
+        addToDos(item)
+    });
+    handleCount(completedItems.length);
+}
 
 export const viewAllClick = (event)=>{
     event.preventDefault();
@@ -52,30 +70,11 @@ export const viewCompletedClick = (event)=>{
     
     renderCompleteItems();
 }
-export const renderActiveItems = () => {
-    todoListEl.innerHTML = "";
-    const activeItems = toDos.filter(item => item.completed === false );
-    activeItems.forEach((item) => {
-        addToDos(item)
-    });
-    handleCount(activeItems.length);
-}
-
-
-
-export const renderCompleteItems = () =>{
-    
-    todoListEl.innerHTML = "";
-    let completedItems = toDos.filter(item => item.completed === true );
-    completedItems.forEach((item) => {
-        addToDos(item)
-    });
-    handleCount(completedItems.length);
-}
-
 
 function init(){
     activeEl && activeEl.addEventListener("click",viewActiveClick);
+    allEl && allEl.addEventListener("click",viewAllClick);
+    completedEl && completedEl.addEventListener("click",viewCompletedClick);
 }
 
 init();
