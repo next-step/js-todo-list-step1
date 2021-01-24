@@ -1,12 +1,10 @@
 // 자주 사용되는 HTML 요소들을 저장해두기 위한 변수
 let newTodoInput = null
 let todoList = null
-let todoElements = null
 let filters = null
 let filterAll = null
 let filterActive = null
 let filterCompleted = null
-let filterContainer = null
 let selectedFilter = null
 // 자주 사용되는 객체, 상수값을 저장해두기 위한 변수
 let todoElementsNameArray = null
@@ -19,17 +17,13 @@ function init(){
     // 초기화되지 않은 변수들을 HTML 요소로 초기화
     newTodoInput = document.getElementById('new-todo-title')
     todoList = document.getElementById('todo-list')
-    todoElements = todoList.children
     filters = document.querySelector('ul.filters')
     filterAll = filters.querySelector('li a.all')
     filterActive = filters.querySelector('li a.active')
     filterCompleted = filters.querySelector('li a.completed')
     // 해당 변수들에 대한 적절한 이벤트 처리기 등록
+    filters.addEventListener('click', filterViewChange)
     newTodoInput.addEventListener('keyup', addNewTodo)
-    filterAll.addEventListener('click', filterAllViewChange)
-    filterActive.addEventListener('click', filterActiveViewChange)
-    filterCompleted.addEventListener('click', filterCompletedViewChange)
-    filterContainer = [filterAll, filterActive, filterCompleted]
     selectedFilter = filterAll
 
     // 저장된 할 일 항목이 있는지 확인, 있다면 불러오고 없다면 초기화.
@@ -107,56 +101,46 @@ function drawNewTodo(todo){
     }
 }
 
-// 전체보기 필터링
-function filterAllViewChange(event){
-    selectedFilter = filterAll
-    for(i=0;i<filterContainer.length;i++) {
-        filterContainer[i].classList.remove('selected')
-    }
-    filterAll.classList.add('selected')
-    // display 속성을 조절하여 가시성 토글. 다른 필터링도 동일.
-    todoListCount = todoList.querySelectorAll('li').length
-    for(index=0;index<todoListCount;index++){
-        todoElements[index].style.display = ""
-    }
-    updateCountText()
-}
-// 해야할 일 필터링
-function filterActiveViewChange(event){
-    selectedFilter = filterActive
-    for(i=0;i<filterContainer.length;i++) {
-        filterContainer[i].classList.remove('selected')
-    }
-    filterActive.classList.add('selected')
-    
-    todoListCount = todoList.querySelectorAll('li').length
-    for(index=0;index<todoListCount;index++){
-        if(todoElements[index].querySelector('div input').getAttribute('checked') != null){
-            todoElements[index].style.display = "none"
-        } else {
-            todoElements[index].style.display = ""
-        }
-    }
-    updateCountText()
-}
-// 완료한 일 필터링
-function filterCompletedViewChange(event){
-    selectedFilter = filterCompleted
-    for(i=0;i<filterContainer.length;i++) {
-        filterContainer[i].classList.remove('selected')
-    }
-    filterCompleted.classList.add('selected')
+
+function filterViewChange(event){
+    if(!event.target || event.target.nodeName != 'A'){
+        return
+    } 
 
     todoListCount = todoList.querySelectorAll('li').length
-    for(index=0;index<todoListCount;index++){
-        if(todoElements[index].querySelector('div input').getAttribute('checked') == null){
-            todoElements[index].style.display = "none"
-        } else {
+    todoElements = todoList.children
+    selectedFilter.classList.remove('selected')
+    clickedFilter = event.target.classList
+
+    if(clickedFilter.contains('all')){
+        selectedFilter = filterAll
+        for(index=0;index<todoListCount;index++){
             todoElements[index].style.display = ""
         }
+    } else if(clickedFilter.contains('active')){
+        selectedFilter = filterActive
+        for(index=0;index<todoListCount;index++){
+            if(todoElements[index].querySelector('div input').getAttribute('checked') != null){
+                todoElements[index].style.display = "none"
+            } else {
+                todoElements[index].style.display = ""
+            }
+        }
+    } else if(clickedFilter.contains('completed')){
+        selectedFilter = filterCompleted
+        for(index=0;index<todoListCount;index++){
+            if(todoElements[index].querySelector('div input').getAttribute('checked') == null){
+                todoElements[index].style.display = "none"
+            } else {
+                todoElements[index].style.display = ""
+            }
+        }
     }
+
+    selectedFilter.classList.add('selected')
     updateCountText()
 }
+
 
 // 할 일 삭제 이벤트 처리기.
 function removeCurrentTodoElement(event){
@@ -187,13 +171,8 @@ function updateTodoEdit(event){
         if(newTodoText.length == 0){
             event.target.focus()
         }
-        is_dup = false
-        todoElementsNameArray.forEach(element => {
-            if(element == newTodoText){
-                is_dup = true
-            }
-        })
-        if(is_dup){
+        
+        if(todoElementsNameArray.includes(newTodoText)){
             alert('That ToDo is already exist!')
             return;
         }
@@ -212,9 +191,6 @@ function updateTodoEdit(event){
     }
 }
 
-function updateView(){
-    // ??? 구현 예정.
-}
 
 // 할 일이 몇 개 있는지 출력하는 텍스트(총 n 개)를 업데이트하는 로직.
 function updateCountText(){
@@ -241,13 +217,10 @@ function toggleTodoElementMode(event){
 function toggleTodoElementStatus(event){
     isChecked = event.target.getAttribute('checked')
     todoElementLI = event.target.parentNode.parentNode
-    if (isChecked == null){
-        event.target.setAttribute('checked', '')
-        localStorage.setItem(todoElementLI.querySelector('div label').innerText, true)
-    } else {
-        event.target.removeAttribute('checked', '')
-        localStorage.setItem(todoElementLI.querySelector('div label').innerText, false)
-    }
+    event.target.toggleAttribute('checked')
+    localStorage.setItem(todoElementLI.querySelector('div label').innerText, isChecked == null)
     todoElementLI.classList.toggle('completed')
-    selectedFilter.dispatchEvent(new Event('click'))
+    // manually bubble it!
+    selectedFilter.dispatchEvent(new Event('click', {bubbles: true}))
+    updateCountText()
 }
