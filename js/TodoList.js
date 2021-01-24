@@ -12,20 +12,21 @@ const renderTodoItem = ({ id, value, completed }, editingId) => `
 `;
 
 export default function TodoList(listEl, todoApp) {
-  this.toggleCompleted = (event) => {
-    const itemEl = event.target.closest("li");
-    const todo = todoApp.getTodo(itemEl.dataset.id);
+  const getTodoItemId = (childEl) => childEl.closest("li")?.dataset?.id;
+
+  this.toggleCompleted = (targetEl) => {
+    const id = getTodoItemId(targetEl);
+    const todo = todoApp.getTodo(id);
     todoApp.updateTodo({ ...todo, completed: !todo.completed });
   };
 
-  this.deleteTodo = (event) => {
-    const itemEl = event.target.closest("li");
-    todoApp.deleteTodo(itemEl.dataset.id);
+  this.deleteTodo = (targetEl) => {
+    const id = getTodoItemId(targetEl);
+    todoApp.deleteTodo(id);
   };
 
-  this.convertToEditor = (event) => {
-    const itemEl = event.target.parentElement.parentElement;
-    const { id } = itemEl.dataset;
+  this.convertToEditor = (targetEl) => {
+    const id = getTodoItemId(targetEl);
     todoApp.setEditingId(id);
   };
 
@@ -48,20 +49,20 @@ export default function TodoList(listEl, todoApp) {
     }
   };
 
-  listEl.addEventListener("click", (event) => {
-    if (event.target.classList.contains("toggle")) {
-      this.toggleCompleted(event);
+  listEl.addEventListener("click", ({ target }) => {
+    if (target.classList.contains("toggle")) {
+      this.toggleCompleted(target);
       return;
     }
 
-    if (event.target.classList.contains("destroy")) {
-      this.deleteTodo(event);
+    if (target.classList.contains("destroy")) {
+      this.deleteTodo(target);
     }
   });
 
-  listEl.addEventListener("dblclick", (event) => {
-    if (event.target.classList.contains("label")) {
-      this.convertToEditor(event);
+  listEl.addEventListener("dblclick", ({ target }) => {
+    if (target.classList.contains("label")) {
+      this.convertToEditor(target);
     }
   });
 
@@ -69,14 +70,14 @@ export default function TodoList(listEl, todoApp) {
     this.convertToViewer();
   });
 
-  listEl.addEventListener("keypress", (event) => {
-    if (event.code === "Escape") {
+  listEl.addEventListener("keypress", ({ code, target }) => {
+    if (code === "Escape") {
       this.convertToViewer();
       return;
     }
 
-    const value = event.target.value.trim();
-    if (event.code === "Enter" && value) {
+    const value = target.value.trim();
+    if (code === "Enter" && value) {
       this.updateValue(value);
       this.convertToViewer();
     }
