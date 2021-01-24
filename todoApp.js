@@ -1,17 +1,17 @@
+import  { handleCount } from "./component/todoCount.js";
 let toDos = [
 
 ];
 let filterState = "all";
 const toDoInput = document.getElementById("new-todo-title");
 const todoListEl = document.getElementById('todo-list');
-const countContainerEl = document.querySelector(".count-container");
-const todoCountEl = document.querySelector(".todo-count");
 const filterEls = document.querySelectorAll(".filters a");
 const allEl = document.querySelector(".all");
 const activeEl = document.querySelector(".active");
 const completedEl = document.querySelector(".completed");
 const labelEl = document.querySelector(".label");
 const eidtInputEl = document.querySelectorAll(".edit")
+
 
 const TODOS_LS ="toDos";
 
@@ -55,7 +55,7 @@ const handleNewTodoSubmit = async (event)=>{
 const itemsUpdate=(event)=>{
 
     const currentLi = event.target.closest('li');
-    console.log(currentLi.value);
+
     const currentItemId = currentLi.dataset.id;
     for(let obj of toDos){
 
@@ -71,7 +71,7 @@ const itemsUpdate=(event)=>{
     } else if (filterState === "active"){
         renderActiveItems();
     }
-    console.log(toDos);
+
 }
     
 const handleComplete=(event)=>{
@@ -89,7 +89,7 @@ const handleDestory=(event)=>{
     handleCount(toDos.length);
 }
 
-updateEditTitle=(event)=>{
+const updateEditTitle=(event)=>{
     for(let obj of toDos){
 
         if( obj.id === parseInt(event.path[1].dataset.id)){
@@ -99,29 +99,30 @@ updateEditTitle=(event)=>{
 }
 
 const updateEdit=(event)=>{
-    console.log("updateEdit");
 
     if(event.keyCode === 13){
-        console.log("Enter");
+
         event.path[1].childNodes[1].childNodes[3].innerText=event.path[0].value;
         event.path[1].classList.remove('editing');
-        console.log(event.path);
+
         updateEditTitle(event);
         
     } else if(event.keyCode === 27){
-        console.log("ESC");
+
         event.path[1].classList.remove('editing');
     }
+    
 }
 const handleEdinting=async(event)=>{
-    console.log("editing!!");
     const targetInput =event.target.parentNode.nextSibling.nextSibling
     
     try{
         await targetInput.addEventListener("keyup",updateEdit);
+        saveToDos();
     }catch(error){
         console.log(error);
     }
+    
 }
 
 
@@ -129,7 +130,6 @@ const handleEdit=(event)=>{
     const targetLi = event.target.closest('li');
     targetLi.classList.add("editing");
     handleEdinting(event);
-    
 }
 
 const handleTodoItemClick=(event)=>{
@@ -137,13 +137,10 @@ const handleTodoItemClick=(event)=>{
     
     if(targetClass[0] === "toggle") handleComplete(event);
     else if(targetClass[0] === "destroy") handleDestory(event);
-    //else if (targetClass[0] === "label") handleEdit(event);
-   // else if (targetClass[0] === "label") handleEdit(event)
+
 }
 
-const handleCount=(length)=>{
-    todoCountEl.innerHTML = `총 <strong>${length}</strong> 개`
-}
+
 
 const renderTodoItemTemplate=(item)=>{
     return (
@@ -217,13 +214,13 @@ const saveToDos=()=>{
     localStorage.setItem(TODOS_LS,JSON.stringify(toDos));
 }
 const loadToDos=()=>{
-    console.log("local");
+
     const loadedToDos = localStorage.getItem(TODOS_LS);
-    console.log(loadedToDos);
+
     if(loadedToDos !== null){
         const parsedToDos = JSON.parse(loadedToDos);
         parsedToDos.forEach((toDo)=>{
-            console.log(toDo);
+
             addToDos(toDo);
             addToItems(toDo)
         });
