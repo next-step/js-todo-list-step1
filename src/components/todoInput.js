@@ -5,21 +5,21 @@ import todoList from './todoList.js';
 
 
 const todoInput = () => {
-    const $input = document.getElementById('new-todo-title');
-    const store = createStore(reducer);
+	const $input = document.getElementById('new-todo-title');
+	const store = createStore(reducer);
 
-        $input.addEventListener('keypress', e => {
-            if(e.key === 'Enter' && e.target.value.length > 0) {
-                store.dispatch({
-                    type: actionTypes.ADD,
-                    content: $input.value
-                })
+		$input.addEventListener('keypress', e => {
+			if(e.key === 'Enter' && e.target.value.length > 0) {
+				store.dispatch({
+						type: actionTypes.ADD,
+						content: $input.value
+				})
 
-                todoList();
+				todoList();
 
-                $input.value = '';
-            }
-        });
+				$input.value = '';
+			}
+	});
     
 };
 

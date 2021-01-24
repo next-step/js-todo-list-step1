@@ -4,9 +4,9 @@ import todoCount from './todoCount.js';
 
 const todoApp = () => {
     
-    todoInput();
-    todoList();
-    todoCount();
+	todoInput();
+	todoList();
+	todoCount();
     
 };
 
