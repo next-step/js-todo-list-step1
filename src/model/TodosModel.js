@@ -36,8 +36,9 @@ class TodosData {
     this.saveToLocalStorage();
   }
 
-  updateTodo(index, isCompleted) {
-    this.data.get(index).isCompleted = isCompleted;
+  updateTodoIsCompleted(index, isCompleted) {
+    this.data[index].isCompleted = isCompleted;
+    this.saveToLocalStorage();
   }
 
   deleteTodo(index) {

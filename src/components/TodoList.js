@@ -1,6 +1,7 @@
 import TodoItem from './TodoItem.js';
 import Observer from '../subjects/Observer.js';
 import todosData from '../model/TodosModel.js';
+import todosSubject from '../subjects/TodosSubject.js';
 
 class TodoList extends Observer {
   constructor() {
@@ -34,6 +35,10 @@ class TodoList extends Observer {
     this.todoList.addEventListener('change', (e) => {
       if (e.target.type === 'checkbox') {
         const closestLi = e.target.closest('li');
+        todosSubject.updateTodoIsCompleted(
+          closestLi.dataset.index,
+          !closestLi.classList.contains('completed'),
+        );
         closestLi.classList.toggle('completed');
       }
     });
