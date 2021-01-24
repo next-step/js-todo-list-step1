@@ -11,9 +11,9 @@ export default function TodoInput(inputEl, todoApp) {
     }
   };
 
-  inputEl.addEventListener("keypress", (event) => {
+  inputEl.addEventListener("keypress", ({ code }) => {
     const value = inputEl.value.trim();
-    if (event.code === "Enter" && value) {
+    if (code === "Enter" && value) {
       this.addTodo(value);
     }
   });
