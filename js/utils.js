@@ -1,21 +1,21 @@
-const LOCAL_STORAGE_KEY = "todos";
-
-export const getDataFromStorage = () => {
-  try {
-    const jsonString = localStorage.getItem(LOCAL_STORAGE_KEY);
-    return JSON.parse(jsonString);
-  } catch (err) {
-    console.warn(err);
-  }
-};
-
-export const setDataToStorage = (data) => {
-  try {
-    const jsonString = JSON.stringify(data);
-    localStorage.setItem(LOCAL_STORAGE_KEY, jsonString);
-  } catch (err) {
-    console.warn(err);
-  }
+export const useLocalStorage = (localStorageKey) => {
+  const getDataFromStorage = () => {
+    try {
+      const jsonString = localStorage.getItem(localStorageKey);
+      return JSON.parse(jsonString);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  const setDataToStorage = (data) => {
+    try {
+      const jsonString = JSON.stringify(data);
+      localStorage.setItem(localStorageKey, jsonString);
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  return [getDataFromStorage, setDataToStorage];
 };
 
 export const generateId = () =>

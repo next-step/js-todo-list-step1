@@ -1,14 +1,17 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 import TodoCount from "./TodoCount.js";
-import { getDataFromStorage, setDataToStorage, generateId } from "./utils.js";
+import { useLocalStorage, generateId } from "./utils.js";
+
+const LOCAL_STORAGE_KEY = "todos";
+const [getData, setData] = useLocalStorage(LOCAL_STORAGE_KEY);
 
 export default function TodoApp(appEl) {
   const inputEl = appEl.querySelector("#new-todo-title");
   const listEl = appEl.querySelector("#todo-list");
   const countContainerEl = appEl.querySelector(".count-container");
 
-  this.todos = getDataFromStorage() ?? [];
+  this.todos = getData() ?? [];
   this.filter = null;
   this.editingId = null;
 
@@ -20,7 +23,7 @@ export default function TodoApp(appEl) {
     this.todos = todos;
     this.render();
 
-    setDataToStorage(todos);
+    setData(todos);
   };
 
   this.getTodo = (targetId) => this.todos.find(({ id }) => id === targetId);
