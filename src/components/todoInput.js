@@ -2,6 +2,7 @@ import { actionTypes } from '../utils/constants.js';
 import reducer from '../store/reducer.js';
 import createStore from '../store/store.js';
 import todoList from './todoList.js';
+import todoCount from './todoCount.js';
 
 
 const todoInput = () => {
@@ -16,6 +17,7 @@ const todoInput = () => {
 				})
 
 				todoList();
+				todoCount();
 
 				$input.value = '';
 			}

@@ -1,6 +1,7 @@
 import { actionTypes, progressTypes } from '../utils/constants.js';
 import createStore from '../store/store.js';
 import reducer from '../store/reducer.js';
+import todoCount from './todoCount.js';
 
 const todoList = () => {
   const store = createStore(reducer);
@@ -25,6 +26,7 @@ const todoList = () => {
     
     bindEvent();
     onEdit();
+    todoCount();
   };
 
   function bindEvent() {
