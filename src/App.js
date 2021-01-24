@@ -19,26 +19,6 @@ export class App {
         this.$seeAllButton.addEventListener('click', this.pressSeeAllButton);
         this.$seeActiveButton.addEventListener('click', this.pressSeeActiveButton);
         this.$seeCompletedButton.addEventListener('click', this.pressSeeCompletedButton);
-
-        let localStorageItem = localStorage.getItem('todoList');
-        if (localStorageItem === '' || localStorageItem === null) {
-            this.todoList = [];
-            localStorage.setItem('todoList', JSON.stringify(this.todoList));
-        }
-        else {
-            this.todoList = JSON.parse(localStorageItem);
-        }
-
-        localStorageItem = localStorage.getItem('todoComplete');
-        if (localStorageItem === '' || localStorageItem === null) {
-            this.todoComplete = [];
-            localStorage.setItem('todoComplete', JSON.stringify(this.todoComplete));
-        }
-        else {
-            this.todoComplete = JSON.parse(localStorageItem);
-        }
-
-        this.render();
     }
 
     inputNewTodo = event => {
