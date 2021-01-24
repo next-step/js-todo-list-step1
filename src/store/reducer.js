@@ -22,6 +22,9 @@ export default function reducer(state = {}, action) {
                 completedFlag: !state[action.seq].completedFlag,
             }
             return state;
+        case actionTypes.DESTROY:
+            delete state[action.seq];
+            return state;
         default: 
             return state;
     }

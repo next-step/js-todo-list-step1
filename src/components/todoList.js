@@ -37,6 +37,10 @@ const todoList = () => {
               });
               return render();
             case 'destroy':
+              store.dispatch({
+                type: actionTypes.DESTROY,
+                seq: obj.seq,
+              });
               return render();
             default:
               return;
@@ -44,7 +48,7 @@ const todoList = () => {
         });
       });
     }
-    
+
     render();
 };
 
