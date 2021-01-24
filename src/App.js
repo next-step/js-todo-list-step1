@@ -228,7 +228,6 @@ export class App {
         $item.classList.remove('editing');
         this.todoList[index] = $item.querySelector('input.edit').value;
         $item.querySelector('label.label').innerText = this.todoList[index];
-        $item.querySelector('input.edit').value = '';
         this.updateLocalStorage();
     }
 }
