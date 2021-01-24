@@ -1,6 +1,6 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
-import TodoCountContainer from "./TodoCountContainer.js";
+import TodoCount from "./TodoCount.js";
 import { getDataFromStorage, setDataToStorage, generateId } from "./utils.js";
 
 export default function TodoApp(appEl) {
@@ -14,7 +14,7 @@ export default function TodoApp(appEl) {
 
   this.todoInput = new TodoInput(inputEl, this);
   this.todoList = new TodoList(listEl, this);
-  this.todoCountContainer = new TodoCountContainer(countContainerEl, this);
+  this.todoCountContainer = new TodoCount(countContainerEl, this);
 
   this.setTodos = (todos) => {
     this.todos = todos;

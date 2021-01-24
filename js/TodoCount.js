@@ -1,4 +1,4 @@
-export default function TodoCountContainer(countContainerEl, todoApp) {
+export default function TodoCount(countContainerEl, todoApp) {
   const countEl = countContainerEl.querySelector(".todo-count");
   const filtersEl = countContainerEl.querySelector(".filters");
   const filterEls = filtersEl.querySelectorAll("a");
