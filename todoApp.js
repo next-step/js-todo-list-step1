@@ -1,7 +1,5 @@
-let testItems = [
-    {id: 1, title: "테스트입니다 1",completed: false},
-    {id: 2, title: "테스트입니다 2",completed: true},
-    {id: 3, title: "테스트입니다 3",completed: false}
+let toDos = [
+
 ];
 let filterState = "all";
 const toDoInput = document.getElementById("new-todo-title");
@@ -15,32 +13,36 @@ const completedEl = document.querySelector(".completed");
 const labelEl = document.querySelector(".label");
 const eidtInputEl = document.querySelectorAll(".edit")
 
+const TODOS_LS ="toDos";
+
 const addToDos = (item)=>{
     todoListEl.insertAdjacentHTML("beforeend",renderTodoItemTemplate(item));
     toDoInput.value="";
 }
 
 const addToItems = (item)=>{
-    testItems = [item, ...testItems];    
+    toDos = [item, ...toDos];   
+    saveToDos();
 }
+
 
 const removeFromItems=(li)=>{
     const testItemId = li.dataset.id;
-    testItems = testItems.filter(item => `${item.id}` !== testItemId);
+    toDos = toDos.filter(item => `${item.id}` !== testItemId);
+    saveToDos();
 }
 
 
-
-const handleNewTodoSubmit=(event)=>{
+const handleNewTodoSubmit = async (event)=>{
     const newItem = {
         id: Date.now(),
         title: event.target.value,
         completed: false
     }
 
-    addToItems(newItem);
+    await addToItems(newItem);
     addToDos(newItem);
-    handleCount(testItems.length);
+    handleCount(toDos.length);
     if(filterState === "completed"){
         renderCompleteItems();
     } else if (filterState === "active"){
@@ -48,17 +50,14 @@ const handleNewTodoSubmit=(event)=>{
     }
 
 };
-const updateTestItems=(currentItemId)=>{
-    
-    
-}
+
 
 const itemsUpdate=(event)=>{
 
     const currentLi = event.target.closest('li');
     console.log(currentLi.value);
     const currentItemId = currentLi.dataset.id;
-    for(let obj of testItems){
+    for(let obj of toDos){
 
         if(obj.completed === false && obj.id === parseInt(currentItemId)){
             obj.completed = true;
@@ -72,7 +71,7 @@ const itemsUpdate=(event)=>{
     } else if (filterState === "active"){
         renderActiveItems();
     }
-    console.log(testItems);
+    console.log(toDos);
 }
     
 const handleComplete=(event)=>{
@@ -87,11 +86,11 @@ const handleDestory=(event)=>{
     removeFromItems(li);
     todoListEl.removeChild(li);
 
-    handleCount(testItems.length);
+    handleCount(toDos.length);
 }
 
 updateEditTitle=(event)=>{
-    for(let obj of testItems){
+    for(let obj of toDos){
 
         if( obj.id === parseInt(event.path[1].dataset.id)){
             obj.title = event.path[0].value;
@@ -154,7 +153,7 @@ const renderTodoItemTemplate=(item)=>{
             <label class="label">${item.title}</label>
             <button class="destroy"></button>
         </div>
-        <input class="edit" value="${item.title}" />
+        <input class="edit" value="새로운 타이틀" />
     </li>`);
 };
 
@@ -163,20 +162,19 @@ const viewAllClick = (event)=>{
     filterState = "all";
     filterEls.forEach((el) => {
         el.classList.remove("selected");
-        
     });
     allEl.classList.add("selected");
 
     todoListEl.innerHTML = "";
-    testItems.forEach((item) => {
+    toDos.forEach((item) => {
         addToDos(item)
     });
-    handleCount(testItems.length);
+    handleCount(toDos.length);
 }
 
 const renderActiveItems = () => {
     todoListEl.innerHTML = "";
-    const activeItems = testItems.filter(item => item.completed === false );
+    const activeItems = toDos.filter(item => item.completed === false );
     activeItems.forEach((item) => {
         addToDos(item)
     });
@@ -198,7 +196,7 @@ const viewActiveClick = (event)=>{
 const renderCompleteItems = () =>{
     
     todoListEl.innerHTML = "";
-    let completedItems = testItems.filter(item => item.completed === true );
+    let completedItems = toDos.filter(item => item.completed === true );
     completedItems.forEach((item) => {
         addToDos(item)
     });
@@ -215,9 +213,27 @@ const viewCompletedClick = (event)=>{
     renderCompleteItems();
 }
 
+const saveToDos=()=>{
+    localStorage.setItem(TODOS_LS,JSON.stringify(toDos));
+}
+const loadToDos=()=>{
+    console.log("local");
+    const loadedToDos = localStorage.getItem(TODOS_LS);
+    console.log(loadedToDos);
+    if(loadedToDos !== null){
+        const parsedToDos = JSON.parse(loadedToDos);
+        parsedToDos.forEach((toDo)=>{
+            console.log(toDo);
+            addToDos(toDo);
+            addToItems(toDo)
+        });
+    }
+}
 
 function init() {
-    console.log("start app");
+    console.log("load toDos");
+    loadToDos();
+
     todoListEl && todoListEl.addEventListener("click",handleTodoItemClick);
     todoListEl && todoListEl.addEventListener("dblclick",handleEdit);
     toDoInput && toDoInput.addEventListener( "change",handleNewTodoSubmit); 
@@ -226,13 +242,7 @@ function init() {
     completedEl && completedEl.addEventListener("click",viewCompletedClick);
     labelEl && labelEl.addEventListener("click",handleEdit);
 
-    // localStorage 작업 예정
-
-    testItems.forEach((item) => {
-        addToDos(item)
-    });
-    handleCount(testItems.length);
-   
+    handleCount(toDos.length);
 }
 
 init();
