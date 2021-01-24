@@ -49,6 +49,7 @@ function click_set() {
     })
 }
 
+//기존 할일과 같은 이름의 중복 방지 함수
 function check_overlap(value){
     for(let i=0;i<localStorage.length;i++)
     {
@@ -111,7 +112,7 @@ function admin(value,item) {
         }
     })
 
-    //label 더블클릭시 input형태로 변경
+    //label 더블클릭시 작동
     label.addEventListener('dblclick',function(){
         // 기존의 class인 li_class와 input태그인 input_tag 설정
         let li_class = li.getAttribute('class');
@@ -152,4 +153,5 @@ function admin(value,item) {
     document.querySelector('.todo-list').insertAdjacentElement("beforeend", li);
 }
 
+//처음 시작시 이벤트 핸들러 적용
 click_set();
