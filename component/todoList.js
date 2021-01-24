@@ -1,6 +1,5 @@
-import { todoListEl, saveToDos, toDos } from "../todoApp.js";
 import { filterState, handleCount, renderActiveItems, renderCompleteItems } from "./todoCount.js";
-
+import { todoListEl, saveToDos, toDos, filterToDos } from "../todoApp.js";
 export const handleTodoItemClick=(event)=>{
     const targetClass = event.target.className.split(" ");
 
@@ -27,15 +26,14 @@ const handleDestory=(event)=>{
 const removeFromItems=(li)=>{
     try{
         const testItemId = li.dataset.id;
-        toDos = toDos.filter(item =>`${item.id}` !== testItemId );
+        filterToDos(toDos,testItemId);
  
-        saveToDos();
+        
     }catch(error){
         console.log(error);
     }
     
 }
-
 
 const itemsUpdate=(event)=>{
 
@@ -59,9 +57,3 @@ const itemsUpdate=(event)=>{
 
 }
 
-
-function todoList(){
-    
-}
-
-todoList();

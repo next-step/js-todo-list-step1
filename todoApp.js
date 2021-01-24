@@ -1,24 +1,25 @@
-import  { handleCount, viewCompletedClick,completedEl, filterState, renderActiveItems, renderCompleteItems } from "./component/todoCount.js";
+import  { handleCount, filterState, renderActiveItems, renderCompleteItems } from "./component/todoCount.js";
 import {handleTodoItemClick} from "./component/todoList.js"
-import "./component/todoList.js";
+import {handleEdit} from"./component/todoInput.js";
 export const todoListEl = document.getElementById('todo-list');
 
 const toDoInput = document.getElementById("new-todo-title");
-const labelEl = document.querySelector(".label");
+
 
 const TODOS_LS ="toDos";
 export let toDos = [];
 
 
-export const addToDos = (item)=>{
-    todoListEl.insertAdjacentHTML("beforeend",renderTodoItemTemplate(item));
-    toDoInput.value="";
-}
+export const filterToDos = (todos,testItemId) =>{
+    toDos = todos.filter(item =>`${item.id}` !== testItemId );
+    saveToDos();
+ }
 
 const addToItems = (item)=>{
     toDos = [item, ...toDos];   
     saveToDos();
 }
+
 
 
 const handleNewTodoSubmit = async (event)=>{
@@ -40,51 +41,11 @@ const handleNewTodoSubmit = async (event)=>{
 };
 
 
-const updateEditTitle=(event)=>{
-    for(let obj of toDos){
-        if( obj.id === parseInt(event.path[1].dataset.id)){
-            obj.title = event.path[0].value;
-        }
-    }
-    saveToDos();
+
+export const addToDos = (item)=>{
+    todoListEl.insertAdjacentHTML("beforeend",renderTodoItemTemplate(item));
+    toDoInput.value="";
 }
-
-const updateEdit=(event)=>{
-
-    if(event.keyCode === 13){
-
-        event.path[1].childNodes[1].childNodes[3].innerText=event.path[0].value;
-        event.path[1].classList.remove('editing');
-        updateEditTitle(event);
-        
-    } else if(event.keyCode === 27){
-
-        event.path[1].classList.remove('editing');
-    }
-    
-}
-const handleEdinting=async(event)=>{
-    const targetInput =event.target.parentNode.nextSibling.nextSibling;
-    
-    try{
-        await targetInput.addEventListener("keyup",updateEdit);
-        
-    }catch(error){
-        console.log(error);
-    }
-    
-}
-
-
-const handleEdit=(event)=>{
-    const targetLi = event.target.closest('li');
-    targetLi.classList.add("editing");
-    handleEdinting(event);
-
-}
-
-
-
 
 
 export const renderTodoItemTemplate=(item)=>{
@@ -121,8 +82,7 @@ export const loadToDos=()=>{
 
 function todoApp(){
     todoListEl && todoListEl.addEventListener("click",handleTodoItemClick);
-    labelEl && labelEl.addEventListener("click",handleEdit);
-    todoListEl && todoListEl.addEventListener("dblclick",handleEdit);
-    toDoInput && toDoInput.addEventListener( "change",handleNewTodoSubmit); 
+    toDoInput && toDoInput.addEventListener( "change",handleNewTodoSubmit);
+    todoListEl && todoListEl.addEventListener("dblclick",handleEdit); 
 }
 todoApp();

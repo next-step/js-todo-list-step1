@@ -2,7 +2,6 @@ import { todoListEl,toDos,addToDos } from "../todoApp.js";
 
 export const todoCountEl = document.querySelector(".todo-count");
 export const countContainerEl = document.querySelector(".count-container");
-
 export const allEl = document.querySelector(".all");
 export const activeEl = document.querySelector(".active");
 export const completedEl = document.querySelector(".completed");
@@ -71,10 +70,10 @@ export const viewCompletedClick = (event)=>{
     renderCompleteItems();
 }
 
-function init(){
+function count(){
     activeEl && activeEl.addEventListener("click",viewActiveClick);
     allEl && allEl.addEventListener("click",viewAllClick);
     completedEl && completedEl.addEventListener("click",viewCompletedClick);
 }
 
-init();
+count();
