@@ -15,6 +15,7 @@ export const useLocalStorage = (localStorageKey) => {
       console.warn(err);
     }
   };
+
   return [getDataFromStorage, setDataToStorage];
 };
 
