@@ -15,15 +15,24 @@ export default function reducer(state = {}, action) {
                 seq,
                 content: action.content,
                 completedFlag: false,
+                editFlag: false,
             };
             return state;
+
         case actionTypes.TOGGLE_CHECK:
             state[action.seq] = {...state[action.seq],
                 completedFlag: !state[action.seq].completedFlag,
             }
             return state;
+
         case actionTypes.DESTROY:
             delete state[action.seq];
+            return state;
+            
+        case actionTypes.EDITING:
+            state[action.seq] = {...state[action.seq],
+                editFlag: !state[action.seq].editFlag,
+            }
             return state;
         default: 
             return state;

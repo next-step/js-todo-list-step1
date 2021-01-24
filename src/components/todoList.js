@@ -11,23 +11,26 @@ const todoList = () => {
       const state = store.getState();
       const itemList = Object.values(state).map(obj => {
           return (`
-          <li id="item-${obj.seq}" class="${obj.completedFlag === false ? '' : progressTypes.COMPLETED}">
+          <li id="item-${obj.seq}" class="${obj.completedFlag === false ? (obj.editFlag === false ? '': progressTypes.EDITING) : progressTypes.COMPLETED}">
             <div class="view">
               <input class="toggle" type="checkbox" ${obj.completedFlag === true? 'checked' : ''}/>
               <label class="label">${obj.content}</label>
               <button class="destroy"></button>
             </div>
-            <input class="edit" value="완료된 타이틀" />
+            <input class="edit" value=${obj.content} />
           </li>
           `)
           }).join("");
       $listUl.innerHTML = itemList;
-      onClickHandler();
+      
+      bindEvent();
     };
-    
-    function onClickHandler() {
+
+
+    const bindEvent = () => {
       Object.values(store.getState()).map(obj => {
         const $liItem = document.getElementById("item-"+obj.seq);
+        
         $liItem.addEventListener('click', e => {
           switch(e.target.className) {
             case 'toggle': 
@@ -44,6 +47,21 @@ const todoList = () => {
               return render();
             default:
               return;
+          }
+        });
+
+        $liItem.addEventListener('dblclick', e => {
+          if(e.target.className === 'label') {
+            if (document.querySelectorAll('.editing').length < 1) {
+              store.dispatch({
+                type: actionTypes.EDITING,
+                seq: obj.seq,
+              });
+              render();
+            } else {
+              // 다른데 편집모드
+            }
+            
           }
         });
       });
