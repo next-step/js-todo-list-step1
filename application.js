@@ -54,7 +54,7 @@ function addNewTodo(event){
     drawNewTodo({'text':text,'isDone':'false'})
     // 브라우저 localStorage에도 해당 할 일 저장 후 현재 선택된 필터에 맞게 가시성 조절.
     localStorage.setItem(text, false)
-    selectedFilter.dispatchEvent(new Event('click'))
+    selectedFilter.dispatchEvent(new Event('click', {bubbles: true}))
     // 내부적으로 유지하고 있는 할 일 리스트에도 저장 후 이 리스트 역시 localStorage에 저장.
     todoElementsNameArray.push(text)
     localStorage.setItem(KEYWORD, JSON.stringify(todoElementsNameArray))
@@ -78,21 +78,42 @@ function addNewTodo(event){
 
 // 할 일 추가 시 실제로 HTML 요소를 그리는 함수
 function drawNewTodo(todo){
+    li = document.createElement('li')
     newTodoHTMLElement = `
-        <li>
-            <div class="view">
-                <input class="toggle" type="checkbox" onclick="toggleTodoElementStatus(event)">
-                <label class="label" ondblclick="toggleTodoElementMode(event)">${todo.text}</label>
-                <button class="destroy" onclick="removeCurrentTodoElement(event)"></button>
-            </div>
-            <input class="edit" onkeyup="updateTodoEdit(event)" value=${todo.text}></input>
-        </li>
+        <div class="view">
+            <input class="toggle" type="checkbox">
+            <label class="label">${todo.text}</label>
+            <button class="destroy"></button>
+        </div>
+        <input class="edit" onkeyup="updateTodoEdit(event)" value=${todo.text}></input>
     `
-    todoList.innerHTML += newTodoHTMLElement
+    li.addEventListener('click', onTodoElementClicked)
+    li.addEventListener('dblclick', onTodoElementDblclicked)
+    li.innerHTML = newTodoHTMLElement
+    todoList.append(li)
     updateCountText()
     if(todo.isDone === 'true'){
         // todoList.children[todoList.children.length - 1].querySelector('li div input.toggle').dispatchEvent(new Event('click'))
-        todoList.querySelector('li:last-child div input.toggle').dispatchEvent(new Event('click'))
+        todoList.querySelector('li:last-child div input.toggle').dispatchEvent(new Event('click', {bubbles: true}))
+    }
+}
+
+function onTodoElementClicked(event){
+    if(event.target && event.target.nodeName == 'INPUT'){
+        toggleTodoElementStatus(event)
+    } else if(event.target && event.target.nodeName == 'BUTTON'){
+        removeCurrentTodoElement(event)
+    } else {
+        return
+    }
+}
+
+
+function onTodoElementDblclicked(event){
+    if(event.target && event.target.nodeName == 'LABEL'){
+        toggleTodoElementMode(event)
+    } else {
+        return
     }
 }
 
