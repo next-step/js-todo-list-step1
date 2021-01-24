@@ -1,21 +1,24 @@
-import  { handleCount } from "./component/todoCount.js";
-let toDos = [
+import  { handleCount, viewActiveClick, viewAllClick, viewCompletedClick,completedEl,allEl,filterState, renderActiveItems } from "./component/todoCount.js";
+
+
+
+export let toDos = [
 
 ];
-let filterState = "all";
+
 const toDoInput = document.getElementById("new-todo-title");
-const todoListEl = document.getElementById('todo-list');
-const filterEls = document.querySelectorAll(".filters a");
-const allEl = document.querySelector(".all");
-const activeEl = document.querySelector(".active");
-const completedEl = document.querySelector(".completed");
+export const todoListEl = document.getElementById('todo-list');
+
+
+
+
 const labelEl = document.querySelector(".label");
 const eidtInputEl = document.querySelectorAll(".edit")
 
 
 const TODOS_LS ="toDos";
 
-const addToDos = (item)=>{
+export const addToDos = (item)=>{
     todoListEl.insertAdjacentHTML("beforeend",renderTodoItemTemplate(item));
     toDoInput.value="";
 }
@@ -96,6 +99,7 @@ const updateEditTitle=(event)=>{
             obj.title = event.path[0].value;
         }
     }
+    saveToDos();
 }
 
 const updateEdit=(event)=>{
@@ -118,7 +122,7 @@ const handleEdinting=async(event)=>{
     
     try{
         await targetInput.addEventListener("keyup",updateEdit);
-        saveToDos();
+        
     }catch(error){
         console.log(error);
     }
@@ -130,6 +134,7 @@ const handleEdit=(event)=>{
     const targetLi = event.target.closest('li');
     targetLi.classList.add("editing");
     handleEdinting(event);
+    ;
 }
 
 const handleTodoItemClick=(event)=>{
@@ -154,61 +159,10 @@ const renderTodoItemTemplate=(item)=>{
     </li>`);
 };
 
-const viewAllClick = (event)=>{
-    event.preventDefault();
-    filterState = "all";
-    filterEls.forEach((el) => {
-        el.classList.remove("selected");
-    });
-    allEl.classList.add("selected");
 
-    todoListEl.innerHTML = "";
-    toDos.forEach((item) => {
-        addToDos(item)
-    });
-    handleCount(toDos.length);
-}
 
-const renderActiveItems = () => {
-    todoListEl.innerHTML = "";
-    const activeItems = toDos.filter(item => item.completed === false );
-    activeItems.forEach((item) => {
-        addToDos(item)
-    });
-    handleCount(activeItems.length);
-}
 
-const viewActiveClick = (event)=>{
-    event.preventDefault();
-    filterState = "active";
 
-    filterEls.forEach((el) => {
-        el.classList.remove("selected");
-    });
-    activeEl.classList.add("selected");
-
-    renderActiveItems();
-}
-
-const renderCompleteItems = () =>{
-    
-    todoListEl.innerHTML = "";
-    let completedItems = toDos.filter(item => item.completed === true );
-    completedItems.forEach((item) => {
-        addToDos(item)
-    });
-    handleCount(completedItems.length);
-}
-const viewCompletedClick = (event)=>{
-    event.preventDefault();
-    filterState = "completed";
-    filterEls.forEach((el) => {
-        el.classList.remove("selected");
-    });
-    completedEl.classList.add("selected");
-    
-    renderCompleteItems();
-}
 
 const saveToDos=()=>{
     localStorage.setItem(TODOS_LS,JSON.stringify(toDos));
@@ -235,7 +189,7 @@ function init() {
     todoListEl && todoListEl.addEventListener("dblclick",handleEdit);
     toDoInput && toDoInput.addEventListener( "change",handleNewTodoSubmit); 
     allEl && allEl.addEventListener("click",viewAllClick);
-    activeEl && activeEl.addEventListener("click",viewActiveClick);
+
     completedEl && completedEl.addEventListener("click",viewCompletedClick);
     labelEl && labelEl.addEventListener("click",handleEdit);
 
