@@ -12,6 +12,8 @@ const filterEls = document.querySelectorAll(".filters a");
 const allEl = document.querySelector(".all");
 const activeEl = document.querySelector(".active");
 const completedEl = document.querySelector(".completed");
+const labelEl = document.querySelector(".label");
+const eidtInputEl = document.querySelectorAll(".edit")
 
 const addToDos = (item)=>{
     todoListEl.insertAdjacentHTML("beforeend",renderTodoItemTemplate(item));
@@ -26,6 +28,8 @@ const removeFromItems=(li)=>{
     const testItemId = li.dataset.id;
     testItems = testItems.filter(item => `${item.id}` !== testItemId);
 }
+
+
 
 const handleNewTodoSubmit=(event)=>{
     const newItem = {
@@ -44,10 +48,15 @@ const handleNewTodoSubmit=(event)=>{
     }
 
 };
+const updateTestItems=(currentItemId)=>{
+    
+    
+}
 
 const itemsUpdate=(event)=>{
 
-    const currentLi = event.target.closest('li')
+    const currentLi = event.target.closest('li');
+    console.log(currentLi.value);
     const currentItemId = currentLi.dataset.id;
     for(let obj of testItems){
 
@@ -63,8 +72,6 @@ const itemsUpdate=(event)=>{
     } else if (filterState === "active"){
         renderActiveItems();
     }
-
-   
     console.log(testItems);
 }
     
@@ -83,10 +90,47 @@ const handleDestory=(event)=>{
     handleCount(testItems.length);
 }
 
+updateEditTitle=(event)=>{
+    for(let obj of testItems){
+
+        if( obj.id === parseInt(event.path[1].dataset.id)){
+            obj.title = event.path[0].value;
+        }
+    }
+}
+
+const updateEdit=(event)=>{
+    console.log("updateEdit");
+
+    if(event.keyCode === 13){
+        console.log("Enter");
+        event.path[1].childNodes[1].childNodes[3].innerText=event.path[0].value;
+        event.path[1].classList.remove('editing');
+        console.log(event.path);
+        updateEditTitle(event);
+        
+    } else if(event.keyCode === 27){
+        console.log("ESC");
+        event.path[1].classList.remove('editing');
+    }
+}
+const handleEdinting=async(event)=>{
+    console.log("editing!!");
+    const targetInput =event.target.parentNode.nextSibling.nextSibling
+    
+    try{
+        await targetInput.addEventListener("keyup",updateEdit);
+    }catch(error){
+        console.log(error);
+    }
+}
+
+
 const handleEdit=(event)=>{
-    // 더블클릭시 input으로 변경
-   const li =  event.target.closest('li');
-   li.classList.toggle("editing class");
+    const targetLi = event.target.closest('li');
+    targetLi.classList.add("editing");
+    handleEdinting(event);
+    
 }
 
 const handleTodoItemClick=(event)=>{
@@ -95,7 +139,7 @@ const handleTodoItemClick=(event)=>{
     if(targetClass[0] === "toggle") handleComplete(event);
     else if(targetClass[0] === "destroy") handleDestory(event);
     //else if (targetClass[0] === "label") handleEdit(event);
-
+   // else if (targetClass[0] === "label") handleEdit(event)
 }
 
 const handleCount=(length)=>{
@@ -110,7 +154,7 @@ const renderTodoItemTemplate=(item)=>{
             <label class="label">${item.title}</label>
             <button class="destroy"></button>
         </div>
-        <input class="edit" value="새로운 타이틀" />
+        <input class="edit" value="${item.title}" />
     </li>`);
 };
 
@@ -175,11 +219,12 @@ const viewCompletedClick = (event)=>{
 function init() {
     console.log("start app");
     todoListEl && todoListEl.addEventListener("click",handleTodoItemClick);
+    todoListEl && todoListEl.addEventListener("dblclick",handleEdit);
     toDoInput && toDoInput.addEventListener( "change",handleNewTodoSubmit); 
     allEl && allEl.addEventListener("click",viewAllClick);
     activeEl && activeEl.addEventListener("click",viewActiveClick);
     completedEl && completedEl.addEventListener("click",viewCompletedClick);
-    
+    labelEl && labelEl.addEventListener("click",handleEdit);
 
     // localStorage 작업 예정
 
