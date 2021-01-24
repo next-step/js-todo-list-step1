@@ -28,10 +28,16 @@ export default function reducer(state = {}, action) {
         case actionTypes.DESTROY:
             delete state[action.seq];
             return state;
-            
-        case actionTypes.EDITING:
+
+        case actionTypes.EDIT_ON_OFF:
             state[action.seq] = {...state[action.seq],
                 editFlag: !state[action.seq].editFlag,
+            }
+            return state;
+        case actionTypes.EDIT_CONTENT:
+            state[action.seq] = {...state[action.seq],
+                editFlag: false,
+                content: action.content
             }
             return state;
         default: 

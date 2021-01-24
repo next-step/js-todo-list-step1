@@ -24,10 +24,10 @@ const todoList = () => {
       $listUl.innerHTML = itemList;
       
       bindEvent();
+      onEdit();
     };
 
-
-    const bindEvent = () => {
+    function bindEvent() {
       Object.values(store.getState()).map(obj => {
         const $liItem = document.getElementById("item-"+obj.seq);
         
@@ -54,12 +54,13 @@ const todoList = () => {
           if(e.target.className === 'label') {
             if (document.querySelectorAll('.editing').length < 1) {
               store.dispatch({
-                type: actionTypes.EDITING,
+                type: actionTypes.EDIT_ON_OFF,
                 seq: obj.seq,
               });
+              onEdit();
               render();
             } else {
-              // 다른데 편집모드
+              // 
             }
             
           }
@@ -67,6 +68,41 @@ const todoList = () => {
       });
     }
 
+    function onEdit() {
+      const $editingItem = document.querySelector('.editing');
+      if($editingItem !== null) {
+        const $editingItemId = $editingItem.getAttribute('id');
+        const $seq = $editingItemId.split('-')[1];
+
+        //onFocus
+        const $editInput = $editingItem.children[1];
+        $editInput.focus();
+        $editInput.setSelectionRange($editInput.value.length, $editInput.value.length);
+
+
+        $editingItem.addEventListener('keydown', e => {
+          if(e.key === 'Escape') {
+            store.dispatch({
+              type: actionTypes.EDIT_ON_OFF,
+              seq: $seq,
+            });
+            render();
+          }
+
+          if(e.key === 'Enter' && e.target.value.length > 0) {
+            store.dispatch({
+                type: actionTypes.EDIT_CONTENT,
+                seq: $seq,
+                content: e.target.value
+            });
+            render();
+          }
+          
+        });
+      }
+      
+    }
+    
     render();
 };
 
