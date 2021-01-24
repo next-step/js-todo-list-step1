@@ -27,12 +27,7 @@ function init(){
     selectedFilter = filterAll
 
     // 저장된 할 일 항목이 있는지 확인, 있다면 불러오고 없다면 초기화.
-    todos = localStorage.getItem(KEYWORD)
-    if(todos == null){
-        todos = JSON.stringify([])
-        localStorage.setItem(KEYWORD, todos)
-    }
-    todoElementsNameArray = JSON.parse(todos)
+    todoElementsNameArray = JSON.parse(localStorage.getItem(KEYWORD)) ?? []
     // 저장된 할 일 항목 각각에 대해 할일 추가 로직 수행.
     todoElementsNameArray.forEach(elementName =>
         drawNewTodo({'text':elementName, 'isDone':localStorage.getItem(elementName)})
@@ -120,20 +115,12 @@ function filterViewChange(event){
     } else if(clickedFilter.contains('active')){
         selectedFilter = filterActive
         for(index=0;index<todoListCount;index++){
-            if(todoElements[index].querySelector('div input').getAttribute('checked') != null){
-                todoElements[index].style.display = "none"
-            } else {
-                todoElements[index].style.display = ""
-            }
+            todoElements[index].style.display = todoElements[index].querySelector('div input').getAttribute('checked') == null ? "" : "none"
         }
     } else if(clickedFilter.contains('completed')){
         selectedFilter = filterCompleted
         for(index=0;index<todoListCount;index++){
-            if(todoElements[index].querySelector('div input').getAttribute('checked') == null){
-                todoElements[index].style.display = "none"
-            } else {
-                todoElements[index].style.display = ""
-            }
+            todoElements[index].style.display = todoElements[index].querySelector('div input').getAttribute('checked') == null ? "none" : ""
         }
     }
 
