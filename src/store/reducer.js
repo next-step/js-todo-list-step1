@@ -13,8 +13,14 @@ export default function reducer(state = {}, action) {
             }
             state[seq] = {
                 seq,
-                content: action.content
+                content: action.content,
+                completedFlag: false,
             };
+            return state;
+        case actionTypes.TOGGLE_CHECK:
+            state[action.seq] = {...state[action.seq],
+                completedFlag: !state[action.seq].completedFlag,
+            }
             return state;
         default: 
             return state;
