@@ -122,15 +122,15 @@ function onTodoElementKeyupped(event){
 }
 
 
-function filterViewChange(event){
-    if(!event.target || event.target.nodeName != 'A'){
+function filterViewChange({ target }){
+    if(!target || target.nodeName != 'A'){
         return
     } 
 
     todoListCount = todoList.querySelectorAll('li').length
     todoElements = todoList.children
     selectedFilter.classList.remove('selected')
-    clickedFilter = event.target.classList
+    clickedFilter = target.classList
 
     if(clickedFilter.contains('all')){
         selectedFilter = filterAll
@@ -155,9 +155,9 @@ function filterViewChange(event){
 
 
 // 할 일 삭제 이벤트 처리기.
-function removeCurrentTodoElement(event){
+function removeCurrentTodoElement({ target }){
     // 삭제된 할 일을 할 일 목록에서 제거.
-    removedTodoID = event.target.closest('li').id
+    removedTodoID = target.closest('li').id
     for(let todoElement of todoElementsArray){
         if(todoElement.id === removedTodoID){
             todoElementsArray.splice(todoElementsArray.indexOf(todoElement), 1)
@@ -168,24 +168,24 @@ function removeCurrentTodoElement(event){
     localStorage.setItem(KEYWORD, JSON.stringify(todoElementsArray))
     // 실제로 HTML 요소를 삭제하고 카운터 업데이트.
     // event.target.parentNode.parentNode.remove()
-    event.target.closest('li').remove()
+    target.closest('li').remove()
     updateCountText()
 }
 
 // 할 일 변경 이벤트 처리기.
-function updateTodoEdit(event){
-    todoElementLI = event.target.closest('li')
+function updateTodoEdit({ target, key }){
+    todoElementLI = target.closest('li')
     // ESC를 눌렀다면 편집 모드 종료, Enter를 눌렀다면 편집 적용.
-    if(event.key === 'Escape'){
+    if(key === 'Escape'){
         todoElementLI.classList.toggle('editing')
-    } else if (event.key === 'Enter'){
+    } else if (key === 'Enter'){
         // 각각 변경된 할 일 텍스트, 원래 할 일 텍스트.
-        newTodoText = event.target.value.trimStart().trimEnd()
+        newTodoText = target.value.trimStart().trimEnd()
         updatedTodoText = todoElementLI.querySelector('div label').innerText
         
         // 입력값 필터링.
         if(newTodoText.length === 0){
-            event.target.focus()
+            target.focus()
         }
         
         for(let todoElement of todoElementsArray){
@@ -226,19 +226,18 @@ function updateCountText(){
 }
 
 // 할 일을 더블클릭 했을 때 편집 모드 토글 로직.
-function toggleTodoElementMode(event){
-    todoElementLI = event.target.closest('li')
-    todoElementLI.classList.toggle('editing')
+function toggleTodoElementMode({ target }){
+    target.closest('li').classList.toggle('editing')
 }
 
 // 할 일 완료 여부 체크/체크 해제 시 속성 부여, 제거 로직.
-function toggleTodoElementStatus(event){
-    event.target.toggleAttribute('checked')
-    todoElementLI = event.target.closest('li')
+function toggleTodoElementStatus({ target }){
+    target.toggleAttribute('checked')
+    todoElementLI = target.closest('li')
     todoElementLI.classList.toggle('completed')
     for(let todoElement of todoElementsArray){
         if(todoElement.id === todoElementLI.id){
-            todoElement.isDone = (event.target.getAttribute('checked') != null)
+            todoElement.isDone = (target.getAttribute('checked') != null)
         }
     }
     localStorage.setItem(KEYWORD, JSON.stringify(todoElementsArray))
