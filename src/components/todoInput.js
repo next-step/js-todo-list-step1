@@ -1,13 +1,14 @@
 export const todoInput = () => {
-  const $newTodoTitle = document.getElementById("new-todo-title");
+  const $newTodoTitle = document.getElementById('new-todo-title');
  
-  $newTodoTitle.addEventListener("keyup", addTodoItem);
+  $newTodoTitle.addEventListener('keyup', addTodoItem);
  }
 
 const addTodoItem = ({target, key}) => {
-    if(target.value && key === "Enter"){
-        const $todoList = document.getElementById("todo-list");
-        $todoList.insertAdjacentHTML("beforeend" ,newTodoItem(target.value));
+    if(target.value && key === 'Enter'){
+        const $todoList = document.getElementById('todo-list');
+
+        $todoList.insertAdjacentHTML('beforeend' ,newTodoItem(target.value));
         target.value = '';
     }
     
