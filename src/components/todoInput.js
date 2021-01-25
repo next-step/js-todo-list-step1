@@ -1,7 +1,6 @@
 export const todoInput = () => {
   const $newTodoTitle = document.getElementById("new-todo-title");
  
-  console.log($newTodoTitle);
   $newTodoTitle.addEventListener("keyup", addTodoItem);
  }
 
