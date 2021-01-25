@@ -29,7 +29,7 @@ const handleNewTodoSubmit = async (event)=>{
         completed: false
     }
 
-    await addToItems(newItem);
+    addToItems(newItem);
     addToDos(newItem);
     handleCount(toDos.length);
     if(filterState === "completed"){
@@ -56,7 +56,7 @@ export const renderTodoItemTemplate=(item)=>{
             <label class="label">${item.title}</label>
             <button class="destroy"></button>
         </div>
-        <input class="edit" value="새로운 타이틀" />
+        <input class="edit" value="${item.title}" />
     </li>`);
 };
 
