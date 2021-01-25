@@ -42,7 +42,10 @@ class TodosData {
   }
 
   deleteTodo(index) {
-    this.data.delete(index);
+    if (this.data[index] !== undefined) {
+      delete this.data[index];
+      this.saveToLocalStorage();
+    }
   }
 }
 

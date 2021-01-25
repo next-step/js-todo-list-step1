@@ -48,7 +48,7 @@ class TodoList extends Observer {
     this.todoList.addEventListener('click', (e) => {
       if (e.target.classList.contains('destroy')) {
         const closestLi = e.target.closest('li');
-        closestLi.remove();
+        todosSubject.deleteTodo(closestLi.dataset.index);
       }
     });
   }
