@@ -16,6 +16,11 @@ class TodosSubject extends Subject {
     this.data.updateTodoIsCompleted(index, isCompleted);
   }
 
+  updateTodoTitle(index, todoTitle) {
+    this.data.updateTodoTitle(index, todoTitle);
+    this.notifyObservers();
+  }
+
   deleteTodo(index) {
     this.data.deleteTodo(index);
     this.notifyObservers();

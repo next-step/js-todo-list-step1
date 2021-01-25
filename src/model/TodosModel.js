@@ -37,8 +37,17 @@ class TodosData {
   }
 
   updateTodoIsCompleted(index, isCompleted) {
-    this.data[index].isCompleted = isCompleted;
-    this.saveToLocalStorage();
+    if (this.data[index] !== undefined) {
+      this.data[index].isCompleted = isCompleted;
+      this.saveToLocalStorage();
+    }
+  }
+
+  updateTodoTitle(index, todoTitle) {
+    if (this.data[index] !== undefined) {
+      this.data[index].title = todoTitle;
+      this.saveToLocalStorage();
+    }
   }
 
   deleteTodo(index) {

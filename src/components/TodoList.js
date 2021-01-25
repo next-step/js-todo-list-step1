@@ -54,6 +54,7 @@ class TodoList extends Observer {
   }
 
   addEventEditTodoItem() {
+    // 더블 클릭으로 수정창 진입
     this.todoList.addEventListener('dblclick', (e) => {
       const closestLi = e.target.closest('li');
       const inputEdit = closestLi.querySelector('input.edit');
@@ -72,10 +73,10 @@ class TodoList extends Observer {
         closestLi.querySelector('input.edit').style.display = 'none';
       }
 
+      // 수정
       if (e.target.classList.contains('edit')) {
         if (e.key === 'Enter' && e.target.value.trim() !== '') {
-          switchBackToView();
-          closestLi.querySelector('label').innerHTML = e.target.value;
+          todosSubject.updateTodoTitle(closestLi.dataset.index, e.target.value);
         } else if (e.key === 'Escape') {
           switchBackToView();
           e.target.value = closestLi.querySelector('label').innerHTML;
