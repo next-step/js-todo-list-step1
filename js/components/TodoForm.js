@@ -1,10 +1,10 @@
-import Reilly from "../lib/Reilly.js";
+import { createElement } from "../lib/Reilly.js";
 
 function TodoForm(props) {
-  return Reilly.createElement(
+  return createElement(
     "form",
     { onsubmit: props.onsubmit },
-    Reilly.createElement("input", {
+    createElement("input", {
       id: "new-todo-title",
       name: "new-todo",
       className: "new-todo",

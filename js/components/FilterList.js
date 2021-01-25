@@ -3,16 +3,17 @@ import { filterBtns } from "./filterBtns.js";
 
 class FilterList extends Reilly.Component {
   render() {
-    const { mode } = this.props;
+    const { mode, onModeChange } = this.props;
+
     return createElement(
       "ul",
       { className: "filters" },
-      createElement(
-        "li",
-        null,
-        createElement(filterBtns, { mode, name: "all" }),
-        createElement(filterBtns, { mode, name: "active" }),
-        createElement(filterBtns, { mode, name: "completed" })
+      ...["all", "active", "completed"].map((name) =>
+        createElement(
+          "li",
+          null,
+          createElement(filterBtns, { mode, name, onModeChange })
+        )
       )
     );
   }

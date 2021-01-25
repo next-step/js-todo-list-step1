@@ -1,9 +1,17 @@
 import { uuid } from "../utils/uuid.js";
+import { FILTER_ENUM } from "./constants.js";
 
 /**
- * typed Todo
- * @constructor generates Todos
+ * @typedef {Object} TodoType
+ * @property {string} id
+ * @property {string} content
+ * @property {boolean} completed
+ */
+
+/**
+ * @class generates Todos
  * @param {string} content
+ * @returns {TodoType}
  */
 export function Todo(content) {
   if (!new.target)
@@ -14,7 +22,18 @@ export function Todo(content) {
   this.completed = false;
 }
 
-export class AppState {
-  todos = [];
-  nav = "";
+/**
+ * @constructor construct initial state
+ */
+export class TodoState {
+  /**
+   * @param {TodoType[]} todos
+   * @param {FILTER_ENUM} mode
+   * @param {null | string} edittingId
+   */
+  constructor(todos, mode, edittingId) {
+    this.todos = todos;
+    this.mode = mode;
+    this.edittingId = edittingId;
+  }
 }

@@ -15,8 +15,7 @@ class ReillyDOM {
   static render(reillyNode, container) {
     const $root = document.getElementById("root");
     const htmlElement = this.renderElement(reillyNode);
-
-    if (!container) container = htmlElement.parentElement || $root;
+    if (!container) container = document.querySelector(".view") ?? $root;
 
     container.innerHTML = "";
     container.appendChild(htmlElement);
@@ -47,12 +46,11 @@ class ReillyDOM {
     }
 
     reillyNode.children
-      .map((child) => {
-        if (child.constructor === Object) child._container = $element;
-        return Object.assign(this.renderElement.call(this, child), {
+      .map((child) =>
+        Object.assign(this.renderElement.call(this, child), {
           _container: $element
-        });
-      })
+        })
+      )
       .forEach((elem) => {
         $element.appendChild(elem);
       });

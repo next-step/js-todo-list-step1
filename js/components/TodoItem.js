@@ -1,25 +1,38 @@
-import Reilly from "../lib/Reilly.js";
+import Reilly, { createElement } from "../lib/Reilly.js";
 
-function TodoItem({ todo }) {
-  return Reilly.createElement(
-    "li",
-    { id: todo.id },
-    Reilly.createElement(
-      "div",
-      { className: "view" },
-      Reilly.createElement("input", {
-        className: "toggle",
-        type: "checkbox",
-        checked: todo.completed
-      }),
-      Reilly.createElement("label", { className: "label" }, todo.content),
-      Reilly.createElement("button", { className: "destroy" })
-    ),
-    Reilly.createElement("input", {
-      className: "edit",
-      value: todo.content
-    })
-  );
+class TodoItem extends Reilly.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const { todo, edittingId } = this.props;
+
+    return createElement(
+      "li",
+      {
+        id: todo.id,
+        className: `${todo.completed ? "completed" : ""} ${
+          todo.id === edittingId ? "editing" : ""
+        }`
+      },
+      createElement(
+        "div",
+        { className: "view" },
+        createElement("input", {
+          type: "checkbox",
+          className: `toggle ${todo.completed ? "checked" : ""}`,
+          checked: todo.completed
+        }),
+        createElement("label", { className: "label" }, todo.content),
+        createElement("button", { className: "destroy" })
+      ),
+      createElement("input", {
+        className: "edit",
+        value: todo.content
+      })
+    );
+  }
 }
 
 export default TodoItem;

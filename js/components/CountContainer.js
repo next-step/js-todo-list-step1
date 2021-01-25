@@ -1,20 +1,27 @@
-import Reilly from "../lib/Reilly.js";
+import Reilly, { createElement } from "../lib/Reilly.js";
 import FilterList from "./FilterList.js";
 
 class CountContainer extends Reilly.Component {
   render() {
-    const { mode, length } = this.props;
-    return Reilly.createElement(
+    const { mode, todos, onModeChange } = this.props;
+    const doneCount = todos.filter((todo) => todo.completed).length;
+
+    return createElement(
       "div",
       { className: "count-container" },
-      Reilly.createElement(
+      createElement(
         "span",
         { className: "todo-count" },
         "총 ",
-        Reilly.createElement("strong", null, length),
+        createElement("strong", null, todos.length),
         " 개"
       ),
-      Reilly.createElement(FilterList, { mode })
+      createElement(FilterList, { mode, onModeChange }),
+      createElement(
+        "div",
+        { style: "position: absolute; right:20px;" },
+        `${doneCount} / ${todos.length}`
+      )
     );
   }
 }
