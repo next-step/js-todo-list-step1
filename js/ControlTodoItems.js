@@ -47,8 +47,9 @@ function itemClickControl({target}){
   function workUpdate({target, key}) {
     // 등록된 항목을 수정하는 기능
     let li = target.closest('li');
-    if (key=== 'Escape') {
+    if (key === 'Escape') {
       li.classList.remove("editing");
+      return;
     }
     if (key === 'Enter') {
       if (target.value !== "" && !/^\s+|\s+$/g.exec(target.value)) {

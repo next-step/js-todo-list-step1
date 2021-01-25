@@ -90,6 +90,6 @@ function reflectView() {
 export function renewStrong() {
     // 리스트 하단의 총 목록 갯수를 갱신하는 기능
     let list = document.querySelectorAll("#todo-list>li.selected");
-    let items = document.querySelector("strong");
-    items.innerText = list.length;
+    let item = document.querySelector("strong");
+    item.innerText = list.length;
   }
