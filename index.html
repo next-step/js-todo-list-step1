@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>이벤트 - TODOS</title>
     <link rel="stylesheet" href="css/style.css" />
+    <script defer src="js/todo.js"></script>
   </head>
   <body>
     <div class="todoapp">
@@ -17,7 +18,15 @@
       />
       <main>
         <input class="toggle-all" type="checkbox" />
-        <ul id="todo-list" class="todo-list"></ul>
+        <ul id="todo-list" class="todo-list">
+          <li>
+            <div class="view">
+              <input class="toggle" type="checkbox" />
+              <label class="label">이벤트 문서 보기</label>
+              <button class="destroy"></button>
+            </div>
+          </li>
+        </ul>
         <div class="count-container">
           <span class="todo-count">총 <strong>0</strong> 개</span>
           <ul class="filters">
