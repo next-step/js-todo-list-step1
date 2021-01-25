@@ -16,7 +16,7 @@ export const filterToDos = (todos,testItemId) =>{
  }
 
 const addToItems = (item)=>{
-    toDos = [item, ...toDos];   
+    toDos.push(item);
     saveToDos();
 }
 
