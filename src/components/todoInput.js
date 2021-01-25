@@ -4,11 +4,12 @@ export const todoInput = () => {
   console.log($newTodoTitle);
   $newTodoTitle.addEventListener("keyup", addTodoItem);
  }
- 
+
 const addTodoItem = ({target, key}) => {
     if(target.value && key === "Enter"){
         const $todoList = document.getElementById("todo-list");
-        $todoList.insertAdjacentHTML(beforeend ,newTodoItem(target.value));
+        $todoList.insertAdjacentHTML("beforeend" ,newTodoItem(target.value));
+        target.value = '';
     }
     
 }
