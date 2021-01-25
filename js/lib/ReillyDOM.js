@@ -13,9 +13,10 @@ class ReillyDOM {
    * @param {HTMLElement} container - container node for `reillyNode`
    */
   static render(reillyNode, container) {
+    const $root = document.getElementById("root");
     const htmlElement = this.renderElement(reillyNode);
-    console.log(htmlElement);
-    if (!container) container = document.querySelector(".view");
+    if (!container) container = document.querySelector(".view") ?? $root;
+
     container.innerHTML = "";
     container.appendChild(htmlElement);
   }

@@ -59,6 +59,11 @@ class Reilly {
       this.state = { ...this.state, ...newState };
 
       ReillyDOM.render(this.render(), this._owner);
+      this.componentDidUpdate();
+    }
+
+    componentDidUpdate() {
+      console.warn(`Not Implemented, plz override this`);
     }
 
     render() {
