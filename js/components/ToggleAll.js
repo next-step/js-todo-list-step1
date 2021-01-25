@@ -1,7 +1,7 @@
-import Reilly from "../lib/Reilly.js";
+import { createElement } from "../lib/Reilly.js";
 
 export function ToggleAll() {
-  return Reilly.createElement("input", {
+  return createElement("input", {
     className: "toggle-all",
     type: "checkbox"
   });

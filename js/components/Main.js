@@ -1,4 +1,4 @@
-import Reilly from "../lib/Reilly.js";
+import Reilly, { createElement } from "../lib/Reilly.js";
 import CountContainer from "./CountContainer.js";
 import TodoList from "./TodoList.js";
 import { ToggleAll } from "./ToggleAll.js";
@@ -6,7 +6,17 @@ import { FILTER_ENUM } from "../types/constants.js";
 
 class Main extends Reilly.Component {
   render() {
-    const { todos, mode, onToggle, onRemove, onModeChange } = this.props;
+    const {
+      todos,
+      mode,
+      edittingId,
+      onStartEdit,
+      onConfirmEdit,
+      onToggle,
+      onRemove,
+      onModeChange
+    } = this.props;
+
     let filteredTodos = [...todos];
 
     if (mode !== FILTER_ENUM.ALL)
@@ -14,16 +24,19 @@ class Main extends Reilly.Component {
         mode === FILTER_ENUM.COMPLETED ? todo.completed : !todo.completed
       );
 
-    return Reilly.createElement(
+    return createElement(
       "main",
       null,
-      Reilly.createElement(ToggleAll),
-      Reilly.createElement(TodoList, {
+      createElement(ToggleAll),
+      createElement(TodoList, {
         todos: filteredTodos,
+        edittingId,
         onToggle,
-        onRemove
+        onRemove,
+        onStartEdit,
+        onConfirmEdit
       }),
-      Reilly.createElement(CountContainer, { mode, todos, onModeChange })
+      createElement(CountContainer, { mode, todos, onModeChange })
     );
   }
 }

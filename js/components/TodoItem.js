@@ -1,4 +1,4 @@
-import Reilly from "../lib/Reilly.js";
+import Reilly, { createElement } from "../lib/Reilly.js";
 
 class TodoItem extends Reilly.Component {
   constructor(props) {
@@ -6,26 +6,28 @@ class TodoItem extends Reilly.Component {
   }
 
   render() {
-    const { todo } = this.props;
+    const { todo, edittingId } = this.props;
 
-    return Reilly.createElement(
+    return createElement(
       "li",
       {
         id: todo.id,
-        className: `${todo.completed ? "completed" : ""}`
+        className: `${todo.completed ? "completed" : ""} ${
+          todo.id === edittingId ? "editing" : ""
+        }`
       },
-      Reilly.createElement(
+      createElement(
         "div",
         { className: "view" },
-        Reilly.createElement("input", {
+        createElement("input", {
           type: "checkbox",
           className: `toggle ${todo.completed ? "checked" : ""}`,
           checked: todo.completed
         }),
-        Reilly.createElement("label", { className: "label" }, todo.content),
-        Reilly.createElement("button", { className: "destroy" })
+        createElement("label", { className: "label" }, todo.content),
+        createElement("button", { className: "destroy" })
       ),
-      Reilly.createElement("input", {
+      createElement("input", {
         className: "edit",
         value: todo.content
       })
