@@ -3,6 +3,9 @@ import { actionTypes } from '../utils/constants.js';
 
 export default function reducer(state = {}, action) {
 	switch(action.type) {
+		case actionTypes.GET_STATE:
+			return action.state;
+
 		case actionTypes.ADD:
 			let seq;
 			if (Object.keys(state).length < 1) {

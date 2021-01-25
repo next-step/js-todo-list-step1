@@ -1,4 +1,5 @@
 export const actionTypes = {
+	GET_STATE: 'GET_STATE',
 	ADD: 'ADD_TODO_ITEM',
 	TOGGLE_CHECK: 'TOGGLE_CHECK',
 	DESTROY: 'DESTROY',
@@ -8,5 +9,11 @@ export const actionTypes = {
 
 export const progressTypes = {
 	EDITING: 'editing',
+	COMPLETED: 'completed',
+};
+
+export const filterTypes = {
+	ALL: 'all',
+	ACTIVE: 'active',
 	COMPLETED: 'completed',
 };
