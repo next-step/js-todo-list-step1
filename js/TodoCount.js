@@ -5,19 +5,28 @@ export default function TodoCount(countContainerEl, todoApp) {
 
   this.setFilter = (targetEl) => {
     filterEls.forEach((el) => {
-      const { classList } = el;
-      classList.remove("selected");
       if (el !== targetEl) return;
 
-      classList.add("selected");
+      const { classList } = el;
       todoApp.setFilter(
         classList.contains("all") ? null : classList.contains("completed")
       );
     });
   };
 
-  this.render = function (todos) {
+  this.render = (todos) => {
     countEl.innerHTML = `총 <strong>${todos.length}</strong> 개`;
+
+    filterEls.forEach(({ classList }) => {
+      classList.remove("selected");
+      if (
+        (todoApp.filter === null && classList.contains("all")) ||
+        (todoApp.filter === false && classList.contains("active")) ||
+        (todoApp.filter === true && classList.contains("completed"))
+      ) {
+        classList.add("selected");
+      }
+    });
   };
 
   filtersEl.addEventListener("click", (event) => {
