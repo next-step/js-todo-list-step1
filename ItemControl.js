@@ -1,5 +1,5 @@
 const $todoInput = document.querySelector("#new-todo-title");
-const $toggleInput = document.querySelector(".toggle");
+const $toggleInput = document.getElementById("todo-list"); //수정 부분
 
 $todoInput.addEventListener("keyup", onAddTodoItem);
 $toggleInput.addEventListener("click", onToggleTodoItem);
@@ -10,14 +10,14 @@ function onAddTodoItem(event) {
   if (event.key === "Enter" && todoTitle !== "") {
     todoList.insertAdjacentHTML("beforeend", renderTodoItemTemplate(todoTitle));
     event.target.value = "";
-    //console.log(event);
-
   }
 }
 
 function onToggleTodoItem(event) {
-  event.target.closest("li").classList.toggle("completed");
-  //console.log(event);
+  if(event.target && event.target.nodeName === 'INPUT'){ //수정 부분
+    event.target.closest("li").classList.toggle("completed");
+    document.getElementById
+  }
 }
 
 function renderTodoItemTemplate(title) {
@@ -28,5 +28,5 @@ function renderTodoItemTemplate(title) {
                       <button class="destroy"></button>
                   </div>
                   <input class="edit" value="새로운 타이틀">
-           </li>`;
+              </li>`;
 }
