@@ -13,7 +13,6 @@ const options = {
 
 class WordService {
   /**
-   *
    * @param {string} word
    * @returns {boolean} validation result
    */
