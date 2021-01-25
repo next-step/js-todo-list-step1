@@ -9,11 +9,16 @@ function init() {
   // 페이지 로드 시 이벤트 리스너 부착
   getWork.addEventListener("keypress", AddNewList);
 
+  todoList.addEventListener('click', itemClickControl);
+  todoList.addEventListener('dblclick', workContentCopy);
+  todoList.addEventListener('keyup',workUpdate);
+
   filter.addEventListener("click", filterButtonControl);
 
   window.addEventListener("beforeunload", saveLocalStorage);
   window.addEventListener("DOMContentLoaded", loadLocalStorage);
 }
+
 
 function AddNewList(e) {
   // 새로운 항목을 추가하는 기능
@@ -23,8 +28,6 @@ function AddNewList(e) {
       e.target.value = null;
 
       let item = listAssemble(text);
-
-      
 
       if (!/(completed)/.exec(window.location.href)) {
         item.classList.add("selected");
@@ -43,7 +46,7 @@ function AddNewList(e) {
 
 function itemClickControl({target}){
   if(target.classList.contains('toggle')) workCheck({target});
-  else if(target.nodeName==='BUTTON') workDelete({target});
+  else if(target.classList.contains('destroy')) workDelete({target});
 }
 
 
@@ -109,7 +112,6 @@ function filterButtonControl({target}){
 }
 
 function viewAll() {
-    console.log("viewall");
   // "전체보기" 버튼 클릭 시의 기능
   let list = document.querySelectorAll("#todo-list>li");
   for (let i = 0; i < list.length; i++) {
@@ -120,7 +122,6 @@ function viewAll() {
 }
 
 function viewTodo() {
-    console.log("viewtodo");
   // "해야할 일" 버튼 클릭 시의 기능
   let list = document.querySelectorAll("#todo-list>li");
 
@@ -136,7 +137,6 @@ function viewTodo() {
 }
 
 function viewDone() {
-    console.log("viewdone");
   // "완료한 일" 버튼 클릭 시의 기능
   let list = document.querySelectorAll("#todo-list>li");
   for (let i = 0; i < list.length; i++) {
@@ -234,10 +234,6 @@ function listAssemble(content) {
                    
 
   li.innerHTML = listTemplate;
-  li.addEventListener('click', itemClickControl);
-  li.addEventListener('dblclick', workContentCopy);
-  li.querySelector('.edit').addEventListener('keyup',workUpdate);
-
   todoList.append(li);
 
   return li;
