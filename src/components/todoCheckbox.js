@@ -12,11 +12,13 @@ const changeTodo = ({target}) =>{
     }
 }
 
+// todo list의 체크박스를 클릭하여 complete 상태로 변경
 const completeTodo = (target) => {
    target.toggleAttribute('checked');
    target.closest('li').classList.toggle('completed');
 }
 
+// todo list의 x버튼을 클릭하여 해당 엘리먼트 삭제
 const removeTodo = (target) => {
     target.closest('li').remove();
 
