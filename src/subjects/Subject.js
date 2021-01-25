@@ -12,8 +12,8 @@ class Subject {
     this.observers = this.observers.filter((registedObserver) => registedObserver !== observer);
   }
 
-  notifyObservers(data) {
-    this.observers.forEach((o) => o.update(data));
+  notifyObservers() {
+    this.observers.forEach((o) => o.update());
   }
 }
 

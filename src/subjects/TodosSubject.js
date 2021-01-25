@@ -1,6 +1,7 @@
 import Subject from './Subject.js';
 import todosData from '../model/TodosModel.js';
 import todoList from '../components/TodoList.js';
+import todoCount from '../components/TodoCount.js';
 
 class TodosSubject extends Subject {
   constructor() {
@@ -29,5 +30,6 @@ class TodosSubject extends Subject {
 
 const todosSubject = new TodosSubject();
 todosSubject.registerObserver(todoList);
+todosSubject.registerObserver(todoCount);
 
 export default todosSubject;
