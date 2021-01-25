@@ -30,7 +30,7 @@ function itemClickControl({target}){
   function workDelete({target}) {
     // 등록된 항목들을 제거하는 기능
     if (confirm("정말 삭제하시겠습니까?")) {
-      let li = target.closest('li')
+      const li = target.closest('li')
       li.parentNode.removeChild(li);
       renewStrong();
     }
@@ -38,15 +38,15 @@ function itemClickControl({target}){
   
   function workContentCopy({target}) {
     // 등록된 항목의 수정을 위해 내용을 입력칸에 복사하는 기능
-    let li = target.closest('li');
+    const li = target.closest('li');
     li.classList.add("editing");
-    let chginput = li.querySelector(".edit");
+    const chginput = li.querySelector(".edit");
     chginput.value = target.innerText;
   }
   
   function workUpdate({target, key}) {
     // 등록된 항목을 수정하는 기능
-    let li = target.closest('li');
+    const li = target.closest('li');
     if (key === 'Escape') {
       li.classList.remove("editing");
       return;

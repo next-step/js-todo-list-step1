@@ -9,7 +9,7 @@ export function initControlLocalStorage(){
 
 function saveLocalStorage() {
     // 페이지 종료 시 현재 리스트를 저장하는 기능
-    let list = document.querySelectorAll("#todo-list>li");
+    const list = document.querySelectorAll("#todo-list>li");
     let listArray = [];
   
     for (let i = 0; i < list.length; i++) {
@@ -22,14 +22,14 @@ function saveLocalStorage() {
       listArray.push(dataset);
     }
   
-    let jsonArray = JSON.stringify(listArray);
+    const jsonArray = JSON.stringify(listArray);
   
     localStorage.setItem("json", jsonArray);
   }
   
   function loadLocalStorage() {
     // 페이지 실행 시 현재 리스트를 불러오는 기능
-    var load = JSON.parse(localStorage.getItem("json"));
+    const load = JSON.parse(localStorage.getItem("json"));
     for (let i in load) {
       getLocalStorageList(load[i]);
     }
@@ -40,12 +40,12 @@ function saveLocalStorage() {
 
   function getLocalStorageList(e) {
     // 페이지 실행 시 현재 리스트를 불러오는 기능
-    let liClass = e["liClass"];
-    let Checked = e["Checked"];
-    let Label = e["label"];
+    const liClass = e["liClass"];
+    const Checked = e["Checked"];
+    const Label = e["label"];
   
-    let li = listAssemble(Label);
-    let checkbox = li.querySelector(".toggle");
+    const li = listAssemble(Label);
+    const checkbox = li.querySelector(".toggle");
   
     if (Checked === "checked") checkbox.setAttribute("checked", "");
     if (liClass === "completed") li.classList.add("completed");
