@@ -16,7 +16,7 @@ function init() {
 };
 
 let TodoItemList = []; // $TodoInput에 입력되는 내용들을 저장
-let TodoNum = 0;
+let TodoNum = 0; // 총 개수
 
 const addTodo = (e) => {
     
