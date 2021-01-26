@@ -3,15 +3,13 @@ export function TodoTotalCount( $div, context ){
     const $count = document.querySelector('.todo-count > strong');
     const $filter = $div.querySelector('.filters');
 
-    this.todoItems = [];
 
-    this.setState = updatedTodoItems => {
-        this.todoItems = updatedTodoItems;
-        this.render(this.todoItems);
+    this.setState = (todoItems) => {
+        this.render(todoItems);
     };
     
-    this.render = () => {
-        $count.innerText = this.todoItems.length;
+    this.render = (todoItems) => {
+        $count.innerText = todoItems.length;
         $filter.innerHTML = renderHTML();
     };
 

@@ -3,10 +3,10 @@ import { TodoInput } from './TodoInput.js';
 import { TodoTotalCount } from './TodoTotalCount.js'
 
 export function TodoApp($div) {
-    const $input = $div.querySelector("#new-todo-title");
     const $ul = $div.querySelector('#todo-list')
 
     this.todoItems = [];
+    this.filter = '전체보기';
 
     this.todoInput = new TodoInput(this);
     this.todoList = new TodoList($ul, this);
@@ -14,8 +14,7 @@ export function TodoApp($div) {
 
     this.saveItem = (item) => {
       this.todoItems.push(item)
-      this.todoList.setState(this.todoItems);
-      this.todoTotalCount.setState(this.todoItems);
+      this.filterTodo(this.filter);
     }
 
     this.complete = (todoItem) => {
@@ -28,7 +27,7 @@ export function TodoApp($div) {
       const index = this.todoItems.findIndex(item => item.todoItem === todoItem);
       this.todoItems.splice(index, 1);
       this.todoList.render(this.todoItems);
-      this.todoTotalCount.setState(this.todoItems);
+      this.todoTotalCount.setState(this.todoItems, this.filter);
     }
 
     this.update = (id, todoItem) =>{
@@ -38,19 +37,19 @@ export function TodoApp($div) {
     }
 
     this.filterTodo = (completeState) =>{
-
-      if(completeState === '전체보기') {
+      this.filter = completeState;
+      if(this.filter === '전체보기') {
         this.todoList.render(this.todoItems);
-        this.todoTotalCount.setState(this.todoItems);
+        this.todoTotalCount.setState(this.todoItems, this.filter);
       }
 
-      if(completeState === '해야할 일'){
+      if(this.filter === '해야할 일'){
         const notCompletedItems =  this.todoItems.filter(item => !item.completed);
         this.todoList.render(notCompletedItems);
         this.todoTotalCount.setState(notCompletedItems);
       }
     
-      if(completeState === '완료한 일'){
+      if(this.filter === '완료한 일'){
         const completedItems =  this.todoItems.filter(item => item.completed);
         this.todoList.render(completedItems);
         this.todoTotalCount.setState(completedItems);
@@ -63,8 +62,7 @@ export function TodoApp($div) {
       TodoList.setState(this.todoItems);
     };
 
-
-
+    
 }
   
 

@@ -1,7 +1,7 @@
 export function TodoList($ul, context ) {
     this.todoItmes = [];
 
-    this.setState = updatedTodoItems => {
+    this.setState = (updatedTodoItems) => {
       this.todoItems = updatedTodoItems;
       this.render(this.todoItems);
     };
