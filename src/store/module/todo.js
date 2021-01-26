@@ -38,7 +38,6 @@ const todo = (() => {
   };
 
   const getFilteredItems = () => {
-    console.log(filter);
     if (filter === FILTER.ACTIVE) {
       return items.filter((todo) => !todo.isCompleted);
     } else if (filter === FILTER.COMPLETED) {
