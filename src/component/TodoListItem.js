@@ -36,6 +36,7 @@ export default function TodoListItem({
       return;
     }
 
+    $label.innerText = contents;
     editTodo(id, contents);
 
     target.value = "";

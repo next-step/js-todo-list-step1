@@ -31,7 +31,6 @@ export default function App() {
 
   const editTodo = (id, contents) => {
     $store.todo.editItem(id, contents);
-    setState();
   };
 
   const changeFilter = (selected) => {
