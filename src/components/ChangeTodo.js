@@ -27,12 +27,10 @@ export default class ChangeTodo {
   changeTodo = ({ target }) => {
     this.todos = JSON.parse(localStorage.getItem('todos'));
 
-    switch (target.className) {
-      case 'toggle':
-        this.toggleTodo(target);
-        break;
-      case 'destroy':
-        this.removeTodo(target);
+    if (target.classList.contains('toggle')) {
+      return this.toggleTodo(target);
+    } else if (target.classList.contains('destroy')) {
+      this.removeTodo(target);
     }
   };
 }
