@@ -10,38 +10,52 @@ export function initTodos(){
         drawNewTodo({'id':todoElement.id, 'text':todoElement.text, 'isDone':todoElement.isDone})
     }) 
 }
-        
+
+
+function checkDuplicates(text){
+    return todoElementsArray.filter(todoElement => todoElement.text == text).length > 0
+}
+
+
+function findTodoElement(value, property){
+    return todoElementsArray.filter((todoElement) => todoElement[property] === value)[0]
+}
+
+//
+//
+// do something about update count text!!
+//
+
+
 
 // 사용자 입력으로 새로운 할 일이 추가되는 함수
-export function addNewTodo(event){
+function addNewTodo(event){
     // 기본적인 예외 처리(공백 문자열, 중복 할 일 등)
     const newTodoInput = document.getElementById('new-todo-title')
-    const text = newTodoInput.value.trimStart().trimEnd()
-    if(event.key != 'Enter' || text.length === 0){
+    const newTodoText = newTodoInput.value.trimStart().trimEnd()
+    if(event.key != 'Enter' || newTodoText.length === 0){
         newTodoInput.focus()
         return;
     }
 
-    for(const otherTodoElement of todoElementsArray){
-        if(text === otherTodoElement.text){
-            alert('That ToDo already exists!')
-            return;
-        }
+    if(checkDuplicates(newTodoText)){
+        alert('That ToDo already exists!')
+        return
     }
 
     newTodoInput.value = ''
     // Date.now()로 얻은 현재 시간을 고유값으로 사용.
     const dateNow = Date.now().toString()
-    drawNewTodo({'id':dateNow, 'text':text, 'isDone':false})
+    drawNewTodo({'id':dateNow, 'text':newTodoText, 'isDone':false})
     // 현재 보고 있는 할 일들이 완료된 할 일일 경우를 고려, 할 일 추가 후 필터를 다시 적용.
     document.querySelector('ul.filters li a[class*="selected"').dispatchEvent(new Event('click', {bubbles: true}))
     // 내부적으로 유지하고 있는 할 일 리스트에도 저장 후 localStorage에도 반영.
-    todoElementsArray.push({'id':dateNow, 'text':text, 'isDone':false})
+    todoElementsArray.push({'id':dateNow, 'text':newTodoText, 'isDone':false})
     localStorage.setItem(KEYWORD, JSON.stringify(todoElementsArray))
 }
 
 // 할 일 추가 시 실제로 HTML 요소를 그리는 함수
-export function drawNewTodo(todo){
+function drawNewTodo(todo){
     const todoList = document.getElementById('todo-list') 
     const li = document.createElement('li')
     const newTodoHTMLElement = `
@@ -104,11 +118,7 @@ function toggleTodoElementStatus({ target }){
     const todoElementLI = target.closest('li')
     todoElementLI.classList.toggle('completed')
     // 내부 자료구조에서도 checked 속성에 따른 isDone 속성 true/false 전환.
-    for(const todoElement of todoElementsArray){
-        if(todoElement.id === todoElementLI.id){
-            todoElement.isDone = (target.getAttribute('checked') != null)
-        }
-    }
+    findTodoElement(todoElementLI.id, 'id').isDone = (target.getAttribute('checked') != null)
     // 내부 자료구조를 localStorage로 업데이트.
     localStorage.setItem(KEYWORD, JSON.stringify(todoElementsArray))
     // 마찬가지로 현재 필터에 따라 할 일이 출력되거나 숨겨지도록 이벤트 발생.
@@ -120,14 +130,8 @@ function toggleTodoElementStatus({ target }){
 
 // 할 일 삭제 이벤트 처리기.
 function removeCurrentTodoElement({ target }){
-    // 삭제할 할 일의 고유값을 이용해 내부 자료구조에서 제거.
-    const removedTodoID = target.closest('li').id
-    for(const todoElement of todoElementsArray){
-        if(todoElement.id === removedTodoID){
-            todoElementsArray.splice(todoElementsArray.indexOf(todoElement), 1)
-            break
-        }
-    }
+    // 삭제할 할 일의 고유값을 이용해 내부 자료구조에서 제거.    
+    todoElementsArray.splice(todoElementsArray.indexOf(findTodoElement(target.closest('li').id, 'id')), 1)
     // 변경된 자료구조를 localStorage에 업데이트. HTML 코드에서도 삭제한 후 카운터 업데이트.
     localStorage.setItem(KEYWORD, JSON.stringify(todoElementsArray))
     target.closest('li').remove()
@@ -154,20 +158,13 @@ function updateTodoEdit({ target, key }){
             target.focus()
         }
         
-        for(const todoElement of todoElementsArray){
-            if(todoElement.text === newTodoText){
-                alert('That ToDo already exists!')
-                return;
-            }
+        if(checkDuplicates(newTodoText)){
+            alert('That ToDo already exists!')
+            return
         }
 
         // 변경 대상 할 일의 고유값을 이용하여 비교하여 내부 자료구조 업데이트.
-        for(const todoElement of todoElementsArray){
-            if(todoElement.id === todoElementLI.id){
-                todoElement.text = newTodoText
-                break
-            }
-        }
+        findTodoElement(todoElementLI.id, 'id').text = newTodoText
         // 내부 자료구조를 localStorage에도 업데이트.
         localStorage.setItem(KEYWORD, JSON.stringify(todoElementsArray))
         // HTML 요소에서도 변경사항 적용 후 편집모드 종료.
