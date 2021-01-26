@@ -15,8 +15,8 @@ export function initTodos(){
 // 사용자 입력으로 새로운 할 일이 추가되는 함수
 export function addNewTodo(event){
     // 기본적인 예외 처리(공백 문자열, 중복 할 일 등)
-    let newTodoInput = document.getElementById('new-todo-title')
-    let text = newTodoInput.value.trimStart().trimEnd()
+    const newTodoInput = document.getElementById('new-todo-title')
+    const text = newTodoInput.value.trimStart().trimEnd()
     if(event.key != 'Enter' || text.length === 0){
         newTodoInput.focus()
         return;
@@ -42,9 +42,9 @@ export function addNewTodo(event){
 
 // 할 일 추가 시 실제로 HTML 요소를 그리는 함수
 export function drawNewTodo(todo){
-    let todoList = document.getElementById('todo-list') 
-    let li = document.createElement('li')
-    let newTodoHTMLElement = `
+    const todoList = document.getElementById('todo-list') 
+    const li = document.createElement('li')
+    const newTodoHTMLElement = `
         <div class="view">
             <input class="toggle" type="checkbox">
             <label class="label">${todo.text}</label>
@@ -102,10 +102,10 @@ function toggleTodoElementStatus({ target }){
     // checkbox 타입의 <input>에 checked 속성 부여/해제.
     target.toggleAttribute('checked')
     // 해당 할 일의 <li> 태그에 completed 클래스 부여/해제.
-    let todoElementLI = target.closest('li')
+    const todoElementLI = target.closest('li')
     todoElementLI.classList.toggle('completed')
     // 내부 자료구조에서도 checked 속성에 따른 isDone 속성 true/false 전환.
-    for(let todoElement of todoElementsArray){
+    for(const todoElement of todoElementsArray){
         if(todoElement.id === todoElementLI.id){
             todoElement.isDone = (target.getAttribute('checked') != null)
         }
@@ -122,8 +122,8 @@ function toggleTodoElementStatus({ target }){
 // 할 일 삭제 이벤트 처리기.
 function removeCurrentTodoElement({ target }){
     // 삭제할 할 일의 고유값을 이용해 내부 자료구조에서 제거.
-    let removedTodoID = target.closest('li').id
-    for(let todoElement of todoElementsArray){
+    const removedTodoID = target.closest('li').id
+    for(const todoElement of todoElementsArray){
         if(todoElement.id === removedTodoID){
             todoElementsArray.splice(todoElementsArray.indexOf(todoElement), 1)
             break
@@ -144,18 +144,18 @@ function toggleTodoElementMode({ target }){
 
 // 할 일 변경 이벤트 처리기.
 function updateTodoEdit({ target, key }){
-    let todoElementLI = target.closest('li')
+    const todoElementLI = target.closest('li')
     // ESC를 눌렀다면 편집 모드 종료, Enter를 눌렀다면 편집 적용.
     if(key === 'Escape'){
         todoElementLI.classList.toggle('editing')
     } else if (key === 'Enter'){
         // 기본적인 입력값 필터링(공백제거, 중복검사).
-        let newTodoText = target.value.trimStart().trimEnd()        
+        const newTodoText = target.value.trimStart().trimEnd()        
         if(newTodoText.length === 0){
             target.focus()
         }
         
-        for(let todoElement of todoElementsArray){
+        for(const todoElement of todoElementsArray){
             if(todoElement.text === newTodoText){
                 alert('That ToDo already exists!')
                 return;
@@ -163,7 +163,7 @@ function updateTodoEdit({ target, key }){
         }
 
         // 변경 대상 할 일의 고유값을 이용하여 비교하여 내부 자료구조 업데이트.
-        for(let todoElement of todoElementsArray){
+        for(const todoElement of todoElementsArray){
             if(todoElement.id === todoElementLI.id){
                 todoElement.text = newTodoText
                 break
