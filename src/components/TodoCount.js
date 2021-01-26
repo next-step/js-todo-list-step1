@@ -1,5 +1,4 @@
 import Observer from '../subjects/Observer.js';
-import todosData from '../model/TodosModel.js';
 
 class TodoCount extends Observer {
   constructor() {
@@ -12,7 +11,8 @@ class TodoCount extends Observer {
   }
 
   render() {
-    this.todoCount.innerHTML = Object.keys(todosData.data).length;
+    const todos = document.querySelectorAll('ul#todo-list li');
+    this.todoCount.innerHTML = [...todos].filter((todo) => todo.style.display !== 'none').length;
   }
 
   update() {

@@ -26,6 +26,10 @@ class TodosSubject extends Subject {
     this.data.deleteTodo(index);
     this.notifyObservers();
   }
+
+  rerender() {
+    this.notifyObservers();
+  }
 }
 
 const todosSubject = new TodosSubject();
