@@ -1,5 +1,5 @@
-import {  saveToDos, toDos, } from "../todoApp.js";
-
+import { toDos } from "../init.js";
+import { saveToDos } from "./todoLocalStorage.js";
 
 const updateEditTitle=(event)=>{
     for(let obj of toDos){
@@ -43,9 +43,3 @@ export const handleEdit=(event)=>{
     handleEdinting(event);
 
 }
-
-function todoInput(){
-    
-}
-
-todoInput();
