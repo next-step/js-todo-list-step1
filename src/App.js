@@ -21,6 +21,12 @@ export default function App() {
     setState();
   };
 
+  const deleteTodo = (id) => {
+    const targetTodoIndex = todos.findIndex((todo) => todo.isSameId(id));
+    todos.splice(targetTodoIndex, 1);
+    setState();
+  };
+
   TodoInput({ addTodo });
-  const todoList = TodoList({ toggleTodo });
+  const todoList = TodoList({ toggleTodo, deleteTodo });
 }
