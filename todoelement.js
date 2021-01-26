@@ -29,7 +29,6 @@ export function addNewTodo(event){
         }
     }
 
-    // 별 문제가 없다면 입력된 내용으로 새로운 할 일을 추가.
     newTodoInput.value = ''
     // Date.now()로 얻은 현재 시간을 고유값으로 사용.
     const dateNow = Date.now().toString()
@@ -44,7 +43,6 @@ export function addNewTodo(event){
 // 할 일 추가 시 실제로 HTML 요소를 그리는 함수
 export function drawNewTodo(todo){
     let todoList = document.getElementById('todo-list') 
-    // 이벤트 등록을 위해 createElement()로 <li> 태그 생성.
     let li = document.createElement('li')
     let newTodoHTMLElement = `
         <div class="view">
@@ -60,15 +58,12 @@ export function drawNewTodo(todo){
     li.addEventListener('click', onTodoElementClicked)
     li.addEventListener('dblclick', onTodoElementDblclicked)
     li.addEventListener('keyup', onTodoElementKeyupped)
-    // 템플릿 리터럴로 생성된 할 일을 <li> 태그 내부에 추가.
     li.innerHTML = newTodoHTMLElement
-    // 실제로 할 일을 추가.
     todoList.append(li)
     // 만약 해당 할 일이 완료된 할 일이라면 클릭 이벤트를 발생시켜 체크박스를 토글.
     if(todo.isDone === true){
         todoList.querySelector('li:last-child div input.toggle').dispatchEvent(new Event('click', {bubbles: true}))
     }
-    // 변경내역을 반영하여 할 일 갯수 텍스트 업데이트.
     updateCountText()
 }
 
@@ -120,7 +115,6 @@ function toggleTodoElementStatus({ target }){
     // 마찬가지로 현재 필터에 따라 할 일이 출력되거나 숨겨지도록 이벤트 발생.
     // 이 때 직접 발생시킨 이벤트는 버블링 되지 않기 때문에 직접 bubbles 해줘야함!
     document.querySelector('ul.filters li a[class*="selected"').dispatchEvent(new Event('click', {bubbles: true}))
-    // 모든 작업이 끝나면 갯수 문자열 업데이트.
     updateCountText()
 }
 

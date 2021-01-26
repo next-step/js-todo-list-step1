@@ -2,13 +2,13 @@
 export const KEYWORD = "gTZ5JMw51a" 
 // localStorage에 저장된 할 일들(JSON 형식).
 export var todoElementsArray = JSON.parse(localStorage.getItem(KEYWORD)) ?? [] 
-    /**
-     * todoElementsArray: [todoElement1, [todoElement2, ...]]
-     * todoElement:
-     *     - id: string. unique id of each todo element. attached to <li>
-     *     - text: string. text of each todo element. attached to <label> and <input>
-     *     - isDone: boolean. completed(or not) status of each todo element.
-     */
+/**
+ * todoElementsArray: [todoElement1, [todoElement2, ...]]
+ * todoElement:
+ *     - id: string. unique id of each todo element. attached to <li>
+ *     - text: string. text of each todo element. attached to <label> and <input>
+ *     - isDone: boolean. completed(or not) status of each todo element.
+ */
 
 // 할 일이 몇 개 있는지 출력하는 텍스트(총 n 개)를 업데이트하는 로직.
 export function updateCountText(){
