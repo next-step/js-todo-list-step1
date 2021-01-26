@@ -27,6 +27,12 @@ export default function App() {
     setState();
   };
 
+  const editTodo = (id, contents) => {
+    const targetTodo = todos.find((todo) => todo.isSameId(id));
+    targetTodo.edit(contents);
+    setState();
+  };
+
   TodoInput({ addTodo });
-  const todoList = TodoList({ toggleTodo, deleteTodo });
+  const todoList = TodoList({ toggleTodo, deleteTodo, editTodo });
 }

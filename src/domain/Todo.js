@@ -6,6 +6,10 @@ export default class Todo {
     this.isEditing = false;
   }
 
+  edit(contents) {
+    this.contents = contents;
+  }
+
   toggle() {
     this.isCompleted = !this.isCompleted;
   }
