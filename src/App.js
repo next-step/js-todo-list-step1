@@ -2,14 +2,27 @@ import Todo from "./domain/Todo.js";
 import TodoInput from "./component/TodoInput.js";
 import TodoList from "./component/TodoList.js";
 import TodoCount from "./component/TodoCount.js";
+import TodoFilter from "./component/TodoFilter.js";
+import { FILTER } from "./utils/FILTER.js";
 
 export default function App() {
   const todos = [];
   let nextId = 0;
+  let filter = FILTER.ALL;
+
+  const filterTodo = () => {
+    if (filter === FILTER.ALL) {
+      return todos.filter((todo) => !todo.isCompleted);
+    } else if (filter === FILTER.COMPLETED) {
+      return todos.filter((todo) => todo.isCompleted);
+    }
+    return todos;
+  };
 
   const setState = () => {
-    todoList.render(todos);
-    todoCount.render(todos);
+    const filteredTodos = filterTodo();
+    todoList.render(filteredTodos);
+    todoCount.render(filteredTodos);
   };
 
   const addTodo = (contents) => {
@@ -35,7 +48,13 @@ export default function App() {
     setState();
   };
 
+  const changeFilter = (selected) => {
+    filter = selected;
+    setState();
+  };
+
   TodoInput({ addTodo });
   const todoList = TodoList({ toggleTodo, deleteTodo, editTodo });
   const todoCount = TodoCount();
+  TodoFilter({ filterTodo: changeFilter });
 }
