@@ -49,6 +49,7 @@ class TodoList extends Observer {
       if (e.target.classList.contains('destroy')) {
         const closestLi = e.target.closest('li');
         todosSubject.deleteTodo(closestLi.dataset.index);
+        window.location.hash = '#';
       }
     });
   }

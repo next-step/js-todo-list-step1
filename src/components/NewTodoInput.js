@@ -16,6 +16,7 @@ class NewTodoInput {
         // notify
         todosSubject.createTodo(e.target.value);
         e.target.value = '';
+        window.location.hash = '#';
       }
     });
   }
