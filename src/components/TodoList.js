@@ -87,6 +87,5 @@ class TodoList extends Observer {
 }
 
 const todoList = new TodoList();
-todoList.init();
 
 export default todoList;

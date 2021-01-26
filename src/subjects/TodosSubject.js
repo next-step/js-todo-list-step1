@@ -33,7 +33,5 @@ class TodosSubject extends Subject {
 }
 
 const todosSubject = new TodosSubject();
-todosSubject.registerObserver(todoList);
-todosSubject.registerObserver(todoCount);
 
 export default todosSubject;

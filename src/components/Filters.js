@@ -56,6 +56,5 @@ class Filters {
 }
 
 const filters = new Filters();
-filters.init();
 
 export default filters;

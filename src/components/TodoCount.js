@@ -21,6 +21,5 @@ class TodoCount extends Observer {
 }
 
 const todoCount = new TodoCount();
-todoCount.init();
 
 export default todoCount;
