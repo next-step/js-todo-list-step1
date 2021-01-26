@@ -1,11 +1,16 @@
+// const main = document.querySelector('main');
 const todoInput = document.querySelector('.new-todo');
 const todoList = document.querySelector('.todo-list');
 // const toggle = document.querySelector('.toggle');
 
 function init() {
+  showNumberOfTotalItems();
+  // main.addEventListener('change', showNumberOfTotalItems);
   todoInput.addEventListener('keyup', addTodoItem);
+  todoInput.addEventListener('keyup', showNumberOfTotalItems);
   todoList.addEventListener('click', toggleTodoItem);
   todoList.addEventListener('click', deleteTodoItem);
+  todoList.addEventListener('click', showNumberOfTotalItems);
 }
 
 function addTodoItem(event) {
@@ -62,5 +67,35 @@ function toggleTodoItem(event) {
 
   li.classList.toggle('completed');
 }
+
+function showNumberOfTotalItems(event) {
+  console.log('showNumberOfTotalItems() called');
+  // check target
+  // if () {
+  //   return;
+  // }
+  const numberOfItems = todoList.querySelectorAll('li').length;
+  const totalNumber = document
+    .querySelector('.todo-count')
+    .querySelector('strong');
+
+  totalNumber.innerHTML = numberOfItems;
+}
+
+function showNumberOfTodoItems() {
+  console.log('showTodoItem() called');
+  console.log(todoList.querySelectorAll('.completed').length);
+
+  const totalNumber = todoList.querySelectorAll('li').length;
+  const completedNumber = todoList.querySelectorAll('.completed').length;
+  const todoNumber = totalNumber - completedNumber;
+}
+
+function showNumberOfCompletedItems() {
+  console.log('showTodoItem() called');
+  const number = todoList.querySelectorAll('.completed').length;
+}
+
+function clickTodoCount() {}
 
 init();
