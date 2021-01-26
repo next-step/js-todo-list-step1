@@ -12,7 +12,7 @@ export function initFilters(){
 }
 
 // 선택한 필터가 변경되었을 때 사용자에게 보이는 할 일들을 업데이트.
-export function filterViewChange({ target }){
+export function changeFilterView({ target }){
     const todoList = document.getElementById('todo-list') 
     // 필터(<a>)를 클릭했을때만 이벤트 처리.
     if(!target || target.nodeName != 'A'){

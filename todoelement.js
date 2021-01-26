@@ -61,7 +61,7 @@ export function drawNewTodo(todo){
     li.innerHTML = newTodoHTMLElement
     todoList.append(li)
     // 만약 해당 할 일이 완료된 할 일이라면 클릭 이벤트를 발생시켜 체크박스를 토글.
-    if(todo.isDone === true){
+    if(todo.isDone){
         todoList.querySelector('li:last-child div input.toggle').dispatchEvent(new Event('click', {bubbles: true}))
     }
     updateCountText()
@@ -69,12 +69,15 @@ export function drawNewTodo(todo){
 
 // 할 일을 클릭했을때 이벤트 위임.
 function onTodoElementClicked(event){
-    if(event.target && event.target.nodeName === 'INPUT' && event.target.classList.contains('toggle')){
-        toggleTodoElementStatus(event)
-    } else if(event.target && event.target.nodeName === 'BUTTON'){
-        removeCurrentTodoElement(event)
-    } else {
+    if(!event.target){
         return
+    }
+
+    if(event.target.nodeName === 'INPUT' &&
+       event.target.classList.contains('toggle')){
+        toggleTodoElementStatus(event)
+    } else if(event.target.nodeName === 'BUTTON'){
+        removeCurrentTodoElement(event)
     }
 }
 
@@ -82,8 +85,6 @@ function onTodoElementClicked(event){
 function onTodoElementDblclicked(event){
     if(event.target && event.target.nodeName === 'LABEL'){
         toggleTodoElementMode(event)
-    } else {
-        return
     }
 }
 
@@ -91,8 +92,6 @@ function onTodoElementDblclicked(event){
 function onTodoElementKeyupped(event){
     if(event.target && event.target.nodeName === 'INPUT'){
         updateTodoEdit(event)
-    } else {
-        return
     }
 }
 
