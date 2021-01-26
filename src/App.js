@@ -1,6 +1,7 @@
 import Todo from "./domain/Todo.js";
 import TodoInput from "./component/TodoInput.js";
 import TodoList from "./component/TodoList.js";
+import TodoCount from "./component/TodoCount.js";
 
 export default function App() {
   const todos = [];
@@ -8,6 +9,7 @@ export default function App() {
 
   const setState = () => {
     todoList.render(todos);
+    todoCount.render(todos);
   };
 
   const addTodo = (contents) => {
@@ -35,4 +37,5 @@ export default function App() {
 
   TodoInput({ addTodo });
   const todoList = TodoList({ toggleTodo, deleteTodo, editTodo });
+  const todoCount = TodoCount();
 }
