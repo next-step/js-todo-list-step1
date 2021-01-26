@@ -48,6 +48,12 @@ export default function TodoList({ toggleTodo, deleteTodo, editTodo }) {
     $target.classList.remove("editing");
   };
 
+  const setEditEvents = (target) => {
+    const $editingInput = target.querySelector(".edit");
+    $editingInput.addEventListener("keypress", handleEditTodo);
+    $editingInput.addEventListener("focusout", handleCancelEditingTodo);
+  };
+
   const handleToggleEditingTodo = ({ target }) => {
     if (!target.classList.contains("label")) {
       return;
@@ -55,9 +61,7 @@ export default function TodoList({ toggleTodo, deleteTodo, editTodo }) {
 
     const $target = target.closest("li");
     $target.classList.add("editing");
-    const $editingInput = $target.querySelector(".edit");
-    $editingInput.addEventListener("keypress", handleEditTodo);
-    $editingInput.addEventListener("focusout", handleCancelEditingTodo);
+    setEditEvents($target);
   };
 
   $list.addEventListener("click", handleToggleTodo);
