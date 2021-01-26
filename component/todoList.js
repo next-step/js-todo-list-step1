@@ -1,8 +1,9 @@
 import { todoListEl, toDoInput } from "./constant.js";
-import {toDos, filterToDos} from "../init.js";
+import { toDos } from "../init.js";
 import { saveToDos } from "./todoLocalStorage.js";
 import { handleCount } from "./todoCount.js";
 import { renderFromFilter } from "./todoFilter.js";
+import { filterToDos } from "../init.js";
 
 const addToDos = (item)=>{
     todoListEl.insertAdjacentHTML("beforeend",renderTodoItemTemplate(item));
@@ -45,13 +46,6 @@ const handleNewTodoSubmit = async (event)=>{
     handleCount(toDos.length);
     saveToDos();
     renderFromFilter();
-    /*
-    if(filterState === "completed"){
-        renderCompleteItems();
-    } else if (filterState === "active"){
-       renderActiveItems();
-    }*/
-
 };
 
 const handleComplete=(event)=>{
