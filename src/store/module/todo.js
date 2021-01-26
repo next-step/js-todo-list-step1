@@ -8,10 +8,19 @@ const mapToTodo = (items) => {
   );
 };
 
+const initFilter = () => {
+  if (location.hash.includes(FILTER.ACTIVE)) {
+    return FILTER.ACTIVE;
+  } else if (location.hash.includes(FILTER.COMPLETED)) {
+    return FILTER.COMPLETED;
+  }
+  return FILTER.ALL;
+};
+
 const todo = (() => {
   const items = mapToTodo(storage.getStorage());
   let nextId = 0;
-  let filter = FILTER.ALL;
+  let filter = initFilter();
 
   const getNewId = () => {
     return nextId++;
@@ -48,6 +57,10 @@ const todo = (() => {
     filter = selected;
   };
 
+  const getFilter = () => {
+    return filter;
+  };
+
   const getFilteredItems = () => {
     if (filter === FILTER.ACTIVE) {
       return items.filter((todo) => !todo.isCompleted);
@@ -64,6 +77,7 @@ const todo = (() => {
     deleteItem,
     editItem,
     setFilter,
+    getFilter,
     getFilteredItems,
   };
 })();

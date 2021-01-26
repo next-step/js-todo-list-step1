@@ -41,7 +41,8 @@ export default function App() {
   TodoInput({ addTodo });
   const todoList = TodoList({ toggleTodo, deleteTodo, editTodo });
   const todoCount = TodoCount();
-  TodoFilter({ filterTodo: changeFilter });
+  const todoFilter = TodoFilter({ filterTodo: changeFilter });
 
+  todoFilter.init();
   setState();
 }
