@@ -43,9 +43,16 @@ export default function TodoList({ toggleTodo, deleteTodo, editTodo }) {
     editTodo(targetId, contents);
   };
 
+  const deleteEditEvents = (target) => {
+    const $editingInput = target.querySelector(".edit");
+    $editingInput.removeEventListener("keypress", handleEditTodo);
+    $editingInput.removeEventListener("focusout", handleCancelEditingTodo);
+  };
+
   const handleCancelEditingTodo = ({ target }) => {
     const $target = target.closest("li");
     $target.classList.remove("editing");
+    deleteEditEvents($target);
   };
 
   const setEditEvents = (target) => {
