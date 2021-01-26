@@ -6,6 +6,14 @@ export default class Todo {
     this.isEditing = false;
   }
 
+  toggle() {
+    this.isCompleted = !this.isCompleted;
+  }
+
+  isSameId(id) {
+    return this._id === id;
+  }
+
   render() {
     const classList = [
       this.isCompleted ? "completed" : "",

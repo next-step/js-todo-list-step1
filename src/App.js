@@ -15,6 +15,12 @@ export default function App() {
     setState();
   };
 
+  const toggleTodo = (id) => {
+    const targetTodo = todos.find((todo) => todo.isSameId(id));
+    targetTodo.toggle();
+    setState();
+  };
+
   TodoInput({ addTodo });
-  const todoList = TodoList();
+  const todoList = TodoList({ toggleTodo });
 }
