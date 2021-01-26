@@ -32,25 +32,25 @@ export default class App {
   };
 
   viewAll = () => {
-    this.todos.forEach((todo) => {
+    this.todos.map((todo) => {
       this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
     });
   };
 
   viewActive = () => {
-    this.todos.forEach((todo) => {
-      if (!todo.completed) {
-        this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
-      }
-    });
+    const uncompletedTodos = this.todos.filter((todo) => !todo.completed);
+
+    uncompletedTodos.map((todo) =>
+      this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo)),
+    );
   };
 
   viewCompleted = () => {
-    this.todos.forEach((todo) => {
-      if (todo.completed) {
-        this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo));
-      }
-    });
+    const completedTodos = this.todos.filter((todo) => todo.completed);
+
+    completedTodos.map((todo) =>
+      this.$todoList.insertAdjacentHTML('beforeend', this.todoTemplate(todo)),
+    );
   };
 
   updateTodoCount = () => {
