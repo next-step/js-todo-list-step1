@@ -14,6 +14,7 @@
     "import/no-unresolved": "off",
     "no-console": "warn",
     "import/extensions": ["off"], // import 시 확장자를 붙이면 나오는 오류 삭제
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "class-methods-use-this": "off"
   }
 }
