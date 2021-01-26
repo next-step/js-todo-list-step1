@@ -1,65 +1,70 @@
-let new_todo = document.querySelector('.new-todo');
+const new_todo = document.querySelector('.new-todo');
 let count = 0 ;     //할 일 갯수 세는 용
 
 // 기존 저장된 것들이 있으면 이를 불러오는 함수 진행
-document.body.onload = function(){
+function Reload_localStorage(){
     for(let i=0;i<localStorage.length;i++)
     {
         let key = localStorage.key(i);
         let item = localStorage.getItem(key);
-        admin(key,item);
+        init_Element(key,item);
     }
 }
 
 new_todo.addEventListener("keyup", function(event) {
-    // Enter키를 누를시 실행하는데 공백일경우 alert 함수 실행
     if (event.key === 'Enter') {
-        (/[\S]/gi.test(new_todo.value)==true && check_overlap(new_todo.value) == true) ? admin(new_todo.value,'F') : alert('공백 혹은 같은 이름의 할일을 입력했습니다.');
+        (/[\S]/gi.test(new_todo.value)==true && check_overlap(new_todo.value) == true) ? init_Element(new_todo.value,'F') : alert('공백 혹은 같은 이름의 할일을 입력했습니다.');
         //입력한 할일 추가시 할일 공백으로 만들기
         new_todo.value = '';
     }
 });         // 내용을 입력하고 'Enter'를 누르면 comfirm이 나오고 맞다면 admin함수 실행
 
-function click_set() {
-//전체보기 버튼 클릭시 모든 내용 display
-    document.querySelector('.all').addEventListener('click', function () {
+function on_All_Filter_Handler(){
         document.querySelectorAll('.todo-list > li').forEach(x => x.style.display = '');
         /* 아래코드도 가능
        let child = document.querySelector('.todo-list')
        child.childNodes.forEach(x=> x.style.display = '');
          */
-    })
+}
 
-//해야할 일 버튼 클릭시 class가 completed인 것들은 display가 none이 되도록
-    document.querySelector('.active').addEventListener('click', function () {
+function on_Active_Filter_Handler(){
         document.querySelectorAll('.todo-list > li').forEach(x => x.classList.contains('active') == true ? x.style.display = '' : x.style.display = 'none');
         /* 아래코드도 가능
         let child = document.querySelector('.todo-list')
         child.childNodes.forEach(x=>x.classList.contains('active') == true ? x.style.display='' : x.style.display = 'none');
         */
-    })
+}
+
+function on_Completed_Filter_Handler() {
+    document.querySelectorAll('.todo-list > li').forEach(x => x.classList.contains('completed') == true ? x.style.display = '' : x.style.display = 'none')
+    /* 아래코드도 가능
+    let child = document.querySelector('.todo-list')
+    child.childNodes.forEach(x=>x.classList.contains('completed') == true ?  x.style.display='' : x.style.display = 'none')
+    */
+}
+
+function click_set() {
+//전체보기 버튼 클릭시 모든 내용 display
+    document.querySelector('.all').addEventListener('click', on_All_Filter_Handler);
+
+//해야할 일 버튼 클릭시 class가 completed인 것들은 display가 none이 되도록
+    document.querySelector('.active').addEventListener('click', on_Active_Filter_Handler);
 
 //완료한 일 클릭시 class가 active인 것들은 display가 none이 되도록
-    document.querySelector('.completed').addEventListener('click', function () {
-        document.querySelectorAll('.todo-list > li').forEach(x => x.classList.contains('completed') == true ? x.style.display = '' : x.style.display = 'none')
-        /* 아래코드도 가능
-        let child = document.querySelector('.todo-list')
-        child.childNodes.forEach(x=>x.classList.contains('completed') == true ?  x.style.display='' : x.style.display = 'none')
-        */
-    })
+    document.querySelector('.completed').addEventListener('click', on_Completed_Filter_Handler);
 }
 
 //기존 할일과 같은 이름의 중복 방지 함수
 function check_overlap(value){
     for(let i=0;i<localStorage.length;i++)
     {
-        if(value == localStorage.key(i))
+        if(value === localStorage.key(i))
             return false;
     }
     return true;
 }
 
-function admin(value,item) {
+function init_Element(value,item) {
 
     //태그들과 class 속성 부여 후 연결
     let li = document.createElement('li');
@@ -84,7 +89,7 @@ function admin(value,item) {
     label.innerText = value;
 
     //localStorage의 value(item)이 T이면 completed한 상태 및 체크상태 유지(아닐경우 기본 active와 체크상태 X이다)
-    if(item == 'T')
+    if(item === 'T')
     {
         li.setAttribute('class' , 'completed')
         input.setAttribute('checked','true')
@@ -103,7 +108,7 @@ function admin(value,item) {
     // 체크박스 클릭시 li태그에 class속성 추가 및 text에 중간작대기 생성 (클릭 취소하면 class속성 completed 추가 및 text원래대로)
     // 체크박스 클릭 혹은 클릭 취소 시  localStorage 속성도 변화시킨다.
     input.addEventListener('click', function (event) {
-        if (input.checked == true) {
+        if (input.checked === true) {
             event.target.closest('li').setAttribute('class','completed');
             localStorage.setItem(label.innerText,'T');
         } else {
@@ -155,3 +160,4 @@ function admin(value,item) {
 
 //처음 시작시 이벤트 핸들러 적용
 click_set();
+Reload_localStorage();
