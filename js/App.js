@@ -27,7 +27,7 @@ class App extends Reilly.Component {
   addTodo(e) {
     e.preventDefault();
 
-    let content = e.target.elements["new-todo"].value.trim();
+    const content = e.target.elements["new-todo"].value.trim();
     if (!content) return;
 
     const todos = [new Todo(content), ...this.state.todos];
