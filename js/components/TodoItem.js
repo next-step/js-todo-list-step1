@@ -1,10 +1,6 @@
 import Reilly, { createElement } from "../lib/Reilly.js";
 
 class TodoItem extends Reilly.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { todo, edittingId } = this.props;
 
