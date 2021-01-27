@@ -1,27 +1,44 @@
 import {$todoList} from "../todoDOM.js";
+import {todoCount} from "./todoCount.js";
 
 export const todoFliter = () => {
     const $filters = document.querySelector('.filters');
     $filters.addEventListener('click', filtering );
 }
 
+export let filterStatus = 'all';
+
+// 클릭하는 필터에 따라 보이는 투두리스트와 count 수가 변경됨
 const filtering = ({target}) => {
-    const className = target.className;
 
     const $allTodo= $todoList.querySelectorAll('li');
     const $completedTodo = $todoList.querySelectorAll('.completed')
 
+    const className = target.className;
+
     if(className === 'all selected'){
         display($allTodo);
+
+        // 필터 버튼을 클릭했을 때 보이는 todo 수 변경
+        filterStatus = 'all';
+        todoCount(filterStatus);
     } else if(className === 'active'){
         display($allTodo);
         hide($completedTodo);
+
+        filterStatus = 'active';
+        todoCount(filterStatus);
     } else if(className === 'completed'){
         hide($allTodo);
         display($completedTodo);
+
+        filterStatus = 'completed';
+        todoCount(filterStatus);
     }
 }
 
+
+// 주어진 리스트를 on & off 함
 const display = (list) =>{
     for(let i=0; i<list.length; i++){
         list[i].style.display = 'block';

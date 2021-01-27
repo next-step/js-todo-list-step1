@@ -1,23 +1,31 @@
-import {$todoList,$newTodoTitle} from "../todoDOM.js";
+import {$todoList} from "../todoDOM.js";
 
-export const todoCount = () => {
-
-    countUp();
-
-    // item이 추가될 때 카운트 수 업데이트
-    $newTodoTitle.addEventListener('keyup', countUp);
-
-    // item이 삭제될 때 카운트 수 업데이트
-    $todoList.addEventListener('click', countUp);
-}
-
-const countUp = () => {
-    const count = document.getElementsByClassName('toggle').length;
+export const todoCount = (status) => {
+    const countNum = countFilter(status);
     const $countContainer = document.querySelector('.todo-count');
     
-    $countContainer.innerHTML = countInput(count);
+    $countContainer.innerHTML = countTemplate(countNum);
 }
 
-const countInput = (count) => {
+const countFilter = (status) => {
+
+    // 전체 todo 수
+    const countAll = $todoList.getElementsByClassName('toggle').length;
+
+    // 완료한 todo 수
+    const countCompletedTodo = $todoList.getElementsByClassName('completed').length;
+
+    // filter 상태에 따른 todo 수
+    if(status === 'all'){
+        return countAll;
+    } else if(status === 'active'){
+        return countAll - countCompletedTodo;
+    } else if(status === 'completed'){
+        return countCompletedTodo;
+    }
+}
+
+
+const countTemplate= (count) => {
     return `총 <strong>${count}</strong> 개`;
 }

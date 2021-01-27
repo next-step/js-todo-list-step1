@@ -8,6 +8,6 @@ export const app = () => {
     todoInput();
     todoCheckbox();
     todoEdit();
-    todoCount();
+    todoCount('all');
     todoFliter();
 }

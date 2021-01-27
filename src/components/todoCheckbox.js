@@ -1,4 +1,5 @@
 import {$todoList} from "../todoDOM.js";
+import {todoCount} from "./todoCount.js";
 
 export const todoCheckbox = () => {
     $todoList.addEventListener('click', changeTodo);
@@ -21,5 +22,8 @@ const completeTodo = (target) => {
 // todo list의 x버튼을 클릭하여 해당 엘리먼트 삭제
 const removeTodo = (target) => {
     target.closest('li').remove();
+
+    // todo를 삭제할 때마다 count 수 변경
+    todoCount('all');
 
 }

@@ -1,4 +1,6 @@
 import {$todoList, $newTodoTitle} from "../todoDOM.js";
+import {todoCount} from "./todoCount.js";
+import {filterStatus} from "./todoFilter.js";
 
 export const todoInput = () => {
   $newTodoTitle.addEventListener('keyup', addTodoItem);
@@ -10,6 +12,9 @@ const addTodoItem = ({target, key}) => {
         $todoList.insertAdjacentHTML('beforeend' ,newTodoItem(target.value));
         target.value = '';
     }
+
+    // todo가 추가될 때마다 count 수 변경
+    todoCount(filterStatus); 
     
 }
 
