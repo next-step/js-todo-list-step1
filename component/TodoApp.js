@@ -6,11 +6,16 @@ export function TodoApp($div) {
     const $ul = $div.querySelector('#todo-list')
 
     this.todoItems = [];
-    this.filter = '전체보기';
+    this.filter = 'all';
 
     this.todoInput = new TodoInput(this);
     this.todoList = new TodoList($ul, this);
     this.todoTotalCount = new TodoTotalCount( $div, this );
+
+    this.setState = updatedItems => {
+      this.todoItems = updatedItems;
+      this.TodoList.setState(this.todoItems);
+    };
 
     this.saveItem = (item) => {
       this.todoItems.push(item)
@@ -18,16 +23,17 @@ export function TodoApp($div) {
     }
 
     this.complete = (todoItem) => {
+      
       this.todoItems.filter(item => item.todoItem === todoItem)
-                    .forEach(item => item.completed = !item.completed)
-      this.todoList.setState(this.todoItems);
+                     .map(item => item.completed = !item.completed)
+
+      this.filterTodo(this.filter);
     }
 
     this.delete = (todoItem) => {
       const index = this.todoItems.findIndex(item => item.todoItem === todoItem);
       this.todoItems.splice(index, 1);
-      this.todoList.render(this.todoItems);
-      this.todoTotalCount.setState(this.todoItems, this.filter);
+      this.filterTodo(this.filter);
     }
 
     this.update = (id, todoItem) =>{
@@ -35,34 +41,20 @@ export function TodoApp($div) {
       this.todoItems[index].todoItem = todoItem;
       this.todoList.render(this.todoItems)
     }
+  
+      this.filterTodo = (completeStatus) =>{
+        this.filter = completeStatus;
+      
+        const status = {
+          all : () => this.todoItems,
+          active : () => this.todoItems.filter(item => !item.completed),
+          completed : () => this.todoItems.filter(item => item.completed)
+        }
+        const filterTodoItems = status[this.filter]();
 
-    this.filterTodo = (completeState) =>{
-      this.filter = completeState;
-      if(this.filter === '전체보기') {
-        this.todoList.render(this.todoItems);
-        this.todoTotalCount.setState(this.todoItems, this.filter);
-      }
-
-      if(this.filter === '해야할 일'){
-        const notCompletedItems =  this.todoItems.filter(item => !item.completed);
-        this.todoList.render(notCompletedItems);
-        this.todoTotalCount.setState(notCompletedItems);
-      }
-    
-      if(this.filter === '완료한 일'){
-        const completedItems =  this.todoItems.filter(item => item.completed);
-        this.todoList.render(completedItems);
-        this.todoTotalCount.setState(completedItems);
-      }
-    
-
+        this.todoList.render(filterTodoItems);
+        this.todoTotalCount.setState(filterTodoItems, this.filter);
     }
-    this.setState = updatedItems => {
-      this.todoItems = updatedItems;
-      TodoList.setState(this.todoItems);
-    };
-
-    
 }
   
 
