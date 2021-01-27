@@ -14,29 +14,57 @@ const renderTodoItem = ({ id, value, completed }, editingId) => `
 export default function TodoList(listEl, todoApp) {
   const getTodoItemId = (childEl) => childEl.closest("li")?.dataset?.id;
 
-  this.toggleCompleted = (targetEl) => {
-    const id = getTodoItemId(targetEl);
+  this.toggleCompleted = ({ target }) => {
+    if (!target.classList.contains("toggle")) {
+      return;
+    }
+
+    const id = getTodoItemId(target);
     const todo = todoApp.getTodo(id);
     todoApp.updateTodo({ ...todo, completed: !todo.completed });
   };
 
-  this.deleteTodo = (targetEl) => {
-    const id = getTodoItemId(targetEl);
+  this.deleteTodo = ({ target }) => {
+    if (!target.classList.contains("destroy")) {
+      return;
+    }
+
+    const id = getTodoItemId(target);
     todoApp.deleteTodo(id);
   };
 
-  this.convertToEditor = (targetEl) => {
-    const id = getTodoItemId(targetEl);
+  this.convertToEditor = ({ target }) => {
+    if (!target.classList.contains("label")) {
+      return;
+    }
+
+    const id = getTodoItemId(target);
     todoApp.setEditingId(id);
   };
 
-  this.convertToViewer = () => {
-    todoApp.setEditingId();
-  };
+  this.convertToViewer = () => todoApp.setEditingId();
 
-  this.updateValue = (value) => {
+  this.updateValue = ({ code, target }) => {
+    if (code !== "Enter") {
+      return;
+    }
+
+    const value = target.value.trim();
+    if (!value) {
+      return;
+    }
+
     const todo = todoApp.getTodo(todoApp.editingId);
     todoApp.updateTodo({ ...todo, value });
+    this.convertToViewer();
+  };
+
+  this.convertToViewerWhenPressingEsc = ({ code }) => {
+    if (code !== "Escape") {
+      return;
+    }
+
+    this.convertToViewer();
   };
 
   this.render = (todos) => {
@@ -44,42 +72,17 @@ export default function TodoList(listEl, todoApp) {
       .map((todo) => renderTodoItem(todo, todoApp.editingId))
       .join("");
 
-    if (todoApp.editingId) {
-      listEl.querySelector(`li[data-id="${todoApp.editingId}"] .edit`)?.focus();
+    if (!todoApp.editingId) {
+      return;
     }
+
+    listEl.querySelector(`li[data-id="${todoApp.editingId}"] .edit`)?.focus();
   };
 
-  listEl.addEventListener("click", ({ target }) => {
-    if (target.classList.contains("toggle")) {
-      this.toggleCompleted(target);
-      return;
-    }
-
-    if (target.classList.contains("destroy")) {
-      this.deleteTodo(target);
-    }
-  });
-
-  listEl.addEventListener("dblclick", ({ target }) => {
-    if (target.classList.contains("label")) {
-      this.convertToEditor(target);
-    }
-  });
-
-  listEl.addEventListener("focusout", () => {
-    this.convertToViewer();
-  });
-
-  listEl.addEventListener("keypress", ({ code, target }) => {
-    if (code === "Escape") {
-      this.convertToViewer();
-      return;
-    }
-
-    const value = target.value.trim();
-    if (code === "Enter" && value) {
-      this.updateValue(value);
-      this.convertToViewer();
-    }
-  });
+  listEl.addEventListener("click", this.toggleCompleted);
+  listEl.addEventListener("click", this.deleteTodo);
+  listEl.addEventListener("dblclick", this.convertToEditor);
+  listEl.addEventListener("focusout", this.convertToViewer);
+  listEl.addEventListener("keypress", this.updateTodo);
+  listEl.addEventListener("keypress", this.convertToViewerWhenPressingEsc);
 }

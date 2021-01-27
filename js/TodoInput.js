@@ -1,11 +1,20 @@
 export default function TodoInput(inputEl, todoApp) {
-  this.addTodo = (value) => {
+  this.focusInput = () => inputEl.focus();
+
+  this.addTodo = ({ code }) => {
+    if (code !== "Enter") {
+      return;
+    }
+
+    const value = inputEl.value.trim();
+    if (!value) {
+      return;
+    }
+
     inputEl.dispatchEvent(new CompositionEvent("compositionend"));
     todoApp.addTodo(value);
     inputEl.value = "";
   };
-
-  this.focusInput = () => inputEl.focus();
 
   this.render = () => {
     if (todoApp.editingId) {
@@ -15,11 +24,5 @@ export default function TodoInput(inputEl, todoApp) {
     this.focusInput();
   };
 
-  inputEl.addEventListener("keypress", ({ code }) => {
-    if (code !== "Enter") {
-      return;
-    }
-    const value = inputEl.value.trim();
-    value && this.addTodo(value);
-  });
+  inputEl.addEventListener("keypress", this.addTodo);
 }
