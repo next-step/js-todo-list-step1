@@ -15,7 +15,7 @@ class ReillyDOM {
   static render(reillyNode, container) {
     const $root = document.getElementById("root");
     const htmlElement = this.renderElement(reillyNode);
-    if (!container) container = document.querySelector(".view") ?? $root;
+    if (!container) container = $root; /**@deprecated */
 
     container.innerHTML = "";
     container.appendChild(htmlElement);
@@ -31,6 +31,7 @@ class ReillyDOM {
     }
 
     let $element;
+
     if (reillyNode.nodeType === "fragment")
       $element = document.createDocumentFragment();
     else $element = document.createElement(reillyNode.nodeType);
