@@ -5,10 +5,14 @@ export default function TodoInput(inputEl, todoApp) {
     inputEl.value = "";
   };
 
+  this.focusInput = () => inputEl.focus();
+
   this.render = () => {
-    if (!todoApp.editingId) {
-      inputEl.focus();
+    if (todoApp.editingId) {
+      return;
     }
+
+    this.focusInput();
   };
 
   inputEl.addEventListener("keypress", ({ code }) => {
