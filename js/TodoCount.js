@@ -14,6 +14,11 @@ export default function TodoCount(countContainerEl, todoApp) {
     });
   };
 
+  const checkFilterEl = (targetEl) =>
+    Array.prototype.some.call(targetEl.classList, (className) =>
+      ["all", "active", "completed"].includes(className)
+    );
+
   const checkFilterElSelected = (filterEl) => {
     const { classList } = filterEl;
     return (
@@ -29,6 +34,7 @@ export default function TodoCount(countContainerEl, todoApp) {
     filterEls.forEach((filterEl) => {
       const { classList } = filterEl;
       classList.remove("selected");
+
       if (checkFilterElSelected(filterEl)) {
         classList.add("selected");
       }
@@ -36,9 +42,11 @@ export default function TodoCount(countContainerEl, todoApp) {
   };
 
   filtersEl.addEventListener("click", (event) => {
-    if (event.target.nodeName !== "A") return;
-    this.setFilter(event.target);
+    if (!checkFilterEl(event.target)) {
+      return;
+    }
 
+    this.setFilter(event.target);
     event.preventDefault();
   });
 }
