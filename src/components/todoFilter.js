@@ -10,7 +10,7 @@ const filtering = ({target}) => {
     const $allTodo= $todoList.querySelectorAll('li');
     const $completedTodo = $todoList.querySelectorAll('.completed')
 
-    if(className === 'all selected'){
+    if(className.contains('all')){
         display($allTodo);
     } else if(className === 'active'){
         display($allTodo);
@@ -21,7 +21,7 @@ const filtering = ({target}) => {
     }
 }
 
-const display= (list) =>{
+const display = (list) =>{
     for(let i=0; i<list.length; i++){
         list[i].style.display = 'block';
     }
