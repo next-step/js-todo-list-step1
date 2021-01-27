@@ -1,47 +1,50 @@
 export function TodoList($ul, context ) {
-    this.todoItmes = [];
 
     this.setState = (updatedTodoItems) => {
-      this.todoItems = updatedTodoItems;
-      this.render(this.todoItems);
-    };
+      this.render(updatedTodoItems);
+    }
 
-    this.complete = (todoItem) => {
-      context.complete(todoItem);
-    },
+    this.complete = (todoItem) => context.complete(todoItem)
+    this.delete = (todoItem) => context.delete(todoItem)
     
-    this.delete = (todoItem) => {
-      context.delete(todoItem);
-    },
     
     this.update = (id, todoItem) => {
-      context.update(id, todoItem);
-    },
-  
-    $ul.addEventListener('click', event => {
-       if(event.target.className === 'toggle'){
-         this.complete(event.target.closest('li').id);
-       }
-       if(event.target.className === 'destroy'){
-         this.delete(event.target.closest('li').id);
+      if(todoItem === null || todoItem === ''){
+        alert('빈값이 들어올 순 없습니다');
+        return;
       }
-    })
+      context.update(id, todoItem);
+    }
+  
 
-    $ul.addEventListener('dblclick', event => {
-        event.target.closest('li').classList.add('editing');
-    })
+    const onClickEditing = (event) => event.target.closest('li').classList.add('editing');
+    
 
-    $ul.addEventListener('keydown', event => {
+    const onClickTodoItem = (event) => {
+      const className = event.target.classList;
+
+      if(className.contains('toggle')){
+        this.complete(event.target.closest('li').id);
+      }
+      if(className.contains('destroy')){
+        this.delete(event.target.closest('li').id);
+      }
+    }
+    const onEdited = (event) => {
       const updatedTodoItem = event.target.value;
       const id = event.target.closest('li').id;
-      if (event.keyCode === 13) {;
+
+      if (event.key === 'Enter') {
         this.update(id, updatedTodoItem);
         event.target.closest('li').classList.remove('editing');
-      } else if (event.keyCode === 27) {
+      } else if (event.key === 'Escape') {
         event.target.closest('li').classList.remove('editing');
       }
-      
-    })    
+    }
+    
+    $ul.addEventListener('click', onClickTodoItem);
+    $ul.addEventListener('dblclick', onClickEditing);
+    $ul.addEventListener('keyup', onEdited);
 
     this.render = items => {
       $ul.innerHTML = items.map((item) => renderHTML(item))
