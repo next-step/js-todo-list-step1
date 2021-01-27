@@ -42,7 +42,6 @@ export default function TodoListItem({
     $label.innerText = contents;
     editTodo(id, contents);
 
-    target.value = "";
     $item.classList.remove("editing");
   };
 
