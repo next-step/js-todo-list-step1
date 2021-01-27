@@ -30,6 +30,11 @@ export default function TodoList(listEl, todoApp) {
     }
 
     const id = getTodoItemId(target);
+    const { value } = todoApp.getTodo(id);
+    if (!confirm(`정말로 삭제하시겠습니까?\n\n${value}`)) {
+      return;
+    }
+
     todoApp.deleteTodo(id);
   };
 
