@@ -17,12 +17,12 @@ class Main extends Reilly.Component {
       onModeChange
     } = this.props;
 
-    let filteredTodos = [...todos];
-
-    if (mode !== FILTER_ENUM.ALL)
-      filteredTodos = todos.filter((todo) =>
-        mode === FILTER_ENUM.COMPLETED ? todo.completed : !todo.completed
-      );
+    const filteredTodos =
+      mode === FILTER_ENUM.ALL
+        ? [...todos]
+        : todos.filter((todo) =>
+            mode === FILTER_ENUM.COMPLETED ? todo.completed : !todo.completed
+          );
 
     return createElement(
       "main",
