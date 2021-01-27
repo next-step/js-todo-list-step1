@@ -20,6 +20,8 @@ export function Todo(content) {
   this.id = uuid();
   this.content = content;
   this.completed = false;
+  this._createdAt = new Date().toISOString();
+  this._updatedAt = new Date().toISOString();
 }
 
 /**
