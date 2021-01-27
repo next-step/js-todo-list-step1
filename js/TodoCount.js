@@ -14,16 +14,22 @@ export default function TodoCount(countContainerEl, todoApp) {
     });
   };
 
+  const checkFilterElSelected = (filterEl) => {
+    const { classList } = filterEl;
+    return (
+      (todoApp.filter === null && classList.contains("all")) ||
+      (todoApp.filter === false && classList.contains("active")) ||
+      (todoApp.filter === true && classList.contains("completed"))
+    );
+  };
+
   this.render = (todos) => {
     countEl.innerHTML = `총 <strong>${todos.length}</strong> 개`;
 
-    filterEls.forEach(({ classList }) => {
+    filterEls.forEach((filterEl) => {
+      const { classList } = filterEl;
       classList.remove("selected");
-      if (
-        (todoApp.filter === null && classList.contains("all")) ||
-        (todoApp.filter === false && classList.contains("active")) ||
-        (todoApp.filter === true && classList.contains("completed"))
-      ) {
+      if (checkFilterElSelected(filterEl)) {
         classList.add("selected");
       }
     });
