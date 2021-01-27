@@ -19,7 +19,7 @@ const initFilter = () => {
 
 const todo = (() => {
   const items = mapToTodo(storage.getStorage());
-  let nextId = 0;
+  let nextId = items[items.length - 1]._id + 1;
   let filter = initFilter();
 
   const getNewId = () => {
