@@ -1,3 +1,5 @@
+import {$todoList} from "../todoDOM.js";
+
 export const todoFliter = () => {
     const $filters = document.querySelector('.filters');
     $filters.addEventListener('click', filtering );
@@ -6,7 +8,6 @@ export const todoFliter = () => {
 const filtering = ({target}) => {
     const className = target.className;
 
-    const $todoList = document.getElementById('todo-list');
     const $allTodo= $todoList.querySelectorAll('li');
     const $completedTodo = $todoList.querySelectorAll('.completed')
 

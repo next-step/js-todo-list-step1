@@ -1,6 +1,6 @@
-export const todoCheckbox = () => {
-    const $todoList = document.querySelector('.todo-list');
+import {$todoList} from "../todoDOM.js";
 
+export const todoCheckbox = () => {
     $todoList.addEventListener('click', changeTodo);
 }
 
