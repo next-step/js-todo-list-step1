@@ -16,8 +16,8 @@ class App extends Reilly.Component {
     this.toggleTodo = this.toggleTodo.bind(this);
     this.removeTodo = this.removeTodo.bind(this);
     this.changeMode = this.changeMode.bind(this);
-    this.confirmEditTodo = this.confirmEditTodo.bind(this);
     this.startEditTodo = this.startEditTodo.bind(this);
+    this.confirmEditTodo = this.confirmEditTodo.bind(this);
   }
 
   fetchTodos() {
@@ -40,7 +40,13 @@ class App extends Reilly.Component {
     if (!e.target.matches(".toggle")) return;
     const targetId = e.path.find((elm) => elm.matches("li")).id;
     const todos = this.state.todos.map((todo) =>
-      todo.id !== targetId ? todo : { ...todo, completed: !todo.completed }
+      todo.id !== targetId
+        ? todo
+        : {
+            ...todo,
+            completed: !todo.completed,
+            _updatedAt: new Date().toISOString()
+          }
     );
     this.setState({ todos });
     LocalStorage.setTodos(todos);
@@ -84,7 +90,9 @@ class App extends Reilly.Component {
     // content validation
     this.setState({
       todos: this.state.todos.map((todo) =>
-        todo.id !== targetId ? todo : { ...todo, content }
+        todo.id !== targetId
+          ? todo
+          : { ...todo, content, _updatedAt: new Date().toISOString() }
       ),
       edittingId: null
     });
@@ -113,11 +121,11 @@ class App extends Reilly.Component {
         todos,
         mode,
         edittingId,
-        onStartEdit: this.startEditTodo,
-        onConfirmEdit: this.confirmEditTodo,
         onToggle: this.toggleTodo,
         onRemove: this.removeTodo,
-        onModeChange: this.changeMode
+        onModeChange: this.changeMode,
+        onStartEdit: this.startEditTodo,
+        onConfirmEdit: this.confirmEditTodo
       })
     );
   }
