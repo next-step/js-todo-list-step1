@@ -23,6 +23,9 @@ export default function TodoListItem({
   };
 
   const handleToggleEditingTodo = () => {
+    const $editingItem = document.querySelector(".editing");
+    $editingItem?.classList.remove("editing");
+
     $item.classList.add("editing");
   };
 
