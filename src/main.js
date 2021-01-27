@@ -1,13 +1,5 @@
 export const $todoList = document.getElementById('todo-list');
 
-import {todoInput} from "./components/todoInput.js";
-import {todoCheckbox} from "./components/todoCheckbox.js";
-import {todoEdit} from "./components/todoEdit.js";
-import {todoCount} from "./components/todoCount.js";
-import {todoFliter} from "./components/todoFilter.js";
+import {app} from "../src/app.js";
 
-todoInput();
-todoCheckbox();
-todoEdit();
-todoCount();
-todoFliter();
+app();
