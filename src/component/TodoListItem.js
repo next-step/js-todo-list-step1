@@ -46,6 +46,7 @@ export default function TodoListItem({
   };
 
   const handleCancelEditingTodo = () => {
+    $editInput.value = todo.contents;
     $item.classList.remove("editing");
   };
 
