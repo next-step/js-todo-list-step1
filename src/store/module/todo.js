@@ -2,17 +2,6 @@ import storage from "../storage.js";
 import Todo from "../../domain/Todo.js";
 import { FILTER } from "../../utils/FILTER.js";
 
-const mapToTodo = (items) => {
-  return items.map(
-    ({ _id, contents, isCompleted }) => new Todo(_id, contents, isCompleted)
-  );
-};
-
-const getLastId = (items) => {
-  const lastItem = items[items.length - 1];
-  return lastItem ? lastItem._id + 1 : 0;
-};
-
 const initFilter = () => {
   if (location.hash.includes(FILTER.ACTIVE)) {
     return FILTER.ACTIVE;
@@ -23,37 +12,48 @@ const initFilter = () => {
 };
 
 const todo = (() => {
-  const items = mapToTodo(storage.getStorage());
-  let nextId = getLastId(items);
   let filter = initFilter();
 
+  const getItems = () => {
+    return storage
+      .getStorage()
+      .map(
+        ({ _id, contents, isCompleted }) => new Todo(_id, contents, isCompleted)
+      );
+  };
+
   const getNewId = () => {
-    return nextId++;
+    const items = getItems();
+    const lastItem = items[items.length - 1];
+    return lastItem ? lastItem._id + 1 : 0;
   };
 
   const addItem = (item) => {
+    const items = getItems();
     items.push(item);
     storage.setStorage(items);
   };
 
-  const findItemById = (id) => {
+  const findItemById = (items, id) => {
     return items.find((item) => item.isSameId(id));
   };
 
   const toggleItem = (id) => {
-    const item = findItemById(id);
+    const items = getItems();
+    const item = findItemById(items, id);
     item.toggle();
     storage.setStorage(items);
   };
 
   const deleteItem = (id) => {
-    const deleteItemIndex = items.findIndex((item) => item.isSameId(id));
-    items.splice(deleteItemIndex, 1);
-    storage.setStorage(items);
+    const items = getItems();
+    const newItems = items.filter((item) => !item.isSameId(id));
+    storage.setStorage(newItems);
   };
 
   const editItem = (id, contents) => {
-    const item = findItemById(id);
+    const items = getItems();
+    const item = findItemById(items, id);
     item.edit(contents);
     storage.setStorage(items);
   };
@@ -68,11 +68,11 @@ const todo = (() => {
 
   const getFilteredItems = () => {
     if (filter === FILTER.ACTIVE) {
-      return items.filter((todo) => !todo.isCompleted);
+      return getItems().filter((todo) => !todo.isCompleted);
     } else if (filter === FILTER.COMPLETED) {
-      return items.filter((todo) => todo.isCompleted);
+      return getItems().filter((todo) => todo.isCompleted);
     }
-    return items;
+    return getItems();
   };
 
   return {
