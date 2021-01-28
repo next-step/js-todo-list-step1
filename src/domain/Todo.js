@@ -3,7 +3,6 @@ export default class Todo {
     this._id = _id;
     this.contents = contents;
     this.isCompleted = isCompleted;
-    this.isEditing = false;
   }
 
   edit(contents) {
@@ -19,10 +18,7 @@ export default class Todo {
   }
 
   render() {
-    const classList = [
-      this.isCompleted ? "completed" : "",
-      this.isEditing ? "editing" : "",
-    ].join(" ");
+    const classList = [this.isCompleted ? "completed" : ""].join(" ");
 
     return `
       <li class="${classList}" data-id=${this._id}>
