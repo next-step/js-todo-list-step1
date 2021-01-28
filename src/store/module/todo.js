@@ -8,6 +8,11 @@ const mapToTodo = (items) => {
   );
 };
 
+const getLastId = (items) => {
+  const lastItem = items[items.length - 1];
+  return lastItem ? lastItem._id + 1 : 0;
+};
+
 const initFilter = () => {
   if (location.hash.includes(FILTER.ACTIVE)) {
     return FILTER.ACTIVE;
@@ -19,7 +24,7 @@ const initFilter = () => {
 
 const todo = (() => {
   const items = mapToTodo(storage.getStorage());
-  let nextId = items[items.length - 1]._id + 1;
+  let nextId = getLastId(items);
   let filter = initFilter();
 
   const getNewId = () => {
