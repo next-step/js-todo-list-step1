@@ -9,10 +9,7 @@ export const todoCount = (status) => {
 
 const countFilter = (status) => {
 
-    // 전체 todo 수
     const countAll = $todoList.getElementsByClassName('toggle').length;
-
-    // 완료한 todo 수
     const countCompletedTodo = $todoList.getElementsByClassName('completed').length;
 
     // filter 상태에 따른 todo 수

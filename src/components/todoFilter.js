@@ -14,6 +14,7 @@ const filtering = ({target}) => {
     const $allTodo= $todoList.querySelectorAll('li');
     const $completedTodo = $todoList.querySelectorAll('.completed')
 
+    // className을 배열로 받아와서 0번째 값을 filterStatus에 넣는 것은 ?
     const className = target.className;
 
     if(className === 'all selected'){
@@ -38,7 +39,6 @@ const filtering = ({target}) => {
 }
 
 
-// 주어진 리스트를 on & off 함
 const display = (list) =>{
     for(let i=0; i<list.length; i++){
         list[i].style.display = 'block';

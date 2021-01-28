@@ -1,7 +1,6 @@
 import {$todoList} from "../todoDOM.js";
 
 export const todoEdit = () => {
-    //todo list를 더블클릭하면 input모드로 변경
     $todoList.addEventListener('dblclick', inputMode);
 }
 
