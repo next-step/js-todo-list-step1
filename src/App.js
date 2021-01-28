@@ -50,6 +50,7 @@ export class App {
             this.$todoList.querySelectorAll('li').forEach($item => {
                 this.cancelEditMode($item);
             })
+            return;
         }
         if (event.key === 'Enter') {
             this.$todoList.querySelectorAll('li').forEach(($item, index) => {
@@ -60,35 +61,22 @@ export class App {
         }
     }
     pressSeeAllButton = () => {
-        this.todoFilter = 'all';
-        this.$seeAllButton.classList.add('selected');
-        if (this.$seeActiveButton.classList.contains('selected')) {
-            this.$seeActiveButton.classList.remove('selected');
-        }
-        if (this.$seeCompletedButton.classList.contains('selected')) {
-            this.$seeCompletedButton.classList.remove('selected');
-        }
-        this.render();
+        this.pressButton('all', this.$seeAllButton, this.$seeActiveButton, this.$seeCompletedButton);
     }
     pressSeeActiveButton = () => {
-        this.todoFilter = 'active';
-        this.$seeActiveButton.classList.add('selected');
-        if (this.$seeAllButton.classList.contains('selected')) {
-            this.$seeAllButton.classList.remove('selected');
-        }
-        if (this.$seeCompletedButton.classList.contains('selected')) {
-            this.$seeCompletedButton.classList.remove('selected');
-        }
-        this.render();
+        this.pressButton('active', this.$seeActiveButton, this.$seeAllButton, this.$seeCompletedButton);
     }
     pressSeeCompletedButton = () => {
-        this.todoFilter = 'completed';
-        this.$seeCompletedButton.classList.add('selected');
-        if (this.$seeAllButton.classList.contains('selected')) {
-            this.$seeAllButton.classList.remove('selected');
+        this.pressButton('completed', this.$seeCompletedButton, this.$seeAllButton, this.$seeActiveButton);
+    }
+    pressButton = (todoFilter, $selected, $notSelected1, $notSelected2) => {
+        this.todoFilter = todoFilter;
+        $selected.classList.add('selected');
+        if ($notSelected1.classList.contains('selected')) {
+            $notSelected1.classList.remove('selected');
         }
-        if (this.$seeActiveButton.classList.contains('selected')) {
-            this.$seeActiveButton.classList.remove('selected');
+        if ($notSelected2.classList.contains('selected')) {
+            $notSelected2.classList.remove('selected');
         }
         this.render();
     }
