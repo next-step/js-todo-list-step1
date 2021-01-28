@@ -88,6 +88,6 @@ export default function TodoList(listEl, todoApp) {
   listEl.addEventListener("click", this.deleteTodo);
   listEl.addEventListener("dblclick", this.convertToEditor);
   listEl.addEventListener("focusout", this.convertToViewer);
-  listEl.addEventListener("keypress", this.updateTodo);
+  listEl.addEventListener("keypress", this.updateValue);
   listEl.addEventListener("keypress", this.convertToViewerWhenPressingEsc);
 }
