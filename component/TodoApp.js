@@ -1,60 +1,55 @@
 import { TodoList } from "./TodoList.js";
 import { TodoInput } from "./TodoInput.js";
 import { TodoTotalCount } from "./TodoTotalCount.js";
+import { LocalStorageSupporter } from '../LocalStorageSupporter.js'
 
 export function TodoApp($div) {
   const $ul = $div.querySelector("#todo-list");
 
-  this.todoItems = [];
+  const storage = new LocalStorageSupporter('todoItem');
+  this.todoItems = storage.get();
   this.filter = "all";
 
   this.todoInput = new TodoInput(this);
   this.todoList = new TodoList($ul, this);
   this.todoTotalCount = new TodoTotalCount($div, this);
 
-  this.setState = (updatedItems) => {
-    this.todoItems = updatedItems;
-    this.TodoList.setState(this.todoItems);
-  };
-
-  this.saveItem = (item) => {
-    this.todoItems.push(item);
+  this.saveItem = (item) => { 
+    storage.save(item);
     this.filterTodo(this.filter);
   };
 
   this.complete = (todoItem) => {
-    this.todoItems
-      .filter((item) => item.todoItem === todoItem)
-      .map((item) => (item.completed = !item.completed));
-
+    storage.complete(todoItem);
     this.filterTodo(this.filter);
   };
 
   this.delete = (todoItem) => {
-    const index = this.todoItems.findIndex(
-      (item) => item.todoItem === todoItem
-    );
-    this.todoItems.splice(index, 1);
+    storage.delete(todoItem);
     this.filterTodo(this.filter);
   };
 
   this.update = (id, todoItem) => {
-    const index = this.todoItems.findIndex((item) => item.todoItem === id);
-    this.todoItems[index].todoItem = todoItem;
-    this.todoList.render(this.todoItems);
+    const updateItems = storage.update(id, todoItem);
+    this.todoList.render(updateItems);
   };
 
   this.filterTodo = (completeStatus) => {
+  
     this.filter = completeStatus;
-
     const status = {
-      all: () => this.todoItems,
-      active: () => this.todoItems.filter((item) => !item.completed),
-      completed: () => this.todoItems.filter((item) => item.completed),
+      all: () => storage.get(),
+      active: () => storage.get().filter((item) => !item.completed),
+      completed: () =>  storage.get().filter((item) => item.completed),
     };
     const filterTodoItems = status[this.filter]();
 
     this.todoList.render(filterTodoItems);
     this.todoTotalCount.setState(filterTodoItems, this.filter);
   };
+
+
+  this.render = () =>{
+    this.todoList.setState(storage.get());
+  }
 }
