@@ -5,7 +5,7 @@ export function initControlLocalStorage(){
     window.addEventListener("DOMContentLoaded", loadLocalStorage);
 }
 
-//페이지 종료시 현재 리스트 저장 
+//페이지를 떠날 때 list의 정보를 저장한다. 
 function saveLocalStorage(){
     const list = document.querySelectorAll("#todo-list li");
     let listArray = [];
@@ -30,7 +30,7 @@ function saveLocalStorage(){
     localStorage.setItem("json", jsonArray);
 }
 
-//페이지 실행 시 현재 리스트 불러오는 기능 
+//저장된 list를 부른다.
 function loadLocalStorage(){
     const load = JSON.parse(localStorage.getItem("json"));
     for(let i in load){
@@ -40,7 +40,7 @@ function loadLocalStorage(){
     document.querySelector("strong").innerText = load.length;
 }
 
-//페이지 실행 시 현재 리스트를 불러오는 기능
+//data를 load하여 list에 적용한다.
 function getLoadStorageList(loadData){
     const $todoList = document.getElementById("todo-list");
 
@@ -52,7 +52,7 @@ function getLoadStorageList(loadData){
     const inputList = listTemplate(Label);
     $todoList.insertAdjacentHTML("beforeend", inputList);
 
-    //마지막 자식에 접근
+    //추가된 list setting
     const checkbox = $todoList.lastChild.querySelector(".toggle");
     if(Checked === "checked") checkbox.setAttribute("checked", "");
     if(liClass === "completed") $todoList.lastChild.classList.add("completed");

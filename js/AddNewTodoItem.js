@@ -1,11 +1,11 @@
 const $todoInput = document.getElementById("new-todo-title");
 const $todoList = document.getElementById("todo-list");
 
-//export : 내보낸 값을 다른 프로그램에서 import문으로 가져다 사용 가능
 export function initAddNewTodoItem(){
     $todoInput.addEventListener("keyup", AddNewTodoList); 
 }
 
+//새로운 todolist를 생성하여 HTML에 삽입한다. 
 export function AddNewTodoList(e){
     const todoTitle = e.target.value;
     if (e.key === "Enter" && todoTitle !== "") 

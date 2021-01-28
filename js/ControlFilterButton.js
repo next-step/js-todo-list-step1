@@ -1,13 +1,14 @@
 const $filter = document.querySelector(".filters");
+const todoList = document.querySelectorAll("#todo-list li");
 
-export function initControlFilterItem(){
+export function initControlFilterButton(){
     $filter.addEventListener('click', controlFilterButton);
 }
 
-function controlFilterButton(e){
-    if(e.target.classList.contains('all') ) showAll();
-    else if(e.target.classList.contains('active')) showActive();
-    else if(e.target.classList.contains('completed')) showCompleted();
+function controlFilterButton({target}){
+    if(target.classList.contains('all') ) showAll();
+    else if(target.classList.contains('active')) showActive();
+    else if(target.classList.contains('completed')) showCompleted();
 }
 
 //button click : "전체보기" 
@@ -17,7 +18,7 @@ export function showAll(){
 
     for(let i=0; i<todoList.length; i++){
         todoList[i].style.display = "block";
-        idx = idx + 1;
+        idx += 1;
     }
     setButton(0);
     document.querySelector("strong").innerText = idx;
@@ -33,7 +34,7 @@ export function showActive(){
             todoList[i].style.display = "none";
         }else{
             todoList[i].style.display = "block";  
-            idx = idx + 1;
+            idx += 1;
         }
     }
     setButton(1);
@@ -48,7 +49,7 @@ export function showCompleted(){
     for(let i=0; i< todoList.length; i++){
         if(todoList[i].classList.contains("completed")) {
             todoList[i].style.display = "block";
-            idx = idx + 1;
+            idx += 1;
         }else{
             todoList[i].style.display = "none";  
         }
