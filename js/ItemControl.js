@@ -7,7 +7,7 @@
 */
 
 const $todoInput = document.querySelector("#new-todo-title");
-const $toggleInput = document.getElementById("todo-list"); //todolist 부분
+const $toggleInput = document.getElementById("todo-list"); //수정 부분
 const $filterInput = document.querySelector(".filters");
 
 //value는 filter를 위해서 active, completed
@@ -18,7 +18,7 @@ for (let i=0; i< localStorage.length; i++){
 
   $toggleInput.insertAdjacentHTML("beforeend", renderTodoItemTemplate(key));
   //완료한 일은 체크되어 나오도록한다. - 미완
-  if(value == 'completed'){ 
+  if(value == 'completed'){
     document.getElementById(key).classList.toggle("completed");
   }
 
@@ -182,8 +182,10 @@ function onFilterItem(event){
           document.getElementById(key).style.display = "block";
           idx += 1;
         }
+  
       }
       document.querySelector("strong").innerHTML = idx;
+
     }
 
     //완료한 일
