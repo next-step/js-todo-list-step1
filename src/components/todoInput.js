@@ -1,6 +1,7 @@
 import {$todoList, $newTodoTitle} from "../todoDOM.js";
 import {todoCount} from "./todoCount.js";
 import {filterStatus} from "./todoFilter.js";
+import {addToStorage} from "../loadTodo.js";
 
 export const todoInput = () => {
   $newTodoTitle.addEventListener('keyup', addTodoItem);
@@ -9,7 +10,11 @@ export const todoInput = () => {
 const addTodoItem = ({target, key}) => {
     if(target.value && key === 'Enter'){
 
-        $todoList.insertAdjacentHTML('beforeend' ,newTodoItem(target.value));
+        $todoList.insertAdjacentHTML('beforeend', newTodoItem(target.value));
+
+        console.log(target.value);
+        addToStorage(target.value, 'active');
+
         target.value = '';
     }
 
@@ -18,7 +23,7 @@ const addTodoItem = ({target, key}) => {
     
 }
 
-const newTodoItem = (title) => {
+export const newTodoItem = (title) => {
     return `<li>
     <div class="view">
       <input class="toggle" type="checkbox"/>

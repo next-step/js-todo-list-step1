@@ -1,5 +1,5 @@
-export const $todoList = document.getElementById('todo-list');
-
 import {app} from "../src/app.js";
+import {loadTodo} from "./loadTodo.js"
 
 app();
+loadTodo();
