@@ -14,7 +14,6 @@ const inputMode = ({target}) => {
 const endInput = ({target, key}) => {
     const value = target.value;
 
-    // esc를 누르면 수정되지 않은채 view모드로 복귀
     if(key === 'Escape'){
         target.closest('li').classList.remove('editing');
         target.value = value;

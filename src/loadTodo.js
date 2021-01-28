@@ -2,29 +2,46 @@ import {$todoList} from "./todoDOM.js";
 import {newTodoItem} from "./components/todoInput.js";
 import {todoCount} from "./components/todoCount.js"
 
-
-
-let todoItems = [];
+export let todoItems = [];
 
 export const addToStorage = (value, status) => {
-    console.log("active");
+
     const newItem = {
         value,
         status
     }
 
     todoItems = [...todoItems, newItem];
-    localStorage.setItem('todo', JSON.stringify(todoItems));
-
+    saveTodo();
 }
 
+const saveTodo = () => {
+    localStorage.setItem('todo',JSON.stringify(todoItems));
+}
+
+export const removeFromStorage = (target) => {
+
+    const $targetValue = target.closest('li').querySelector('.edit').value;
+    let index=0;
+
+    todoItems.forEach((item)=>{
+        if(item.value === $targetValue) return;
+        index ++;
+    });
+
+    todoItems.splice(index, 1);
+    saveTodo();
+}
+
+
 export const loadTodo = () => {
+    console.log("now loading");
 
     let loadedItems = localStorage.getItem('todo');
-    console.log(JSON.parse(loadedItems));
 
     if(loadedItems !== null){
         loadedItems = JSON.parse(loadedItems);
+        console.log(loadedItems);
 
         loadedItems.forEach((item) => {
             $todoList.insertAdjacentHTML('beforeend', newTodoItem(item.value));

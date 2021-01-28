@@ -9,12 +9,9 @@ export const todoInput = () => {
 
 const addTodoItem = ({target, key}) => {
     if(target.value && key === 'Enter'){
-
         $todoList.insertAdjacentHTML('beforeend', newTodoItem(target.value));
-
-        console.log(target.value);
+        
         addToStorage(target.value, 'active');
-
         target.value = '';
     }
 
