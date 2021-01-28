@@ -12,7 +12,6 @@ const countFilter = (status) => {
     const countAll = $todoList.getElementsByClassName('toggle').length;
     const countCompletedTodo = $todoList.getElementsByClassName('completed').length;
 
-    // filter 상태에 따른 todo 수
     if(status === 'all'){
         return countAll;
     } else if(status === 'active'){

@@ -1,6 +1,6 @@
 import {$todoList} from "../todoDOM.js";
 import {todoCount} from "./todoCount.js";
-import {removeFromStorage} from "../loadTodo.js";
+import {removeFromStorage} from "../localStorage/localStorage.js";
 
 export const todoCheckbox = () => {
     $todoList.addEventListener('click', changeTodo);

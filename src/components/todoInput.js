@@ -1,7 +1,7 @@
 import {$todoList, $newTodoTitle} from "../todoDOM.js";
 import {todoCount} from "./todoCount.js";
 import {filterStatus} from "./todoFilter.js";
-import {addToStorage} from "../loadTodo.js";
+import {addToStorage} from "../localStorage/localStorage.js";
 
 export const todoInput = () => {
   $newTodoTitle.addEventListener('keyup', addTodoItem);
