@@ -25,7 +25,6 @@ export const loadTodo = () => {
 
 const checkStatus = (item) => {
     const status = item.status;
-    console.log(status);
 
     if(status !== "completed"){
        return;

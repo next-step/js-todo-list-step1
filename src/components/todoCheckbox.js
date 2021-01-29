@@ -15,20 +15,22 @@ const changeTodo = ({target}) =>{
 }
 
 const completeTodo = (target) => {
-   target.toggleAttribute('checked');
-   target.closest('li').classList.toggle('completed');
+    target.toggleAttribute('checked');
+    target.closest('li').classList.toggle('completed');
 
-   const index = findIndexOfTarget(target);
-   const status = todoItems[index].status;
+    changeStatus(target);
+    saveTodo();
+}
 
-   if(status === "active"){
-        todoItems[index].status = "completed";
-   } else if(status === "completed"){
-        todoItems[index].status = "active";
-   }
-   console.log(todoItems[index].status);
-   saveTodo();
-
+const changeStatus = (target) => {
+    const index = findIndexOfTarget(target);
+    const status = todoItems[index].status;
+ 
+    if(status === "active"){
+         todoItems[index].status = "completed";
+    } else if(status === "completed"){
+         todoItems[index].status = "active";
+    }
 }
 
 const removeTodo = (target) => {
