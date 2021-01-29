@@ -20,7 +20,7 @@ export const removeFromStorage = (target) => {
     saveTodo();
 }
 
-const saveTodo = () => {
+export const saveTodo = () => {
     localStorage.setItem('todo',JSON.stringify(todoItems));
 }
 
@@ -28,14 +28,11 @@ export const editStorage = (target) => {
 
     const index = findIndexOfTarget(target);
     const value = target.closest('li').querySelector('.edit').value;
-    console.log(value);
 
-    console.log(todoItems[index].value);
-    //todoItems[index].value = value;
     saveTodo();
 }
 
-const findIndexOfTarget = (target) => {
+export const findIndexOfTarget = (target) => {
     const targetValue = target.closest('li').querySelector('.edit').value;
     const index = todoItems.findIndex(obj => obj.value === targetValue);
 

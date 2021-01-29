@@ -21,7 +21,7 @@ const addTodoItem = ({target, key}) => {
 }
 
 export const newTodoItem = (title) => {
-    return `<li>
+    return `<li class=">
     <div class="view">
       <input class="toggle" type="checkbox"/>
       <label class="label">${title}</label>

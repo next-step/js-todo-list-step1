@@ -10,14 +10,31 @@ export const loadTodo = () => {
 
     if(loadedItems !== null){
         loadedItems = JSON.parse(loadedItems); 
-        loadedItems.forEach((item) =>todoItems.push(item));
+        loadedItems.forEach((item) => todoItems.push(item));
 
-        console.log(loadedItems);
-
-        loadedItems.forEach((item) => {
+        //console.log(loadedItems);
+        todoItems.forEach((item)=>{
             $todoList.insertAdjacentHTML('beforeend', newTodoItem(item.value));
+            checkStatus(item);
         });
+
     }
 
     todoCount('all');
+}
+
+const checkStatus = (item) => {
+    const status = item.status;
+    console.log(status);
+
+    if(status !== "completed"){
+       return;
+     } else {
+        const $list = $todoList.lastChild;
+        const $toggle = $list.querySelector('.toggle');
+
+        $list.classList.toggle('completed');
+        $toggle.toggleAttribute('checked'); 
+    }       
+        
 }
