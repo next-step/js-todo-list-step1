@@ -1,178 +1,200 @@
 const $TodoInput = document.querySelector('#new-todo-title'); 
 const $TodoList = document.querySelector('#todo-list');
-const $allTodo = document.querySelector('a.all');
-const $activeTodo = document.querySelector('a.active');
-const $completedTodo = document.querySelector('a.completed');
+const $AllTodo = document.querySelector('a.all');
+const $ActiveTodo = document.querySelector('a.active');
+const $CompletedTodo = document.querySelector('a.completed');
 const $TodoCount = document.querySelector('span > strong');
 
 function init() {
-  $TodoInput.addEventListener('keypress', addTodo);
-  $TodoList.addEventListener('click', handleTodo);
-  $TodoList.addEventListener('dblclick', editTodo);
-  $allTodo.addEventListener('click', allShow);
-  $completedTodo.addEventListener('click', completedShow);
-  $activeTodo.addEventListener('click', activeShow);
-  
+  $TodoInput.addEventListener('keypress', AddTodo);
+  $TodoList.addEventListener('click', CompletedTodo);
+  $TodoList.addEventListener('click', DestroyTodo);
+  $TodoList.addEventListener('dblclick', EditTodo);
+  $AllTodo.addEventListener('click', AllTodoShow);
+  $CompletedTodo.addEventListener('click', CompletedTodoShow);
+  $ActiveTodo.addEventListener('click', ActiveTodoShow);
 };
 
 let TodoItemList = []; // $TodoInput에 입력되는 내용들을 저장
-let TodoNum = 0; // 총 개수
+$TodoCount.innerHTML = TodoItemList.length;
 
-const addTodo = (e) => {
+const AddTodo = (e) => {
     
-    if(e.key === 'Enter') { // Enter키가 눌렸을 경우
+    const TodoItemName = $TodoInput.value;
+
+    if(e.key === 'Enter' && TodoItemName.length !== 0) { // Enter키가 눌렸을 경우
         e.preventDefault();
 
-        const TodoItemName = $TodoInput.value;
-    
-        if(TodoItemName.lenght !== 0) {
-            TodoItemList.push(TodoItemName);
-            addList(TodoItemList);
-        }
+        TodoItemList.push(TodoItemName);
+        AddList(TodoItemList);
+        setLocalStorage(TodoItemList);
 
+        $TodoCount.textContent = TodoItemList.length;
         $TodoInput.value = '';
-        TodoNum++;
-        $TodoCount.textContent = TodoNum;
+        
     }
 }
 
-const addList = (TodoItemList) => { // 입력된 내용을 항목 추가
+const AddList = (TodoItemList) => { // 입력된 내용을 항목 추가
   $TodoList.innerHTML = '';
 
-  TodoItemList.forEach(function(item) {
+  TodoItemList.forEach((item) => {
 
-    $TodoList.insertAdjacentHTML('beforeend', // ul의 요소가 끝나기 전에 내용 삽입
-    `
+    const TodoTemplate = (item) => {
+      return `
       <li>
-        <div class="view">
-          <input class="toggle" type="checkbox"/>
-          <label class="label">${item}</label>
-          <button class="destroy"></button>
-        </div>
-        <input class="edit" value="${item}" />
+      <div class="view">
+      <input class="toggle" type="checkbox"/>
+      <label class="label">${item}</label>
+      <button class="destroy"></button>
+      </div>
+      <input class="edit" value="${item}" />
       </li>
-    `);
+      `
+    };
+    
+    $TodoList.insertAdjacentHTML('beforeend', TodoTemplate(item));
   });
-  
 };
 
-const handleTodo = ({target}) => { // 완료 & 삭제
+const CompletedTodo = ({target}) => {
   //if(target.className !== 'toggle') return;
+  
   if(target.classList.contains('toggle')) {
     
-    const $TodoItem = target.closest('li');
+    const $TodoItem = target.parentNode.parentNode;
 
-    if($TodoItem.className !== 'completed') {
-      $TodoItem.setAttribute('class', 'completed');
+    if($TodoItem.classList.contains('completed')) {
+      $TodoItem.classList.toggle('completed');
       target.setAttribute('checked', '');
     }
     else {
-      $TodoItem.removeAttribute('class','completed');
+      $TodoItem.classList.toggle('completed');
       target.removeAttribute('checked');
     }
   }
-  
-  if(target.classList.contains('destroy')) {
-    TodoNum--;
-    $TodoCount.textContent = TodoNum;
-
-    const $TodoItem = target.parentNode.parentNode;
-    $TodoList.removeChild($TodoItem);
-
-    TodoItemList = TodoItemList.filter(function(item) {
-      return item !== $TodoItem.querySelector('label').textContent;
-  });
-  
-  }
-
 }
 
-const editTodo = ({target}) => { // 수정
-  if(target.className !== 'label') return;
+const DestroyTodo = ({target}) => {
+
+  if(target.classList.contains('destroy')) {
+
+    const $TodoItem = target.closest('li');
+    $TodoList.removeChild($TodoItem);
+
+    TodoItemList = TodoItemList.filter((item) => {
+      return item !== $TodoItem.querySelector('label').textContent;
+    });
+  
+    $TodoCount.textContent = TodoItemList.length;
+    setLocalStorage(TodoItemList);
+  }
+}
+
+const EditTodo = ({target}) => { // 수정
+  if(target.classList.contains('label')) {
 
   const $TodoItem = target.closest('li');
   const editInput = $TodoItem.querySelector('.edit');
 
-  if($TodoItem.className !== 'editing') {
-    $TodoItem.setAttribute('class', 'editing');
-    editInput.value = target.textContent;
+  if(!$TodoItem.classList.contains('editing')) {
+    $TodoItem.classList.toggle('editing');
   }
 
-  editInput.addEventListener('keydown', (e) => {
+  editInput.addEventListener('keyup', (e) => {
     if(e.key === 'Enter') {
-      $TodoItem.removeAttribute('class','editing');
+      $TodoItem.classList.toggle('editing');
       target.textContent = editInput.value;
+      setLocalStorage(TodoItemList);
     }
     else if(e.key === 'Escape') {
-      $TodoItem.removeAttribute('class','editing');
+      $TodoItem.classList.toggle('editing');
     }
-
   });
 }
+}
 
-const allShow = () => { // 전체보기
-  $allTodo.classList.add('selected');
+const AllTodoShow = () => { // 전체보기
+  $TodoCount.textContent = TodoItemList.length;
+  
+  $AllTodo.classList.add('selected');
 
-  if($activeTodo.classList.contains('selected')) {
-    $activeTodo.classList.remove('selected');
+  if($ActiveTodo.classList.contains('selected')) {
+    $ActiveTodo.classList.remove('selected');
   }
-  if($completedTodo.classList.contains('selected')) {
-    $completedTodo.classList.remove('selected');
+  if($CompletedTodo.classList.contains('selected')) {
+    $CompletedTodo.classList.remove('selected');
   }
 
   const $TodoItems = document.querySelectorAll('li');
 
-  $TodoItems.forEach(function(TodoItem) {
+  $TodoItems.forEach((TodoItem) => {
     TodoItem.classList.remove('hidden');
   });
 }
 
-const activeShow = () => { // 해야할 일
-  $activeTodo.classList.add('selected');
+const ActiveTodoShow = () => { // 해야할 일
+  $ActiveTodo.classList.add('selected');
 
-  if($allTodo.classList.contains('selected')) {
-    $allTodo.classList.remove('selected');
+  if($AllTodo.classList.contains('selected')) {
+    $AllTodo.classList.remove('selected');
   }
-  if($completedTodo.classList.contains('selected')) {
-    $completedTodo.classList.remove('selected');
+  if($CompletedTodo.classList.contains('selected')) {
+    $CompletedTodo.classList.remove('selected');
   }
 
   const $TodoItems = document.querySelectorAll('li');
 
-  $TodoItems.forEach(function(TodoItem) {
+  $TodoItems.forEach((TodoItem) => {
     if(TodoItem.classList.contains('completed')) {
       TodoItem.classList.add('hidden');
     }
     else {
       TodoItem.classList.remove('hidden');
+      $TodoCount.textContent = TodoItemList.length - $TodoList.querySelectorAll('.completed').length;
     }
-    
   });
 }
 
-const completedShow = () => { // 완료한 일
-  $completedTodo.classList.add('selected');
+const CompletedTodoShow = () => { // 완료한 일
+  $CompletedTodo.classList.add('selected');
 
-  if($allTodo.classList.contains('selected')) {
-    $allTodo.classList.remove('selected');
+  if($AllTodo.classList.contains('selected')) {
+    $AllTodo.classList.remove('selected');
   }
-  if($activeTodo.classList.contains('selected')) {
-    $activeTodo.classList.remove('selected');
+  if($ActiveTodo.classList.contains('selected')) {
+    $ActiveTodo.classList.remove('selected');
   }
   const $TodoItems = document.querySelectorAll('li');
 
-  $TodoItems.forEach(function(TodoItem) {
+  $TodoItems.forEach((TodoItem) => {
     if(TodoItem.classList.contains('completed')) {
       TodoItem.classList.remove('hidden');
+      $TodoCount.textContent = $TodoList.querySelectorAll('.completed').length;
     }
     else {
       TodoItem.classList.add('hidden');
     }
   });
 }
-
-
-
-
 
 init();
+
+const setLocalStorage = (TodoItemList) => {
+  localStorage.setItem('TodoItemList', JSON.stringify(TodoItemList)); // 'TodoItemList'라는 키에 TodoItemList의 데이터들을 문자열로 변환하여 저장
+}
+
+const getLocalStorage = () => {
+  const TodoItemStorage = localStorage.getItem('TodoItemList');
+
+  if(TodoItemStorage === 'undefined' || TodoItemStorage === null) {
+    TodoItemList = [];
+  }
+  else {
+    TodoItemList = JSON.parse(TodoItemStorage); // TodoItemStorage에 데이터가 들어있을 경우 TodoItemList에 저장
+    AddList(TodoItemList);
+    $TodoCount.textContent = TodoItemList.length;
+  }
+}
+
+getLocalStorage();
