@@ -1,25 +1,22 @@
 import { toDos } from "../init.js";
 import { addToDos, addToItems } from "./todoList.js";
 
-const TODOS_LS ="toDos";
+const TODOS_LS = "toDos";
 
-const saveToDos=()=>{
-    localStorage.setItem(TODOS_LS,JSON.stringify(toDos));
-}
+const saveToDos = () => {
+  localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
+};
 
-const loadToDos=()=>{
+const loadToDos = () => {
+  const loadedToDos = localStorage.getItem(TODOS_LS);
 
-    const loadedToDos = localStorage.getItem(TODOS_LS);
+  if (loadedToDos !== null) {
+    const parsedToDos = JSON.parse(loadedToDos);
+    parsedToDos.forEach((toDo) => {
+      addToDos(toDo);
+      addToItems(toDo);
+    });
+  }
+};
 
-    if(loadedToDos !== null){
-        const parsedToDos = JSON.parse(loadedToDos);
-        parsedToDos.forEach((toDo)=>{
-
-            addToDos(toDo);
-            addToItems(toDo)
-        });
-    }
-    
-}
-
-export {saveToDos, loadToDos};
+export { saveToDos, loadToDos };
