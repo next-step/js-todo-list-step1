@@ -88,16 +88,29 @@ function onClickFilter(event) {
   switch (filterName) {
     case 'all':
       console.log('all');
+      clearFilter();
+      event.target.classList.add('selected');
       todoCountText.innerHTML = totalNumber;
       break;
     case 'active':
       console.log('active');
+      clearFilter();
+      event.target.classList.add('selected');
       todoCountText.innerHTML = totalNumber - completedNumber;
       break;
     case 'completed':
       console.log('completed');
+      clearFilter();
+      event.target.classList.add('selected');
       todoCountText.innerHTML = completedNumber;
       break;
+  }
+}
+
+function clearFilter() {
+  const filters = document.querySelectorAll('.filters a');
+  for (const filter of filters) {
+    filter.classList.remove('selected');
   }
 }
 
