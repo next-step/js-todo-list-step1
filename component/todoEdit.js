@@ -1,10 +1,11 @@
 import { toDos } from '../init.js';
 import { saveToDos } from './todoLocalStorage.js';
 
-const updateEditTitle = (event) => {
+const updateEditTitle = (targetLi, targetInput) => {
+  console.log(targetLi);
   for (let obj of toDos) {
-    if (obj.id === parseInt(event.path[1].dataset.id)) {
-      obj.title = event.path[0].value;
+    if (obj.id === parseInt(targetLi.dataset.id)) {
+      obj.title = targetInput.value;
     }
   }
   saveToDos();
@@ -13,12 +14,13 @@ const updateEditTitle = (event) => {
 const updateEdit = (event) => {
   const targetInput = event.target;
   const targetLabel = targetInput.previousSibling.previousSibling.querySelector('label');
+  const targetLi = targetInput.closest('li');
   if (event.key === 'Enter') {
     targetLabel.innerText = targetInput.value;
-    targetInput.closest('li').classList.remove('editing');
-    updateEditTitle(event);
+    targetLi.classList.remove('editing');
+    updateEditTitle(targetLi, targetInput);
   } else if (event.key === 'Escape') {
-    targetInput.closest('li').classList.remove('editing');
+    targetLi.classList.remove('editing');
   }
 };
 const handleEdinting = async (event) => {
