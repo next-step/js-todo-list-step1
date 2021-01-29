@@ -1,6 +1,7 @@
 import {$todoList} from "../todoDOM.js";
 import {newTodoItem} from "../components/todoInput.js";
 import {todoCount} from "../components/todoCount.js";
+import {todoItems} from "./localStorage.js";
 
 export const loadTodo = () => {
     console.log("now loading");
@@ -8,7 +9,9 @@ export const loadTodo = () => {
     let loadedItems = localStorage.getItem('todo');
 
     if(loadedItems !== null){
-        loadedItems = JSON.parse(loadedItems);
+        loadedItems = JSON.parse(loadedItems); 
+        loadedItems.forEach((item) =>todoItems.push(item));
+
         console.log(loadedItems);
 
         loadedItems.forEach((item) => {

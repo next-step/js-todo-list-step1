@@ -1,4 +1,5 @@
 import {$todoList} from "../todoDOM.js";
+import {editStorage} from "../localStorage/localStorage.js";
 
 export const todoEdit = () => {
     $todoList.addEventListener('dblclick', inputMode);
@@ -20,6 +21,8 @@ const endInput = ({target, key}) => {
     } else if (key === 'Enter'){
         target.closest('li').classList.remove('editing');
         target.closest('li').querySelector('label').innerText = target.value;
+
+        editStorage(target);
     }
 }
 
