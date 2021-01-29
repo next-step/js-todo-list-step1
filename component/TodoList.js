@@ -22,6 +22,7 @@ export function TodoList($ul, context) {
 
     if (className.contains("toggle")) {
       this.complete(event.target.closest("li").id);
+      return;
     }
     if (className.contains("destroy")) {
       this.delete(event.target.closest("li").id);
