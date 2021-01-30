@@ -6,6 +6,7 @@ const filter = document.querySelector('.filters');
 const filterNames = ['all', 'active', 'completed'];
 
 function init() {
+  onClickFilter();
   todoInput.addEventListener('keyup', event => {
     addTodoItem(event);
   });
@@ -76,11 +77,13 @@ function toggleTodoItem(event) {
 }
 
 function onClickFilter(event) {
-  const filterName = event.target.classList[0];
+  const filterName = event === undefined ? 'all' : event.target.classList[0];
+  const targetFilter =
+    event === undefined ? document.querySelector('.all') : event.target;
   if (!filterNames.includes(filterName)) {
     return;
   }
-  console.log('countTodoItem() called');
+  console.log('onClickFilter() called');
   const todoCountText = document.querySelector('.todo-count>strong');
   const totalNumber = document.querySelectorAll('.todo-list li').length;
   const completedNumber = document.querySelectorAll('.todo-list li.completed')
@@ -89,19 +92,19 @@ function onClickFilter(event) {
     case 'all':
       console.log('all');
       clearFilter();
-      event.target.classList.add('selected');
+      targetFilter.classList.add('selected');
       todoCountText.innerHTML = totalNumber;
       break;
     case 'active':
       console.log('active');
       clearFilter();
-      event.target.classList.add('selected');
+      targetFilter.classList.add('selected');
       todoCountText.innerHTML = totalNumber - completedNumber;
       break;
     case 'completed':
       console.log('completed');
       clearFilter();
-      event.target.classList.add('selected');
+      targetFilter.classList.add('selected');
       todoCountText.innerHTML = completedNumber;
       break;
   }
@@ -114,5 +117,4 @@ function clearFilter() {
   }
 }
 
-console.log(document.querySelector('a').classList[0]);
 init();
