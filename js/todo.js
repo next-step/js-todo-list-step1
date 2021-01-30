@@ -6,7 +6,10 @@ const nowFilter = document.querySelector('.filters .selected');
 
 const filterNames = ['all', 'active', 'completed'];
 
+let todos = [];
+
 function init() {
+  loadTodoList();
   showCountItems(filters.querySelector('.all'));
   todoInput.addEventListener('keyup', event => {
     addTodoItem(event);
@@ -33,8 +36,10 @@ function addTodoItem(event) {
     return;
   }
   console.log('addTodoItem() called');
-  todoList.append(createTodoItemTemplate(todoTitle));
+  createTodoItemTemplate(todoTitle);
   event.target.value = '';
+
+  saveTodoList();
   showCountItems(filters.querySelector('.all'));
 }
 
@@ -46,8 +51,9 @@ function createTodoItemTemplate(title) {
   const label = document.createElement('label');
   const button = document.createElement('button');
   const editInput = document.createElement('input');
-
+  const newId = todos.length + 1;
   // set elements
+  li.id = newId;
   div.setAttribute('class', 'view');
   input.setAttribute('class', 'toggle');
   input.setAttribute('type', 'checkbox');
@@ -63,6 +69,8 @@ function createTodoItemTemplate(title) {
   div.append(button);
   li.appendChild(div);
   li.append(editInput);
+  todoList.append(li);
+  todos.push({ text: title, id: newId });
   return li;
 }
 
@@ -73,8 +81,11 @@ function deleteTodoItem(event) {
   }
   console.log('deleteTodoItem() called');
   const todoItem = event.target.closest('li');
-
+  todos = todos.filter(function (todo) {
+    return todo.id !== parseInt(todoItem.id);
+  });
   todoItem.remove();
+  saveTodoList();
   showCountItems(filters.querySelector('.all'));
 }
 
@@ -154,7 +165,7 @@ function addHidden(selector) {
   }
 }
 
-function toggleEditTodoItem(event, target) {
+function toggleEditTodoItem(event) {
   if (event.target.className !== 'label') {
     return;
   }
@@ -174,6 +185,21 @@ function completeEditTodoItem(event) {
   todoLabel.innerHTML = todoTitle;
   console.log(todoItem);
   todoItem.classList.toggle('editing');
+}
+
+function saveTodoList() {
+  localStorage.setItem('todoList', JSON.stringify(todos));
+}
+
+function loadTodoList() {
+  const loadedTodoList = localStorage.getItem('todoList');
+  if (loadedTodoList === null) {
+    return;
+  }
+  const parsedToDos = JSON.parse(loadedTodoList);
+  parsedToDos.forEach(function (toDo) {
+    todoList.append(createTodoItemTemplate(toDo.text));
+  });
 }
 
 init();
