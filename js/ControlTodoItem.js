@@ -10,7 +10,7 @@ function onToggleTodoItem({target}) {
 
     //완료된 일 
     if(target && target.nodeName === 'INPUT'){ 
-        target.closest("li").classList.toggle("completed");
+        li.classList.toggle("completed");
     }
 
     //삭제
