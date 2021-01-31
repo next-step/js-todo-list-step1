@@ -1,4 +1,9 @@
 const $filter = document.querySelector(".filters");
+const statusList ={
+    'all': '',
+    'active' :'',
+    'completed' : ''
+};
 var idx = 0;
 
 export function initControlFilterButton(){
@@ -60,10 +65,8 @@ export function showCompleted(){
 //선택한 버튼만 표시 
 function setButton(clickedBtnIdx){
     const aTags = $filter.querySelectorAll('a');
-    for(let i=0; i<3; i++){
+    for(let i=0; i<aTags.length; i++){
         aTags[i].classList.remove("selected");
     }
     aTags[clickedBtnIdx].classList.add("selected");
 }
-
-
