@@ -11,7 +11,7 @@ function saveLocalStorage(){
     let listArray = [];
 
     list.forEach(li => {
-        var listSet = {
+        const listSet = {
             liClass: "", 
             label:""
         };
