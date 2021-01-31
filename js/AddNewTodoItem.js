@@ -10,7 +10,7 @@ export function AddNewTodoList(e){
     const todoTitle = e.target.value;
     if (e.key === "Enter" && todoTitle !== "") 
     {
-        const inputList = listTemplate(todoTitle);
+        const inputList = todoTemplate(todoTitle);
         $todoList.insertAdjacentHTML("beforeend", inputList);
         e.target.value = "";
 
@@ -18,7 +18,7 @@ export function AddNewTodoList(e){
     document.querySelector("strong").innerText = document.querySelectorAll("#todo-list li").length;
 }
 
-export function listTemplate(title) {
+export function todoTemplate(title) {
     return ` <li>
                 <div class="view">
                     <input class="toggle" type="checkbox">

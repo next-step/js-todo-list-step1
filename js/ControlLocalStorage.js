@@ -1,4 +1,4 @@
-import {listTemplate} from './AddNewTodoItem.js'
+import {todoTemplate} from './AddNewTodoItem.js'
 
 export function initControlLocalStorage(){
     window.addEventListener("beforeunload", saveLocalStorage);
@@ -49,7 +49,7 @@ function getLoadStorageList(loadData){
     const Label = loadData["label"];
 
 
-    const inputList = listTemplate(Label);
+    const inputList = todoTemplate(Label);
     $todoList.insertAdjacentHTML("beforeend", inputList);
 
     //추가된 list setting
