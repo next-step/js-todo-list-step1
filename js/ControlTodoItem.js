@@ -8,17 +8,12 @@ export function initControlTodoItem(){
 function onToggleTodoItem({target}) {
     const li = target.closest("li");
 
-    //완료된 일 
-    if(target && target.nodeName === 'INPUT'){ 
-        li.classList.toggle("completed");
-    }
-
-    //삭제
-    if(target && target.nodeName === 'BUTTON'){
-        var returnValue = confirm('정말로 삭제하시겠습니까?');
-        if(returnValue === true){
+    if(target){
+        if(target.nodeName === 'INPUT'){ 
+            li.classList.toggle("completed");
+        }else if(target.nodeName === 'BUTTON' && confirm('정말로 삭제하시겠습니까?')){
             li.parentNode.removeChild(li);
+            document.querySelector("strong").innerText = document.querySelectorAll("#todo-list li").length;
         }
-        document.querySelector("strong").innerText = document.querySelectorAll("#todo-list li").length;
     }
 }
