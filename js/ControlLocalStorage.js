@@ -13,13 +13,11 @@ function saveLocalStorage(){
     for (let i=0; i < list.length; i++){
         var listSet = {
             liClass: "", 
-            checked: "", 
             label:""
         };
         
         if(list[i].classList.contains("completed")){
-            listSet.liClass = "completed";
-            listSet.checked = "checked";
+            listSet.liClass = "completed checked";
         }
 
         listSet.label = list[i].querySelector(".label").innerText;
@@ -45,7 +43,6 @@ function getLoadStorageList(loadData){
     const $todoList = document.getElementById("todo-list");
 
     const liClass = loadData["liClass"];
-    const Checked = loadData["checked"];
     const Label = loadData["label"];
 
 
@@ -54,6 +51,6 @@ function getLoadStorageList(loadData){
 
     //추가된 list setting
     const checkbox = $todoList.lastChild.querySelector(".toggle");
-    if(Checked === "checked") checkbox.setAttribute("checked", "");
-    if(liClass === "completed") $todoList.lastChild.classList.add("completed");
+    if(liClass.includes("checked")) checkbox.setAttribute("checked", "");
+    if(liClass.includes("completed")) $todoList.lastChild.classList.add("completed");
 }
