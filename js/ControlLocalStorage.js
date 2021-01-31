@@ -10,19 +10,19 @@ function saveLocalStorage(){
     const list = document.querySelectorAll("#todo-list li");
     let listArray = [];
 
-    for (let i=0; i < list.length; i++){
+    list.forEach(li => {
         var listSet = {
             liClass: "", 
             label:""
         };
-        
-        if(list[i].classList.contains("completed")){
+
+        if(li.classList.contains("completed")){
             listSet.liClass = "completed checked";
         }
 
-        listSet.label = list[i].querySelector(".label").innerText;
+        listSet.label = li.querySelector(".label").innerText;
         listArray.push(listSet);
-    }
+    });
 
     const jsonArray = JSON.stringify(listArray);
     localStorage.setItem("json", jsonArray);
