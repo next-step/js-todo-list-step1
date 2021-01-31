@@ -15,7 +15,6 @@ export function EditTodoItem({target, key}){
 }
 
 export function UpdateTodoItem({target, key}){
-    const $editInput = document.querySelector(".edit");
     const li = target.closest("li");
     const editTitle = target.value;
 

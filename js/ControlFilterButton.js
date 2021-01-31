@@ -25,7 +25,7 @@ export function showAll(){
         $todoList[idx].style.display = "block";
     }
     setButton(0);
-    document.querySelector("strong").innerText = idx;
+    countList(idx);
 }
 
 //button click : 해야할 일"
@@ -42,7 +42,7 @@ export function showActive(){
         }
     }
     setButton(1);
-    document.querySelector("strong").innerText = idx;
+    countList(idx);
 }
 
 //button click : "완료한 일" 
@@ -59,7 +59,7 @@ export function showCompleted(){
         }
     }
     setButton(2);
-    document.querySelector("strong").innerText = idx;
+    countList(idx);
 }
 
 //선택한 버튼만 표시 
@@ -69,4 +69,8 @@ function setButton(clickedBtnIdx){
         aTags[i].classList.remove("selected");
     }
     aTags[clickedBtnIdx].classList.add("selected");
+}
+
+function countList(idx){
+    document.querySelector("strong").innerText = idx;
 }

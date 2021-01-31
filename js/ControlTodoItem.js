@@ -1,3 +1,4 @@
+import {countList} from './AddNewTodoItem.js';
 const $todoList = document.getElementById("todo-list");
 
 export function initControlTodoItem(){
@@ -13,7 +14,7 @@ function onToggleTodoItem({target}) {
             li.classList.toggle("completed");
         }else if(target.nodeName === 'BUTTON' && confirm('정말로 삭제하시겠습니까?')){
             li.parentNode.removeChild(li);
-            document.querySelector("strong").innerText = document.querySelectorAll("#todo-list li").length;
+            countList();
         }
     }
 }

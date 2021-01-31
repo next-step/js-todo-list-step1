@@ -15,7 +15,7 @@ export function AddNewTodoList({target, key}){
         target.value = "";
 
     }
-    document.querySelector("strong").innerText = $todoList.querySelectorAll("li").length;
+    countList();
 }
 
 export function todoTemplate(title) {
@@ -27,4 +27,8 @@ export function todoTemplate(title) {
                 </div>
                 <input class="edit" value="${title}">
             </li>`;
+}
+
+export function countList(){
+    document.querySelector("strong").innerText = $todoList.querySelectorAll("li").length;
 }
