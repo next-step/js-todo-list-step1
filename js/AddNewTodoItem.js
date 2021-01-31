@@ -15,7 +15,7 @@ export function AddNewTodoList({target, key}){
         target.value = "";
 
     }
-    document.querySelector("strong").innerText = document.querySelectorAll("#todo-list li").length;
+    document.querySelector("strong").innerText = $todoList.querySelectorAll("li").length;
 }
 
 export function todoTemplate(title) {
