@@ -39,14 +39,13 @@ function loadLocalStorage(){
 }
 
 //data를 load하여 list에 적용한다.
-function getLoadStorageList(loadData){
+function getLoadStorageList({liClass: liclass, label: label}){
     const $todoList = document.getElementById("todo-list");
+    const liClass = liclass;
+    const liLabel = label;
 
-    const liClass = loadData["liClass"];
-    const Label = loadData["label"];
 
-
-    const inputList = todoTemplate(Label);
+    const inputList = todoTemplate(liLabel);
     $todoList.insertAdjacentHTML("beforeend", inputList);
 
     //추가된 list setting
