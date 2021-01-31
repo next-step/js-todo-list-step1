@@ -1,5 +1,4 @@
 const $filter = document.querySelector(".filters");
-const todoList = document.querySelectorAll("#todo-list li");
 
 export function initControlFilterButton(){
     $filter.addEventListener('click', controlFilterButton);
@@ -13,11 +12,11 @@ function controlFilterButton({target}){
 
 //button click : "전체보기" 
 export function showAll(){
-    const todoList = document.querySelectorAll("#todo-list li");
+    const $todoList = document.querySelectorAll("#todo-list li");
     var idx = 0;
 
-    for(let i=0; i<todoList.length; i++){
-        todoList[i].style.display = "block";
+    for(let i=0; i<$todoList.length; i++){
+        $todoList[i].style.display = "block";
         idx += 1;
     }
     setButton(0);
@@ -26,14 +25,14 @@ export function showAll(){
 
 //button click : 해야할 일"
 export function showActive(){
-    const todoList = document.querySelectorAll("#todo-list li");
+    const $todoList = document.querySelectorAll("#todo-list li");
     var idx = 0;
 
-    for(let i=0; i< todoList.length; i++){
-        if(todoList[i].classList.contains("completed")){
-            todoList[i].style.display = "none";
+    for(let i=0; i< $todoList.length; i++){
+        if($todoList[i].classList.contains("completed")){
+            $todoList[i].style.display = "none";
         }else{
-            todoList[i].style.display = "block";  
+            $todoList[i].style.display = "block";  
             idx += 1;
         }
     }
@@ -43,15 +42,15 @@ export function showActive(){
 
 //button click : "완료한 일" 
 export function showCompleted(){
-    const todoList = document.querySelectorAll("#todo-list li");
+    const $todoList = document.querySelectorAll("#todo-list li");
     var idx = 0;
 
-    for(let i=0; i< todoList.length; i++){
-        if(todoList[i].classList.contains("completed")) {
-            todoList[i].style.display = "block";
+    for(let i=0; i< $todoList.length; i++){
+        if($todoList[i].classList.contains("completed")) {
+            $todoList[i].style.display = "block";
             idx += 1;
         }else{
-            todoList[i].style.display = "none";  
+            $todoList[i].style.display = "none";  
         }
     }
     setButton(2);
