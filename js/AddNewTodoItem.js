@@ -6,13 +6,13 @@ export function initAddNewTodoItem(){
 }
 
 //새로운 todolist를 생성하여 HTML에 삽입한다. 
-export function AddNewTodoList(e){
-    const todoTitle = e.target.value;
-    if (e.key === "Enter" && todoTitle !== "") 
+export function AddNewTodoList({target, key}){
+    const todoTitle = target.value;
+    if (key === "Enter" && todoTitle !== "") 
     {
         const inputList = todoTemplate(todoTitle);
         $todoList.insertAdjacentHTML("beforeend", inputList);
-        e.target.value = "";
+        target.value = "";
 
     }
     document.querySelector("strong").innerText = document.querySelectorAll("#todo-list li").length;

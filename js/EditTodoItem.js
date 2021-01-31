@@ -5,33 +5,33 @@ export function initEditTodoItem(){
     $todoList.addEventListener("keyup", UpdateTodoItem);
 }
 
-export function EditTodoItem(e){
-    if(e.target && e.target.nodeName === 'LABEL'){ 
+export function EditTodoItem({target, key}){
+    if(target && target.nodeName === 'LABEL'){ 
         //edit 모드로 변경
-        const li = e.target.closest("li");
+        const li = target.closest("li");
         li.classList.add("editing");
-        li.querySelector(".edit").value = e.target.innerText;
+        li.querySelector(".edit").value = target.innerText;
     }
 }
 
-export function UpdateTodoItem(e){
+export function UpdateTodoItem({target, key}){
     const $editInput = document.querySelector(".edit");
-    const li = e.target.closest("li");
-    const editTitle = e.target.value;
+    const li = target.closest("li");
+    const editTitle = target.value;
 
     //enter 누르기 전 esc 누르면 -> 수정처리X
-    if (e.key === 'Escape'){
+    if (key === 'Escape'){
         li.classList.remove("editing");
         return; 
     }
 
-    if (e.key == "Enter" && editTitle !== ""){
-        const label = e.target.parentNode.querySelector(".label");
+    if (key == "Enter" && editTitle !== ""){
+        const label = target.parentNode.querySelector(".label");
         label.innerText = editTitle;
 
-        e.target.closest("li").querySelector(".edit").value = editTitle;
+        target.closest("li").querySelector(".edit").value = editTitle;
 
-        e.target.value = "";
+        target.value = "";
         li.classList.remove("editing");
     }
 }
