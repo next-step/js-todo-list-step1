@@ -1,4 +1,5 @@
 const $filter = document.querySelector(".filters");
+var idx = 0;
 
 export function initControlFilterButton(){
     $filter.addEventListener('click', controlFilterButton);
@@ -13,11 +14,10 @@ function controlFilterButton({target}){
 //button click : "전체보기" 
 export function showAll(){
     const $todoList = document.querySelectorAll("#todo-list li");
-    var idx = 0;
+    idx = 0;
 
-    for(let i=0; i<$todoList.length; i++){
-        $todoList[i].style.display = "block";
-        idx += 1;
+    for(idx; idx<$todoList.length; idx++){
+        $todoList[idx].style.display = "block";
     }
     setButton(0);
     document.querySelector("strong").innerText = idx;
@@ -26,7 +26,7 @@ export function showAll(){
 //button click : 해야할 일"
 export function showActive(){
     const $todoList = document.querySelectorAll("#todo-list li");
-    var idx = 0;
+    idx = 0;
 
     for(let i=0; i< $todoList.length; i++){
         if($todoList[i].classList.contains("completed")){
@@ -43,7 +43,7 @@ export function showActive(){
 //button click : "완료한 일" 
 export function showCompleted(){
     const $todoList = document.querySelectorAll("#todo-list li");
-    var idx = 0;
+    idx = 0;
 
     for(let i=0; i< $todoList.length; i++){
         if($todoList[i].classList.contains("completed")) {
