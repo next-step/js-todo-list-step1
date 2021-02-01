@@ -22,7 +22,7 @@ function saveLocalStorage(){
 
         listSet.label = li.querySelector(".label").innerText;
         listArray.push(listSet);
-    });
+    });  
 
     const jsonArray = JSON.stringify(listArray);
     localStorage.setItem("json", jsonArray);

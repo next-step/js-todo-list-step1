@@ -9,7 +9,7 @@ export function initControlTodoItem(){
 function onToggleTodoItem({target}) {
     const li = target.closest("li");
 
-    if(target){
+    if(target && !li.classList.contains("editing")){
         if(target.nodeName === 'INPUT'){ 
             li.classList.toggle("completed");
         }else if(target.nodeName === 'BUTTON' && confirm('정말로 삭제하시겠습니까?')){
