@@ -3,8 +3,7 @@ const $todoInput = document.querySelector('.new-todo');
 const $todoList = document.querySelector('.todo-list');
 const $filterList = document.querySelector('.filters');
 
-const filterNames = ['all', 'active', 'completed'];
-
+// for Local Storage
 let todos = [];
 
 function init() {
@@ -15,14 +14,28 @@ function init() {
   $todoList.addEventListener('click', onClickTodoList);
   $todoList.addEventListener('dblclick', onDoubleClickTodo);
   $todoList.addEventListener('keyup', completeEditTodoItem);
-  $filterList.addEventListener('click', showCount);
+  $filterList.addEventListener('click', onClickFilter);
 }
 
+// for eventListener
 function onClickTodoList(event) {
   if (event.target.className === 'destroy') return deleteTodoItem(event);
   else if (event.target.className === 'toggle') return toggleTodoItem(event);
 }
 
+function onClickFilter(event) {
+  showCount(event.target);
+}
+
+function onDoubleClickTodo(event) {
+  console.log('onDoubleClickTodo() called');
+  if (event.target.className !== 'label') return;
+
+  const todoItem = event.target.parentElement.parentElement;
+  todoItem.classList.toggle('editing');
+}
+
+/* add */
 function addTodoItem(event) {
   console.log('addTodoItem() called');
   if (event.key !== 'Enter' || $todoInput.value === '') return;
@@ -69,6 +82,7 @@ function createTodoItemTemplate(title, state = null) {
   return li;
 }
 
+/* delete */
 function deleteTodoItem(event) {
   console.log('deleteTodoItem() called');
   const todoItem = event.target.closest('li');
@@ -81,6 +95,7 @@ function deleteTodoItem(event) {
   showCount($filterList.querySelector('.all'));
 }
 
+/* toggle */
 function toggleTodoItem(event) {
   console.log('toggleTodoItem() called');
 
@@ -100,6 +115,7 @@ function toggleTodoItem(event) {
   saveTodoList();
 }
 
+/* count */
 function showCount(target) {
   console.log('showCount() called');
   const filterName = target.classList[0];
@@ -160,14 +176,7 @@ function addHidden(selector) {
   }
 }
 
-function onDoubleClickTodo(event) {
-  console.log('onDoubleClickTodo() called');
-  if (event.target.className !== 'label') return;
-
-  const todoItem = event.target.parentElement.parentElement;
-  todoItem.classList.toggle('editing');
-}
-
+/* edit */
 function completeEditTodoItem(event) {
   console.log('completeEditTodoItem() called');
   if (event.key !== 'Enter') return;
@@ -175,7 +184,6 @@ function completeEditTodoItem(event) {
   const todoItem = document.querySelector('.editing');
   const todoText = todoItem.querySelector('.edit').value;
   const todoLabel = todoItem.querySelector('.label');
-
   const findItem = todos.find(item => {
     return item.id === parseInt(todoItem.id);
   });
@@ -185,6 +193,7 @@ function completeEditTodoItem(event) {
   todoItem.classList.toggle('editing');
 }
 
+/* Local Storage */
 function saveTodoList() {
   console.log('saveTodoList() called');
   localStorage.setItem('todoList', JSON.stringify(todos));
@@ -193,10 +202,9 @@ function saveTodoList() {
 function loadTodoList() {
   console.log('loadTodoList() called');
   const loadedTodoList = localStorage.getItem('todoList');
-  if (loadedTodoList === null) {
-    return;
-  }
   const parsedToDos = JSON.parse(loadedTodoList);
+
+  if (loadedTodoList === null) return;
   parsedToDos.forEach(todo => {
     $todoList.append(createTodoItemTemplate(todo.text, todo.state));
   });
