@@ -11,22 +11,16 @@ function init() {
   loadTodoList();
   showCount($filterList.querySelector('.all'));
 
-  $todoInput.addEventListener('keyup', event => {
-    addTodoItem(event);
-  });
-  $todoList.addEventListener('click', event => {
-    toggleTodoItem(event);
-    deleteTodoItem(event);
-  });
-  $todoList.addEventListener('dblclick', event => {
-    onDoubleClickTodo(event);
-  });
-  $todoList.addEventListener('keyup', event => {
-    completeEditTodoItem(event);
-  });
-  $filterList.addEventListener('click', event => {
-    showCount(event.target);
-  });
+  $todoInput.addEventListener('keyup', addTodoItem);
+  $todoList.addEventListener('click', onClickTodoList);
+  $todoList.addEventListener('dblclick', onDoubleClickTodo);
+  $todoList.addEventListener('keyup', completeEditTodoItem);
+  $filterList.addEventListener('click', showCount);
+}
+
+function onClickTodoList(event) {
+  if (event.target.className === 'destroy') return deleteTodoItem(event);
+  else if (event.target.className === 'toggle') return toggleTodoItem(event);
 }
 
 function addTodoItem(event) {
@@ -50,6 +44,7 @@ function createTodoItemTemplate(title, state = null) {
   const button = document.createElement('button');
   const editInput = document.createElement('input');
   const newId = todos.length + 1;
+
   // set elements
   li.id = newId;
   if (state === 'completed') li.className = state;
@@ -75,7 +70,6 @@ function createTodoItemTemplate(title, state = null) {
 }
 
 function deleteTodoItem(event) {
-  if (event.target.className !== 'destroy') return;
   console.log('deleteTodoItem() called');
   const todoItem = event.target.closest('li');
   todos = todos.filter(todo => {
@@ -89,7 +83,6 @@ function deleteTodoItem(event) {
 
 function toggleTodoItem(event) {
   console.log('toggleTodoItem() called');
-  if (event.target.className !== 'toggle') return;
 
   const todoItem = event.target.closest('li');
   todoItem.classList.toggle('completed');
@@ -110,9 +103,6 @@ function toggleTodoItem(event) {
 function showCount(target) {
   console.log('showCount() called');
   const filterName = target.classList[0];
-
-  if (!filterNames.includes(filterName)) return;
-
   const todoCountText = document.querySelector('.todo-count>strong');
 
   switch (filterName) {
