@@ -28,6 +28,38 @@
 
 - [ ] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
 
+
+## 🔔 참고사항
+<code class="cyan-round">TodoItem</code>을 추가할 시 아래 템플릿을 활용하면 됩니다.
+```html-light
+<ul id="todo-list" class="todo-list">
+  <li>
+    <div class="view">
+      <input class="toggle" type="checkbox"/>
+      <label class="label">새로운 타이틀</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="새로운 타이틀" />
+  </li>
+  <li class="editing">
+    <div class="view">
+      <input class="toggle" type="checkbox" />
+      <label class="label">완료된 타이틀</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="완료된 타이틀" />
+  </li>
+  <li class="completed">
+    <div class="view">
+      <input class="toggle" type="checkbox" checked/>
+      <label class="label">완료된 타이틀</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="완료된 타이틀" />
+  </li>
+</ul>
+```
+
 <br/><br/>
 
 ## ⚙️ Before Started
