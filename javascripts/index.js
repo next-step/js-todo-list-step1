@@ -2,6 +2,6 @@ import TodoApp from './components/TodoApp.js'
 
 (() => {
 
-    new TodoApp();
+    new TodoApp().render();
 
 })();

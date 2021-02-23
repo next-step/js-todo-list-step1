@@ -1,7 +1,12 @@
 export default function ItemDestroy({id, removeTodo}) {
     this.element = document.createElement("span");
     this.element.classList.add("destroy");
-    this.element.textContent = '삭제';
+    this.element.textContent = ' ';
+    this.element.addEventListener("click" , () => {
+        if (confirm("삭제하시겠습니까?")) {
+            removeTodo(id);
+        }
+    })
 }
 
 ItemDestroy.prototype.render = function(){

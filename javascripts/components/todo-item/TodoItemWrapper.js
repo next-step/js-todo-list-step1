@@ -1,5 +1,8 @@
-export default  function ItemWrapper() {
+export default  function ItemWrapper({isDone}) {
     this.element = document.createElement("li");
+    if(isDone) {
+        this.element.classList.add("completed")
+    }
 }
 
 ItemWrapper.prototype.doneTodo = function () {

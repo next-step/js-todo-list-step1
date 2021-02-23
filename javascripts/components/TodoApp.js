@@ -1,11 +1,20 @@
 import TodoInput from './TodoInput.js'
 import TodoList from './TodoList.js'
+import TodoCount from "./TodoCount.js";
+import TodoFilter from "./TodoFilter.js";
 
 export default function TodoApp() {
+
     this.state = {
-        todoItems: []
+        todoItems: [],
+        filter : "all",
     };
 
+    const filterType = {
+        all : () => { return true;},
+        active: v => !v.isDone,
+        completed: v => v.isDone,
+    }
 
     const addTodo = (todo) => {
         const {todoItems} = this.state;
@@ -18,8 +27,7 @@ export default function TodoApp() {
     }
 
     const changeTodoDone = (todoId, status) => {
-        const {todoItems} = this.state;
-        setState(todoItems.map( todo => {
+        setState(this.state.todoItems.map(todo => {
             if (todoId === todo.id) {
                 todo.isDone = status;
             }
@@ -27,10 +35,30 @@ export default function TodoApp() {
         }))
     }
 
-    const setState = (todoItems) => {
-        this.state.todoItems = todoItems;
-        new TodoList({todoItems, removeTodo,changeTodoDone}).render();
+    const filteringTodoItems = () => {
+        return this.state.todoItems.filter(filterType[this.state.filter])
     }
 
-    new TodoInput({addTodo})
+    const changeFilter = (filter) => {
+
+        this.state.filter = filter;
+        setState(this.state.todoItems)
+    }
+
+    const setState = (todoItems) => {
+        this.state.todoItems = todoItems;
+        const data = filteringTodoItems()
+        new TodoList({"todoItems" : data , removeTodo, changeTodoDone}).render();
+        new TodoCount({"todoItems" : data});
+
+    }
+
+    new TodoFilter({changeFilter})
+    setState(this.state.todoItems);
+    return {
+        render: function () {
+            new TodoInput({addTodo})
+        }
+    }
+
 }
