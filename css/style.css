@@ -204,7 +204,7 @@ main {
 .todo-list li .destroy {
     display: none;
     position: absolute;
-    top: 0;
+    top: 10px;
     right: 10px;
     bottom: 0;
     width: 40px;
@@ -215,9 +215,11 @@ main {
     margin-bottom: 11px;
     transition: color 0.2s ease-out;
     cursor: pointer;
+
 }
 
 .todo-list li .destroy:hover {
+
     color: #af5b5e;
 }
 
@@ -226,7 +228,9 @@ main {
 }
 
 .todo-list li:hover .destroy {
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .todo-list li .edit {

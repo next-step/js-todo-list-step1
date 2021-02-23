@@ -14,14 +14,18 @@ export default function TodoInput({addTodo}) {
             isDone : false
         }
         addTodo(todo)
-        $todoInputBox.value = "";
     }
 
+    const isEmpty = value => value.length <= 0;
+
     function registerTodoItemListener({keyCode}) {
-        if (isNotEnter(keyCode)) {
-            return;
-        }
-        register($todoInputBox.value)
+        const {value} = $todoInputBox
+
+        if (isNotEnter(keyCode)) return;
+        if(isEmpty(value)) return;
+
+        register(value)
+        $todoInputBox.value = "";
     }
 
 
