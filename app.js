@@ -14,7 +14,6 @@ export const loadToDos = () => {
   console.log('load toDos');
   toDos.map((a) => renderToDos(a));
   console.log(toDos);
-  handleCount();
 };
 
 const renderToDos = (toDo) => {
@@ -31,3 +30,52 @@ const toDoTemplate = (toDo) => {
       <input class="edit" value="${toDo.title}" />
     </li>`;
 };
+
+const addToDos = (newToDo) => {
+  toDos.push(newToDo);
+  renderToDos(newToDo);
+};
+
+const newTodoInputSubmit = (newTitle) => {
+  const newToDo = {
+    id: Date.now(),
+    title: newTitle,
+    completed: false,
+  };
+  addToDos(newToDo);
+  $toDoInput.value = '';
+};
+const handleNewToDoInput = (e) => {
+  const newTitle = e.target.value;
+  if (e.key === 'Enter') {
+    newTodoInputSubmit(newTitle);
+  }
+};
+
+const toDoClear = () => {
+  $toDoList.innerText = '';
+};
+
+const handleDestroy = (toDo) => {
+  const targetId = parseInt(toDo.getAttribute('id'));
+  toDos = toDos.filter((item) => {
+    return item.id !== targetId;
+  });
+  console.log(toDos);
+  toDoClear();
+  toDos.forEach((item) => renderToDos(item));
+};
+
+const handleToDoClick = (e) => {
+  const $toDoLi = e.target.closest('li');
+
+  if (e.target.className.includes('toggle')) {
+    const $toDoToggle = e.target;
+    handleToggle($toDoLi, $toDoToggle);
+  } else if (e.target.className.includes('destroy')) {
+    handleDestroy($toDoLi);
+  }
+};
+
+$toDoList && $toDoList.addEventListener('click', handleToDoClick);
+$toDoInput && $toDoInput.addEventListener('keydown', handleNewToDoInput);
