@@ -16,13 +16,11 @@ export default function TodoListItem({todo, removeTodo, changeTodoDone, updateTo
         return isUpdate ? new TodoItemUpdateTitle({id,title, updateTodo,updateTodoStatus}) : new ItemTitle({id,title, updateTodoStatus});
     }
 
-    const render = () => {
-        const todoTitle = titleRender();
-        return li.addItemChild({todoCheckbox, "todoTitle" : todoTitle, todoDestroy}).render()
-    }
-
     return {
-        render
+        render : () => {
+            const todoTitle = titleRender();
+            return li.addItemChild({todoCheckbox, "todoTitle" : todoTitle, todoDestroy}).render()
+        }
     }
 }
 

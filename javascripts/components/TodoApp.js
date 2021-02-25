@@ -18,7 +18,7 @@ export default function TodoApp() {
         completed: v => v.isDone,
     }
 
-    const addTodo = (todo) => {
+    const addTodo = todo => {
         const {todoItems} = this.state;
         setState([...todoItems, todo])
     }
@@ -60,9 +60,7 @@ export default function TodoApp() {
         setState(newTodoItems);
     }
 
-    const filteringTodoItems = () => {
-        return this.state.todoItems.filter(filterType[this.state.filter])
-    }
+    const filteringTodoItems = () => this.state.todoItems.filter(filterType[this.state.filter]);
 
     const changeFilter = filter => {
         this.state.filter = filter;
@@ -79,10 +77,8 @@ export default function TodoApp() {
 
     new TodoFilter({changeFilter})
     setState(this.state.todoItems);
-    return {
-        render: function () {
-            new TodoInput({addTodo})
-        }
-    }
+}
 
+TodoApp.prototype.render = function () {
+    new TodoInput({addTodo})
 }

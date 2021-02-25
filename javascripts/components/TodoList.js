@@ -15,13 +15,11 @@ export default function TodoList({todoItems, removeTodo, changeTodoDone, updateT
         }).render())
     }
 
-    const render = () => {
-        appendTodoItem().forEach(v => {
-            parent.append(v)
-        })
-    }
-
     return {
-        render
+        render: () => {
+            appendTodoItem().forEach(v => {
+                parent.append(v)
+            })
+        }
     };
 }

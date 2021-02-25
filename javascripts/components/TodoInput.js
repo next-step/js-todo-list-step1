@@ -3,21 +3,18 @@ import KeyUtils from "../utils/KeyUtils.js";
 export default function TodoInput({addTodo}) {
     const $todoInputBox = document.querySelector("#new-todo-title");
 
-    const generateId = () => {
-        return new Date().valueOf();
-    }
+    const generateId = () => new Date().valueOf();
+    const isEmpty = value => value.length <= 0;
 
-    const register = (item) => {
+    const register = title => {
         const todo = {
             id : generateId(),
-            title : item,
+            title : title,
             isDone : false,
             isUpdate : false
         }
         addTodo(todo)
     }
-
-    const isEmpty = value => value.length <= 0;
 
     function registerTodoItemListener({keyCode}) {
         const {value} = $todoInputBox
