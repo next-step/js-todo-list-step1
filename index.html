@@ -43,16 +43,29 @@
         newTodoElem.addEventListener('keypress', event => {
           if (event.key === 'Enter') {
             const newTodoTitle = newTodoElem.value;
-            todoListElem.innerHTML += `
-              <li>
-                <div class="view">
-                  <input class="toggle" type="checkbox"/>
-                  <label class="label">${newTodoTitle}</label>
-                  <button class="destroy"></button>
-                </div>
-                <input class="edit" value="${newTodoTitle}" />
-              </li>
+            const todoItemElem = document.createElement('li');              
+            todoListElem.appendChild(todoItemElem);
+
+            todoItemElem.innerHTML = `
+              <div class="view">
+                <input class="toggle" type="checkbox"/>
+                <label class="label">${newTodoTitle}</label>
+                <button class="destroy"></button>
+              </div>
+              <input class="edit" value="${newTodoTitle}" />
             `;
+
+            const toggleElem = todoItemElem.querySelector('.toggle');
+            toggleElem.addEventListener('change', event => {
+              if (event.target.checked) {
+                todoItemElem.classList.add('completed');
+                toggleElem.setAttribute('checked', '');
+
+              } else {                  
+                todoItemElem.classList.remove('completed');
+                toggleElem.removeAttribute('checked');
+              }
+            });
 
             newTodoElem.value = '';
           }
