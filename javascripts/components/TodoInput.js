@@ -7,13 +7,13 @@ export default function TodoInput({addTodo}) {
   const isEmpty = value => value.length <= 0;
 
   const register = title => {
-    const todo = {
+    const newTodo = {
       id: generateId(),
       title: title,
       isDone: false,
       isUpdate: false
     }
-    addTodo(todo)
+    addTodo(newTodo)
   }
 
   function registerTodoItemListener({keyCode}) {

@@ -35,9 +35,9 @@ export default function TodoApp() {
     }))
   }
 
-  const updateTodo = ({id, title}) => {
+  const updateTodo = ({todoId, title}) => {
     const newTodoItems = state.todoItems.map(v => {
-      if (v.id === id) {
+      if (v.id === todoId) {
         v.title = title;
         v.isUpdate = false;
       }
@@ -47,9 +47,9 @@ export default function TodoApp() {
     setState(newTodoItems);
   }
 
-  const updateTodoStatus = ({id, status}) => {
+  const updateTodoStatus = ({todoId, status}) => {
     const newTodoItems = state.todoItems.map(v => {
-      if (v.id === id) {
+      if (v.id === todoId) {
         v.isUpdate = status;
       }
 
