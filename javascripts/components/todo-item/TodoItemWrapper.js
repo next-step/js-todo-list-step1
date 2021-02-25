@@ -13,13 +13,8 @@ TodoItemWrapper.prototype.updateTodo = function () {
     this.element.classList.add()
 }
 
-TodoItemWrapper.prototype.doneTodo = function () {
-    this.element.classList.add("completed")
-}
-TodoItemWrapper.prototype.doTodo = function () {
-    this.element.classList.remove("completed")
-}
-
+TodoItemWrapper.prototype.doneTodo = function () {this.element.classList.add("completed")}
+TodoItemWrapper.prototype.doTodo = function () {this.element.classList.remove("completed")}
 TodoItemWrapper.prototype.addItemChild = function({todoCheckbox,todoTitle,todoDestroy}) {
     this.element.appendChild(todoCheckbox.render())
     this.element.appendChild(todoTitle.render())
