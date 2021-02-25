@@ -79,5 +79,23 @@ const handleToDoClick = (e) => {
   }
 };
 
+const handleToggle = (toDo, toDoToggle) => {
+  toDo.classList.toggle('completed');
+  toDoToggle.classList.toggle('checked');
+  toDoUpdate(toDo);
+};
+
+const toDoUpdate = ($toDoLi) => {
+  const toDoId = parseInt($toDoLi.getAttribute('id'));
+  for (let obj of toDos) {
+    if (obj.completed === false && obj.id === toDoId) {
+      obj.completed = true;
+    } else if (obj.completed === true && obj.id === toDoId) {
+      obj.completed = false;
+    }
+  }
+  console.log(toDos);
+};
+
 $toDoList && $toDoList.addEventListener('click', handleToDoClick);
 $toDoInput && $toDoInput.addEventListener('keydown', handleNewToDoInput);
