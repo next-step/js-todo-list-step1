@@ -1,14 +1,14 @@
 export default function TodoItemDestroy({id, removeTodo}) {
-    this.element = document.createElement("button");
-    this.element.classList.add("destroy");
-    this.element.textContent = ' ';
-    this.element.addEventListener("click" , () => {
-        if (confirm("삭제하시겠습니까?")) {
-            removeTodo(id);
-        }
-    })
-}
+  const element = document.createElement("button");
+  element.classList.add("destroy");
+  element.textContent = ' ';
+  element.addEventListener("click", () => {
+    if (confirm("삭제하시겠습니까?")) {
+      removeTodo(id);
+    }
+  })
 
-TodoItemDestroy.prototype.render = function(){
-    return this.element;
+  return {
+    render: () => element
+  }
 }

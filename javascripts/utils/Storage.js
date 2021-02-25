@@ -7,7 +7,6 @@ export default class Storage {
 
     isEmpty() {
         const todoItems = this.storage.getItem(this.key);
-        console.log(todoItems)
         return todoItems === null;
     }
 

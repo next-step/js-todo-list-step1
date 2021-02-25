@@ -1,16 +1,18 @@
 export default function TodoItemCheckBox({id, isDone, isUpdate, changeTodoDone}) {
-    this.element = document.createElement("input");
-    this.element.checked = isDone
-    this.element.type = "checkbox";
-    this.element.classList.add("toggle");
-    if(isUpdate) {
-        this.element.classList.add("view")
-    }
-    this.element.addEventListener("click", () => {
-        changeTodoDone(id, this.element.checked)
-    });
-}
+  const element = document.createElement("input");
+  element.checked = isDone;
+  element.type = "checkbox";
+  element.classList.add("toggle");
 
-TodoItemCheckBox.prototype.render = function () {
-    return this.element;
+  if (isUpdate) {
+    element.classList.add("view");
+  }
+
+  element.addEventListener("click", () => {
+    changeTodoDone(id, element.checked)
+  });
+
+  return {
+    render: () => element
+  }
 }

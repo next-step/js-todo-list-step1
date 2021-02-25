@@ -1,28 +1,24 @@
-export default  function TodoItemWrapper({isDone, isUpdate}) {
-    this.element = document.createElement("li");
-    if(isDone) {
-        this.element.classList.add("completed")
-    }
+export default function TodoItemWrapper({isDone, isUpdate}) {
+  const element = document.createElement("li");
 
-    if(isUpdate) {
-        this.element.classList.add("editing");
-    }
-}
+  if (isDone) {
+    element.classList.add("completed")
+  }
 
-TodoItemWrapper.prototype.updateTodo = function () {
-    this.element.classList.add()
-}
+  if (isUpdate) {
+    element.classList.add("editing");
+  }
 
-TodoItemWrapper.prototype.doneTodo = function () {this.element.classList.add("completed")}
-TodoItemWrapper.prototype.doTodo = function () {this.element.classList.remove("completed")}
-TodoItemWrapper.prototype.addItemChild = function({todoCheckbox,todoTitle,todoDestroy}) {
-    this.element.appendChild(todoCheckbox.render())
-    this.element.appendChild(todoTitle.render())
-    this.element.appendChild(todoDestroy.render())
+  const addItemChild = ({todoCheckbox, todoTitle, todoDestroy}) => {
+    element.appendChild(todoCheckbox.render());
+    element.appendChild(todoTitle.render());
+    element.appendChild(todoDestroy.render());
 
-    return this;
-}
+    return render();
+  }
+  const render = () => element;
 
-TodoItemWrapper.prototype.render = function () {
-    return this.element
+  return {
+    addItemChild
+  }
 }

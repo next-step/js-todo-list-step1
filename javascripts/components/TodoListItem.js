@@ -6,21 +6,25 @@ import TodoItemUpdateTitle from "./todo-item/TodoItemUpdateTitle.js";
 
 export default function TodoListItem({todo, removeTodo, changeTodoDone, updateTodoStatus, updateTodo}) {
 
-    const {id, title, isDone, isUpdate} = todo;
+  const {id, title, isDone, isUpdate} = todo;
 
-    const li = new ItemWrapper({isDone, isUpdate});
-    const todoCheckbox = new ItemCheckBox({id, isDone,isUpdate, changeTodoDone})
-    const todoDestroy = new ItemDestroy({id, removeTodo});
+  const li = new ItemWrapper({isDone, isUpdate});
+  const todoCheckbox = new ItemCheckBox({id, isDone, isUpdate, changeTodoDone})
+  const todoDestroy = new ItemDestroy({id, removeTodo});
 
-    const titleRender = () => {
-        return isUpdate ? new TodoItemUpdateTitle({id,title, updateTodo,updateTodoStatus}) : new ItemTitle({id,title, updateTodoStatus});
+  const titleRender = () => {
+    return isUpdate ? new TodoItemUpdateTitle({id, title, updateTodo, updateTodoStatus}) : new ItemTitle({
+      id,
+      title,
+      updateTodoStatus
+    });
+  }
+
+  return {
+    render: () => {
+      const todoTitle = titleRender();
+      return li.addItemChild({"todoTitle": todoTitle, todoCheckbox, todoDestroy});
     }
-
-    return {
-        render : () => {
-            const todoTitle = titleRender();
-            return li.addItemChild({todoCheckbox, "todoTitle" : todoTitle, todoDestroy}).render()
-        }
-    }
+  }
 }
 

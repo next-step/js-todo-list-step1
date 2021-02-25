@@ -1,12 +1,13 @@
-export default  function TodoItemTitle({id, title, updateTodoStatus}) {
-    this.element = document.createElement("label");
-    this.element.classList.add("label")
-    this.element.textContent = title;
-    this.element.addEventListener("dblclick", () => {
-        updateTodoStatus({id ,"status":true});
-    });
-}
+export default function TodoItemTitle({id, title, updateTodoStatus}) {
+  const element = document.createElement("label");
+  element.classList.add("label")
+  element.textContent = title;
+  element.addEventListener("dblclick", () => {
+    updateTodoStatus({id, "status": true});
+  });
 
-TodoItemTitle.prototype.render = function() {
-    return this.element;
+  return {
+    render: () => element
+
+  }
 }
