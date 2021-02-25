@@ -3,20 +3,18 @@ import TodoList from './TodoList.js'
 import TodoCount from "./TodoCount.js";
 import TodoFilter from "./TodoFilter.js";
 import Storage from "../utils/Storage.js";
+import ItemFilter from "../utils/ItemFilter.js";
 
 export default function TodoApp() {
   const storage = new Storage();
+  const filter = new ItemFilter();
 
   const state = {
     todoItems: storage.getTodoItems(),
-    filter: "all"
+    type: "all"
   };
 
-  const FILTER_TYPE = {
-    all: () => true,
-    active: v => !v.isDone,
-    completed: v => v.isDone
-  }
+
 
   const addTodo = todo => {
     const {todoItems} = state;
@@ -60,17 +58,20 @@ export default function TodoApp() {
     setState(newTodoItems);
   }
 
-  const filteringTodoItems = () => state.todoItems.filter(FILTER_TYPE[state.filter]);
 
-  const changeFilter = filter => {
-    state.filter = filter;
+  const changeFilter = type => {
+    state.type = type;
     setState(state.todoItems);
   }
 
-  const setState = todoItems => {
-    state.todoItems = todoItems;
+  const setState = newItems => {
+    state.todoItems = newItems;
+
+    const {todoItems, type} = state;
     storage.updateTodoItems(todoItems);
-    const data = filteringTodoItems()
+
+    const data = filter.filteringTodoItems(type , todoItems);
+
     new TodoList({"todoItems": data, removeTodo, changeTodoDone, updateTodoStatus, updateTodo}).render();
     new TodoCount({"todoItems": data});
   }
