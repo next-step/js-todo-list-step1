@@ -11,9 +11,8 @@ const $toDoCount = document.querySelector('.todo-count strong');
 const $toDofilters = document.querySelector('.filters');
 
 export const loadToDos = () => {
-  console.log('load toDos');
   toDos.map((a) => renderToDos(a));
-  console.log(toDos);
+  handleCount(toDos);
 };
 
 const renderToDos = (toDo) => {
@@ -31,6 +30,9 @@ const toDoTemplate = (toDo) => {
     </li>`;
 };
 
+const handleCount = (toDo) => {
+  $toDoCount.innerText = toDo.length;
+};
 const addToDos = (newToDo) => {
   toDos.push(newToDo);
   renderToDos(newToDo);
@@ -61,7 +63,6 @@ const handleDestroy = (toDo) => {
   toDos = toDos.filter((item) => {
     return item.id !== targetId;
   });
-  console.log(toDos);
   toDoClear();
   toDos.forEach((item) => renderToDos(item));
 };
@@ -74,6 +75,7 @@ const handleToDoClick = (e) => {
     handleToggle($toDoLi, $toDoToggle);
   } else if (e.target.className.includes('destroy')) {
     handleDestroy($toDoLi);
+    handleCount(toDos);
   }
 };
 
