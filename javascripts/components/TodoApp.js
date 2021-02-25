@@ -77,8 +77,10 @@ export default function TodoApp() {
 
     new TodoFilter({changeFilter})
     setState(this.state.todoItems);
-}
 
-TodoApp.prototype.render = function () {
-    new TodoInput({addTodo})
+    return {
+        render : function () {
+            new TodoInput({addTodo})
+        }
+    }
 }

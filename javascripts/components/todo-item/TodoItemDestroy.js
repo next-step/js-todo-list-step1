@@ -1,5 +1,5 @@
 export default function TodoItemDestroy({id, removeTodo}) {
-    this.element = document.createElement("span");
+    this.element = document.createElement("button");
     this.element.classList.add("destroy");
     this.element.textContent = ' ';
     this.element.addEventListener("click" , () => {
