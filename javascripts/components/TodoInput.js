@@ -1,3 +1,5 @@
+import KeyUtils from "../utils/KeyUtils.js";
+
 export default function TodoInput({addTodo}) {
     const $todoInputBox = document.querySelector("#new-todo-title");
 
@@ -5,13 +7,12 @@ export default function TodoInput({addTodo}) {
         return new Date().valueOf();
     }
 
-    const isNotEnter = (keyCode) =>  keyCode !== 13;
-
     const register = (item) => {
         const todo = {
             id : generateId(),
             title : item,
-            isDone : false
+            isDone : false,
+            isUpdate : false
         }
         addTodo(todo)
     }
@@ -21,13 +22,12 @@ export default function TodoInput({addTodo}) {
     function registerTodoItemListener({keyCode}) {
         const {value} = $todoInputBox
 
-        if (isNotEnter(keyCode)) return;
+        if (KeyUtils.isNotEnter(keyCode)) return;
         if(isEmpty(value)) return;
 
         register(value)
         $todoInputBox.value = "";
     }
-
 
     $todoInputBox.addEventListener("keyup", registerTodoItemListener);
 }

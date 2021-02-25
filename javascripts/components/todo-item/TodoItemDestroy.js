@@ -1,4 +1,4 @@
-export default function ItemDestroy({id, removeTodo}) {
+export default function TodoItemDestroy({id, removeTodo}) {
     this.element = document.createElement("span");
     this.element.classList.add("destroy");
     this.element.textContent = ' ';
@@ -9,6 +9,6 @@ export default function ItemDestroy({id, removeTodo}) {
     })
 }
 
-ItemDestroy.prototype.render = function(){
+TodoItemDestroy.prototype.render = function(){
     return this.element;
 }

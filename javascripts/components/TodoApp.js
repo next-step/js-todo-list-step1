@@ -35,12 +35,34 @@ export default function TodoApp() {
         }))
     }
 
+    const updateTodo = ({id , title}) => {
+        const newTodoItems = this.state.todoItems.map(v => {
+            if(v.id === id) {
+                v.title = title;
+                v.isUpdate = false;
+            }
+
+            return v;
+        });
+        setState(newTodoItems);
+    }
+
+    const updateTodoStatus = ({id , status}) => {
+         const newTodoItems = this.state.todoItems.map(v => {
+            if (v.id === id) {
+                v.isUpdate = status;
+            }
+
+            return v;
+        });
+        setState(newTodoItems);
+    }
+
     const filteringTodoItems = () => {
         return this.state.todoItems.filter(filterType[this.state.filter])
     }
 
     const changeFilter = (filter) => {
-
         this.state.filter = filter;
         setState(this.state.todoItems)
     }
@@ -48,9 +70,8 @@ export default function TodoApp() {
     const setState = (todoItems) => {
         this.state.todoItems = todoItems;
         const data = filteringTodoItems()
-        new TodoList({"todoItems" : data , removeTodo, changeTodoDone}).render();
+        new TodoList({"todoItems" : data , removeTodo, changeTodoDone, updateTodoStatus, updateTodo}).render();
         new TodoCount({"todoItems" : data});
-
     }
 
     new TodoFilter({changeFilter})

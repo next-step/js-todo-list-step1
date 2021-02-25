@@ -1,8 +1,11 @@
-export default  function ItemTitle({title}) {
+export default  function TodoItemTitle({id, title, updateTodoStatus}) {
     this.element = document.createElement("label");
     this.element.textContent = title;
+    this.element.addEventListener("dblclick", () => {
+        updateTodoStatus({id ,"status":true});
+    });
 }
 
-ItemTitle.prototype.render = function() {
+TodoItemTitle.prototype.render = function() {
     return this.element;
 }
