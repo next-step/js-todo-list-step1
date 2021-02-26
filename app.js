@@ -1,8 +1,8 @@
 let toDos = [
   { id: 1, title: '테스트입니다1', completed: false },
   { id: 2, title: '테스트입니다2', completed: true },
-  { id: 3, title: '테스트입니다4', completed: true },
-  { id: 4, title: '테스트입니다5', completed: false },
+  { id: 3, title: '테스트입니다3', completed: true },
+  { id: 4, title: '테스트입니다4', completed: false },
 ];
 
 const $toDoInput = document.getElementById('new-todo-title');
@@ -36,6 +36,7 @@ const handleCount = (toDo) => {
 const addToDos = (newToDo) => {
   toDos.push(newToDo);
   renderToDos(newToDo);
+  handleCount(toDos);
 };
 
 const newTodoInputSubmit = (newTitle) => {
@@ -64,8 +65,6 @@ const handleDestroy = (toDo) => {
   toDos = toDos.filter((item) => {
     return item.id !== targetId;
   });
-  toDoClear();
-  toDos.forEach((item) => renderToDos(item));
 };
 
 const handleToDoClick = (e) => {
@@ -74,11 +73,12 @@ const handleToDoClick = (e) => {
   if (e.target.className.includes('toggle')) {
     const $toDoToggle = e.target;
     handleToggle($toDoLi, $toDoToggle);
+    filtering($toDoLi);
   } else if (e.target.className.includes('destroy')) {
     handleDestroy($toDoLi);
     handleCount(toDos);
+    filtering($toDoLi);
   }
-  filtering($toDoLi);
 };
 
 const handleToggle = (toDo, toDoToggle) => {
