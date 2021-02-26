@@ -76,6 +76,22 @@
             DestoryElem.addEventListener('click', () => {
               todoListElem.removeChild(todoItemElem);
             });
+
+            todoItemElem.addEventListener('dblclick', () => {
+              todoItemElem.classList.add('editing');
+            });
+            const editElem = todoItemElem.querySelector('.edit');
+            const labelElem = todoItemElem.querySelector('.label');
+            editElem.addEventListener('keypress', event => {
+              if (event.key === 'Enter') {
+                labelElem.innerHTML = editElem.value;
+                todoItemElem.classList.remove('editing');
+
+              } else if (event.key === 'Escape') {
+                editElem.value = newTodoTitle;
+                todoItemElem.classList.remove('editing');
+              }
+            });
           }
         });
 
