@@ -14,7 +14,7 @@ export default class ToDoApp {
   /* items의 상태가 변했을 때 변경을 전달받을 컴포넌트(들) */
   entrustedComponents = [];
 
-  constructor() {
+  constructor(storedItems) {
     new TodoInput(this.onAdd.bind(this));
     new TodoFilters(this.onLayerChange.bind(this));
 
@@ -26,6 +26,9 @@ export default class ToDoApp {
       ),
       new CountContainer()
     );
+
+    /* 스토리지에 저장된 items가 있으면 초기값으로 설정 */
+    if (storedItems) this.setState(storedItems);
   }
 
   notify() {
@@ -47,6 +50,9 @@ export default class ToDoApp {
 
   setState(items) {
     this.items = items;
+    /* setState 할때마다 로컬 스토리지에 저장 */
+    localStorage.setItem("items", JSON.stringify(this.items));
+    /* setState 할때마다 state가 변경되었음을 알림 */
     this.notify();
   }
 
