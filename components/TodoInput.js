@@ -19,6 +19,7 @@ export default class TodoInput {
   onKeypress(event) {
     if (event.key === KEYS.ENTER) {
       this.onAdd(new Item(this.genTodoItemId(), event.target.value, false));
+      event.target.value = "";
     }
   }
 }
