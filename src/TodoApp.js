@@ -1,9 +1,9 @@
 'use strict';
 
 import * as Utils from './utils.js';
-import TodoInput from './todoInput.js';
-import TodoList from './todoList.js';
-import TodoFilter from './todoFilter.js';
+import TodoInput from './TodoInput.js';
+import TodoList from './TodoList.js';
+import TodoFilter from './TodoFilter.js';
 
 const todoInput = new TodoInput();
 const todoList = new TodoList();
