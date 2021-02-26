@@ -1,6 +1,7 @@
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
 import Item from "../models/Item.js";
+import CountContainer from "./CounterContainer.js";
 
 export default class ToDoApp {
   items = [];
@@ -10,12 +11,14 @@ export default class ToDoApp {
 
   constructor() {
     new TodoInput(this.onAdd.bind(this));
+
     this.entrustedComponents.push(
       new TodoList(
         this.onRemove.bind(this),
         this.onCheckedToggle.bind(this),
         this.onTitleChange.bind(this)
-      )
+      ),
+      new CountContainer()
     );
   }
 
