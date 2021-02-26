@@ -11,7 +11,11 @@ export default class ToDoApp {
   constructor() {
     new TodoInput(this.onAdd.bind(this));
     this.entrustedComponents.push(
-      new TodoList(this.onRemove.bind(this), this.onCheckedToggle.bind(this))
+      new TodoList(
+        this.onRemove.bind(this),
+        this.onCheckedToggle.bind(this),
+        this.onTitleChange.bind(this)
+      )
     );
   }
 
@@ -41,14 +45,22 @@ export default class ToDoApp {
   onCheckedToggle(targetId) {
     const sliced = [...this.items];
     const targetIndex = sliced.findIndex(({ id }) => id === targetId);
-    console.log(sliced, targetIndex);
-    const { id, title, isCompleted } = sliced[targetIndex];
+    const target = sliced[targetIndex];
 
-    console.log(id, title);
-    const newItem = new Item(id, title, !isCompleted);
+    const newItem = { ...target, isCompleted: !target.isCompleted };
     sliced[targetIndex] = newItem;
 
-    console.log("check");
+    this.setState(sliced);
+  }
+
+  onTitleChange(targetId, title) {
+    const sliced = [...this.items];
+    const targetIndex = sliced.findIndex(({ id }) => id === targetId);
+    const target = sliced[targetIndex];
+
+    const newItem = { ...target, title };
+    sliced[targetIndex] = newItem;
+
     this.setState(sliced);
   }
 }

@@ -4,18 +4,25 @@ export default class TodoList {
   $todoList;
   onRemove;
   onCheckedToggle;
+  onTitleChange;
 
-  constructor(onRemove, onCheckedToggle) {
+  constructor(onRemove, onCheckedToggle, onTitleChange) {
     this.$todoList = document.querySelector("#todo-list");
     this.onRemove = onRemove;
     this.onCheckedToggle = onCheckedToggle;
+    this.onTitleChange = onTitleChange;
   }
 
   render(items) {
     this.$todoList.innerHTML = "";
     items.forEach((item) =>
       this.$todoList.appendChild(
-        new TodoItem(item, this.onRemove, this.onCheckedToggle).render()
+        new TodoItem(
+          item,
+          this.onRemove,
+          this.onCheckedToggle,
+          this.onTitleChange
+        ).render()
       )
     );
   }

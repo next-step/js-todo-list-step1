@@ -2,14 +2,16 @@ export default class TodoItem {
   item;
   onRemove;
   onCheckedToggle;
+  onTitleChange;
 
-  constructor(item, onRemove, onCheckedToggle) {
+  constructor(item, onRemove, onCheckedToggle, onTitleChange) {
     this.item = item;
     this.onRemove = onRemove;
     this.onCheckedToggle = onCheckedToggle;
+    this.onTitleChange = onTitleChange;
   }
 
-  makeTemplate({ title, isCompleted }) {
+  makeTemplate({ id, title, isCompleted }) {
     const $li = document.createElement("li");
 
     if (isCompleted) $li.classList.add("completed");
@@ -25,25 +27,35 @@ export default class TodoItem {
               <input class="edit" value="${title}" />
           `;
 
+    $li.addEventListener("dblclick", (event) => {
+      $li.classList.add("editing");
+    });
+
     const $destroyBtn = $li.querySelector(".destroy");
-    $destroyBtn.addEventListener("click", this.onDeleteBtnClick.bind(this));
+    $destroyBtn.addEventListener("click", () => {
+      this.onRemove(id);
+    });
 
     const $toggleInput = $li.querySelector(".toggle");
-    $toggleInput.addEventListener(
-      "change",
-      this.onToggleInputChange.bind(this)
-    );
+    $toggleInput.addEventListener("change", () => {
+      this.onCheckedToggle(id);
+    });
 
-    console.log($toggleInput);
+    const $editInput = $li.querySelector(".edit");
+
+    $editInput.addEventListener("keyup", (event) => {
+      if (event.key === "Escape") {
+        $li.classList.remove("editing");
+        $editInput.value = title;
+      }
+
+      if (event.key === "Enter") {
+        $li.classList.remove("editing");
+        this.onTitleChange(id, $editInput.value);
+      }
+    });
+
     return $li;
-  }
-
-  onDeleteBtnClick() {
-    this.onRemove(this.item.id);
-  }
-
-  onToggleInputChange() {
-    this.onCheckedToggle(this.item.id);
   }
 
   render() {
