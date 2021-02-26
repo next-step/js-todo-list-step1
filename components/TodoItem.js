@@ -1,3 +1,5 @@
+import { KEYS } from "../utils/constants.js";
+
 export default class TodoItem {
   item;
   onRemove;
@@ -44,12 +46,13 @@ export default class TodoItem {
     const $editInput = $li.querySelector(".edit");
 
     $editInput.addEventListener("keyup", (event) => {
-      if (event.key === "Escape") {
+      if (event.key === KEYS.ESCAPE) {
         $li.classList.remove("editing");
         $editInput.value = title;
+        return;
       }
 
-      if (event.key === "Enter") {
+      if (event.key === KEYS.ENTER) {
         $li.classList.remove("editing");
         this.onTitleChange(id, $editInput.value);
       }
