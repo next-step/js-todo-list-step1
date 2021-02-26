@@ -54,6 +54,7 @@
               </div>
               <input class="edit" value="${newTodoTitle}" />
             `;
+            newTodoElem.value = '';
 
             const toggleElem = todoItemElem.querySelector('.toggle');
             toggleElem.addEventListener('change', event => {
@@ -67,7 +68,10 @@
               }
             });
 
-            newTodoElem.value = '';
+            const DestoryElem = todoItemElem.querySelector('.destroy');
+            DestoryElem.addEventListener('click', () => {
+              todoListElem.removeChild(todoItemElem);
+            });
           }
         });
 
