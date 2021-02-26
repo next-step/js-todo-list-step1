@@ -3,16 +3,20 @@ import TodoItem from "./TodoItem.js";
 export default class TodoList {
   $todoList;
   onRemove;
+  onCheckedToggle;
 
-  constructor(onRemove) {
+  constructor(onRemove, onCheckedToggle) {
     this.$todoList = document.querySelector("#todo-list");
     this.onRemove = onRemove;
+    this.onCheckedToggle = onCheckedToggle;
   }
 
   render(items) {
     this.$todoList.innerHTML = "";
-    items.map((item) =>
-      this.$todoList.appendChild(new TodoItem(item, this.onRemove).render())
+    items.forEach((item) =>
+      this.$todoList.appendChild(
+        new TodoItem(item, this.onRemove, this.onCheckedToggle).render()
+      )
     );
   }
 }
