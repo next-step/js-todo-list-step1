@@ -42,6 +42,10 @@
 
         newTodoElem.addEventListener('keypress', event => {
           if (event.key === 'Enter') {
+            if (newTodoElem.value === '') {
+              return;
+            }
+
             const newTodoTitle = newTodoElem.value;
             const todoItemElem = document.createElement('li');              
             todoListElem.appendChild(todoItemElem);
