@@ -67,6 +67,30 @@ const handleDestroy = (toDo) => {
   });
 };
 
+const editNewTitle = (e) => {
+  const $targetLi = e.target.closest('li');
+  const targetId = parseInt($targetLi.getAttribute('id'));
+  const newTitle = e.target.value;
+  if (e.key === 'Enter') {
+    let targetLabel = $targetLi.querySelector('label');
+    targetLabel.innerText = newTitle;
+    $targetLi.classList.remove('editing');
+    toDos.map((toDo) => {
+      if (toDo.id === targetId) toDo.title = newTitle;
+    });
+  } else if (e.key === 'Escape') {
+    $targetLi.classList.remove('editing');
+  }
+};
+
+const handleEdit = (target) => {
+  const $targetLi = target.closest('li');
+  const $targetInput = $targetLi.querySelector('.edit');
+
+  $targetLi.classList += ' editing';
+  $targetInput.addEventListener('keydown', editNewTitle);
+};
+
 const handleToDoClick = (e) => {
   const $toDoLi = e.target.closest('li');
 
@@ -78,6 +102,8 @@ const handleToDoClick = (e) => {
     handleDestroy($toDoLi);
     handleCount(toDos);
     filtering($toDoLi);
+  } else if (e.target.className.includes('label')) {
+    handleEdit(e.target);
   }
 };
 
