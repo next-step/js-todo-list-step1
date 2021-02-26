@@ -51,6 +51,7 @@ const handleNewToDoInput = (e) => {
   const newTitle = e.target.value;
   if (e.key === 'Enter') {
     newTodoInputSubmit(newTitle);
+    filtering(e.target);
   }
 };
 
@@ -77,6 +78,7 @@ const handleToDoClick = (e) => {
     handleDestroy($toDoLi);
     handleCount(toDos);
   }
+  filtering($toDoLi);
 };
 
 const handleToggle = (toDo, toDoToggle) => {
@@ -94,8 +96,69 @@ const toDoUpdate = ($toDoLi) => {
       obj.completed = false;
     }
   }
-  console.log(toDos);
+};
+const FilterStateAll = () => {
+  toDoClear();
+  toDos.forEach((toDo) => renderToDos(toDo));
+};
+const FilterStateActive = () => {
+  toDoClear();
+  const newToDos = toDos.filter((item) => {
+    return item.completed === false;
+  });
+  newToDos.forEach((toDo) => renderToDos(toDo));
+};
+const FilterStateCompleted = () => {
+  toDoClear();
+  const newToDos = toDos.filter((item) => {
+    return item.completed === true;
+  });
+  newToDos.forEach((toDo) => renderToDos(toDo));
+};
+
+const findFilter = (e) => {
+  const $todoApp = e.closest('.todoapp');
+  const filterAtags = $todoApp.querySelectorAll('.filters a');
+
+  for (const item of filterAtags) {
+    if (item.className.includes('selected')) {
+      return item.className.split(' ')[0];
+    }
+  }
+};
+const filtering = (filterState) => {
+  filterState = typeof filterState === 'string' ? filterState : findFilter(filterState);
+
+  if (filterState === 'all') {
+    FilterStateAll();
+  } else if (filterState === 'active') {
+    FilterStateActive();
+  } else if (filterState === 'completed') {
+    FilterStateCompleted();
+  }
+};
+const filterClear = (filterAtag) => {
+  filterAtag.forEach((item) => {
+    item.classList.remove('selected');
+  });
+  return filterAtag;
+};
+
+const handleFilterClick = (e) => {
+  e.preventDefault();
+
+  const filterState = e.target.className;
+  const $filterAtag = $toDofilters.querySelectorAll('a');
+  const filters = filterClear($filterAtag);
+
+  filters.forEach((item) => {
+    if (item.className === filterState) {
+      item.classList.toggle('selected');
+      filtering(filterState);
+    }
+  });
 };
 
 $toDoList && $toDoList.addEventListener('click', handleToDoClick);
 $toDoInput && $toDoInput.addEventListener('keydown', handleNewToDoInput);
+$toDofilters && $toDofilters.addEventListener('click', handleFilterClick);
