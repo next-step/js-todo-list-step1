@@ -2,15 +2,21 @@ import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
 import Item from "../models/Item.js";
 import CountContainer from "./CounterContainer.js";
+import TodoFilters from "./TodoFilters.js";
+import { LAYERS } from "../utils/constants.js";
 
 export default class ToDoApp {
   items = [];
 
-  /* items의 상태가 변했을때 변경을 전달받을 컴포넌트(들) */
+  /* 표시할 계층 */
+  layer = LAYERS.ALL;
+
+  /* items의 상태가 변했을 때 변경을 전달받을 컴포넌트(들) */
   entrustedComponents = [];
 
   constructor() {
     new TodoInput(this.onAdd.bind(this));
+    new TodoFilters(this.onLayerChange.bind(this));
 
     this.entrustedComponents.push(
       new TodoList(
@@ -24,12 +30,29 @@ export default class ToDoApp {
 
   notify() {
     this.entrustedComponents.forEach((component) =>
-      component.render(this.items)
+      component.render(this.getItemsFilteredByLayer())
     );
+  }
+
+  getItemsFilteredByLayer() {
+    switch (this.layer) {
+      case LAYERS.ALL:
+        return this.items;
+      case LAYERS.TODO:
+        return this.items.filter(({ isCompleted }) => !isCompleted);
+      case LAYERS.COMPLETED:
+        return this.items.filter(({ isCompleted }) => isCompleted);
+    }
   }
 
   setState(items) {
     this.items = items;
+    this.notify();
+  }
+
+  /* state자체에는 변화가 없지만 보여져야할 items가 달라지기때문에 notify 해야함 */
+  onLayerChange(layer) {
+    this.layer = layer;
     this.notify();
   }
 
