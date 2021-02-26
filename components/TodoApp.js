@@ -1,13 +1,51 @@
+import Item from "../models/Item.js";
+
 export default class ToDoApp {
   todoItems = [];
 
   constructor() {
-    console.log("sdd");
+    new TodoInput(this.onAdd.bind(this));
   }
 
-  setState() {}
+  setState(todoItems) {
+    this.todoItems = todoItems;
+  }
 
-  onAdd() {}
+  onAdd(item) {
+    const newState = [item, ...this.todoItems];
+    this.setState(newState);
+    console.log(this.todoItems);
+  }
 
   onRemove() {}
 }
+
+class TodoInput {
+  $todoInput;
+  onAdd;
+
+  constructor(onAdd) {
+    this.$todoInput = document.querySelector("#new-todo-title");
+    this.onAdd = onAdd;
+
+    this.init();
+  }
+
+  init() {
+    this.$todoInput.addEventListener("keypress", this.onKeypress.bind(this));
+  }
+
+  onKeypress(event) {
+    if (event.key === KEYS.ENTER) {
+      this.onAdd(new Item(event.target.value, false));
+    }
+  }
+}
+
+class TodoList {}
+
+class TodoItem {}
+
+const KEYS = {
+  ENTER: "Enter",
+};
