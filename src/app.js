@@ -1,22 +1,20 @@
-let toDos = [
-  { id: 1, title: '테스트입니다1', completed: false },
-  { id: 2, title: '테스트입니다2', completed: true },
-  { id: 3, title: '테스트입니다3', completed: true },
-  { id: 4, title: '테스트입니다4', completed: false },
-];
+import { saveToDos } from './toDoLocalStorage.js';
+
+export let toDos = [];
 
 const $toDoInput = document.getElementById('new-todo-title');
 const $toDoList = document.getElementById('todo-list');
 const $toDoCount = document.querySelector('.todo-count strong');
 const $toDofilters = document.querySelector('.filters');
 
-export const loadToDos = () => {
-  toDos.map((a) => renderToDos(a));
-  handleCount(toDos);
-};
-
 const renderToDos = (toDo) => {
   $toDoList.insertAdjacentHTML('beforeend', toDoTemplate(toDo));
+};
+
+export const addToDos = (newToDo) => {
+  toDos.push(newToDo);
+  renderToDos(newToDo);
+  handleCount(toDos);
 };
 
 const toDoTemplate = (toDo) => {
@@ -32,11 +30,6 @@ const toDoTemplate = (toDo) => {
 
 const handleCount = (toDo) => {
   $toDoCount.innerText = toDo.length;
-};
-const addToDos = (newToDo) => {
-  toDos.push(newToDo);
-  renderToDos(newToDo);
-  handleCount(toDos);
 };
 
 const newTodoInputSubmit = (newTitle) => {
@@ -54,6 +47,7 @@ const handleNewToDoInput = (e) => {
     newTodoInputSubmit(newTitle);
     filtering(e.target);
   }
+  saveToDos();
 };
 
 const toDoClear = () => {
@@ -78,6 +72,7 @@ const editNewTitle = (e) => {
     toDos.map((toDo) => {
       if (toDo.id === targetId) toDo.title = newTitle;
     });
+    saveToDos();
   } else if (e.key === 'Escape') {
     $targetLi.classList.remove('editing');
   }
@@ -105,6 +100,7 @@ const handleToDoClick = (e) => {
   } else if (e.target.className.includes('label')) {
     handleEdit(e.target);
   }
+  saveToDos();
 };
 
 const handleToggle = (toDo, toDoToggle) => {
@@ -185,6 +181,8 @@ const handleFilterClick = (e) => {
   });
 };
 
-$toDoList && $toDoList.addEventListener('click', handleToDoClick);
-$toDoInput && $toDoInput.addEventListener('keydown', handleNewToDoInput);
-$toDofilters && $toDofilters.addEventListener('click', handleFilterClick);
+export const app = () => {
+  $toDoList && $toDoList.addEventListener('click', handleToDoClick);
+  $toDoInput && $toDoInput.addEventListener('keydown', handleNewToDoInput);
+  $toDofilters && $toDofilters.addEventListener('click', handleFilterClick);
+};
