@@ -1,4 +1,5 @@
-import Item from "../models/Item.js";
+import TodoList from "./TodoList.js";
+import TodoInput from "./TodoInput.js";
 
 export default class ToDoApp {
   items = [];
@@ -32,83 +33,3 @@ export default class ToDoApp {
     this.setState(targetDeletedState);
   }
 }
-
-class TodoInput {
-  $todoInput;
-  onAdd;
-  idCounter = 0;
-
-  constructor(onAdd) {
-    this.$todoInput = document.querySelector("#new-todo-title");
-    this.onAdd = onAdd;
-    this.$todoInput.addEventListener("keypress", this.onKeypress.bind(this));
-  }
-
-  genTodoItemId() {
-    return `_${this.idCounter++}`;
-  }
-
-  onKeypress(event) {
-    if (event.key === KEYS.ENTER) {
-      this.onAdd(new Item(this.genTodoItemId(), event.target.value, false));
-    }
-  }
-}
-
-class TodoList {
-  $todoList;
-  onRemove;
-
-  constructor(onRemove) {
-    this.$todoList = document.querySelector("#todo-list");
-    this.onRemove = onRemove;
-  }
-
-  render(items) {
-    this.$todoList.innerHTML = [];
-    items.map((item) =>
-      this.$todoList.appendChild(new TodoItem(item, this.onRemove).render())
-    );
-  }
-}
-
-class TodoItem {
-  item;
-  onRemove;
-
-  constructor(item, onRemove) {
-    this.item = item;
-    this.onRemove = onRemove;
-  }
-
-  makeTemplate(title) {
-    const $li = document.createElement("li");
-
-    $li.innerHTML = `
-           <div class="view">
-              <input class="toggle" type="checkbox"/>
-              <label class="label">${title}</label>
-              <button class="destroy"></button>
-            </div>
-            <input class="edit" value="${title}" />
-        `;
-
-    const $destroyBtn = $li.querySelector(".destroy");
-
-    $destroyBtn.addEventListener("click", this.onDeleteButtonClick.bind(this));
-
-    return $li;
-  }
-
-  onDeleteButtonClick() {
-    this.onRemove(this.item.id);
-  }
-
-  render() {
-    return this.makeTemplate(this.item.title);
-  }
-}
-
-const KEYS = {
-  ENTER: "Enter",
-};
