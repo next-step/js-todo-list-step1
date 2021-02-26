@@ -4,6 +4,7 @@ import * as Utils from './utils.js';
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import TodoFilter from './TodoFilter.js';
+
 export default class TodoApp {
   constructor() {
     this.todoInput = new TodoInput();
