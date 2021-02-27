@@ -6,14 +6,17 @@ export default class TodoFilters {
 
   constructor(onLayerChange) {
     this.onLayerChange = onLayerChange;
-
     this.$filters = document.querySelector(".filters");
+    this.delegateEvent();
+  }
 
+  delegateEvent() {
     const [$all, $todo, $completed] = this.$filters.querySelectorAll("a");
 
-    this.$filters.querySelectorAll("li").forEach(($li) => {
-      $li.addEventListener("click", (event) => {
-        const $a = $li.querySelector("a");
+    this.$filters.addEventListener("click", (event) => {
+      if (event.target.tagName === "A") {
+        const $a = event.target;
+
         [$all, $todo, $completed].forEach(($elem) =>
           $a === $elem
             ? $elem.classList.add("selected")
@@ -31,7 +34,7 @@ export default class TodoFilters {
             this.onLayerChange(LAYERS.COMPLETED);
             break;
         }
-      });
+      }
     });
   }
 }
