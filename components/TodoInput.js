@@ -4,7 +4,6 @@ import Item from "../models/Item.js";
 export default class TodoInput {
   $todoInput;
   onAdd;
-  idCounter = 0;
 
   constructor(onAdd) {
     this.$todoInput = document.querySelector("#new-todo-title");
@@ -13,7 +12,9 @@ export default class TodoInput {
   }
 
   genTodoItemId() {
-    return `_${this.idCounter++}`;
+    return `${Date.now().toString(32)}${Math.random().toString(
+      32
+    )}${Math.random().toString(32)} }`;
   }
 
   onKeypress(event) {

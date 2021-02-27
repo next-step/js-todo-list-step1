@@ -51,9 +51,14 @@ export default class ToDoApp {
   setState(items) {
     this.items = items;
     /* setState 할때마다 로컬 스토리지에 저장 */
-    localStorage.setItem("items", JSON.stringify(this.items));
+    this.setToLocalStorage();
     /* setState 할때마다 state가 변경되었음을 알림 */
     this.notify();
+    console.log(this.items);
+  }
+
+  setToLocalStorage() {
+    localStorage.setItem("items", JSON.stringify(this.items));
   }
 
   /* state자체에는 변화가 없지만 보여져야할 items가 달라지기때문에 notify 해야함 */
