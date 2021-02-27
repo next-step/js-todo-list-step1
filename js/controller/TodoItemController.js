@@ -1,18 +1,18 @@
 import { todoItemService } from "/js/service/TodoItemService.js";
 
 function TodoItemController() {
-  this.todoAppService = todoItemService;
+  this.todoItemService = todoItemService;
 
   const $todoList = document.getElementById("todo-list");
 
   const onClickTodoList = ({ target }) => {
     const $todoItem = findItem(target);
     if (isToggleButton(target)) {
-      this.todoAppService.toggle($todoItem);
+      this.todoItemService.toggle($todoItem);
       return;
     }
     if (isDestroyButton(target)) {
-      this.todoAppService.destroy($todoItem);
+      this.todoItemService.destroy($todoItem);
     }
   };
 
@@ -35,7 +35,7 @@ function TodoItemController() {
 
     const $todoItem = findItem(target);
     if (isNotComplete(target)) {
-      this.todoAppService.onEdit($todoItem);
+      this.todoItemService.onEdit($todoItem);
     }
   };
 
@@ -44,7 +44,7 @@ function TodoItemController() {
     return !$todoItem.classList.contains("completed");
   }
 
-  const onKeyupTodoItem = (event) => {
+  const onKeyupTodoList = (event) => {
     if (event.key === "Enter") {
       edit(event);
       return;
@@ -58,7 +58,7 @@ function TodoItemController() {
   const edit = (event) => {
     const $todoItem = event.target.closest(".todo-item");
     const title = event.target.value;
-    this.todoAppService.edit($todoItem.dataset.id, title);
+    this.todoItemService.edit($todoItem.dataset.id, title);
   };
 
   const offEdit = (event) => {
@@ -69,7 +69,7 @@ function TodoItemController() {
   this.init = function () {
     $todoList.addEventListener("click", onClickTodoList);
     $todoList.addEventListener("dblclick", onDoubleClickTodoList);
-    $todoList.addEventListener("keyup", onKeyupTodoItem);
+    $todoList.addEventListener("keyup", onKeyupTodoList);
   };
 }
 
