@@ -4,14 +4,15 @@ export default class TodoFilters {
   $filters;
   onLayerChange;
 
-  constructor(onLayerChange) {
+  constructor(onLayerChange, layer) {
     this.onLayerChange = onLayerChange;
     this.$filters = document.querySelector(".filters");
-    this.delegateEvent();
+    this.addEventListeners();
+    this.setDefaultOutlineOfATags(this.getATags(), layer);
   }
 
-  delegateEvent() {
-    const [$all, $todo, $completed] = this.$filters.querySelectorAll("a");
+  addEventListeners() {
+    const [$all, $todo, $completed] = this.getATags();
 
     this.$filters.addEventListener("click", (event) => {
       if (event.target.tagName === "A") {
@@ -35,6 +36,18 @@ export default class TodoFilters {
             break;
         }
       }
+    });
+  }
+
+  getATags() {
+    return [...this.$filters.querySelectorAll("a")];
+  }
+
+  setDefaultOutlineOfATags([$all, $todo, $completed], layer) {
+    [$all, $todo, $completed].forEach(($elem) => {
+      $elem.classList[0] === layer
+        ? $elem.classList.add("selected")
+        : $elem.classList.remove("selected");
     });
   }
 }

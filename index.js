@@ -1,8 +1,6 @@
 import TodoApp from "./components/TodoApp.js";
 
 const storedItems = JSON.parse(localStorage.getItem("items"));
+const storedLayer = localStorage.getItem("layer");
 
-// TodoApp 생성
-
-console.log(storedItems);
-new TodoApp(storedItems);
+new TodoApp(storedItems, storedLayer);

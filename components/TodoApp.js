@@ -7,16 +7,18 @@ import { LAYERS } from "../utils/constants.js";
 
 export default class ToDoApp {
   items = [];
-
   /* 표시할 계층 */
   layer = LAYERS.ALL;
 
-  /* items의 상태가 변했을 때 변경을 전달받을 컴포넌트(들) */
+  /* state가 변했을 때 변경을 전달받을 컴포넌트(들) */
   entrustedComponents = [];
 
-  constructor(storedItems) {
+  constructor(storedItems, storedLayer) {
     new TodoInput(this.onAdd.bind(this));
-    new TodoFilters(this.onLayerChange.bind(this));
+    if (storedLayer) {
+      this.onLayerChange(storedLayer);
+    }
+    new TodoFilters(this.onLayerChange.bind(this), this.layer);
 
     this.entrustedComponents.push(
       new TodoList(
@@ -31,6 +33,7 @@ export default class ToDoApp {
     if (storedItems) this.setState(storedItems);
   }
 
+  /* entrusted된 컴포넌트들에게 알림 */
   notify() {
     this.entrustedComponents.forEach((component) =>
       component.render(this.getItemsFilteredByLayer())
@@ -51,20 +54,23 @@ export default class ToDoApp {
   setState(items) {
     this.items = items;
     /* setState 할때마다 로컬 스토리지에 저장 */
-    this.setToLocalStorage();
+    this.setItemsToLocalStorage();
     /* setState 할때마다 state가 변경되었음을 알림 */
     this.notify();
-    console.log(this.items);
   }
 
-  setToLocalStorage() {
+  setItemsToLocalStorage() {
     localStorage.setItem("items", JSON.stringify(this.items));
+  }
+  setLayerToLocalStorage() {
+    localStorage.setItem("layer", this.layer);
   }
 
   /* state자체에는 변화가 없지만 보여져야할 items가 달라지기때문에 notify 해야함 */
   onLayerChange(layer) {
     this.layer = layer;
     this.notify();
+    this.setLayerToLocalStorage();
   }
 
   onAdd(item) {
