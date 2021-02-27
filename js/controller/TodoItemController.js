@@ -1,9 +1,9 @@
 import { todoItemService } from "/js/service/TodoItemService.js";
 
 function TodoItemController() {
-  const $todoList = document.getElementById("todo-list");
-
   this.todoAppService = todoItemService;
+
+  const $todoList = document.getElementById("todo-list");
 
   const onClickTodoList = ({ target }) => {
     const $todoItem = findItem(target);

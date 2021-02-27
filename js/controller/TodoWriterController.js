@@ -1,9 +1,9 @@
 import { todoWriterService } from "/js/service/TodoWriterService.js";
 
 function TodoWriterController() {
-  const $newTodoTitle = document.getElementById("new-todo-title");
-
   this.todoWriterService = todoWriterService;
+
+  const $newTodoTitle = document.getElementById("new-todo-title");
 
   const onKeyupTodoTitle = (event) => {
     if (event.key === "Enter") {

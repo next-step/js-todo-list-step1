@@ -1,5 +1,5 @@
-import { todoView } from "/js/TodoView.js";
-import { $store } from "/js/DB/TodoStore.js";
+import { todoView } from "/js/view/TodoView.js";
+import { $store } from "/js/object/TodoStore.js";
 
 function TodoWriterService() {
   this.todoView = todoView;

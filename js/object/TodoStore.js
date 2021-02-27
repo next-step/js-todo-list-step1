@@ -20,6 +20,18 @@ function Store() {
     item.title = title;
   };
 
+  this.getAllItems = function () {
+    return this.items;
+  };
+
+  this.getActiveItems = function () {
+    return this.items.filter((item) => item.isDone === false);
+  };
+
+  this.getCompletedItems = function () {
+    return this.items.filter((item) => item.isDone === true);
+  };
+
   function equalTo(item, id) {
     return parseInt(item.id) === parseInt(id);
   }
