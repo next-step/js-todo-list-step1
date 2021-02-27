@@ -13,7 +13,8 @@ export default class TodoItem {
     this.onTitleChange = onTitleChange;
   }
 
-  makeTemplate({ id, title, isCompleted }) {
+  makeTemplate() {
+    const { id, title, isCompleted } = this.item;
     const $li = document.createElement("li");
 
     if (isCompleted) $li.classList.add("completed");
@@ -35,6 +36,6 @@ export default class TodoItem {
   }
 
   render() {
-    return this.makeTemplate(this.item);
+    return this.makeTemplate();
   }
 }

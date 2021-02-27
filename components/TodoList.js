@@ -9,14 +9,13 @@ export default class TodoList {
 
   constructor(onRemove, onCheckedToggle, onTitleChange) {
     this.$todoList = document.querySelector("#todo-list");
-    console.log(this.$todoList);
     this.onRemove = onRemove;
     this.onCheckedToggle = onCheckedToggle;
     this.onTitleChange = onTitleChange;
-    this.delegateEvent();
+    this.addEventListeners();
   }
 
-  delegateEvent() {
+  addEventListeners() {
     this.$todoList.addEventListener("dblclick", (event) => {
       const $li = event.target.closest(".todo-item");
       $li.classList.add("editing");
