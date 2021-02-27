@@ -3,9 +3,6 @@ function Store() {
   this.items = [];
 
   this.push = function (item) {
-    if (isEmpty(item.title)) {
-      return;
-    }
     this.items.push(item);
   };
 
@@ -14,12 +11,8 @@ function Store() {
     item.isDone = !item.isDone;
   };
 
-  function equalTo(item, id) {
-    return parseInt(item.id) === parseInt(id);
-  }
-
   this.destroy = function (id) {
-    this.items = this.items.filter((item) => !equalTo(item, id));
+    this.items = this.items.filter((item) => notEqualTo(item, id));
   };
 
   this.edit = function (id, title) {
@@ -27,8 +20,12 @@ function Store() {
     item.title = title;
   };
 
-  function isEmpty(title) {
-    return !title || /^\s*$/.test(title);
+  function equalTo(item, id) {
+    return parseInt(item.id) === parseInt(id);
+  }
+
+  function notEqualTo(item, id) {
+    return parseInt(item.id) !== parseInt(id);
   }
 }
 

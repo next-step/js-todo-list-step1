@@ -1,22 +1,9 @@
-import { todoAppService } from "/js/service/TodoListService.js";
+import { todoItemService } from "/js/service/TodoItemService.js";
 
-function TodoController() {
-  let id = 0;
-  const $newTodoTitle = document.getElementById("new-todo-title");
+function TodoItemController() {
   const $todoList = document.getElementById("todo-list");
 
-  this.todoAppService = todoAppService;
-
-  const onKeyupTodoTitle = (event) => {
-    if (event.key === "Enter") {
-      const newItem = {
-        id: ++id,
-        title: $newTodoTitle.value,
-        isDone: false,
-      };
-      this.todoAppService.addNewItem(newItem);
-    }
-  };
+  this.todoAppService = todoItemService;
 
   const onClickTodoList = ({ target }) => {
     const $todoItem = findItem(target);
@@ -79,16 +66,11 @@ function TodoController() {
     $todoItem.classList.remove("editing");
   };
 
-  this.clear = function () {
-    $newTodoTitle.value = "";
-  };
-
   this.init = function () {
-    $newTodoTitle.addEventListener("keyup", onKeyupTodoTitle);
     $todoList.addEventListener("click", onClickTodoList);
     $todoList.addEventListener("dblclick", onDoubleClickTodoList);
     $todoList.addEventListener("keyup", onKeyupTodoItem);
   };
 }
 
-export const todoController = new TodoController();
+export const todoItemController = new TodoItemController();
