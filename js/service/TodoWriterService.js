@@ -1,5 +1,5 @@
 import { todoView } from "/js/view/TodoView.js";
-import { $store } from "/js/object/TodoStore.js";
+import { $store } from "/js/Store/TodoStore.js";
 
 function TodoWriterService() {
   this.todoView = todoView;
@@ -10,7 +10,7 @@ function TodoWriterService() {
     }
 
     $store.push(item);
-    this.todoView.render($store.items);
+    this.todoView.render($store.getItemsByFilter());
 
     clear($newTodoTitle);
   };

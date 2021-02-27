@@ -1,4 +1,4 @@
-import { $store } from "/js/object/TodoStore.js";
+import { $store } from "/js/Store/TodoStore.js";
 import { todoView } from "/js/view/TodoView.js";
 
 function TodoItemService() {

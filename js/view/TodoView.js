@@ -1,9 +1,7 @@
 import { todoFilterTemplate, todoItemTemplate } from "/js/utils/templates.js";
-import { todoFilter } from "/js/object/TodoFilter.js";
+import { $store } from "/js/Store/TodoStore.js";
 
 function TodoView() {
-  this.filter = todoFilter;
-
   const $list = document.getElementById("todo-list");
   const $countContainer = document.getElementById("count-container");
 
@@ -11,7 +9,7 @@ function TodoView() {
     $list.innerHTML = items.map(todoItemTemplate).join("");
     $countContainer.innerHTML = todoFilterTemplate({
       count: items.length,
-      filter: this.filter.state,
+      filter: $store.filterState,
     });
   };
 }

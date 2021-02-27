@@ -7,30 +7,23 @@ function TodoFilterController() {
   const $filter = document.getElementById("count-container");
 
   const onClickFilter = ({ target }) => {
-    console.log(target);
-    if (isAllViewButton(target)) {
-      this.todoFilterService.onClickAllView();
-      return;
-    }
-
-    if (isActiveViewButton(target)) {
-      this.todoFilterService.onClickActiveView();
-      return;
-    }
-
-    if (isCompletedViewButton(target)) {
-      this.todoFilterService.onClickCompletedView();
-    }
+    const filterState = findFilterState(target);
+    this.todoFilterService.onClickFilter(filterState);
   };
 
-  function isAllViewButton(target) {
-    return target.classList.contains(FILTER_STATE.ALL);
-  }
-  function isActiveViewButton(target) {
-    return target.classList.contains(FILTER_STATE.ACTIVE);
-  }
-  function isCompletedViewButton(target) {
-    return target.classList.contains(FILTER_STATE.COMPLETED);
+  function findFilterState(target) {
+    const classList = target.classList;
+    if (classList.contains(FILTER_STATE.ALL)) {
+      return FILTER_STATE.ALL;
+    }
+
+    if (classList.contains(FILTER_STATE.ACTIVE)) {
+      return FILTER_STATE.ACTIVE;
+    }
+
+    if (classList.contains(FILTER_STATE.COMPLETED)) {
+      return FILTER_STATE.COMPLETED;
+    }
   }
 
   this.init = function () {

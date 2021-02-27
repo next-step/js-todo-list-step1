@@ -1,4 +1,4 @@
-import { $store } from "/js/object/TodoStore.js";
+import { $store } from "/js/Store/TodoStore.js";
 import { todoView } from "/js/view/TodoView.js";
 import { todoItemController } from "/js/controller/TodoItemController.js";
 import { todoWriterController } from "/js/controller/TodoWriterController.js";
@@ -11,10 +11,11 @@ function TodoApp() {
   this.view = todoView;
 
   this.init = function () {
+    $store.init();
+    this.view.render($store.getItemsByFilter());
     this.todoWriterController.init();
     this.todoItemController.init();
     this.todoFilterController.init();
-    this.view.render($store.items);
   };
 }
 
