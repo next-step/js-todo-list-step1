@@ -4,7 +4,7 @@ export const KEYS = {
 };
 
 export const LAYERS = {
-  ALL: "ALL",
-  TODO: "TODO",
-  COMPLETED: "COMPLETED",
+  ALL: "all",
+  TODO: "active",
+  COMPLETED: "completed",
 };
