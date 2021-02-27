@@ -28,35 +28,8 @@ export default class TodoItem {
               </div>
               <input class="edit" value="${title}" />
           `;
-
-    $li.addEventListener("dblclick", (event) => {
-      $li.classList.add("editing");
-    });
-
-    const $destroyBtn = $li.querySelector(".destroy");
-    $destroyBtn.addEventListener("click", () => {
-      this.onRemove(id);
-    });
-
-    const $toggleInput = $li.querySelector(".toggle");
-    $toggleInput.addEventListener("change", () => {
-      this.onCheckedToggle(id);
-    });
-
-    const $editInput = $li.querySelector(".edit");
-
-    $editInput.addEventListener("keyup", (event) => {
-      if (event.key === KEYS.ESCAPE) {
-        $li.classList.remove("editing");
-        $editInput.value = title;
-        return;
-      }
-
-      if (event.key === KEYS.ENTER) {
-        $li.classList.remove("editing");
-        this.onTitleChange(id, $editInput.value);
-      }
-    });
+    $li.id = id;
+    $li.className = "todo-item";
 
     return $li;
   }
