@@ -14,7 +14,7 @@ export default class TodoInput {
   genTodoItemId() {
     return `${Date.now().toString(32)}${Math.random().toString(
       32
-    )}${Math.random().toString(32)} }`;
+    )}${Math.random().toString(32)}`;
   }
 
   onKeypress(event) {
