@@ -27,6 +27,11 @@ function todoList (){
         $deleteBtn.addEventListener('click', (event) => {
            $todoList.removeChild(newTodoItem);
         });
+        newTodoItem.addEventListener('click', (event) => {
+            // console.log('dfs');
+           console.log( event.target);
+            newTodoItem.classList.add('editing');
+         });
     }
   
     $input.addEventListener('keypress', (event) => {
@@ -37,4 +42,3 @@ function todoList (){
   
 }
 const todoApp = new todoList();
-// - [ ] todo list의 체크박스를 클릭하여 complete 상태로 변경. (li tag 에 completed class 추가, input 태그에 checked 속성 추가) 
