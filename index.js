@@ -1,3 +1,5 @@
-import TodoApp from './js/TodoApp.js';
+import TodoApp from './js/components/TodoApp.js';
 
-new TodoApp({selector: '#todoapp'});
+new TodoApp({
+    $el: document.querySelector('#todoapp')
+});
