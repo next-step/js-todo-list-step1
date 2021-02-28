@@ -2,7 +2,7 @@ function todoList (){
     const $input = document.querySelector('#new-todo-title');
     const $todoList = document.querySelector('#todo-list');
     $input.addEventListener('keypress', (event) => {
-        if(event.key === 'Enter'){
+        if(event.target.value != ''  && event.key === 'Enter'){
             addTodo (event);
         }
     });
