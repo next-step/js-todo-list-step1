@@ -1,5 +1,5 @@
 import { toDos } from '../src/app.js';
-import { renderToDos, toDoClear } from './toDoList.js';
+import { renderToDos, toDoRenderClear } from './toDoList.js';
 
 const $toDoCount = document.querySelector('.todo-count strong');
 export const $toDofilters = document.querySelector('.filters');
@@ -23,12 +23,12 @@ export const handleCount = (toDo) => {
 };
 
 const FilterStateAll = () => {
-  toDoClear();
+  toDoRenderClear();
   toDos.forEach((toDo) => renderToDos(toDo));
 };
 
 const FilterStateActive = () => {
-  toDoClear();
+  toDoRenderClear();
   const newToDos = toDos.filter((item) => {
     return item.completed === false;
   });
@@ -36,7 +36,7 @@ const FilterStateActive = () => {
 };
 
 const FilterStateCompleted = () => {
-  toDoClear();
+  toDoRenderClear();
   const newToDos = toDos.filter((item) => {
     return item.completed === true;
   });

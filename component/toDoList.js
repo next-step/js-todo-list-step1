@@ -35,7 +35,6 @@ const toDoTemplate = (toDo) => {
         <input class="edit" value="${toDo.title}" />
       </li>`;
 };
-
 const handleDestroy = (toDo) => {
   const targetId = parseInt(toDo.getAttribute('id'));
   const newToDos = toDos.filter((item) => {
@@ -67,7 +66,7 @@ const handleToggle = (toDo, toDoToggle) => {
   toDoUpdate(toDo);
 };
 
-export const toDoClear = () => {
+export const toDoRenderClear = () => {
   $toDoList.innerText = '';
 };
 
