@@ -14,15 +14,19 @@ function todoList (){
                 <input class="edit" value="${title}" />
             `
         this.event.target.value = ''  ;
-        const checkBtn = document.querySelector('.toggle');
-        checkBtn.addEventListener('click', checkComplete => {
-            if(checkBtn.checked){
+        const $checkBtn = newTodoItem.querySelector('.toggle');
+        const $deleteBtn = newTodoItem.querySelector('.destroy');
+
+        $checkBtn.addEventListener('click', checkComplete => {
+            if($checkBtn.checked){
                 newTodoItem.classList.add('completed');
             } else {
                 newTodoItem.classList.remove('completed');
             }
         });
-        
+        $deleteBtn.addEventListener('click', (event) => {
+           $todoList.removeChild(newTodoItem);
+        });
     }
   
     $input.addEventListener('keypress', (event) => {
