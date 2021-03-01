@@ -1,4 +1,5 @@
 import { TODO_FILTER_TYPE } from "../../consts/todoFilterType.js";
+import { localStore } from "../../store/todoStore.js";
 import { generateId } from "../utils/generateId.js";
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
@@ -9,7 +10,7 @@ export default function TodoApp({ $parent }) {
         this.$el = document.createElement('div');
         $parent.appendChild(this.$el);
 
-        this.todoItems = [];
+        this.todoItems = localStore.getTodoItems() || [];
         this.components = {};
 
         this.render();
@@ -17,6 +18,8 @@ export default function TodoApp({ $parent }) {
 
     this.setState = ({todoItems}) => {
         this.todoItems = todoItems;
+        localStore.setTodoItems({todoItems});
+
         this.render();
     };
 
