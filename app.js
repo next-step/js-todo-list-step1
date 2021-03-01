@@ -1,3 +1,5 @@
+// 참고 파일
+// 다른 폴더에 리팩토링 중
 import { newGuid } from './utils.js';
 
 const $todoInput = document.querySelector("#new-todo-title");
