@@ -1,7 +1,17 @@
-export default function TodoInput({ $el, addTodoItem }) {
+export default function TodoInput({ $parent, addTodoItem }) {
 
     this.init = () => {
-        this.$el = $el;
+        this.$el = document.createElement('div');
+        $parent.appendChild(this.$el);
+        
+        this.render();
+    };
+
+    this.setState = () => {
+        this.render();
+    };
+
+    this.render = () => {
         this.$el.innerHTML = `
             <input
                 id="new-todo-title"
@@ -22,16 +32,6 @@ export default function TodoInput({ $el, addTodoItem }) {
               }
             }
         });
-
-        this.render();
-    };
-
-    this.setState = () => {
-        this.render();
-    };
-
-    this.render = () => {
-        
     };
 
     this.init();

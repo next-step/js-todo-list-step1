@@ -2,12 +2,27 @@ import { generateId } from "../utils/generateId.js";
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 
-export default function TodoApp({ $el }) {
+export default function TodoApp({ $parent }) {
 
     this.init = () => {
-        this.$el = $el;
+        this.$el = document.createElement('div');
+        $parent.appendChild(this.$el);
+
         this.todoItems = [];
-        this.components = [];
+        this.components = {};
+
+        this.render();
+    };
+
+    this.setState = ({todoItems}) => {
+        this.todoItems = todoItems;
+        this.components.forEach(component => {
+            component.setState({todoItems});
+        });
+        this.render();
+    };
+
+    this.render = () => {
 
         this.$el.innerHTML = `
             <div class="todoapp">
@@ -34,34 +49,20 @@ export default function TodoApp({ $el }) {
             </div>
         `;
 
-        this.todoInput = new TodoInput({
-            $el: this.$el.querySelector('#todo-input'),
-            addTodoItem: this.addTodoItem,
-        });
-        this.todoList = new TodoList({
-            $el: this.$el.querySelector('#todo-list'),
-            todoItems: this.todoItems,
-            toggleTodoItem: this.toggleTodoItem,
-            removeTodoItem: this.removeTodoItem,
-            updateTodoItem: this.updateTodoItem,
-        });
-        this.components.push(this.todoInput, this.todoList);
+        this.components = {
+            todoInput: new TodoInput({
+                $parent: this.$el.querySelector('#todo-input'),
+                addTodoItem: this.addTodoItem,
+            }),
 
-        this.render();
-    };
-
-    this.setState = ({todoItems}) => {
-        this.todoItems = todoItems;
-        this.components.forEach(component => {
-            component.setState({todoItems});
-        });
-        this.render();
-    };
-
-    this.render = () => {
-        this.components.forEach(component => {
-            component.render();
-        });
+            todoList: new TodoList({
+                $parent: this.$el.querySelector('#todo-list'),
+                todoItems: this.todoItems,
+                toggleTodoItem: this.toggleTodoItem,
+                removeTodoItem: this.removeTodoItem,
+                updateTodoItem: this.updateTodoItem,
+            }) 
+        };
     };
 
     this.addTodoItem = ({todoText}) => {
@@ -71,21 +72,21 @@ export default function TodoApp({ $el }) {
             checked: false,
         });
 
-        this.setState({todoItems: this.todoItems});
+        this.components['todoList'].setState({todoItems: this.todoItems});
     };
 
     this.toggleTodoItem = ({todoId}) => {
         const index = this.todoItems.findIndex(({id}) => id === todoId);
         this.todoItems[index].checked = !this.todoItems[index].checked;
 
-        this.setState({todoItems: this.todoItems});
+        this.components['todoList'].setState({todoItems: this.todoItems});
     };
 
     this.removeTodoItem = ({todoId}) => {
         const index = this.todoItems.findIndex(({id}) => id === todoId);
         this.todoItems.splice(index, 1);
 
-        this.setState({todoItems: this.todoItems});
+        this.components['todoList'].setState({todoItems: this.todoItems});
     };
 
     this.updateTodoItem = ({todoId, updatedText}) => {
@@ -97,7 +98,7 @@ export default function TodoApp({ $el }) {
             text: updatedText,
         });
 
-        this.setState({todoItems: this.todoItems});
+        this.components['todoList'].setState({todoItems: this.todoItems});
     };
 
     this.init();

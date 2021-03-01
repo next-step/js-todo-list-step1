@@ -1,7 +1,9 @@
-export default function TodoList({ $el, todoItems = [], toggleTodoItem, removeTodoItem, updateTodoItem }) {
+export default function TodoList({ $parent, todoItems = [], toggleTodoItem, removeTodoItem, updateTodoItem }) {
     
     this.init = () => {
-        this.$el = $el;
+        this.$el = document.createElement('div');
+        $parent.appendChild(this.$el);
+
         this.todoItems = todoItems.map(todoItem => {
             return {
                 ...todoItem,
