@@ -10,6 +10,9 @@ export default class TodoApp {
     this.todoInput = new TodoInput();
     this.todoList = new TodoList();
     this.todoFilter = new TodoFilter();
+  }
+
+  init() {
     this.todoList.load();
     this.todoInput.setKeyUpListener(event => {
       const text = event.target.value;

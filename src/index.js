@@ -2,4 +2,5 @@
 
 import TodoApp from './TodoApp.js';
 
-new TodoApp();
+const todoApp = new TodoApp();
+todoApp.init();
