@@ -16,13 +16,14 @@ export default function TodoApp({ $parent }) {
 
     this.setState = ({todoItems}) => {
         this.todoItems = todoItems;
-        this.components.forEach(component => {
+        Object.values(this.components).forEach(component => {
             component.setState({todoItems});
         });
         this.render();
     };
 
     this.render = () => {
+        const todoCount = this.todoItems.length;
 
         this.$el.innerHTML = `
             <div class="todoapp">
@@ -32,7 +33,7 @@ export default function TodoApp({ $parent }) {
                     <input class="toggle-all" type="checkbox" />
                     <div id="todo-list"></div>
                     <div class="count-container">
-                        <span class="todo-count">총 <strong>0</strong> 개</span>
+                        <span class="todo-count">총 <strong>${todoCount}</strong> 개</span>
                         <ul class="filters">
                         <li>
                             <a class="all selected" href="/#">전체보기</a>
@@ -72,21 +73,21 @@ export default function TodoApp({ $parent }) {
             checked: false,
         });
 
-        this.components['todoList'].setState({todoItems: this.todoItems});
+        this.setState({todoItems: this.todoItems});
     };
 
     this.toggleTodoItem = ({todoId}) => {
         const index = this.todoItems.findIndex(({id}) => id === todoId);
         this.todoItems[index].checked = !this.todoItems[index].checked;
 
-        this.components['todoList'].setState({todoItems: this.todoItems});
+        this.setState({todoItems: this.todoItems});
     };
 
     this.removeTodoItem = ({todoId}) => {
         const index = this.todoItems.findIndex(({id}) => id === todoId);
         this.todoItems.splice(index, 1);
 
-        this.components['todoList'].setState({todoItems: this.todoItems});
+        this.setState({todoItems: this.todoItems});
     };
 
     this.updateTodoItem = ({todoId, updatedText}) => {
@@ -98,7 +99,7 @@ export default function TodoApp({ $parent }) {
             text: updatedText,
         });
 
-        this.components['todoList'].setState({todoItems: this.todoItems});
+        this.setState({todoItems: this.todoItems});
     };
 
     this.init();
