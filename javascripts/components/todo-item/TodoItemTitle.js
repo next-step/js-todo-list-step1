@@ -3,7 +3,7 @@ export default function TodoItemTitle({id, title, updateTodoStatus}) {
   element.classList.add("label")
   element.textContent = title;
   element.addEventListener("dblclick", () => {
-    updateTodoStatus({id, "status": true});
+    updateTodoStatus({"todoId" : id, "status": true});
   });
 
   return {

@@ -27,6 +27,7 @@ export default function TodoApp() {
   }
 
   const changeTodoDone = (todoId, status) => {
+    console.log(todoId)
     setState(state.todoItems.map(todo => {
       if (todoId === todo.id) {
         todo.isDone = status;
@@ -36,6 +37,7 @@ export default function TodoApp() {
   }
 
   const updateTodo = ({todoId, title}) => {
+    console.log(todoId)
     const newTodoItems = state.todoItems.map(v => {
       if (v.id === todoId) {
         v.title = title;

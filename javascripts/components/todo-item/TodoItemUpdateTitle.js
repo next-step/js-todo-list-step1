@@ -7,11 +7,11 @@ export default function TodoItemUpdateTitle({id, title, updateTodo, updateTodoSt
   element.addEventListener("keyup", ({keyCode}) => {
 
     if (KeyUtils.isEsc(keyCode)) {
-      updateTodoStatus({id, status: false})
+      updateTodoStatus({"todoId":id, status: false})
     }
 
     if (KeyUtils.isEnter(keyCode)) {
-      updateTodo({id, "title": element.value});
+      updateTodo({"todoId":id, "title": element.value});
     }
   })
 
