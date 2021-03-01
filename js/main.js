@@ -30,7 +30,7 @@ function todoList (){
            $todoList.removeChild(newTodoItem);
            countTodo ();
         });
-        newTodoItem.addEventListener('dbclick', () => {
+        newTodoItem.addEventListener('dblclick', () => {
             newTodoItem.classList.add('editing');
          });
          newTodoItem.addEventListener('keyup', (event) => {
@@ -38,12 +38,12 @@ function todoList (){
             const titleLabelElem =  newTodoItem.querySelector(".label")
             if (event.key === 'Escape'){
                 newTodoItem.classList.remove('editing');
-            } 
+            }
             if (event.key === 'Enter'){
+                newTodoItem.classList.remove('editing');
                 titleLabelElem.innerText = editInputElem.value;
             }
-            
-         });   
+        });
          countTodo ();  
         }   
     function countTodo (){
