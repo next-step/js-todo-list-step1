@@ -107,7 +107,7 @@ export default function TodoList({ $parent, todoItems = [], toggleTodoItem, remo
                 isEditing: false,
             };
         })
-        this.render(); 
+        this.setState({todoItems: this.todoItems});
     }
 
     this.init();
