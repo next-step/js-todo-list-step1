@@ -37,13 +37,17 @@ export default class TodoList {
   onDoubleClickTodoList = event => {
     const target = event.target;
     if (!target.matches('.label')) return;
-    this.changeToEditMode(target);
+    this.openEditMode(target);
   };
 
   onKeyUpTodoList = event => {
-    if (event.key !== 'Enter') return;
-    this.editItem(event.target);
-    this.save();
+    if (event.key !== 'Enter' && event.key !== 'Escape') return;
+    if (event.key == 'Enter') {
+      this.editItem(event.target);
+      this.save();
+    } else if (event.key === 'Escape') {
+      this.closeEditMode(event.target);
+    }
   };
 
   addNewItem(text, id) {
@@ -129,9 +133,14 @@ export default class TodoList {
     this.render();
   }
 
-  changeToEditMode(eventTarget) {
+  openEditMode(eventTarget) {
     const $targetItem = eventTarget.closest('li');
     $targetItem.classList.add('editing');
+  }
+
+  closeEditMode(eventTarget) {
+    const $targetItem = eventTarget.closest('li');
+    $targetItem.classList.remove('editing');
   }
 
   editItem(eventTarget) {
