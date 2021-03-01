@@ -30,7 +30,7 @@ function todoList (){
            $todoList.removeChild(newTodoItem);
            countTodo ();
         });
-        newTodoItem.addEventListener('click', () => {
+        newTodoItem.addEventListener('dbclick', () => {
             newTodoItem.classList.add('editing');
          });
          newTodoItem.addEventListener('keyup', (event) => {
@@ -42,13 +42,14 @@ function todoList (){
             if (event.key === 'Enter'){
                 titleLabelElem.innerText = editInputElem.value;
             }
-         });
-         countTodo ();
-    }
+            
+         });   
+         countTodo ();  
+        }   
     function countTodo (){
         let numTodo = $todoList.childElementCount;
         $todoCount.querySelector('strong').innerText= numTodo;
-     }
+    }  
     $input.addEventListener('keypress', (event) => {
         if(event.target.value != ''  && event.key === 'Enter'){
             addTodo (event);
