@@ -6,6 +6,7 @@
     const filters = countContainer.querySelector(".filters");
     showTodoCount();
 
+    // list object
     const TITLES = "titles";
     let title_list = [];
     let id = 0;
