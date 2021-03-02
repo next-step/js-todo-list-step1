@@ -12,18 +12,18 @@ function Store() {
   };
 
   this.toggle = function (id) {
-    const item = this.items.find((item) => equalTo(item, id));
+    const item = this.items.find((item) => equalTo(item.id, id));
     item.isDone = !item.isDone;
     $localStorage.saveItems(this.items);
   };
 
   this.destroy = function (id) {
-    this.items = this.items.filter((item) => notEqualTo(item, id));
+    this.items = this.items.filter((item) => notEqualTo(item.id, id));
     $localStorage.saveItems(this.items);
   };
 
   this.edit = function (id, title) {
-    const item = this.items.find((item) => equalTo(item, id));
+    const item = this.items.find((item) => equalTo(item.id, id));
     item.title = title;
     $localStorage.saveItems(this.items);
   };
@@ -39,20 +39,20 @@ function Store() {
     }
 
     if (this.filterState === FILTER_STATE.ACTIVE) {
-      return this.items.filter((item) => item.isDone === false);
+      return this.items.filter((item) => !item.isDone);
     }
 
     if (this.filterState === FILTER_STATE.COMPLETED) {
-      return this.items.filter((item) => item.isDone === true);
+      return this.items.filter((item) => item.isDone);
     }
   };
 
-  function equalTo(item, id) {
-    return parseInt(item.id) === parseInt(id);
+  function equalTo(itemId, id) {
+    return parseInt(itemId) === parseInt(id);
   }
 
-  function notEqualTo(item, id) {
-    return parseInt(item.id) !== parseInt(id);
+  function notEqualTo(itemId, id) {
+    return parseInt(itemId) !== parseInt(id);
   }
 
   this.init = function () {
