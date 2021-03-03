@@ -1,24 +1,25 @@
-const todoStatus = (setFilter) => {
-  const ulist = document.getElementById('todo-list');
-  const spanCount = document.querySelector('.todo-count > strong');
-  const filter = document.querySelector('ul.filters');
+const filters = ['all', 'active', 'completed'];
 
-  filter.addEventListener('click', (e) => {
-    if (e.target.tagName === 'A') {
-      //TODO vs onclick
-      filter.querySelector('a.selected').classList.remove('selected'); //TODO 이전과 같은 필터인경우에도 .selected 삭제 추가 반복중
-      const filterType = e.target.classList[0];
+const todoStatus = ($ulist, setFilter) => {
+  const $filter = document.querySelector('ul.filters');
+  const $spanCount = document.querySelector('.todo-count > strong');
 
-      e.target.classList.add('selected');
-      setFilter(filterType);
-      updateCount();
+  const _selectFilter = ({ target }) => {
+    const filterType = target.classList[0];
+    if (filters.indexOf(filterType) === -1) {
+      return;
     }
-  });
+    $filter.querySelector('a.selected').classList.remove('selected');
+
+    target.classList.add('selected');
+    setFilter(filterType);
+    updateCount();
+  };
+
+  $filter.addEventListener('click', _selectFilter);
 
   const updateCount = () => {
-    spanCount.textContent =
-      ulist.querySelectorAll('li').length -
-      ulist.querySelectorAll('li.hidden').length;
+    $spanCount.textContent = $ulist.querySelectorAll('li').length;
   };
 
   return {
@@ -26,4 +27,4 @@ const todoStatus = (setFilter) => {
   };
 };
 
-export { todoStatus };
+export { filters, todoStatus };

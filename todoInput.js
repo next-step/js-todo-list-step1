@@ -7,14 +7,12 @@ const eventHandler = (addItem) => {
       return;
     }
 
-    addItem(target.value);
+    addItem(target.value.trim());
     target.value = '';
   };
 
-  const addEventListener = (input) => {
-    input.addEventListener('keyup', _createTodoItem);
-
-    return input;
+  const addEventListener = ($input) => {
+    $input.addEventListener('keyup', _createTodoItem);
   };
 
   return {
@@ -23,8 +21,16 @@ const eventHandler = (addItem) => {
 };
 
 const todoInput = (addItem) => {
-  const _addEventListener = eventHandler(addItem);
-  _addEventListener.addEventListener(document.getElementById('new-todo-title')); //TODO
+  const $input = document.getElementById('new-todo-title');
+
+  const _eventHandler = eventHandler(addItem);
+  _eventHandler.addEventListener($input);
+
+  return {
+    focus() {
+      $input.focus();
+    },
+  };
 };
 
 export { todoInput };
