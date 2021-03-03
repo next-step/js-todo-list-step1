@@ -1,5 +1,6 @@
 const CLASS_COMPLETED = 'completed';
 const CLASS_EDITING = 'editing';
+const ATTRIBUTE_CHECKED = 'checked';
 
 const extractState = ($li) => {
   return {
@@ -16,7 +17,7 @@ const eventHandler = (updateTodoItem, removeTodoItem) => {
     }
 
     const $li = target.closest('li');
-    const isCompleted = target.toggleAttribute('checked');
+    const isCompleted = target.toggleAttribute(ATTRIBUTE_CHECKED);
     if (isCompleted) {
       $li.classList.add(CLASS_COMPLETED);
     } else {
@@ -149,9 +150,10 @@ const todoList = ($ulist, updateTodoItem, removeTodoItem) => {
     $todoItem.querySelector('input.edit').value = content;
     status && $todoItem.classList.add(status);
     if (status === CLASS_COMPLETED) {
-      $todoItem.querySelector('input.toggle').setAttribute('checked', null);
+      $todoItem
+        .querySelector('input.toggle')
+        .setAttribute(ATTRIBUTE_CHECKED, null);
     }
-
     $todoItem.dataset.id = index;
 
     return $todoItem;

@@ -1,12 +1,12 @@
 import { generateKey } from './util.js';
-import { todoInput } from './todoInput.js';
 
 const $ulist = document.getElementById('todo-list');
 
-const todoApp = (todoList, todoStatus) => {
+const todoApp = (todoInput, todoList, todoStatus) => {
   let _todoItems = new Map();
 
-  const filterStatusPredicate = {
+  const _filterStatusPredicate = {
+    //TODO sync with todoStatus.js/filters
     all: () => true,
     completed: ({ status }) => status === 'completed',
     active: ({ status }) => status === '',
@@ -26,7 +26,7 @@ const todoApp = (todoList, todoStatus) => {
     _todoItems.set(todoItem.index, todoItem);
 
     todoListHandler.addItem(todoItem);
-    todoStatusHandler.updateCount(_todoItems.size);
+    todoStatusHandler.updateCount();
   };
 
   const removeTodoItem = ({ index }) => {
@@ -44,11 +44,11 @@ const todoApp = (todoList, todoStatus) => {
 
   const setFilter = (filterType) => {
     const filteredItems = Array.from(_todoItems.values()).filter(
-      filterStatusPredicate[filterType]
+      _filterStatusPredicate[filterType]
     );
 
     todoListHandler.refresh(filteredItems);
-    todoStatusHandler.updateCount(filteredItems.length);
+    todoStatusHandler.updateCount();
   };
 
   const todoInputHandler = todoInput(addTodoItem);
