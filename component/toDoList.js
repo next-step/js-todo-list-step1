@@ -36,7 +36,7 @@ const toDoTemplate = (toDo) => {
       </li>`;
 };
 const handleDestroy = (toDo) => {
-  const targetId = parseInt(toDo.getAttribute('id'));
+  const targetId = Number(toDo.getAttribute('id'));
   const newToDos = toDos.filter((item) => {
     return item.id !== targetId;
   });
@@ -63,14 +63,14 @@ const editNewTitle = (e) => {
 const handleToggle = (toDo, toDoToggle) => {
   toDo.classList.toggle('completed');
   toDoToggle.classList.toggle('checked');
-  toDoUpdate(toDo);
+  completedUpdate(toDo);
 };
 
 export const toDoRenderClear = () => {
   $toDoList.innerText = '';
 };
 
-const toDoUpdate = ($toDoLi) => {
+const completedUpdate = ($toDoLi) => {
   const toDoId = parseInt($toDoLi.getAttribute('id'));
   for (let obj of toDos) {
     if (obj.completed === false && obj.id === toDoId) {
