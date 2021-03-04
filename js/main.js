@@ -3,9 +3,10 @@ function todoList() {
   const $todoList = document.querySelector("#todo-list");
   const $todoCount = document.querySelector(".todo-count");
   const title = [];
+  let index = 0;
 
-  const createTodoTemplate = (title) => `
-   <li>
+  const createTodoTemplate = (title, v) => `
+   <li data-id="${v}">
     <div class="view">
       <input class="toggle" type="checkbox"/>
       <label class="label">${title}</label>
@@ -26,20 +27,14 @@ function todoList() {
     $todoList.innerHTML = s;
   }
 
-  function countTodo() {
-    let numTodo = $todoList.childElementCount;
-    $todoCount.querySelector("strong").innerText = numTodo;
-  }
-
-  function deleteItem(event) {
+  function onClickItem(event) {
     const target = event.target;
     if (target.classList.contains("destroy")) {
-      $todoList.removeChild(newTodoItem);
-      countTodo();
+      console.log(target);
     }
   }
 
-  $todoList.addEventListener("click", deleteItem);
+  $todoList.addEventListener("click", onClickItem);
   $input.addEventListener("keypress", addTodo);
 }
 const todoApp = new todoList();
