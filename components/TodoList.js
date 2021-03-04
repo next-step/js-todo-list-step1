@@ -16,35 +16,35 @@ export default class TodoList {
   }
 
   addEventListeners() {
-    this.$todoList.addEventListener("dblclick", (event) => {
-      const $li = event.target.closest(".todo-item");
+    this.$todoList.addEventListener("dblclick", ({ target }) => {
+      const $li = target.closest(".todo-item");
       $li.classList.add("editing");
     });
 
-    this.$todoList.addEventListener("click", (event) => {
-      const $li = event.target.closest(".todo-item");
-      if (event.target && event.target.className === "destroy") {
+    this.$todoList.addEventListener("click", ({ target }) => {
+      const $li = target.closest(".todo-item");
+      if (target && target.className === "destroy") {
         this.onRemove($li.id);
         return;
       }
 
-      if (event.target && event.target.className === "toggle") {
+      if (target && target.className === "toggle") {
         this.onCheckedToggle($li.id);
       }
     });
 
-    this.$todoList.addEventListener("keyup", (event) => {
-      const $li = event.target.closest(".todo-item");
+    this.$todoList.addEventListener("keyup", ({ key, target }) => {
+      const $li = target.closest(".todo-item");
 
-      if (event.key === KEYS.ESCAPE) {
+      if (key === KEYS.ESCAPE) {
         $li.classList.remove("editing");
-        event.target.value = $li.querySelector("label").innerText;
+        target.value = $li.querySelector("label").innerText;
         return;
       }
 
-      if (event.key === KEYS.ENTER) {
+      if (key === KEYS.ENTER) {
         $li.classList.remove("editing");
-        this.onTitleChange($li.id, event.target.value);
+        this.onTitleChange($li.id, target.value);
       }
     });
   }

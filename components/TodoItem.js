@@ -1,16 +1,11 @@
-import { KEYS } from "../utils/constants.js";
-
 export default class TodoItem {
   item;
   onRemove;
   onCheckedToggle;
   onTitleChange;
 
-  constructor(item, onRemove, onCheckedToggle, onTitleChange) {
+  constructor(item) {
     this.item = item;
-    this.onRemove = onRemove;
-    this.onCheckedToggle = onCheckedToggle;
-    this.onTitleChange = onTitleChange;
   }
 
   makeTemplate() {

@@ -17,10 +17,10 @@ export default class TodoInput {
     )}${Math.random().toString(32)}`;
   }
 
-  onKeypress(event) {
-    if (event.key === KEYS.ENTER) {
-      this.onAdd(new Item(this.genTodoItemId(), event.target.value, false));
-      event.target.value = "";
+  onKeypress({ key, target }) {
+    if (key === KEYS.ENTER) {
+      this.onAdd(new Item(this.genTodoItemId(), target.value, false));
+      target.value = "";
     }
   }
 }

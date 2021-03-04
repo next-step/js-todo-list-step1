@@ -1,10 +1,9 @@
 export default class CountContainer {
-  $countContainer;
   $todoCount;
 
   constructor() {
-    this.$countContainer = document.querySelector(".count-container");
-    this.$todoCount = this.$countContainer
+    this.$todoCount = document
+      .querySelector(".count-container")
       .querySelector(".todo-count")
       .querySelector("strong");
   }

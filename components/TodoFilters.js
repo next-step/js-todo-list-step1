@@ -14,9 +14,9 @@ export default class TodoFilters {
   addEventListeners() {
     const [$all, $todo, $completed] = this.getATags();
 
-    this.$filters.addEventListener("click", (event) => {
-      if (event.target.tagName === "A") {
-        const $a = event.target;
+    this.$filters.addEventListener("click", ({ target }) => {
+      if (target.tagName === "A") {
+        const $a = target;
 
         [$all, $todo, $completed].forEach(($elem) =>
           $a === $elem

@@ -1,6 +1,5 @@
 import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
-import Item from "../models/Item.js";
 import CountContainer from "./CounterContainer.js";
 import TodoFilters from "./TodoFilters.js";
 import { LAYERS } from "../utils/constants.js";
