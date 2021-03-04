@@ -4,6 +4,16 @@ function todoList() {
   const $todoCount = document.querySelector(".todo-count");
   const title = [];
 
+  const createTodoTemplate = (title) => `
+   <li>
+    <div class="view">
+      <input class="toggle" type="checkbox"/>
+      <label class="label">${title}</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="${title}" />
+  </li>`;
+
   function addTodo(event) {
     if (event.target.value != "" && event.key === "Enter") {
       title.push(event.target.value);
@@ -12,14 +22,8 @@ function todoList() {
   }
 
   function makeLI() {
-    let htmlliElement = document.createElement("li");
-    htmlliElement.innerHTML=" <div class=\"view\">\n" +
-        "      <input class=\"toggle\" type=\"checkbox\"/>\n" +
-        "      <label class=\"label\">새로운 타이틀</label>\n" +
-        "      <button class=\"destroy\"></button>\n" +
-        "    </div>\n" +
-        "    <input class=\"edit\" value=\"새로운 타이틀\" />"
-    $todoList.appendChild();
+    let s = title.map((v) => createTodoTemplate(v)).join("");
+    $todoList.innerHTML = s;
   }
 
   function countTodo() {
