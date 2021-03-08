@@ -26,4 +26,4 @@ const todoStatus = ($ulist, setFilter) => {
   };
 };
 
-export { filters, todoStatus };
+export { todoStatus };

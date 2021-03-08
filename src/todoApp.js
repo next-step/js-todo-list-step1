@@ -1,4 +1,3 @@
-import { filters } from './todoStatus.js';
 import { generateKey } from './util.js';
 
 const $ulist = document.getElementById('todo-list');
