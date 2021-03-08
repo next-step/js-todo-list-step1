@@ -1,9 +1,11 @@
+import { filters } from './todoStatus.js';
 import { generateKey } from './util.js';
 
 const $ulist = document.getElementById('todo-list');
 
 const todoApp = (todoInput, todoList, todoStatus) => {
   let _todoItems = new Map();
+  let _currentFilter = 'all';
 
   const _filterStatusPredicate = {
     //TODO sync with todoStatus.js/filters
@@ -24,14 +26,12 @@ const todoApp = (todoInput, todoList, todoStatus) => {
   const addTodoItem = (content, status = '') => {
     const todoItem = _createTodoItem(content, status);
     _todoItems.set(todoItem.index, todoItem);
-
-    todoListHandler.addItem(todoItem);
-    todoStatusHandler.updateCount();
+    _setState();
   };
 
   const removeTodoItem = ({ index }) => {
     _todoItems.delete(index);
-    todoStatusHandler.updateCount();
+    _setState();
   };
 
   const updateTodoItem = ({ index, content, status }) => {
@@ -40,15 +40,21 @@ const todoApp = (todoInput, todoList, todoStatus) => {
     todoItem.status = status ?? '';
 
     _todoItems.set(todoItem.index, todoItem);
+    _setState();
   };
 
   const setFilter = (filterType) => {
+    _currentFilter = filterType;
+    _setState();
+  };
+
+  const _setState = () => {
     const filteredItems = Array.from(_todoItems.values()).filter(
-      _filterStatusPredicate[filterType]
+      _filterStatusPredicate[_currentFilter]
     );
 
     todoListHandler.refresh(filteredItems);
-    todoStatusHandler.updateCount();
+    todoStatusHandler.updateCount(filteredItems.length);
   };
 
   const todoInputHandler = todoInput(addTodoItem);

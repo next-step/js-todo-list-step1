@@ -13,13 +13,12 @@ const todoStatus = ($ulist, setFilter) => {
 
     target.classList.add('selected');
     setFilter(filterType);
-    updateCount();
   };
 
   $filter.addEventListener('click', _selectFilter);
 
-  const updateCount = () => {
-    $spanCount.textContent = $ulist.querySelectorAll('li').length;
+  const updateCount = (count) => {
+    $spanCount.textContent = count;
   };
 
   return {
