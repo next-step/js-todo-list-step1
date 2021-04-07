@@ -26,12 +26,24 @@ export default class View {
           callback();
         });
         break;
+      case 'destroy':
+        // NOTE: callback == Controller.destroyItem
+        this.todoList.addEventListener('click', (event) => {
+          if (!event.target.closest('.destroy')) {
+            return;
+          }
+          const li = event.target.closest('li');
+          callback(+li.dataset.id);
+        });
+        break;
       default:
         console.log('eventName is not handling');
     }
   }
 
   renderAllTodo(items) {
+    // TODO: 아래 빈 줄로 만드는걸 메서드로 빼기
+    this.todoList.innerHTML = '';
     items.forEach((item) => {
       this.renderTodo(item);
     });
