@@ -35,6 +35,7 @@ export default class Controller {
     this.model
       .removeItem(itemId, this.view.currentUser)
       .then(() => {
+        // TODO: 현재 하나만 삭제해도 전부를 다시 render하고 있다. 이 부분해결하자.
         this.view.renderAllTodo(this.model.getTodosOf(this.view.currentUser));
       })
       .catch((error) => {
