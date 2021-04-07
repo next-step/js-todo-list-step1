@@ -18,4 +18,9 @@ export default class Model {
     const storage = this.stroages[userName];
     return storage.getTodos();
   }
+
+  async removeItem(itemId, userName) {
+    const storage = this.stroages[userName];
+    storage.remove(itemId);
+  }
 }
