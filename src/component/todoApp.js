@@ -1,6 +1,6 @@
 import TodoInput from "./todoInput.js";
 import TodoList from "./todoList.js";
-import { TodoItem } from "./todoItem.js";
+import { TodoItem, converter } from "./todoItem.js";
 
 // 부모 컴포넌트
 export default function TodoApp(div) {
@@ -22,5 +22,12 @@ export default function TodoApp(div) {
   this.complete = (target) => {
     target.className = "completed";
     target.querySelector("input").setAttribute("checked", true);
+  }
+
+  this.delete = (target) => {
+    const index = this.todoItems.indexOf(converter(target));
+    this.todoItems.splice(index, 1);
+    this.setState(this.todoItems);
+    target.remove();
   }
 }

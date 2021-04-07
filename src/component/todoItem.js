@@ -18,4 +18,8 @@ export function todoItemTemplate(item) {
   "</li>";
 }
 
+export function converter(target) {
+  return new TodoItem(target.querySelector("label").text);
+}
+
 
