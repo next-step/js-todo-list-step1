@@ -20,13 +20,24 @@ export default class View {
           }
         });
         break;
+      case 'refresh':
+        // NOTE: callback == Controller.refreshPage
+        window.addEventListener('load', () => {
+          callback();
+        });
+        break;
       default:
         console.log('eventName is not handling');
     }
   }
 
+  renderAllTodo(items) {
+    items.forEach((item) => {
+      this.renderTodo(item);
+    });
+  }
+
   renderTodo(item) {
-    console.log(this);
     let li = `<li data-id=${item.id}>
                 <div class="view">
                   <input class="toggle" type="checkbox"/>
