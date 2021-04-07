@@ -6,6 +6,9 @@ export default class Controller {
     this.view.setEventListener('add', (value) => {
       this.addItem(value);
     });
+    this.view.setEventListener('refresh', () => {
+      this.refreshPage();
+    });
   }
 
   addItem(value) {
@@ -18,5 +21,10 @@ export default class Controller {
       .catch((error) => {
         alert(error.message);
       });
+  }
+
+  refreshPage() {
+    const items = this.model.getTodosOf(this.view.currentUser);
+    this.view.renderAllTodo(items);
   }
 }
