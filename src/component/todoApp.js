@@ -34,22 +34,20 @@ export default function TodoApp(div) {
 
   this.edit = target => {
     target.className = "edit";
-    const item = converter(target);
-    console.log(item);
-    // console.log(item);
-    // target.innerHTML = 1;
-    // console.log(target);
-    // console.log(target.innerHTML);
-    // target.innerHTML = todoInputTemplate(item);
-    // target.addEventListener("keydown", function(event) {
-    //   if(event.key === "Enter") {
-    //     const index = this.todoItems.indexOf(item);
-    //     this.todoItems[index] = event.target.value;
-    //     event.target.value = "";
-    //   }
-    // });
-    // target.className = "view";
-    // this.setState(this.todoItems);
+    const index = converter(target);
+    const itemIndex = this.todoItems.findIndex(item => item.id == index);
+    console.log("before"+ target.innerHTML);
+    target.innerHTML = todoInputTemplate(this.todoItems[itemIndex]);
+    console.log("after" + target.innerHTML);
+    target.addEventListener("keydown", function(event) {
+      if(event.key === "Enter") {
+        console.log(evet.target.value);
+        this.todoItems[itemIndex] = event.target.value;
+        event.target.value = ""; 
+        this.setState(this.todoItems);
+        target.className = "view";
+      }
+    });
   }
 
 }

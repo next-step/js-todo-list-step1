@@ -19,7 +19,9 @@ export default function TodoList(app) {
       app.complete(findclosest(event));
     }
     if (event.target.className === "destroy") {
-      app.delete(findclosest(event));
+      if(confirm("정말로 삭제하시겠습니까?")){
+        app.delete(findclosest(event));
+      }
     }
   }
   
