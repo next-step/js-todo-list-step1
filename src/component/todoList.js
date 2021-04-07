@@ -1,4 +1,4 @@
-import { todoItemTemplate } from "./todoItem.js";
+import { converter, todoInputTemplate, todoItemTemplate } from "./todoItem.js";
 
 // todoList 보여주는 컴포넌트
 export default function TodoList(app) {
@@ -16,12 +16,22 @@ export default function TodoList(app) {
   
   const onClick = (event) => {
     if (event.target.className === "toggle") {
-      app.complete(event.target.closest("li"));
+      app.complete(findclosest(event));
     }
     if (event.target.className === "destroy") {
-      app.delete(event.target.closest("li"));
+      app.delete(findclosest(event));
     }
   }
   
+  const onDClick = (event) => {
+    app.edit(findclosest(event));
+  }
+
   this.$todoList.addEventListener("click", onClick);
+  this.$todoList.addEventListener("dblclick", onDClick);
+}
+
+
+function findclosest(event) {
+  return event.target.closest("li");
 }
