@@ -5,7 +5,7 @@ import { TodoItem } from "./todoItem.js";
 // 부모 컴포넌트
 export default function TodoApp(div) {
   this.todoItems = []
-  this.todoList = new TodoList();
+  this.todoList = new TodoList(this);
 
   this.setState = updatedItems => {
     this.todoItems = updatedItems;
@@ -18,4 +18,9 @@ export default function TodoApp(div) {
     this.setState(this.todoItems);
     }
   }); 
+  
+  this.complete = (target) => {
+    target.className = "completed";
+    target.querySelector("input").setAttribute("checked", true);
+  }
 }
