@@ -13,4 +13,9 @@ export default class Model {
       completed: false,
     });
   }
+
+  getTodosOf(userName) {
+    const storage = this.stroages[userName];
+    return storage.getTodos();
+  }
 }
