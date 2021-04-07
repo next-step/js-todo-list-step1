@@ -23,22 +23,7 @@ export function todoItemTemplate(item) {
   </li>`;
 }
 
-export function todoInputTemplate(item) {
-  return `<div class="view">
-  <input
-  id="new-todo-title"
-  class="new-todo"
-  placeholder="${item.text}"
-  autofocus
-/>
-  </div>
-  <input class="edit" value="${item.text}" />`;
-}
-
 export function converter(target) {
-  console.log(target);
-  console.log(target.querySelector("#item-id").value);
-
   return target.querySelector("#item-id").value;
 }
 

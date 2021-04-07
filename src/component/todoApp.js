@@ -1,6 +1,6 @@
 import TodoInput from "./todoInput.js";
 import TodoList from "./todoList.js";
-import { TodoItem, converter, todoInputTemplate } from "./todoItem.js";
+import { TodoItem, converter } from "./todoItem.js";
 
 // 부모 컴포넌트
 export default function TodoApp(div) {
@@ -21,33 +21,26 @@ export default function TodoApp(div) {
   this.todoInput = new TodoInput({onAdd : add}); 
   
   this.complete = target => {
-    target.className = "completed";
-    target.querySelector("input").setAttribute("checked", true);
+    if (target.className === "") {
+      target.className = "completed";
+      target.querySelector("input").setAttribute("checked", true);  
+    } else if (target.className === "completed") {
+      target.className = "";
+      target.querySelector("input").setAttribute("checked", false);
+    }
   }
 
   this.delete = target => {
-    const index = converter(target);
-    this.todoItems = this.todoItems.filter(item => item.id != index);
+    const targetId = converter(target);
+    this.todoItems = this.todoItems.filter(item => item.id != targetId);
     this.setState(this.todoItems);
     target.remove();
   }
 
-  this.edit = target => {
-    target.className = "edit";
-    const index = converter(target);
-    const itemIndex = this.todoItems.findIndex(item => item.id == index);
-    console.log("before"+ target.innerHTML);
-    target.innerHTML = todoInputTemplate(this.todoItems[itemIndex]);
-    console.log("after" + target.innerHTML);
-    target.addEventListener("keydown", function(event) {
-      if(event.key === "Enter") {
-        console.log(evet.target.value);
-        this.todoItems[itemIndex] = event.target.value;
-        event.target.value = ""; 
-        this.setState(this.todoItems);
-        target.className = "view";
-      }
-    });
+  this.edit = (target, value) => {
+    const targetId = converter(target);
+    const itemIndex = this.todoItems.findIndex(item => item.id == targetId);
+    this.todoItems[itemIndex] = value;
+    this.setState(this.todoItems);
   }
-
 }
