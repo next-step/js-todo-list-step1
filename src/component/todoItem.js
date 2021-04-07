@@ -4,18 +4,18 @@ export function TodoItem(contents) {
   }
 
 export function todoItemTemplate(item) {
-    return "<li>" +
-    '<div class="view">' +
-      '<input class="toggle" type="checkbox"/>' +
-      '<label class="label">' + 
-      item.text +
-      '</label>' +
-      '<button class="destroy"></button>' +
-    '</div>' +
-    '<input class="edit" value="' +
-    item.text+
-    '" />' +
-  "</li>";
+    return `<li>
+    <div class="view">
+      <input class="toggle" type="checkbox"/>
+      <label class="label"> 
+      ${item.text}
+      </label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="
+    ${item.text}
+    " />
+  </li>`;
 }
 
 export function converter(target) {
