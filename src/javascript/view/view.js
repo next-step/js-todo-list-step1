@@ -15,13 +15,9 @@ export default class View {
       case 'add':
         // NOTE: callback == Controller.addItem
         this.input.addEventListener('keypress', (event) => {
-          if (event.key !== 'Enter') {
-            return;
-          } else if (event.key === 'ESC') {
-            // TODO: clear input box
-            return;
+          if (event.key === 'Enter') {
+            callback(this.input.value);
           }
-          callback(this.input.value);
         });
         break;
       default:
@@ -40,5 +36,9 @@ export default class View {
                 <input class="edit" value="새로운 타이틀" />
               </li>`;
     this.todoList.insertAdjacentHTML('beforeend', li);
+  }
+
+  clearInput() {
+    this.input.value = '';
   }
 }

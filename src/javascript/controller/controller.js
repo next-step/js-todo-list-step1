@@ -13,7 +13,7 @@ export default class Controller {
       .create(value, this.view.currentUser)
       .then((item) => {
         this.view.renderTodo(item);
-        // TODO: input box 클리어하자.
+        this.view.clearInput();
       })
       .catch((error) => {
         alert(error.message);
