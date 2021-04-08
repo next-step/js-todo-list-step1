@@ -4,16 +4,16 @@ export default class Controller {
     this.view = view;
 
     this.view.setEventListener('add', (value) => {
-      this.addItem(value);
+      this.add(value);
     });
     this.view.setEventListener('refresh', () => {
       this.refreshPage();
     });
-    this.view.setEventListener('destroy', (itemId) => {
-      this.destroyItem(itemId);
+    this.view.setEventListener('destroy', (todoId) => {
+      this.destroy(todoId);
     });
-    this.view.setEventListener('toggle', (itemId) => {
-      this.toggleCheckBox(itemId);
+    this.view.setEventListener('toggle', (todoId) => {
+      this.toggleCheckBox(todoId);
     });
     this.view.setEventListener('selectAll', () => {
       this.showAll();
@@ -26,11 +26,11 @@ export default class Controller {
     });
   }
 
-  addItem(value) {
+  add(value) {
     this.model
       .create(value, this.view.currentUser)
-      .then((item) => {
-        this.view.renderTodo(item);
+      .then((todo) => {
+        this.view.renderTodo(todo);
         this.view.clearInput();
       })
       .catch((error) => {
@@ -39,26 +39,26 @@ export default class Controller {
   }
 
   refreshPage() {
-    const items = this.model.getTodosOf(this.view.currentUser);
-    this.view.renderAllTodo(items);
+    const todos = this.model.getTodosOf(this.view.currentUser);
+    this.view.renderAllTodo(todos);
   }
 
-  destroyItem(itemId) {
+  destroy(todoId) {
     this.model
-      .removeItem(itemId, this.view.currentUser)
-      .then((item) => {
-        this.view.removeItemFromTodoList(item);
+      .remove(todoId, this.view.currentUser)
+      .then((todo) => {
+        this.view.removeTodoFromList(todo);
       })
       .catch((error) => {
         console.log(error.message);
       });
   }
 
-  toggleCheckBox(itemId) {
+  toggleCheckBox(todoId) {
     this.model
-      .changeStatus(itemId, this.view.currentUser)
-      .then((item) => {
-        this.view.renderAgain(item);
+      .changeStatus(todoId, this.view.currentUser)
+      .then((todo) => {
+        this.view.renderAgain(todo);
       })
       .catch((error) => {
         console.log(error.meesage);

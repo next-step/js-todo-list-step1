@@ -19,13 +19,13 @@ export default class Model {
     return storage.getTodos();
   }
 
-  async removeItem(itemId, userName) {
+  async remove(todoId, userName) {
     const storage = this.stroages[userName];
-    return storage.remove(itemId);
+    return storage.remove(todoId);
   }
 
-  async changeStatus(itemId, userName) {
+  async changeStatus(todoId, userName) {
     const storage = this.stroages[userName];
-    return storage.updateStatus(itemId);
+    return storage.updateStatus(todoId);
   }
 }

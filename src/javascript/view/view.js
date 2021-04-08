@@ -15,7 +15,7 @@ export default class View {
   setEventListener(eventName, callback) {
     switch (eventName) {
       case 'add':
-        // NOTE: callback == Controller.addItem
+        // NOTE: callback == Controller.add
         this.input.addEventListener('keypress', (event) => {
           if (event.key === 'Enter') {
             callback(this.input.value);
@@ -29,7 +29,7 @@ export default class View {
         });
         break;
       case 'destroy':
-        // NOTE: callback == Controller.destroyItem
+        // NOTE: callback == Controller.destroy
         this.todoList.addEventListener('click', (event) => {
           if (!event.target.closest('.destroy')) {
             return;
@@ -49,7 +49,7 @@ export default class View {
         });
         break;
       case 'selectAll':
-        // NOTE: callback == Controller.toggleCheckBox
+        // NOTE: callback == Controller.showAll
         this.filter.addEventListener('click', (event) => {
           const filter = event.target.closest('.all');
           if (!filter) {
@@ -60,7 +60,7 @@ export default class View {
         });
         break;
       case 'selectActive':
-        // NOTE: callback == Controller.toggleCheckBox
+        // NOTE: callback == Controller.showActive
         this.filter.addEventListener('click', (event) => {
           const filter = event.target.closest('.active');
           if (!filter) {
@@ -71,7 +71,7 @@ export default class View {
         });
         break;
       case 'selectCompleted':
-        // NOTE: callback == Controller.toggleCheckBox
+        // NOTE: callback == Controller.showCompleted
         this.filter.addEventListener('click', (event) => {
           const filter = event.target.closest('.completed');
           if (!filter) {
@@ -87,19 +87,19 @@ export default class View {
     }
   }
 
-  renderTodo(item) {
-    const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
+  renderTodo(todo) {
+    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (li) {
       return;
     }
     const temp = document.createElement('li');
-    temp.dataset.id = item.id;
-    temp.classList.add(item.completed ? 'completed' : 'ing');
+    temp.dataset.id = todo.id;
+    temp.classList.add(todo.completed ? 'completed' : 'ing');
     temp.innerHTML = `
                         <div class="view">
                           <input class="toggle" type="checkbox"
-                          ${item.completed ? 'checked' : ''}/>
-                          <label class="label">${item.content}</label>
+                          ${todo.completed ? 'checked' : ''}/>
+                          <label class="label">${todo.content}</label>
                           <button class="destroy"></button>
                         </div>
                         <input class="edit" value="새로운 타이틀" />`;
@@ -107,14 +107,14 @@ export default class View {
     this.increaseCount();
   }
 
-  renderAllTodo(items) {
-    items.forEach((item) => {
-      this.renderTodo(item);
+  renderAllTodo(todos) {
+    todos.forEach((todo) => {
+      this.renderTodo(todo);
     });
   }
 
-  removeItemFromTodoList(item) {
-    const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
+  removeTodoFromList(todo) {
+    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
     }
@@ -122,47 +122,47 @@ export default class View {
     this.decreaseCount();
   }
 
-  renderAgain(item) {
-    const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
+  renderAgain(todo) {
+    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
     }
-    li.className = item.completed ? 'completed' : 'ing';
+    li.className = todo.completed ? 'completed' : 'ing';
     li.innerHTML = `
                     <div class="view">
                       <input class="toggle" type="checkbox"
-                      ${item.completed ? 'checked' : ''}/>
-                      <label class="label">${item.content}</label>
+                      ${todo.completed ? 'checked' : ''}/>
+                      <label class="label">${todo.content}</label>
                       <button class="destroy"></button>
                     </div>
                     <input class="edit" value="새로운 타이틀" />`;
   }
 
   filterAll() {
-    const lis = this.todoList.querySelectorAll('li');
-    lis.forEach((item) => {
-      item.style.display = 'block';
+    const todos = this.todoList.querySelectorAll('li');
+    todos.forEach((todo) => {
+      todo.style.display = 'block';
     });
   }
 
   filterActive() {
-    const lis = this.todoList.querySelectorAll('li');
-    lis.forEach((item) => {
-      if (item.classList.contains('completed')) {
-        item.style.display = 'none';
+    const todos = this.todoList.querySelectorAll('li');
+    todos.forEach((todo) => {
+      if (todo.classList.contains('completed')) {
+        todo.style.display = 'none';
       } else {
-        item.style.display = 'block';
+        todo.style.display = 'block';
       }
     });
   }
 
   filterCompleted() {
-    const lis = this.todoList.querySelectorAll('li');
-    lis.forEach((item) => {
-      if (item.classList.contains('completed')) {
-        item.style.display = 'block';
+    const todos = this.todoList.querySelectorAll('li');
+    todos.forEach((todo) => {
+      if (todo.classList.contains('completed')) {
+        todo.style.display = 'block';
       } else {
-        item.style.display = 'none';
+        todo.style.display = 'none';
       }
     });
   }
