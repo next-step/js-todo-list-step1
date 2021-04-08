@@ -9,11 +9,11 @@ export const SELECTOR = {
   DESTROY: 'destroy',
   EDITING_MODE: 'editing',
   EDIT_INPUT: '.edit',
+  TODO_COUNTER: 'todo-count',
 };
 
-
 export const STATUS = {
-  ALL='all',
-  COMPLETED='completed',
-  NOT_COMPLETED='notCompleted'
+  ALL: 'all',
+  COMPLETED: 'completed',
+  NOT_COMPLETED: 'notCompleted',
 };

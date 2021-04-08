@@ -14,3 +14,6 @@ export const todoTemplates = (title) => `
 </li>`;
 
 export const todoListTemplates = (datas) => datas.map((v) => todoTemplates(v));
+
+export const todoCounterTemplates = (counter) =>
+  `총 <strong>${counter}</strong> 개</span>`;

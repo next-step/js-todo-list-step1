@@ -15,8 +15,8 @@ class TodoInput {
       e.preventDefault();
       const title = container.value;
       container.value = '';
-      const todoDatas = [...this.store.todoDatas, title];
-      this.store.setTodoData(todoDatas);
+      const todoData = [...this.store.todoData, title];
+      this.store.setTodoData(todoData);
     });
   }
 }
