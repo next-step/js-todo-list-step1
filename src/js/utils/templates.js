@@ -3,10 +3,10 @@
  * @param {string} title
  */
 
-export const todoTemplates = (id, title) => `
-<li data-id=${id}>
+export const todoTemplates = (id, title, complete) => `
+<li data-id=${id} class=${complete ? 'completed' : ''}>
     <div class="view">
-        <input class="toggle" type="checkbox"/>
+        <input class="toggle" type="checkbox" ${complete ? 'checked' : ''}/>
         <label class="label">${title}</label>
         <button class="destroy"></button>
     </div>
@@ -16,7 +16,7 @@ export const todoTemplates = (id, title) => `
 export const todoListTemplates = (datas) => {
   let result = '';
   datas.forEach((v) => {
-    result += todoTemplates(v.id, v.title);
+    result += todoTemplates(v.id, v.title, v.complete);
   });
   return result;
 };

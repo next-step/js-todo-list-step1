@@ -13,7 +13,7 @@ class TodoStore extends Subject {
 
   updateData(newData) {
     this.setTodoData(newData);
-    this.renderData(newData);
+    this.setRenderData(newData);
   }
 
   setTodoData(todoData) {

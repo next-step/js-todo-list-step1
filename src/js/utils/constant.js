@@ -10,6 +10,7 @@ export const SELECTOR = {
   EDITING_MODE: 'editing',
   EDIT_INPUT: '.edit',
   TODO_COUNTER: 'todo-count',
+  COMPLETED_LIST: 'clear-completed',
 };
 
 export const STATUS = {

@@ -12,16 +12,17 @@ class TodoList extends Observer {
   }
 
   bindEvent() {
-    this.container.addEventListener('click', (e) => {
-      const $li = e.target.closest(SELECTOR.LIST);
-      const targetClass = e.target.className;
+    this.container.addEventListener('click', ({ target }) => {
+      const $li = target.closest(SELECTOR.LIST);
+      const id = +$li.dataset.id;
+      const targetClass = target.className;
       if (targetClass === SELECTOR.TOGGLE) {
+        this.onToggleComplete(id);
       } else if (targetClass === SELECTOR.DESTROY) {
       }
     });
 
-    this.container.addEventListener('dblclick', (e) => {
-      const target = e.target;
+    this.container.addEventListener('dblclick', ({ target }) => {
       if (target.className === SELECTOR.LABEL) {
         this.onEditMode(e.target);
       }
@@ -64,7 +65,17 @@ class TodoList extends Observer {
       }
       return data;
     });
-    this.store.updatedData(updatedData);
+    this.store.updateData(updatedData);
+  }
+
+  onToggleComplete(id) {
+    const updatedData = this.store.renderData.map((data) => {
+      if (data.id === id) {
+        return { ...data, complete: !data.complete };
+      }
+      return data;
+    });
+    this.store.updateData(updatedData);
   }
 
   update() {
