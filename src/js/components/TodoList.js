@@ -19,6 +19,7 @@ class TodoList extends Observer {
       if (targetClass === SELECTOR.TOGGLE) {
         this.onToggleComplete(id, $li, target);
       } else if (targetClass === SELECTOR.DESTROY) {
+        this.onRemoveTodo(id, $li);
       }
     });
 
@@ -80,6 +81,12 @@ class TodoList extends Observer {
       }
       return data;
     });
+    this.store.setOriginData(updatedData);
+  }
+
+  onRemoveTodo(id, $li) {
+    this.container.removeChild($li);
+    const updatedData = this.store.renderData.filter((data) => data.id !== id);
     this.store.setOriginData(updatedData);
   }
 
