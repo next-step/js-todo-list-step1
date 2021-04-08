@@ -51,11 +51,8 @@ export function todoItemTemplate(item) {
   </li>`;
 }
 
-export function parseItems(items) {
-  if (items === "[]") {
-    return [];
-  }
-  return JSON.parse(items).map(item => {
+export function createItems(items) {
+  return items.map(item => {
     return new TodoItem(item.id, item.text);
   });
 }

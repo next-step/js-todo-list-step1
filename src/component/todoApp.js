@@ -1,13 +1,14 @@
 import TodoInput from "./todoInput.js";
 import TodoList from "./todoList.js";
-import { parseItems, TodoItem } from "./todoItem.js";
+import { createItems, TodoItem } from "./todoItem.js";
+import * as JsonUtil from "../utils/jsonUtils.js";
 
 // 부모 컴포넌트
 export default function TodoApp(div) {
 
-  this.todoItems = (localStorage.getItem("items") == null)? [] : parseItems(localStorage.getItem("items"));
+  this.todoItems = JsonUtil.hasElement("items")? createItems(JsonUtil.getElement("items")) : [];
   this.todoList = new TodoList(this);
-  this.idGenerator = 0;
+  this.idGenerator = JsonUtil.hasElement("idGenerator")? JsonUtil.getElement("idGenerator") : 0;
 
   this.render = () => {
     this.setState(this.todoItems);
@@ -15,7 +16,8 @@ export default function TodoApp(div) {
 
   this.setState = updatedItems => {
     this.todoItems = updatedItems;
-    localStorage.setItem("items", JSON.stringify(this.todoItems));
+    JsonUtil.setElement("items", this.todoItems);
+    JsonUtil.setElement("idGenerator", this.idGenerator);
     this.todoList.setState(this.todoItems);
   };
 
