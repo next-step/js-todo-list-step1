@@ -36,6 +36,17 @@ export default class View {
           callback(+li.dataset.id);
         });
         break;
+      case 'toggle':
+        // NOTE: callback == Controller.toggleCheckBox
+        this.todoList.addEventListener('click', (event) => {
+          if (!event.target.closest('.toggle')) {
+            return;
+          }
+          const li = event.target.closest('li');
+          callback(+li.dataset.id);
+        });
+        break;
+
       default:
         console.log('eventName is not handling');
     }
@@ -50,9 +61,13 @@ export default class View {
   }
 
   renderTodo(item) {
-    let li = `<li data-id=${item.id}>
+    console.log(item);
+    let li = `<li class=${item.completed ? 'completed' : 'ing'} data-id=${
+      item.id
+    }>
                 <div class="view">
-                  <input class="toggle" type="checkbox"/>
+                  <input class="toggle" type="checkbox"
+                  ${item.completed ? 'checked' : ''}/>
                   <label class="label">${item.content}</label>
                   <button class="destroy"></button>
                 </div>
