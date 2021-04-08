@@ -13,7 +13,8 @@ export const todoTemplates = (title) => `
     <input class="edit"/>
 </li>`;
 
-export const todoListTemplates = (datas) => datas.map((v) => todoTemplates(v));
+export const todoListTemplates = (datas) =>
+  datas.map((v) => todoTemplates(v.title));
 
 export const todoCounterTemplates = (counter) =>
   `총 <strong>${counter}</strong> 개</span>`;

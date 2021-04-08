@@ -1,4 +1,4 @@
-import { SELECTOR, STATUS } from '../utils/constant.js';
+import { SELECTOR } from '../utils/constant.js';
 import { todoListTemplates } from '../utils/templates.js';
 import Observer from '../libs/Observer.js';
 
@@ -8,6 +8,7 @@ class TodoList extends Observer {
     this.store = store;
     this.container = document.getElementById(SELECTOR.TODO_LIST);
     this.bindEvent();
+    this.render();
   }
 
   bindEvent() {
@@ -67,17 +68,7 @@ class TodoList extends Observer {
   }
 
   render() {
-    let renderData = this.store.todoData;
-    // 렌더링 될 데이터 Status 에 따라서 필터링
-    switch (this.store.status) {
-      case STATUS.NOT_COMPLETED:
-        // renderedData = this.store.todoDatas.fillter(())
-        break;
-      case STATUS.COMPLETED:
-        break;
-      default:
-    }
-    this.container.innerHTML = todoListTemplates(renderData);
+    this.container.innerHTML = todoListTemplates(this.store.renderData);
   }
 }
 

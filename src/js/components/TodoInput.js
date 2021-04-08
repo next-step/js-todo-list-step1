@@ -1,4 +1,6 @@
 import { SELECTOR } from '../utils/constant.js';
+import { STATUS } from '../utils/constant.js';
+import todoItemGenerator from '../utils/todoItemGenerator.js';
 
 class TodoInput {
   constructor(store) {
@@ -13,10 +15,16 @@ class TodoInput {
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const title = container.value;
+      const newTodo = todoItemGenerator(container.value);
       container.value = '';
-      const todoData = [...this.store.todoData, title];
+      const todoData = [...this.store.todoData, newTodo];
       this.store.setTodoData(todoData);
+      const status = this.store.status;
+      // 현재 status 가 all이거나, not completed 인 경우 render data에도 추가
+      if (status === STATUS.ALL || status === STATUS.NOT_COMPLETED) {
+        const renderData = [...this.store.renderData, newTodo];
+        this.store.setRenderData(renderData);
+      }
     });
   }
 }

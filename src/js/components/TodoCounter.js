@@ -14,7 +14,7 @@ class TodoCounter extends Observer {
   }
 
   render() {
-    const counter = this.store.todoData.length;
+    const counter = this.store.renderData.length;
     this.container.innerHTML = todoCounterTemplates(counter);
   }
 }
