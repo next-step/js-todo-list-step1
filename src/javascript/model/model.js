@@ -26,6 +26,6 @@ export default class Model {
 
   async changeStatus(itemId, userName) {
     const storage = this.stroages[userName];
-    return storage.update(itemId);
+    return storage.updateStatus(itemId);
   }
 }

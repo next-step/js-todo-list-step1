@@ -19,7 +19,7 @@ export default class DB {
     return item;
   }
 
-  update(id) {
+  updateStatus(id) {
     // TODO: getItem 메서드 만들기
     const item = this.todos.find((todo) => todo.id === id);
     if (!item) {
