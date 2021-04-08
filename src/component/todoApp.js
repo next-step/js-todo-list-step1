@@ -21,10 +21,15 @@ export default function TodoApp(div) {
   this.todoInput = new TodoInput({onAdd : add}); 
   
   this.complete = target => {
+    const targetId = converter(target);
     if (target.className === "") {
+      const itemIndex = this.todoItems.findIndex(item => item.id == targetId);
+      this.todoItems[itemIndex].changeComplete();
       target.className = "completed";
       target.querySelector("input").setAttribute("checked", true);  
     } else if (target.className === "completed") {
+      const itemIndex = this.todoItems.findIndex(item => item.id == targetId);
+      this.todoItems[itemIndex].changeComplete();
       target.className = "";
       target.querySelector("input").setAttribute("checked", false);
     }

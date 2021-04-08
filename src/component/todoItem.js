@@ -2,13 +2,18 @@
 export function TodoItem(id, contents) {
     this.id = id;
     this.text = contents;
+    this.completed = false;
 
+    this.changeComplete = () => {
+      this.completed = !this.completed;
+    }
     function match(matchId) {
       if (this.id === matchId) {
         return true;
       }
       return false;
     }
+
   }
 
 export function todoItemTemplate(item) {

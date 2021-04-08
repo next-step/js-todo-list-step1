@@ -4,7 +4,7 @@ import { todoItemTemplate } from "./todoItem.js";
 // todoList 보여주는 컴포넌트
 export default function TodoList(app) {
   this.$todoList = document.querySelector("#todo-list");
-  this.todoCount = new TodoCount();
+  this.todoCount = new TodoCount(this);
 
   this.setState = updatedTodoItems => {
     this.todoItems = updatedTodoItems;
@@ -17,6 +17,14 @@ export default function TodoList(app) {
     this.$todoList.innerHTML = template.join("\n");
   };
   
+  this.active = () => {
+    this.render(this.todoItems.filter(item => !item.completed));
+  }
+  
+  this.completed = () => {
+    this.render(this.todoItems.filter(item => item.completed));
+  }
+
   const onClick = (event) => {
     if (event.target.className === "toggle") {
       app.complete(findClosest(event));
