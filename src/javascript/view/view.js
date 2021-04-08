@@ -8,7 +8,7 @@ export default class View {
     this.input = document.querySelector('#new-todo-title');
     this.count = document.querySelector('.todo-count').children[0];
     this.filter = document.querySelector('.filters');
-    this.seletedFilter = this.filter.querySelector('.all');
+    this.currentFilter = this.filter.querySelector('.all');
     this.currentUser = 'default';
   }
 
@@ -168,9 +168,9 @@ export default class View {
   }
 
   setSelectFilter(filter) {
-    this.seletedFilter.classList.remove('selected');
-    this.seletedFilter = filter;
-    this.seletedFilter.classList.add('selected');
+    this.currentFilter.classList.remove('selected');
+    this.currentFilter = filter;
+    this.currentFilter.classList.add('selected');
   }
 
   increaseCount() {
