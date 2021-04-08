@@ -15,6 +15,15 @@ export default class Controller {
     this.view.setEventListener('toggle', (itemId) => {
       this.toggleCheckBox(itemId);
     });
+    this.view.setEventListener('selectAll', () => {
+      this.showAll();
+    });
+    this.view.setEventListener('selectActive', () => {
+      this.showActive();
+    });
+    this.view.setEventListener('selectCompleted', () => {
+      this.showCompleted();
+    });
   }
 
   addItem(value) {
@@ -54,5 +63,17 @@ export default class Controller {
       .catch((error) => {
         console.log(error.meesage);
       });
+  }
+
+  showAll() {
+    this.view.filterAll();
+  }
+
+  showActive() {
+    this.view.filterActive();
+  }
+
+  showCompleted() {
+    this.view.filterCompleted();
   }
 }

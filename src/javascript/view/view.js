@@ -7,6 +7,8 @@ export default class View {
     this.todoList = document.querySelector('#todo-list');
     this.input = document.querySelector('#new-todo-title');
     this.count = document.querySelector('.todo-count').children[0];
+    this.filter = document.querySelector('.filters');
+    this.seletedFilter = this.filter.querySelector('.all');
     this.currentUser = 'default';
   }
 
@@ -46,6 +48,39 @@ export default class View {
           callback(+li.dataset.id);
         });
         break;
+      case 'selectAll':
+        // NOTE: callback == Controller.toggleCheckBox
+        this.filter.addEventListener('click', (event) => {
+          const filter = event.target.closest('.all');
+          if (!filter) {
+            return;
+          }
+          this.setSelectFilter(filter);
+          callback();
+        });
+        break;
+      case 'selectActive':
+        // NOTE: callback == Controller.toggleCheckBox
+        this.filter.addEventListener('click', (event) => {
+          const filter = event.target.closest('.active');
+          if (!filter) {
+            return;
+          }
+          this.setSelectFilter(filter);
+          callback();
+        });
+        break;
+      case 'selectCompleted':
+        // NOTE: callback == Controller.toggleCheckBox
+        this.filter.addEventListener('click', (event) => {
+          const filter = event.target.closest('.completed');
+          if (!filter) {
+            return;
+          }
+          this.setSelectFilter(filter);
+          callback();
+        });
+        break;
 
       default:
         console.log('eventName is not handling');
@@ -73,7 +108,6 @@ export default class View {
   }
 
   renderAllTodo(items) {
-    // TODO: 아래 빈 줄로 만드는걸 메서드로 빼기
     items.forEach((item) => {
       this.renderTodo(item);
     });
@@ -102,6 +136,41 @@ export default class View {
                       <button class="destroy"></button>
                     </div>
                     <input class="edit" value="새로운 타이틀" />`;
+  }
+
+  filterAll() {
+    const lis = this.todoList.querySelectorAll('li');
+    lis.forEach((item) => {
+      item.style.display = 'block';
+    });
+  }
+
+  filterActive() {
+    const lis = this.todoList.querySelectorAll('li');
+    lis.forEach((item) => {
+      if (item.classList.contains('completed')) {
+        item.style.display = 'none';
+      } else {
+        item.style.display = 'block';
+      }
+    });
+  }
+
+  filterCompleted() {
+    const lis = this.todoList.querySelectorAll('li');
+    lis.forEach((item) => {
+      if (item.classList.contains('completed')) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  setSelectFilter(filter) {
+    this.seletedFilter.classList.remove('selected');
+    this.seletedFilter = filter;
+    this.seletedFilter.classList.add('selected');
   }
 
   increaseCount() {
