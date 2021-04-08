@@ -3,36 +3,7 @@ export default class Controller {
     this.model = model;
     this.view = view;
 
-    this.view.setEventListener('add', (value) => {
-      this.add(value);
-    });
-    this.view.setEventListener('refresh', () => {
-      this.refreshPage();
-    });
-    this.view.setEventListener('destroy', (todoId) => {
-      this.destroy(todoId);
-    });
-    this.view.setEventListener('toggle', (todoId) => {
-      this.toggleCheckBox(todoId);
-    });
-    this.view.setEventListener('selectAll', () => {
-      this.showAll();
-    });
-    this.view.setEventListener('selectActive', () => {
-      this.showActive();
-    });
-    this.view.setEventListener('selectCompleted', () => {
-      this.showCompleted();
-    });
-    this.view.setEventListener('edit', (todo) => {
-      this.edit(todo);
-    });
-    this.view.setEventListener('editEnd', (todo) => {
-      this.editEnd(todo);
-    });
-    this.view.setEventListener('editApply', (todoId, content) => {
-      this.editApply(todoId, content);
-    });
+    this.setEventListeners();
   }
 
   add(value) {
@@ -103,5 +74,38 @@ export default class Controller {
 
   showCompleted() {
     this.view.filterCompleted();
+  }
+
+  setEventListeners() {
+    this.view.setEventListener('add', (value) => {
+      this.add(value);
+    });
+    this.view.setEventListener('refresh', () => {
+      this.refreshPage();
+    });
+    this.view.setEventListener('destroy', (todoId) => {
+      this.destroy(todoId);
+    });
+    this.view.setEventListener('toggle', (todoId) => {
+      this.toggleCheckBox(todoId);
+    });
+    this.view.setEventListener('selectAll', () => {
+      this.showAll();
+    });
+    this.view.setEventListener('selectActive', () => {
+      this.showActive();
+    });
+    this.view.setEventListener('selectCompleted', () => {
+      this.showCompleted();
+    });
+    this.view.setEventListener('edit', (todo) => {
+      this.edit(todo);
+    });
+    this.view.setEventListener('editEnd', (todo) => {
+      this.editEnd(todo);
+    });
+    this.view.setEventListener('editApply', (todoId, content) => {
+      this.editApply(todoId, content);
+    });
   }
 }
