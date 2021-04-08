@@ -35,7 +35,7 @@ export default class DB {
     if (index >= 0) {
       this.todos.splice(index, 1);
     }
-    // TODO: localStorage 변경해주기
+    localStorage[this.userName] = JSON.stringify(this.todos);
   }
 
   increaseId() {
