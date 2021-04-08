@@ -6,20 +6,20 @@ import { STATUS } from '../utils/constant.js';
 class TodoStore extends Subject {
   constructor(initialData) {
     super();
-    this.todoData = initialData; // 데이터베이스로부터 가져온 전체 데이터
+    this.originData = initialData; // 데이터베이스로부터 가져온 전체 데이터
     this.renderData = initialData; // 보여줄 데이터
     this.status = STATUS.ALL; // 투두 필터링 status
   }
 
   updateData(newData) {
-    this.setTodoData(newData);
+    this.setOriginData(newData);
     this.setRenderData(newData);
   }
 
-  setTodoData(todoData) {
+  setOriginData(todoData) {
     // 로컬 스토리지에 저장
     localStorage.setItem(todoData);
-    this.todoData = todoData;
+    this.originData = todoData;
   }
 
   setRenderData(renderData) {

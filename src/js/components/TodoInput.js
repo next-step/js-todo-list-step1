@@ -17,8 +17,8 @@ class TodoInput {
       e.preventDefault();
       const newTodo = todoItemGenerator(container.value);
       container.value = '';
-      const todoData = [...this.store.todoData, newTodo];
-      this.store.setTodoData(todoData);
+      const todoData = [...this.store.originData, newTodo];
+      this.store.setOriginData(todoData);
       const status = this.store.status;
       // 현재 status 가 all이거나, not completed 인 경우 render data에도 추가
       if (status === STATUS.ALL || status === STATUS.NOT_COMPLETED) {

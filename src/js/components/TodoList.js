@@ -17,14 +17,14 @@ class TodoList extends Observer {
       const id = +$li.dataset.id;
       const targetClass = target.className;
       if (targetClass === SELECTOR.TOGGLE) {
-        this.onToggleComplete(id);
+        this.onToggleComplete(id, $li, target);
       } else if (targetClass === SELECTOR.DESTROY) {
       }
     });
 
     this.container.addEventListener('dblclick', ({ target }) => {
       if (target.className === SELECTOR.LABEL) {
-        this.onEditMode(e.target);
+        this.onEditMode(target);
       }
     });
 
@@ -65,17 +65,22 @@ class TodoList extends Observer {
       }
       return data;
     });
-    this.store.updateData(updatedData);
+    this.store.setOriginData(updatedData);
   }
 
-  onToggleComplete(id) {
+  onToggleComplete(id, $li, target) {
+    target.toggleAttribute('checked');
+    $li.className === SELECTOR.COMPLETED_LIST
+      ? ($li.className = '')
+      : ($li.className = SELECTOR.COMPLETED_LIST);
+
     const updatedData = this.store.renderData.map((data) => {
       if (data.id === id) {
         return { ...data, complete: !data.complete };
       }
       return data;
     });
-    this.store.updateData(updatedData);
+    this.store.setOriginData(updatedData);
   }
 
   update() {
