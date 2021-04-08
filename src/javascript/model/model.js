@@ -21,11 +21,11 @@ export default class Model {
 
   async removeItem(itemId, userName) {
     const storage = this.stroages[userName];
-    storage.remove(itemId);
+    return storage.remove(itemId);
   }
 
   async changeStatus(itemId, userName) {
     const storage = this.stroages[userName];
-    storage.update(itemId);
+    return storage.update(itemId);
   }
 }
