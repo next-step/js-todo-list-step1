@@ -27,6 +27,7 @@ export default class DB {
     }
     item.completed = item.completed ? false : true;
     localStorage[this.userName] = JSON.stringify(this.todos);
+    return item;
   }
 
   // NOTE: 인자로 id 를 받는게 아니라 item 자체를 받고 하는게 더 좋지 않을까?
@@ -38,6 +39,7 @@ export default class DB {
     }
     item.removed = true;
     localStorage[this.userName] = JSON.stringify(this.todos);
+    return item;
   }
 
   increaseId() {
