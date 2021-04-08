@@ -30,6 +30,19 @@ export default class DB {
     return todo;
   }
 
+  updateContent(id, content) {
+    const todo = this.todos.find((todo) => todo.id === id);
+    if (content.length === 0) {
+      throw todo;
+    }
+    if (!todo) {
+      return;
+    }
+    todo.content = content;
+    localStorage[this.userName] = JSON.stringify(this.todos);
+    return todo;
+  }
+
   // NOTE: 인자로 id 를 받는게 아니라 todo 자체를 받고 하는게 더 좋지 않을까?
   // NOTE: 여기서 에러가 발생하는 경우가 있을까? 굳이 async 를 사용하는게 좋은건가?
   remove(id) {

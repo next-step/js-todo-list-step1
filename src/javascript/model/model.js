@@ -28,4 +28,9 @@ export default class Model {
     const storage = this.stroages[userName];
     return storage.updateStatus(todoId);
   }
+
+  async updateContent(todoId, content, userName) {
+    const storage = this.stroages[userName];
+    return storage.updateContent(todoId, content);
+  }
 }
