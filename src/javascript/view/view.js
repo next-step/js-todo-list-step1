@@ -52,28 +52,56 @@ export default class View {
     }
   }
 
+  renderTodo(item) {
+    const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
+    if (li) {
+      return;
+    } else {
+      console.log('not exisest');
+      const temp = document.createElement('li');
+      temp.dataset.id = item.id;
+      temp.classList.add(item.completed ? 'completed' : 'ing');
+      temp.innerHTML = `
+                        <div class="view">
+                          <input class="toggle" type="checkbox"
+                          ${item.completed ? 'checked' : ''}/>
+                          <label class="label">${item.content}</label>
+                          <button class="destroy"></button>
+                        </div>
+                        <input class="edit" value="새로운 타이틀" />`;
+      this.todoList.appendChild(temp);
+    }
+  }
+
   renderAllTodo(items) {
     // TODO: 아래 빈 줄로 만드는걸 메서드로 빼기
-    this.todoList.innerHTML = '';
     items.forEach((item) => {
       this.renderTodo(item);
     });
   }
 
-  renderTodo(item) {
-    console.log(item);
-    let li = `<li class=${item.completed ? 'completed' : 'ing'} data-id=${
-      item.id
-    }>
-                <div class="view">
-                  <input class="toggle" type="checkbox"
-                  ${item.completed ? 'checked' : ''}/>
-                  <label class="label">${item.content}</label>
-                  <button class="destroy"></button>
-                </div>
-                <input class="edit" value="새로운 타이틀" />
-              </li>`;
-    this.todoList.insertAdjacentHTML('beforeend', li);
+  renderWithout(item) {
+    const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
+    if (!li) {
+      return;
+    }
+    li.remove();
+  }
+
+  renderAgain(item) {
+    const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
+    if (!li) {
+      return;
+    }
+    li.className = item.completed ? 'completed' : 'ing';
+    li.innerHTML = `
+                    <div class="view">
+                      <input class="toggle" type="checkbox"
+                      ${item.completed ? 'checked' : ''}/>
+                      <label class="label">${item.content}</label>
+                      <button class="destroy"></button>
+                    </div>
+                    <input class="edit" value="새로운 타이틀" />`;
   }
 
   clearInput() {
