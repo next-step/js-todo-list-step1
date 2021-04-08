@@ -6,6 +6,10 @@ export function getClassName(event) {
   return event.target.className;
 }
 
+export function getValue(event) {
+  return event.target.value;
+}
+
 export function checkClassName(event, name) {
     return getClassName(event) === name;
 }

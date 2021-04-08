@@ -2,21 +2,47 @@
 export function TodoItem(id, contents) {
     this.id = id;
     this.text = contents;
-    this.completed = false;
+    this.status = "view";
 
-    this.changeComplete = () => {
-      this.completed = !this.completed;
-    };
+    this.isCompleted = () => {
+      if (this.status === "completed") {
+        return true;
+      }
+    }
+
+    this.complete = () => {
+      if (this.status === "view") {
+        this.status = "completed";
+        return;
+      }
+      this.status = "view";
+    }
+
+    this.changeStatus = () => {
+      if (this.status === "view") {
+        this.status = "editing";
+        return;
+      }
+      if (this.status === "editing") {
+        this.status = "view";
+        return;
+      }
+    }
 
     this.match = matchId => {
       return this.id == matchId;
     }
+
+    this.edit = value => {
+      this.text = value;
+      this.changeStatus();
+    }
   }
 
 export function todoItemTemplate(item) {
-    return `<li class=${item.completed ? "completed": "view"}>
+    return `<li class=${item.status}>
     <div class="view">
-      <input class="toggle" type="checkbox" ${item.completed ? "checked": ""}/>
+      <input class="toggle" type="checkbox" ${item.status === "completed" ? "checked": ""}/>
       <label class="label">${item.text}</label>
       <button class="destroy"></button>
     </div>
@@ -25,6 +51,13 @@ export function todoItemTemplate(item) {
   </li>`;
 }
 
-
+export function parseItems(items) {
+  if (items === "[]") {
+    return [];
+  }
+  return JSON.parse(items).map(item => {
+    return new TodoItem(item.id, item.text);
+  });
+}
 
 

@@ -20,11 +20,11 @@ export default function TodoList(app) {
   };
   
   this.active = () => {
-    this.render(this.todoItems.filter(item => !item.completed));
+    this.render(this.todoItems.filter(item => !item.isCompleted()));
   }
   
   this.completed = () => {
-    this.render(this.todoItems.filter(item => item.completed));
+    this.render(this.todoItems.filter(item => item.isCompleted()));
   }
 
   this.all = () => {
@@ -37,27 +37,27 @@ export default function TodoList(app) {
     }
     if (Util.checkClassName(event, "destroy")) {
       if(confirm("정말로 삭제하시겠습니까?")){
-        app.delete(convertId(event));
+        app.delete(Util.convertId(event));
       }
     }
   }
   
   const onDClick = (event) => {
-    if (Util.hasClosest(event)) {
-      Util.checkClosestClassName(event, "editing");
+    if (Util.hasClosest(event) && Util.checkClosestClassName(event, "view")) {
+      app.editing(Util.convertId(event));
     }
   }
 
   const onKey = event => {
     const value = event.target.value;
-    if(!Util.checkClassName(findClosest(event), "editing")){
+    if(!Util.checkClosestClassName(event, "editing")){
       return;
     }
     if (Util.checkKey(event, "Enter")) {
       app.edit(Util.convertId(event), value);
     }
     if (Util.checkKey(event, "Escape")) {
-      Util.checkClassName(findClosest(event), "view");
+      app.editing(Util.convertId(event));
     }
   }
 
