@@ -6,8 +6,8 @@ export default class View {
   constructor() {
     this.todoList = document.querySelector('#todo-list');
     this.input = document.querySelector('#new-todo-title');
+    this.count = document.querySelector('.todo-count').children[0];
     this.currentUser = 'default';
-    console.log(this.todoList);
   }
 
   setEventListener(eventName, callback) {
@@ -56,11 +56,11 @@ export default class View {
     const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
     if (li) {
       return;
-    } else {
-      const temp = document.createElement('li');
-      temp.dataset.id = item.id;
-      temp.classList.add(item.completed ? 'completed' : 'ing');
-      temp.innerHTML = `
+    }
+    const temp = document.createElement('li');
+    temp.dataset.id = item.id;
+    temp.classList.add(item.completed ? 'completed' : 'ing');
+    temp.innerHTML = `
                         <div class="view">
                           <input class="toggle" type="checkbox"
                           ${item.completed ? 'checked' : ''}/>
@@ -68,8 +68,8 @@ export default class View {
                           <button class="destroy"></button>
                         </div>
                         <input class="edit" value="새로운 타이틀" />`;
-      this.todoList.appendChild(temp);
-    }
+    this.todoList.appendChild(temp);
+    this.increaseCount();
   }
 
   renderAllTodo(items) {
@@ -85,6 +85,7 @@ export default class View {
       return;
     }
     li.remove();
+    this.decreaseCount();
   }
 
   renderAgain(item) {
@@ -101,6 +102,14 @@ export default class View {
                       <button class="destroy"></button>
                     </div>
                     <input class="edit" value="새로운 타이틀" />`;
+  }
+
+  increaseCount() {
+    this.count.innerText = +this.count.innerText + 1;
+  }
+
+  decreaseCount() {
+    this.count.innerText = +this.count.innerText - 1;
   }
 
   clearInput() {
