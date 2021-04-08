@@ -81,6 +81,37 @@ export default class View {
           callback();
         });
         break;
+      case 'edit':
+        // NOTE: callback == Controller.edit
+        this.todoList.addEventListener('dblclick', (event) => {
+          const todo = event.target.closest('li');
+          if (!todo) {
+            return;
+          }
+          callback(todo);
+        });
+        break;
+      case 'editEnd':
+        // NOTE: callback == Controller.editEnd
+        this.todoList.addEventListener('focusout', (event) => {
+          const todo = event.target.closest('li');
+          if (!todo) {
+            return;
+          }
+          callback(todo);
+        });
+        break;
+      case 'editApply':
+        // NOTE: callback == Controller.editApply
+        this.todoList.addEventListener('keypress', (event) => {
+          if (event.key !== 'Enter') {
+            return;
+          }
+          const input = event.target.closest('.edit');
+          const todo = input.closest('li');
+          callback(+todo.dataset.id, input.value);
+        });
+        break;
 
       default:
         console.log('eventName is not handling');
@@ -102,7 +133,7 @@ export default class View {
                           <label class="label">${todo.content}</label>
                           <button class="destroy"></button>
                         </div>
-                        <input class="edit" value="새로운 타이틀" />`;
+                        <input class="edit" value="" />`;
     this.todoList.appendChild(temp);
     if (this.currentFilter.classList.contains('completed')) {
       temp.style.display = 'none';
@@ -138,7 +169,7 @@ export default class View {
                       <label class="label">${todo.content}</label>
                       <button class="destroy"></button>
                     </div>
-                    <input class="edit" value="새로운 타이틀" />`;
+                    <input class="edit" value="" />`;
     this.setDisplayStyle(li, todo);
   }
 
@@ -183,6 +214,22 @@ export default class View {
 
   decreaseCount() {
     this.count.innerText = +this.count.innerText - 1;
+  }
+
+  editMode(todo) {
+    todo.classList.add('editing');
+    const input = todo.querySelector('.edit');
+    input.focus();
+  }
+
+  editEnd(todo) {
+    todo =
+      todo instanceof Element
+        ? todo
+        : this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    todo.classList.remove('editing');
+    const input = todo.querySelector('.edit');
+    input.value = '';
   }
 
   clearInput() {

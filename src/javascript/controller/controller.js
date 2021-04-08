@@ -24,6 +24,15 @@ export default class Controller {
     this.view.setEventListener('selectCompleted', () => {
       this.showCompleted();
     });
+    this.view.setEventListener('edit', (todo) => {
+      this.edit(todo);
+    });
+    this.view.setEventListener('editEnd', (todo) => {
+      this.editEnd(todo);
+    });
+    this.view.setEventListener('editApply', (todoId, content) => {
+      this.editApply(todoId, content);
+    });
   }
 
   add(value) {
@@ -63,6 +72,25 @@ export default class Controller {
       .catch((error) => {
         console.log(error.meesage);
       });
+  }
+
+  edit(todo) {
+    this.view.editMode(todo);
+  }
+
+  editApply(todoId, content) {
+    this.model
+      .updateContent(todoId, content, this.view.currentUser)
+      .then((todo) => {
+        this.view.renderAgain(todo);
+      })
+      .catch((todo) => {
+        this.view.editEnd(todo);
+      });
+  }
+
+  editEnd(todo) {
+    this.view.editEnd(todo);
   }
 
   showAll() {
