@@ -10,3 +10,10 @@ export const SELECTOR = {
   EDITING_MODE: 'editing',
   EDIT_INPUT: '.edit',
 };
+
+
+export const STATUS = {
+  ALL='all',
+  COMPLETED='completed',
+  NOT_COMPLETED='notCompleted'
+};

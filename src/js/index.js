@@ -1,6 +1,5 @@
-import App from './components/App.js';
-import { SELECTOR } from './utils/constant.js';
+import App from './App.js';
 
 window.addEventListener('load', () => {
-  App(document.getElementsByClassName(SELECTOR.TODO_APP));
+  App();
 });
