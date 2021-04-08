@@ -1,3 +1,7 @@
+/* 
+* localStorage의 Serialize를 관리
+*/
+
 export function getElement(name) {
     return JSON.parse(localStorage.getItem(name));
 }

@@ -1,3 +1,7 @@
+/* 
+* Event 관련 함수들을 관리
+*/
+
 export function convertId(event) {
     return findClosest(event).querySelector("#item-id").value;
 }

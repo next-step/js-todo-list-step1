@@ -1,6 +1,9 @@
+/* 
+* TodoInput Component를 관리 (Read)
+*/
+
 import { checkKey } from "../utils/eventUtils.js";
 
-// 입력 받는 컴포넌트
 export default function TodoInput({ onAdd }) {
   const $todoInput = document.querySelector("#new-todo-title");
 

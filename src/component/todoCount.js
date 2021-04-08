@@ -1,3 +1,7 @@
+/* 
+* TodoCount Component를 관리 (Read)
+*/
+
 import { getClassName } from "../utils/eventUtils.js";
 
 export default function TodoCount(todoList) {

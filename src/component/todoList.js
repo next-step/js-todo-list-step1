@@ -1,8 +1,11 @@
+/* 
+* TodoList Component를 관리 (Read)
+*/
+
 import * as Util from "../utils/eventUtils.js";
 import TodoCount from "./todoCount.js";
 import { todoItemTemplate } from "./todoItem.js";
 
-// todoList 보여주는 컴포넌트
 export default function TodoList(app) {
   this.$todoList = document.querySelector("#todo-list");
   this.todoCount = new TodoCount(this);

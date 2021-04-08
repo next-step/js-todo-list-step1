@@ -1,9 +1,12 @@
+/* 
+* TodoApp Component를 관리 (Write)
+*/
+
 import TodoInput from "./todoInput.js";
 import TodoList from "./todoList.js";
 import { createItems, TodoItem } from "./todoItem.js";
-import * as JsonUtil from "../utils/jsonUtils.js";
+import * as JsonUtil from "../utils/localStorageUtils.js";
 
-// 부모 컴포넌트
 export default function TodoApp(div) {
 
   this.todoItems = JsonUtil.hasElement("items")? createItems(JsonUtil.getElement("items")) : [];
