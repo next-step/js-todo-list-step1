@@ -6,16 +6,17 @@ import { todoItemTemplate } from "./todoItem.js";
 export default function TodoList(app) {
   this.$todoList = document.querySelector("#todo-list");
   this.todoCount = new TodoCount(this);
+  this.todoItems = [];
 
   this.setState = updatedTodoItems => {
     this.todoItems = updatedTodoItems;
-    this.render(this.todoItems);
-    this.todoCount.count(this.todoItems);
+    this.todoCount.linkStatus();
   };
 
   this.render = items => {
     const template = items.map(item => todoItemTemplate(item));
     this.$todoList.innerHTML = template.join("\n");
+    this.todoCount.count(items);
   };
   
   this.active = () => {
@@ -24,6 +25,10 @@ export default function TodoList(app) {
   
   this.completed = () => {
     this.render(this.todoItems.filter(item => item.completed));
+  }
+
+  this.all = () => {
+    this.render(this.todoItems);
   }
 
   const onClick = (event) => {

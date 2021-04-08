@@ -6,7 +6,7 @@ export function TodoItem(id, contents) {
 
     this.changeComplete = () => {
       this.completed = !this.completed;
-    }
+    };
 
     this.match = matchId => {
       return this.id == matchId;

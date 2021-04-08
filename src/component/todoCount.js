@@ -1,20 +1,31 @@
+import { getClassName } from "../utils/eventUtils.js";
+
 export default function TodoCount(todoList) {
     this.$todoCount = document.querySelector(".count-container");
     
     this.count = updatedTodoItems => {
         this.$todoCount.querySelector("strong").innerHTML = updatedTodoItems.length;
     }
+    
+    this.linkStatus = () => {
+        const hash = document.location.hash;
+        checkStatus(hash, "#");
+    }
 
     const onClick = event => {
-        if (event.target.className === "active") {
+        checkStatus(getClassName(event));
+    }
+
+    const checkStatus = (check, prefix="") => {
+        if (check === prefix + "active") {
             todoList.active();
+            return;
         }
-        if (event.target.className === "completed") {
+        if (check === prefix + "completed") {
             todoList.completed();
+            return;
         }
-        if (event.target.className === "") {
-            todoList.render();
-        }
+        todoList.all();
     }
 
     this.$todoCount.querySelector(".filters").addEventListener("click", onClick);

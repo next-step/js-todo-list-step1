@@ -2,8 +2,12 @@ export function convertId(event) {
     return findClosest(event).querySelector("#item-id").value;
 }
 
+export function getClassName(event) {
+  return event.target.className;
+}
+
 export function checkClassName(event, name) {
-    return event.target.className === name;
+    return getClassName(event) === name;
 }
 
 export function checkClosestClassName(event, name) {
