@@ -12,6 +12,9 @@ export default class Controller {
     this.view.setEventListener('destroy', (itemId) => {
       this.destroyItem(itemId);
     });
+    this.view.setEventListener('toggle', (itemId) => {
+      this.toggleCheckBox(itemId);
+    });
   }
 
   addItem(value) {
@@ -40,6 +43,19 @@ export default class Controller {
       })
       .catch((error) => {
         console.log(error.message);
+      });
+  }
+
+  toggleCheckBox(itemId) {
+    console.log('here!!');
+    this.model
+      .changeStatus(itemId, this.view.currentUser)
+      .then(() => {
+        // TODO: 현재 하나만 삭제해도 전부를 다시 render하고 있다. 이 부분해결하자.
+        this.view.renderAllTodo(this.model.getTodosOf(this.view.currentUser));
+      })
+      .catch((error) => {
+        console.log(error.meesage);
       });
   }
 }
