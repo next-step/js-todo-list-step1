@@ -1,3 +1,4 @@
+import * as Util from "../utils/eventUtils.js";
 import TodoCount from "./todoCount.js";
 import { todoItemTemplate } from "./todoItem.js";
 
@@ -26,41 +27,36 @@ export default function TodoList(app) {
   }
 
   const onClick = (event) => {
-    if (event.target.className === "toggle") {
-      app.complete(findClosest(event));
+    if (Util.checkClassName(event, "toggle")) {
+      app.complete(Util.convertId(event));
     }
-    if (event.target.className === "destroy") {
+    if (Util.checkClassName(event, "destroy")) {
       if(confirm("정말로 삭제하시겠습니까?")){
-        app.delete(findClosest(event));
+        app.delete(convertId(event));
       }
     }
   }
   
   const onDClick = (event) => {
-    if (findClosest(event) !== null) {
-      findClosest(event).className = "editing";
+    if (Util.hasClosest(event)) {
+      Util.checkClosestClassName(event, "editing");
     }
   }
 
   const onKey = event => {
     const value = event.target.value;
-    if(findClosest(event).className !== "editing"){
+    if(!Util.checkClassName(findClosest(event), "editing")){
       return;
     }
-    if (event.key === "Enter") {
-      app.edit(findClosest(event), value);
+    if (Util.checkKey(event, "Enter")) {
+      app.edit(Util.convertId(event), value);
     }
-    if (event.key === "Escape") {
-      findClosest(event).className = "view";
+    if (Util.checkKey(event, "Escape")) {
+      Util.checkClassName(findClosest(event), "view");
     }
   }
 
   this.$todoList.addEventListener("click", onClick);
   this.$todoList.addEventListener("dblclick", onDClick);
   this.$todoList.addEventListener("keydown", onKey);
-}
-
-
-function findClosest(event) {
-  return event.target.closest("li");
 }

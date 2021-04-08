@@ -25,8 +25,6 @@ export function todoItemTemplate(item) {
   </li>`;
 }
 
-export function converter(target) {
-  return target.querySelector("#item-id").value;
-}
+
 
 

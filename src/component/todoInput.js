@@ -1,3 +1,5 @@
+import { checkKey } from "../utils/eventUtils.js";
+
 // 입력 받는 컴포넌트
 export default function TodoInput({ onAdd }) {
     const $todoInput = document.querySelector("#new-todo-title");
@@ -6,7 +8,7 @@ export default function TodoInput({ onAdd }) {
     
     this.addTodoItem = event => {
       const $newTodoTarget = event.target;
-      if (event.key === "Enter") {
+      if (checkKey(event, "Enter")) {
         onAdd($newTodoTarget.value);
         $newTodoTarget.value = "";
       }
