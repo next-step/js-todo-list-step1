@@ -37,9 +37,8 @@ export default class Controller {
   destroyItem(itemId) {
     this.model
       .removeItem(itemId, this.view.currentUser)
-      .then(() => {
-        // TODO: 현재 하나만 삭제해도 전부를 다시 render하고 있다. 이 부분해결하자.
-        this.view.renderAllTodo(this.model.getTodosOf(this.view.currentUser));
+      .then((item) => {
+        this.view.renderWithout(item);
       })
       .catch((error) => {
         console.log(error.message);
@@ -47,12 +46,10 @@ export default class Controller {
   }
 
   toggleCheckBox(itemId) {
-    console.log('here!!');
     this.model
       .changeStatus(itemId, this.view.currentUser)
-      .then(() => {
-        // TODO: 현재 하나만 삭제해도 전부를 다시 render하고 있다. 이 부분해결하자.
-        this.view.renderAllTodo(this.model.getTodosOf(this.view.currentUser));
+      .then((item) => {
+        this.view.renderAgain(item);
       })
       .catch((error) => {
         console.log(error.meesage);
