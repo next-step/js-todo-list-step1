@@ -40,7 +40,7 @@ export default function TodoApp(div) {
   this.edit = (target, value) => {
     const targetId = converter(target);
     const itemIndex = this.todoItems.findIndex(item => item.id == targetId);
-    this.todoItems[itemIndex] = value;
+    this.todoItems[itemIndex].text = value;
     this.setState(this.todoItems);
   }
 }

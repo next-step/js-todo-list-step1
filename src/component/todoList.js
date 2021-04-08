@@ -33,17 +33,13 @@ export default function TodoList(app) {
 
   const onKey = event => {
     const value = event.target.value;
-    console.log(event.target);
-    console.log(event.target.value);
     if(findClosest(event).className !== "editing"){
       return;
     }
     if (event.key === "Enter") {
-      console.log(event.target);
       app.edit(findClosest(event), value);
     }
     if (event.key === "Escape") {
-      console.log(event.target);
       findClosest(event).className = "view";
     }
   }
