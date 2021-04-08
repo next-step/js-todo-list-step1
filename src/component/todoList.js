@@ -1,12 +1,15 @@
-import { converter, todoItemTemplate } from "./todoItem.js";
+import TodoCount from "./todoCount.js";
+import { todoItemTemplate } from "./todoItem.js";
 
 // todoList 보여주는 컴포넌트
 export default function TodoList(app) {
   this.$todoList = document.querySelector("#todo-list");
+  this.todoCount = new TodoCount();
 
   this.setState = updatedTodoItems => {
     this.todoItems = updatedTodoItems;
     this.render(this.todoItems);
+    this.todoCount.count(this.todoItems);
   };
 
   this.render = items => {
