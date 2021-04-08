@@ -11,11 +11,6 @@ class TodoStore extends Subject {
     this.status = STATUS.ALL; // 투두 필터링 status
   }
 
-  updateData(newData) {
-    this.setOriginData(newData);
-    this.setRenderData(newData);
-  }
-
   setOriginData(todoData) {
     // 로컬 스토리지에 저장
     localStorage.setItem(todoData);
@@ -29,7 +24,19 @@ class TodoStore extends Subject {
 
   setStatus(status) {
     this.status = status;
-    this.notifyAll();
+    console.log(status);
+    switch (status) {
+      case STATUS.ACTIVE:
+        return this.setRenderData(
+          this.originData.filter((data) => !data.complete),
+        );
+      case STATUS.COMPLETED:
+        return this.setRenderData(
+          this.originData.filter((data) => data.complete),
+        );
+      default:
+        return this.setRenderData(this.originData);
+    }
   }
 }
 

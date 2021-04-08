@@ -11,12 +11,13 @@ export const SELECTOR = {
   EDIT_INPUT: '.edit',
   TODO_COUNTER: 'todo-count',
   COMPLETED_LIST: 'completed',
+  FILTER: 'filters',
 };
 
 export const STATUS = {
   ALL: 'all',
   COMPLETED: 'completed',
-  NOT_COMPLETED: 'notCompleted',
+  ACTIVE: 'active',
 };
 
 export const STORAGE_NAME = '@todo-database';

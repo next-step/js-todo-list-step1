@@ -85,8 +85,14 @@ class TodoList extends Observer {
   }
 
   onRemoveTodo(id) {
-    const updatedData = this.store.renderData.filter((data) => data.id !== id);
-    this.store.updateData(updatedData);
+    const updatedRenderData = this.store.renderData.filter(
+      (data) => data.id !== id,
+    );
+    const updatedOriginData = this.store.originData.filter(
+      (data) => data.id !== id,
+    );
+    this.store.setOriginData(updatedOriginData);
+    this.store.setRenderData(updatedRenderData);
   }
 
   update() {

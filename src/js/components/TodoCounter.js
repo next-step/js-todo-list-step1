@@ -7,6 +7,7 @@ class TodoCounter extends Observer {
     super();
     this.store = store;
     this.container = document.querySelector(`.${SELECTOR.TODO_COUNTER}`);
+    this.render();
   }
 
   update() {
