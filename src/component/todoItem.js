@@ -7,19 +7,16 @@ export function TodoItem(id, contents) {
     this.changeComplete = () => {
       this.completed = !this.completed;
     }
-    function match(matchId) {
-      if (this.id === matchId) {
-        return true;
-      }
-      return false;
-    }
 
+    this.match = matchId => {
+      return this.id == matchId;
+    }
   }
 
 export function todoItemTemplate(item) {
-    return `<li>
+    return `<li class=${item.completed ? "completed": "view"}>
     <div class="view">
-      <input class="toggle" type="checkbox"/>
+      <input class="toggle" type="checkbox" ${item.completed ? "checked": ""}/>
       <label class="label">${item.text}</label>
       <button class="destroy"></button>
     </div>

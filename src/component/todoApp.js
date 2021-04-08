@@ -6,6 +6,7 @@ import { TodoItem, converter } from "./todoItem.js";
 export default function TodoApp(div) {
   this.todoItems = []
   this.todoList = new TodoList(this);
+  this.idGenerator = 0;
 
   this.setState = updatedItems => {
     this.todoItems = updatedItems;
@@ -13,7 +14,7 @@ export default function TodoApp(div) {
   };
 
   const add = contents => {
-    const newTodoItem = new TodoItem(this.todoItems.length, contents);
+    const newTodoItem = new TodoItem(this.idGenerator++, contents);
     this.todoItems.push(newTodoItem);
     this.setState(this.todoItems);
   }
@@ -21,31 +22,24 @@ export default function TodoApp(div) {
   this.todoInput = new TodoInput({onAdd : add}); 
   
   this.complete = target => {
-    const targetId = converter(target);
-    if (target.className === "") {
-      const itemIndex = this.todoItems.findIndex(item => item.id == targetId);
-      this.todoItems[itemIndex].changeComplete();
-      target.className = "completed";
-      target.querySelector("input").setAttribute("checked", true);  
-    } else if (target.className === "completed") {
-      const itemIndex = this.todoItems.findIndex(item => item.id == targetId);
-      this.todoItems[itemIndex].changeComplete();
-      target.className = "";
-      target.querySelector("input").setAttribute("checked", false);
+      if (target.className === "view" || target.className === "completed") {
+      const targetId = converter(target);
+      this.todoItems.filter(item => item.match(targetId))
+          .forEach(item => item.changeComplete());
+      this.setState(this.todoItems);
     }
   }
 
   this.delete = target => {
     const targetId = converter(target);
-    this.todoItems = this.todoItems.filter(item => item.id != targetId);
+    this.todoItems = this.todoItems.filter(item => !item.match(targetId));
     this.setState(this.todoItems);
-    target.remove();
   }
 
   this.edit = (target, value) => {
     const targetId = converter(target);
-    const itemIndex = this.todoItems.findIndex(item => item.id == targetId);
-    this.todoItems[itemIndex].text = value;
+    this.todoItems.filter(item => item.match(targetId))
+        .forEach(item => item.text = value);
     this.setState(this.todoItems);
   }
 }
