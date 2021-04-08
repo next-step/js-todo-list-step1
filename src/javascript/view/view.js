@@ -104,6 +104,9 @@ export default class View {
                         </div>
                         <input class="edit" value="새로운 타이틀" />`;
     this.todoList.appendChild(temp);
+    if (this.currentFilter.classList.contains('completed')) {
+      temp.style.display = 'none';
+    }
     this.increaseCount();
   }
 
@@ -136,6 +139,7 @@ export default class View {
                       <button class="destroy"></button>
                     </div>
                     <input class="edit" value="새로운 타이틀" />`;
+    this.setDisplayStyle(li, todo);
   }
 
   filterAll() {
@@ -183,5 +187,21 @@ export default class View {
 
   clearInput() {
     this.input.value = '';
+  }
+
+  setDisplayStyle(li, todo) {
+    if (this.currentFilter.classList.contains('all')) {
+      return;
+    } else if (
+      this.currentFilter.classList.contains('active') &&
+      todo.completed
+    ) {
+      li.style.display = 'none';
+    } else if (
+      this.currentFilter.classList.contains('completed') &&
+      !todo.completed
+    ) {
+      li.style.display = 'none';
+    }
   }
 }
