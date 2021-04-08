@@ -1,8 +1,8 @@
 
-export function TodoItem(id, contents) {
+export function TodoItem(id, contents, status="view") {
     this.id = id;
     this.text = contents;
-    this.status = "view";
+    this.status = status;
 
     this.isCompleted = () => {
       if (this.status === "completed") {
@@ -53,7 +53,7 @@ export function todoItemTemplate(item) {
 
 export function createItems(items) {
   return items.map(item => {
-    return new TodoItem(item.id, item.text);
+    return new TodoItem(item.id, item.text, item.status);
   });
 }
 
