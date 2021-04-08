@@ -38,7 +38,7 @@ export default class Controller {
     this.model
       .removeItem(itemId, this.view.currentUser)
       .then((item) => {
-        this.view.renderWithout(item);
+        this.view.removeItemFromTodoList(item);
       })
       .catch((error) => {
         console.log(error.message);

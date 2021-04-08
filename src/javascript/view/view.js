@@ -57,7 +57,6 @@ export default class View {
     if (li) {
       return;
     } else {
-      console.log('not exisest');
       const temp = document.createElement('li');
       temp.dataset.id = item.id;
       temp.classList.add(item.completed ? 'completed' : 'ing');
@@ -80,7 +79,7 @@ export default class View {
     });
   }
 
-  renderWithout(item) {
+  removeItemFromTodoList(item) {
     const li = this.todoList.querySelector(`li[data-id='${item.id}']`);
     if (!li) {
       return;
