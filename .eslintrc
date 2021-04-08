@@ -38,6 +38,7 @@
     "localStorage": true,
     "document": true,
     "window": true,
-    "alert": true
+    "alert": true,
+    "Element": true
   }
 }
