@@ -51,16 +51,20 @@ class TodoList extends Observer {
     const $label = $li.querySelector(SELECTOR.LABEL);
     const $value = target.value;
     if ($value !== $label.innerText) {
-      // 로컬 스토리지에 업데이트 하는 함수 실행 -> value와 key 넣어서...
-      // onTodoUpdate()
       $label.innerText = $value;
+      this.onUpdateTodo(+$li.dataset.id, $value);
     }
     $li.className = '';
   }
 
-  onTodoUpdate() {
-    // 로컬 스토리지에 저장
-    // 스토어에 저장
+  onUpdateTodo(id, newTitle) {
+    const updatedData = this.store.renderData.map((data) => {
+      if (data.id === id) {
+        return { id, title: newTitle };
+      }
+      return data;
+    });
+    this.store.updatedData(updatedData);
   }
 
   update() {
