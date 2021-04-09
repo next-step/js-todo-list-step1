@@ -6,7 +6,8 @@ export default class View {
   constructor() {
     this.todoList = document.querySelector('#todo-list');
     this.input = document.querySelector('#new-todo-title');
-    this.count = document.querySelector('.todo-count').children[0];
+    this.todoCount = 0;
+    this.todoCountView = document.querySelector('.todo-count').children[0];
     this.filter = document.querySelector('.filters');
     this.currentFilter = this.filter.querySelector('.all');
     this.currentUser = 'default';
@@ -29,10 +30,13 @@ export default class View {
                         </div>
                         <input class="edit" value="" />`;
     this.todoList.appendChild(temp);
+    this.increaseTodoCount();
     if (this.currentFilter.classList.contains('completed')) {
       temp.style.display = 'none';
+      return;
+    } else {
+      this.setTodoCount(+this.todoCountView.innerText + 1);
     }
-    this.increaseCount();
   }
 
   renderAllTodo(todos) {
@@ -47,7 +51,8 @@ export default class View {
       return;
     }
     li.remove();
-    this.decreaseCount();
+    this.decreaseTodoCount();
+    this.setTodoCount(this.todoCountView.innerText - 1);
   }
 
   renderAgain(todo) {
@@ -72,28 +77,35 @@ export default class View {
     todos.forEach((todo) => {
       todo.style.display = 'block';
     });
+    this.setTodoCount(this.getTodoCount());
   }
 
   filterActive() {
+    let activeCount = 0;
     const todos = this.todoList.querySelectorAll('li');
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'none';
       } else {
+        activeCount++;
         todo.style.display = 'block';
       }
     });
+    this.setTodoCount(activeCount);
   }
 
   filterCompleted() {
+    let completedCount = 0;
     const todos = this.todoList.querySelectorAll('li');
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'block';
+        completedCount++;
       } else {
         todo.style.display = 'none';
       }
     });
+    this.setTodoCount(completedCount);
   }
 
   setSelectFilter(filter) {
@@ -102,12 +114,20 @@ export default class View {
     this.currentFilter.classList.add('selected');
   }
 
-  increaseCount() {
-    this.count.innerText = +this.count.innerText + 1;
+  increaseTodoCount() {
+    this.todoCount++;
   }
 
-  decreaseCount() {
-    this.count.innerText = +this.count.innerText - 1;
+  decreaseTodoCount() {
+    this.todoCount--;
+  }
+
+  getTodoCount() {
+    return this.todoCount;
+  }
+
+  setTodoCount(count) {
+    this.todoCountView.innerText = count;
   }
 
   editMode(todo) {
