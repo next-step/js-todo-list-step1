@@ -2,7 +2,7 @@
 const $inputSchedule = document.getElementById("new-todo-title");
 
 $inputSchedule.addEventListener('keypress', addSchedule);
-console.log("jkkkk")
+
 
 let count = 0;
 let id = 0;
@@ -15,7 +15,7 @@ function addSchedule(event) {
       
         const $toDoItem = document.createElement('li');
         console.log($inputSchedule)
-        $toDoItem.innerHTML = createTodoTemplete($inputSchedule.value, true, id);
+        $toDoItem.innerHTML = createTodoTemplete($inputSchedule.value, true);
         id += 1;
         console.log(id);
         $toDoLists.appendChild($toDoItem);
@@ -26,16 +26,20 @@ function addSchedule(event) {
 
 
 function makeComplete(id) {
+
     id.parentNode.parentNode.class = "completed";
-    id.parentNode.children[0].checked = true;
+    id.parentNode.children[0].setAttribute("checked", true);
 }
   
-
-const createTodoTemplete = (text, isActive, id) => `
+function deleteElement(id) {
+    li = id.parentNode.parentNode;
+    li.remove();
+}
+const createTodoTemplete = (text, isActive) => `
 	<div class="view">
-		<input class="toggle" type="checkbox" ${!isActive && 'checked'}/>
+		<input class="toggle" type="checkbox" ${!isActive && 'checked'} onclick="makeComplete(this)"/>
 		<label class="label">${text}</label>
-		<button class="destroy" id=${id} onclick="makeComplete(this)"></button>
+		<button class="destroy" onclick="deleteElement(this)"></button>
 	</div>
 	<input class="edit" value="${text}" />
      
