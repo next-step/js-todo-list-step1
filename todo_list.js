@@ -27,7 +27,7 @@ function addSchedule(event) {
 
 function makeComplete(id) {
 
-    id.parentNode.parentNode.class = "completed";
+    id.parentNode.parentNode.classList.add("completed");
     id.parentNode.children[0].setAttribute("checked", true);
 }
   
@@ -35,10 +35,18 @@ function deleteElement(id) {
     li = id.parentNode.parentNode;
     li.remove();
 }
+
+function changeToEditMode(id) {
+    console.log("ischanged");
+    id.parentNode.parentNode.classList.add("editing");
+    console.log(id.parentNode.parentNode)
+}
+
 const createTodoTemplete = (text, isActive) => `
+    
 	<div class="view">
 		<input class="toggle" type="checkbox" ${!isActive && 'checked'} onclick="makeComplete(this)"/>
-		<label class="label">${text}</label>
+		<label class="label" ondblclick="changeToEditMode(this)">${text}</label>
 		<button class="destroy" onclick="deleteElement(this)"></button>
 	</div>
 	<input class="edit" value="${text}" />
