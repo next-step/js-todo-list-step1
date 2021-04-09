@@ -69,7 +69,7 @@ export default class View {
                       <button class="destroy"></button>
                     </div>
                     <input class="edit" value="" />`;
-    this.setDisplayStyle(li, todo);
+    this.setDisplayStyleAndCount(li, todo);
   }
 
   filterAll() {
@@ -150,7 +150,7 @@ export default class View {
     this.input.value = '';
   }
 
-  setDisplayStyle(li, todo) {
+  setDisplayStyleAndCount(li, todo) {
     if (this.currentFilter.classList.contains('all')) {
       return;
     } else if (
@@ -158,10 +158,12 @@ export default class View {
       todo.completed
     ) {
       li.style.display = 'none';
+      this.setTodoCount(+this.todoCountView.innerText - 1);
     } else if (
       this.currentFilter.classList.contains('completed') &&
       !todo.completed
     ) {
+      this.setTodoCount(+this.todoCountView.innerText - 1);
       li.style.display = 'none';
     }
   }
@@ -265,7 +267,6 @@ export default class View {
           callback(+todo.dataset.id, input.value);
         });
         break;
-
       default:
         console.log('eventName is not handling');
     }
