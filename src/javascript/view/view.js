@@ -12,6 +12,139 @@ export default class View {
     this.currentUser = 'default';
   }
 
+  renderTodo(todo) {
+    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    if (li) {
+      return;
+    }
+    const temp = document.createElement('li');
+    temp.dataset.id = todo.id;
+    temp.classList.add(todo.completed ? 'completed' : 'active');
+    temp.innerHTML = `
+                        <div class="view">
+                          <input class="toggle" type="checkbox"
+                          ${todo.completed ? 'checked' : ''}/>
+                          <label class="label">${todo.content}</label>
+                          <button class="destroy"></button>
+                        </div>
+                        <input class="edit" value="" />`;
+    this.todoList.appendChild(temp);
+    if (this.currentFilter.classList.contains('completed')) {
+      temp.style.display = 'none';
+    }
+    this.increaseCount();
+  }
+
+  renderAllTodo(todos) {
+    todos.forEach((todo) => {
+      this.renderTodo(todo);
+    });
+  }
+
+  removeTodoFromList(todo) {
+    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    if (!li) {
+      return;
+    }
+    li.remove();
+    this.decreaseCount();
+  }
+
+  renderAgain(todo) {
+    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    if (!li) {
+      return;
+    }
+    li.className = todo.completed ? 'completed' : 'active';
+    li.innerHTML = `
+                    <div class="view">
+                      <input class="toggle" type="checkbox"
+                      ${todo.completed ? 'checked' : ''}/>
+                      <label class="label">${todo.content}</label>
+                      <button class="destroy"></button>
+                    </div>
+                    <input class="edit" value="" />`;
+    this.setDisplayStyle(li, todo);
+  }
+
+  filterAll() {
+    const todos = this.todoList.querySelectorAll('li');
+    todos.forEach((todo) => {
+      todo.style.display = 'block';
+    });
+  }
+
+  filterActive() {
+    const todos = this.todoList.querySelectorAll('li');
+    todos.forEach((todo) => {
+      if (todo.classList.contains('completed')) {
+        todo.style.display = 'none';
+      } else {
+        todo.style.display = 'block';
+      }
+    });
+  }
+
+  filterCompleted() {
+    const todos = this.todoList.querySelectorAll('li');
+    todos.forEach((todo) => {
+      if (todo.classList.contains('completed')) {
+        todo.style.display = 'block';
+      } else {
+        todo.style.display = 'none';
+      }
+    });
+  }
+
+  setSelectFilter(filter) {
+    this.currentFilter.classList.remove('selected');
+    this.currentFilter = filter;
+    this.currentFilter.classList.add('selected');
+  }
+
+  increaseCount() {
+    this.count.innerText = +this.count.innerText + 1;
+  }
+
+  decreaseCount() {
+    this.count.innerText = +this.count.innerText - 1;
+  }
+
+  editMode(todo) {
+    todo.classList.add('editing');
+    const input = todo.querySelector('.edit');
+    input.focus();
+  }
+
+  editEnd(todo) {
+    todo =
+      todo instanceof Element
+        ? todo
+        : this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    todo.classList.remove('editing');
+    const input = todo.querySelector('.edit');
+    input.value = '';
+  }
+
+  clearInput() {
+    this.input.value = '';
+  }
+
+  setDisplayStyle(li, todo) {
+    if (this.currentFilter.classList.contains('all')) {
+      return;
+    } else if (
+      this.currentFilter.classList.contains('active') &&
+      todo.completed
+    ) {
+      li.style.display = 'none';
+    } else if (
+      this.currentFilter.classList.contains('completed') &&
+      !todo.completed
+    ) {
+      li.style.display = 'none';
+    }
+  }
   setEventListener(eventName, callback) {
     switch (eventName) {
       case 'add':
@@ -115,140 +248,6 @@ export default class View {
 
       default:
         console.log('eventName is not handling');
-    }
-  }
-
-  renderTodo(todo) {
-    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
-    if (li) {
-      return;
-    }
-    const temp = document.createElement('li');
-    temp.dataset.id = todo.id;
-    temp.classList.add(todo.completed ? 'completed' : 'ing');
-    temp.innerHTML = `
-                        <div class="view">
-                          <input class="toggle" type="checkbox"
-                          ${todo.completed ? 'checked' : ''}/>
-                          <label class="label">${todo.content}</label>
-                          <button class="destroy"></button>
-                        </div>
-                        <input class="edit" value="" />`;
-    this.todoList.appendChild(temp);
-    if (this.currentFilter.classList.contains('completed')) {
-      temp.style.display = 'none';
-    }
-    this.increaseCount();
-  }
-
-  renderAllTodo(todos) {
-    todos.forEach((todo) => {
-      this.renderTodo(todo);
-    });
-  }
-
-  removeTodoFromList(todo) {
-    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
-    if (!li) {
-      return;
-    }
-    li.remove();
-    this.decreaseCount();
-  }
-
-  renderAgain(todo) {
-    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
-    if (!li) {
-      return;
-    }
-    li.className = todo.completed ? 'completed' : 'ing';
-    li.innerHTML = `
-                    <div class="view">
-                      <input class="toggle" type="checkbox"
-                      ${todo.completed ? 'checked' : ''}/>
-                      <label class="label">${todo.content}</label>
-                      <button class="destroy"></button>
-                    </div>
-                    <input class="edit" value="" />`;
-    this.setDisplayStyle(li, todo);
-  }
-
-  filterAll() {
-    const todos = this.todoList.querySelectorAll('li');
-    todos.forEach((todo) => {
-      todo.style.display = 'block';
-    });
-  }
-
-  filterActive() {
-    const todos = this.todoList.querySelectorAll('li');
-    todos.forEach((todo) => {
-      if (todo.classList.contains('completed')) {
-        todo.style.display = 'none';
-      } else {
-        todo.style.display = 'block';
-      }
-    });
-  }
-
-  filterCompleted() {
-    const todos = this.todoList.querySelectorAll('li');
-    todos.forEach((todo) => {
-      if (todo.classList.contains('completed')) {
-        todo.style.display = 'block';
-      } else {
-        todo.style.display = 'none';
-      }
-    });
-  }
-
-  setSelectFilter(filter) {
-    this.currentFilter.classList.remove('selected');
-    this.currentFilter = filter;
-    this.currentFilter.classList.add('selected');
-  }
-
-  increaseCount() {
-    this.count.innerText = +this.count.innerText + 1;
-  }
-
-  decreaseCount() {
-    this.count.innerText = +this.count.innerText - 1;
-  }
-
-  editMode(todo) {
-    todo.classList.add('editing');
-    const input = todo.querySelector('.edit');
-    input.focus();
-  }
-
-  editEnd(todo) {
-    todo =
-      todo instanceof Element
-        ? todo
-        : this.todoList.querySelector(`li[data-id='${todo.id}']`);
-    todo.classList.remove('editing');
-    const input = todo.querySelector('.edit');
-    input.value = '';
-  }
-
-  clearInput() {
-    this.input.value = '';
-  }
-
-  setDisplayStyle(li, todo) {
-    if (this.currentFilter.classList.contains('all')) {
-      return;
-    } else if (
-      this.currentFilter.classList.contains('active') &&
-      todo.completed
-    ) {
-      li.style.display = 'none';
-    } else if (
-      this.currentFilter.classList.contains('completed') &&
-      !todo.completed
-    ) {
-      li.style.display = 'none';
     }
   }
 }
