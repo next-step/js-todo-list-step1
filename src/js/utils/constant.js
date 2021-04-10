@@ -12,6 +12,7 @@ export const SELECTOR = {
   TODO_COUNTER: 'todo-count',
   COMPLETED_LIST: 'completed',
   FILTER: 'filters',
+  SELECTED: ' selected',
 };
 
 export const STATUS = {

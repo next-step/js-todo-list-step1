@@ -14,13 +14,15 @@ class TodoFilters {
 
   bindEvent() {
     const container = document.querySelector(`.${SELECTOR.FILTER}`);
-    container.addEventListener('click', ({ target }) => {
-      const $filters = target.closest('ul').children;
-      const status = target.className;
-      this.resetStatus($filters);
-      target.className += ' selected';
-      this.store.setStatus(status);
-    });
+    container.addEventListener('click', ({ target }) => this.onClick(target));
+  }
+
+  onClick(target) {
+    const $filters = target.closest('ul').children;
+    const status = target.className;
+    this.resetStatus($filters);
+    target.className += SELECTOR.SELECTED;
+    this.store.setStatus(status);
   }
 
   // reset css status

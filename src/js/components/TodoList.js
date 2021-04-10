@@ -29,8 +29,8 @@ class TodoList extends Observer {
       }
     });
 
-    this.container.addEventListener('keyup', (e) => {
-      if (e.key === 'Escape') {
+    this.container.addEventListener('keyup', ({ key }) => {
+      if (key === 'Escape') {
         const $editList = this.container.querySelectorAll(SELECTOR.EDIT_INPUT);
         const $activeInput = Array.from($editList).find(
           (element) => element === document.activeElement,
