@@ -5,9 +5,6 @@ export default class DB {
     const temp = localStorage[this.userName];
     this.todos = temp ? JSON.parse(temp) : new Array();
     this.setId(this.todos.length);
-    // NOTE: count 작성하기
-    // this.count = this.todos.length;
-    // console.log(`${this.userName}'s count: ${this.count}`);
   }
 
   save(todo) {
