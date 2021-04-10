@@ -20,7 +20,7 @@ export default class View {
     }
     switch (cmd) {
       case 'add':
-        this._renderTodo(obj.todo);
+        this._add(obj.todo);
         this._clearInput();
         break;
       case 'editStart':
@@ -53,7 +53,7 @@ export default class View {
     }
   }
 
-  _renderTodo(todo) {
+  _add(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (li) {
       return;
@@ -81,7 +81,7 @@ export default class View {
 
   _renderAllTodo(todos) {
     todos.forEach((todo) => {
-      this._renderTodo(todo);
+      this._add(todo);
     });
   }
 
