@@ -8,13 +8,15 @@ export default class DB {
     this.setId(this.todos.length);
   }
 
-  save(todo) {
+  new(todo) {
     this.increaseId();
     todo.id = this.getId();
-    this.todos.push(todo);
     todo.removed = false;
-    localStorage[this.userName] = JSON.stringify(this.todos);
     return todo;
+  }
+
+  save(todos) {
+    localStorage[this.userName] = JSON.stringify(todos);
   }
 
   updateStatus(id) {

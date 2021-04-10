@@ -26,11 +26,12 @@ export default class Model {
     }
     const storage = this._getStorageOf(userName);
     this.todos[userName].push(
-      storage.save({
+      storage.new({
         content: value,
         completed: false,
       })
     );
+    storage.save(this.todos[userName]);
     return this.todos[userName][this.todos[userName].length - 1];
   }
 
@@ -46,7 +47,7 @@ export default class Model {
       return;
     }
     targetTodo.removed = true;
-    storage.remove(JSON.stringify(this.todos[userName]));
+    storage.save(this.todos[userName]);
     return targetTodo;
   }
 
