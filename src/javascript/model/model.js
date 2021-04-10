@@ -40,8 +40,14 @@ export default class Model {
   }
 
   async remove(todoId, userName) {
-    const storage = this.storages[userName];
-    return storage.remove(todoId);
+    const storage = this._getStorageOf(userName);
+    const targetTodo = this.todos[userName].find((todo) => todo.id === todoId);
+    if (!targetTodo) {
+      return;
+    }
+    targetTodo.removed = true;
+    storage.remove(JSON.stringify(this.todos[userName]));
+    return targetTodo;
   }
 
   async updateStatus(todoId, userName) {
