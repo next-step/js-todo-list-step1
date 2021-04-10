@@ -33,11 +33,6 @@ export default class Model {
     return this.todos[userName][this.todos[userName].length - 1];
   }
 
-  getTodosOf(userName) {
-    const storage = this.storages[userName];
-    return storage.getTodos();
-  }
-
   async remove(todoId, userName) {
     const storage = this._getStorageOf(userName);
     const targetTodo = this.todos[userName].find((todo) => todo.id === todoId);
@@ -72,5 +67,9 @@ export default class Model {
     targetTodo.content = content;
     storage.save(this.todos[userName]);
     return targetTodo;
+  }
+
+  getTodosOf(userName) {
+    return this.todos[userName].filter((todo) => !todo.removed);
   }
 }
