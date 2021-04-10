@@ -1,9 +1,9 @@
 export default class Model {
   constructor(storages) {
     this._storages = storages;
-    this.todos = {};
+    this._todos = {};
     for (let userName in storages) {
-      this.todos[userName] = storages[userName].todos;
+      this._todos[userName] = storages[userName].todos;
     }
   }
 
@@ -12,14 +12,14 @@ export default class Model {
       throw new RangeError('value is empty!!');
     }
     this._setCurrentStorage(userName);
-    this.todos[userName].push(
+    this._todos[userName].push(
       this._currentStorage.new({
         content: value,
         completed: false,
       })
     );
-    this._currentStorage.save(this.todos[userName]);
-    return this.todos[userName][this.todos[userName].length - 1];
+    this._currentStorage.save(this._todos[userName]);
+    return this._todos[userName][this._todos[userName].length - 1];
   }
 
   async remove(todoId, userName) {
@@ -29,7 +29,7 @@ export default class Model {
       return;
     }
     targetTodo.removed = true;
-    this._currentStorage.save(this.todos[userName]);
+    this._currentStorage.save(this._todos[userName]);
     return targetTodo;
   }
 
@@ -40,7 +40,7 @@ export default class Model {
       return;
     }
     targetTodo.completed = !targetTodo.completed;
-    this._currentStorage.save(this.todos[userName]);
+    this._currentStorage.save(this._todos[userName]);
     return targetTodo;
   }
 
@@ -54,12 +54,12 @@ export default class Model {
       throw targetTodo;
     }
     targetTodo.content = content;
-    this._currentStorage.save(this.todos[userName]);
+    this._currentStorage.save(this._todos[userName]);
     return targetTodo;
   }
 
   getTodosOf(userName) {
-    return this.todos[userName].filter((todo) => !todo.removed);
+    return this._todos[userName].filter((todo) => !todo.removed);
   }
 
   _setCurrentStorage(userName) {
@@ -67,6 +67,6 @@ export default class Model {
   }
 
   _findTodoById(id, userName) {
-    return this.todos[userName].find((todo) => todo.id === id);
+    return this._todos[userName].find((todo) => todo.id === id);
   }
 }
