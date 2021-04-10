@@ -1,19 +1,34 @@
-import { SELECTOR } from '../utils/constant.js';
+import { SELECTOR, STATUS } from '../utils/constant.js';
+
+const statusByIndex = {
+  0: STATUS.ALL,
+  1: STATUS.COMPLETED,
+  2: STATUS.ACTIVE,
+};
 
 class TodoFilters {
   constructor(store) {
     this.store = store;
-    this.container = document.querySelector(`.${SELECTOR.FILTER}`);
     this.bindEvent();
   }
 
   bindEvent() {
-    this.container.addEventListener('click', ({ target }) => {
-      this.container;
+    const container = document.querySelector(`.${SELECTOR.FILTER}`);
+    container.addEventListener('click', ({ target }) => {
+      const $filters = target.closest('ul').children;
       const status = target.className;
-      // target.className += ' selected';
+      this.resetStatus($filters);
+      target.className += ' selected';
       this.store.setStatus(status);
     });
+  }
+
+  // reset css status
+  resetStatus($filters) {
+    for (let i = 0; i < 3; i++) {
+      const $anchor = $filters[i].children[0];
+      $anchor.className = statusByIndex[i];
+    }
   }
 }
 

@@ -24,7 +24,6 @@ class TodoStore extends Subject {
 
   setStatus(status) {
     this.status = status;
-    console.log(status);
     switch (status) {
       case STATUS.ACTIVE:
         return this.setRenderData(
