@@ -10,8 +10,10 @@ export default class Controller {
     this.model
       .create(value, this.view.currentUser)
       .then((todo) => {
-        this.view.renderTodo(todo);
-        this.view.clearInput();
+        this.view.render({
+          cmd: 'add',
+          todo: todo,
+        });
       })
       .catch((error) => {
         alert(error.message);
@@ -20,14 +22,20 @@ export default class Controller {
 
   refreshPage() {
     const todos = this.model.getTodosOf(this.view.currentUser);
-    this.view.renderAllTodo(todos);
+    this.view.render({
+      cmd: 'refresh',
+      todos: todos,
+    });
   }
 
   destroy(todoId) {
     this.model
       .remove(todoId, this.view.currentUser)
       .then((todo) => {
-        this.view.removeTodoFromList(todo);
+        this.view.render({
+          cmd: 'remove',
+          todo: todo,
+        });
       })
       .catch((error) => {
         console.log(error.message);
@@ -38,7 +46,10 @@ export default class Controller {
     this.model
       .updateStatus(todoId, this.view.currentUser)
       .then((todo) => {
-        this.view.renderAgain(todo);
+        this.view.render({
+          cmd: 'toggle',
+          todo: todo,
+        });
       })
       .catch((error) => {
         console.log(error.meesage);
@@ -46,14 +57,20 @@ export default class Controller {
   }
 
   edit(todo) {
-    this.view.editMode(todo);
+    this.view.render({
+      cmd: 'editStart',
+      todo: todo,
+    });
   }
 
   editApply(todoId, content) {
     this.model
       .updateContent(todoId, content, this.view.currentUser)
       .then((todo) => {
-        this.view.renderAgain(todo);
+        this.view.render({
+          cmd: 'editApply',
+          todo: todo,
+        });
       })
       .catch((todo) => {
         this.view.editEnd(todo);
@@ -61,19 +78,28 @@ export default class Controller {
   }
 
   editEnd(todo) {
-    this.view.editEnd(todo);
+    this.view.render({
+      cmd: 'editEnd',
+      todo: todo,
+    });
   }
 
   showAll() {
-    this.view.filterAll();
+    this.view.render({
+      cmd: 'showAll',
+    });
   }
 
   showActive() {
-    this.view.filterActive();
+    this.view.render({
+      cmd: 'showActive',
+    });
   }
 
   showCompleted() {
-    this.view.filterCompleted();
+    this.view.render({
+      cmd: 'showCompleted',
+    });
   }
 
   setEventListeners() {

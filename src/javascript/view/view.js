@@ -13,6 +13,46 @@ export default class View {
     this.currentUser = 'default';
   }
 
+  render(obj) {
+    const cmd = obj.cmd;
+    if (!cmd) {
+      return;
+    }
+    switch (cmd) {
+      case 'add':
+        this.renderTodo(obj.todo);
+        this.clearInput();
+        break;
+      case 'editStart':
+        this.editMode(obj.todo);
+        break;
+      case 'editApply':
+        this.renderAgain(obj.todo);
+        break;
+      case 'editEnd':
+        this.editEnd(obj.todo);
+        break;
+      case 'remove':
+        this.removeTodoFromList(obj.todo);
+        break;
+      case 'toggle':
+        this.renderAgain(obj.todo);
+        break;
+      case 'refresh':
+        this.renderAllTodo(obj.todos);
+        break;
+      case 'showAll':
+        this.filterAll();
+        break;
+      case 'showActive':
+        this.filterActive();
+        break;
+      case 'showCompleted':
+        this.filterCompleted();
+        break;
+    }
+  }
+
   renderTodo(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (li) {
