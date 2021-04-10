@@ -60,7 +60,7 @@ class TodoList extends Observer {
   }
 
   onUpdateTodo(id, newTitle) {
-    const updatedData = this.store.renderData.map((data) => {
+    const updatedData = this.store.originData.map((data) => {
       if (data.id === id) {
         return { id, title: newTitle };
       }
