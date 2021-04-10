@@ -11,8 +11,6 @@ export default class Model {
     this.todos = {};
     for (let userName in storages) {
       this.todos[userName] = storages[userName].todos;
-      console.log(userName);
-      console.log(this.todos[userName]);
     }
   }
 
@@ -52,12 +50,27 @@ export default class Model {
   }
 
   async updateStatus(todoId, userName) {
-    const storage = this.storages[userName];
-    return storage.updateStatus(todoId);
+    const storage = this._getStorageOf(userName);
+    const targetTodo = this.todos[userName].find((todo) => todo.id === todoId);
+    if (!targetTodo) {
+      return;
+    }
+    targetTodo.completed = !targetTodo.completed;
+    storage.save(this.todos[userName]);
+    return targetTodo;
   }
 
   async updateContent(todoId, content, userName) {
-    const storage = this.storages[userName];
-    return storage.updateContent(todoId, content);
+    const storage = this._getStorageOf(userName);
+    const targetTodo = this.todos[userName].find((todo) => todo.id === todoId);
+    if (!targetTodo) {
+      return;
+    }
+    if (content.length === 0) {
+      throw targetTodo;
+    }
+    targetTodo.content = content;
+    storage.save(this.todos[userName]);
+    return targetTodo;
   }
 }
