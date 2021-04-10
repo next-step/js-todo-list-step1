@@ -38,7 +38,7 @@ export default class Controller {
         });
       })
       .catch((error) => {
-        console.log(error.message);
+        alert(error.message);
       });
   }
 
@@ -52,7 +52,7 @@ export default class Controller {
         });
       })
       .catch((error) => {
-        console.log(error.meesage);
+        alert(error.message);
       });
   }
 
@@ -72,11 +72,15 @@ export default class Controller {
           todo: todo,
         });
       })
-      .catch((todo) => {
-        this.view.render({
-          cmd: 'editEnd',
-          todo: todo,
-        });
+      .catch((error) => {
+        if (error instanceof Error) {
+          alert(error);
+        } else {
+          this.view.render({
+            cmd: 'editEnd',
+            todo: error,
+          });
+        }
       });
   }
 

@@ -9,7 +9,7 @@ export default class Model {
 
   async create(value, userName) {
     if (value.length === 0) {
-      throw new RangeError('value is empty!!');
+      throw new Error('입력칸이 비어있습니다.');
     }
     this._setCurrentStorage(userName);
     this._todos[userName].push(
@@ -26,7 +26,7 @@ export default class Model {
     this._setCurrentStorage(userName);
     const targetTodo = this._findTodoById(todoId, userName);
     if (!targetTodo) {
-      return;
+      throw new Error('예상치 못한 문제가 발생했습니다. 새로고침을 해주세요.');
     }
     targetTodo.removed = true;
     this._currentStorage.save(this._todos[userName]);
@@ -37,7 +37,7 @@ export default class Model {
     this._setCurrentStorage(userName);
     const targetTodo = this._findTodoById(todoId, userName);
     if (!targetTodo) {
-      return;
+      throw new Error('예상치 못한 문제가 발생했습니다. 새로고침을 해주세요.');
     }
     targetTodo.completed = !targetTodo.completed;
     this._currentStorage.save(this._todos[userName]);
@@ -48,7 +48,7 @@ export default class Model {
     this._setCurrentStorage(userName);
     const targetTodo = this._findTodoById(todoId, userName);
     if (!targetTodo) {
-      return;
+      throw new Error('예상치 못한 문제가 발생했습니다. 새로고침을 해주세요.');
     }
     if (content.length === 0) {
       throw targetTodo;
