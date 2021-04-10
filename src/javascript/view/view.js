@@ -8,8 +8,9 @@ export default class View {
     this.input = document.querySelector('#new-todo-title');
     this.todoCount = 0;
     this.todoCountView = document.querySelector('.todo-count').children[0];
-    this.filter = document.querySelector('.filters');
-    this.currentFilter = this.filter.querySelector('.all');
+    this.filterContainer = document.querySelector('.filters');
+    this.currentFilterView = this.filterContainer.querySelector('.all');
+    this.currentFilter = 'all';
     this.currentUser = 'default';
   }
 
@@ -71,7 +72,7 @@ export default class View {
                         <input class="edit" value="" />`;
     this.todoList.appendChild(temp);
     this._increaseTodoCount();
-    if (this.currentFilter.classList.contains('completed')) {
+    if (this.currentFilter === 'completed') {
       temp.style.display = 'none';
       return;
     } else {
@@ -148,10 +149,11 @@ export default class View {
     this._setTodoCount(completedCount);
   }
 
-  setSelectFilter(filter) {
-    this.currentFilter.classList.remove('selected');
-    this.currentFilter = filter;
-    this.currentFilter.classList.add('selected');
+  _setSelectFilter(filter) {
+    this.currentFilterView.classList.remove('selected');
+    this.currentFilter = filter.className;
+    this.currentFilterView = filter;
+    this.currentFilterView.classList.add('selected');
   }
 
   _increaseTodoCount() {
@@ -191,22 +193,17 @@ export default class View {
   }
 
   _setDisplayStyleAndCount(li, todo) {
-    if (this.currentFilter.classList.contains('all')) {
+    if (this.currentFilter === 'all') {
       return;
-    } else if (
-      this.currentFilter.classList.contains('active') &&
-      todo.completed
-    ) {
+    } else if (this.currentFilter === 'active' && todo.completed) {
       li.style.display = 'none';
       this._setTodoCount(+this.todoCountView.innerText - 1);
-    } else if (
-      this.currentFilter.classList.contains('completed') &&
-      !todo.completed
-    ) {
+    } else if (this.currentFilter === 'completed' && !todo.completed) {
       this._setTodoCount(+this.todoCountView.innerText - 1);
       li.style.display = 'none';
     }
   }
+
   setEventListener(eventName, callback) {
     switch (eventName) {
       case 'add':
@@ -245,34 +242,34 @@ export default class View {
         break;
       case 'selectAll':
         // NOTE: callback == Controller.showAll
-        this.filter.addEventListener('click', (event) => {
+        this.filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.all');
           if (!filter) {
             return;
           }
-          this.setSelectFilter(filter);
+          this._setSelectFilter(filter);
           callback();
         });
         break;
       case 'selectActive':
         // NOTE: callback == Controller.showActive
-        this.filter.addEventListener('click', (event) => {
+        this.filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.active');
           if (!filter) {
             return;
           }
-          this.setSelectFilter(filter);
+          this._setSelectFilter(filter);
           callback();
         });
         break;
       case 'selectCompleted':
         // NOTE: callback == Controller.showCompleted
-        this.filter.addEventListener('click', (event) => {
+        this.filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.completed');
           if (!filter) {
             return;
           }
-          this.setSelectFilter(filter);
+          this._setSelectFilter(filter);
           callback();
         });
         break;
