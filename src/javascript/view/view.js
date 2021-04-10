@@ -11,7 +11,7 @@ export default class View {
     this._filterContainer = document.querySelector('.filters');
     this._currentFilterView = this._filterContainer.querySelector('.all');
     this._currentFilter = 'all';
-    this.currentUser = 'default';
+    this.setCurrentUser('default');
   }
 
   render(obj) {
@@ -52,6 +52,14 @@ export default class View {
         this._filterCompleted();
         break;
     }
+  }
+
+  setCurrentUser(name) {
+    this._currentUser = name;
+  }
+
+  getCurrentUser() {
+    return this._currentUser;
   }
 
   setEventListener(eventName, callback) {

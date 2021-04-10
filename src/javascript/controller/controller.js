@@ -8,7 +8,7 @@ export default class Controller {
 
   add(value) {
     this.model
-      .create(value, this.view.currentUser)
+      .create(value, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
           cmd: 'add',
@@ -21,7 +21,7 @@ export default class Controller {
   }
 
   refreshPage() {
-    const todos = this.model.getTodosOf(this.view.currentUser);
+    const todos = this.model.getTodosOf(this.view.getCurrentUser());
     this.view.render({
       cmd: 'refresh',
       todos: todos,
@@ -30,7 +30,7 @@ export default class Controller {
 
   remove(todoId) {
     this.model
-      .remove(todoId, this.view.currentUser)
+      .remove(todoId, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
           cmd: 'remove',
@@ -44,7 +44,7 @@ export default class Controller {
 
   toggleCheckBox(todoId) {
     this.model
-      .updateStatus(todoId, this.view.currentUser)
+      .updateStatus(todoId, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
           cmd: 'toggle',
@@ -65,7 +65,7 @@ export default class Controller {
 
   editApply(todoId, content) {
     this.model
-      .updateContent(todoId, content, this.view.currentUser)
+      .updateContent(todoId, content, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
           cmd: 'editApply',
