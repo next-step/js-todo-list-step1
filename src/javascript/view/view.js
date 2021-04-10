@@ -39,7 +39,7 @@ export default class View {
         this._update(obj.todo);
         break;
       case 'refresh':
-        this._renderAllTodo(obj.todos);
+        this._addAll(obj.todos);
         break;
       case 'showAll':
         this._filterAll();
@@ -79,7 +79,7 @@ export default class View {
     }
   }
 
-  _renderAllTodo(todos) {
+  _addAll(todos) {
     todos.forEach((todo) => {
       this._add(todo);
     });
