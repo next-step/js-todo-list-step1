@@ -133,7 +133,7 @@ export default class View {
           callback(todo);
         });
         break;
-      case '_editEnd':
+      case 'editEnd':
         // NOTE: callback == Controller._editEnd
         this.todoList.addEventListener('focusout', (event) => {
           const todo = event.target.closest('li');
