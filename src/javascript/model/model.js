@@ -24,7 +24,7 @@ export default class Model {
     return storage.remove(todoId);
   }
 
-  async changeStatus(todoId, userName) {
+  async updateStatus(todoId, userName) {
     const storage = this.stroages[userName];
     return storage.updateStatus(todoId);
   }

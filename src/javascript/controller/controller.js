@@ -36,7 +36,7 @@ export default class Controller {
 
   toggleCheckBox(todoId) {
     this.model
-      .changeStatus(todoId, this.view.currentUser)
+      .updateStatus(todoId, this.view.currentUser)
       .then((todo) => {
         this.view.renderAgain(todo);
       })
