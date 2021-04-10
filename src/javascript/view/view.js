@@ -54,6 +54,111 @@ export default class View {
     }
   }
 
+  setEventListener(eventName, callback) {
+    switch (eventName) {
+      case 'add':
+        // NOTE: callback == Controller.add
+        this.input.addEventListener('keypress', (event) => {
+          if (event.key === 'Enter') {
+            callback(this.input.value);
+          }
+        });
+        break;
+      case 'refresh':
+        // NOTE: callback == Controller.refreshPage
+        window.addEventListener('load', () => {
+          callback();
+        });
+        break;
+      case 'destroy':
+        // NOTE: callback == Controller.destroy
+        this.todoList.addEventListener('click', (event) => {
+          if (!event.target.closest('.destroy')) {
+            return;
+          }
+          const li = event.target.closest('li');
+          callback(+li.dataset.id);
+        });
+        break;
+      case 'toggle':
+        // NOTE: callback == Controller.toggleCheckBox
+        this.todoList.addEventListener('click', (event) => {
+          if (!event.target.closest('.toggle')) {
+            return;
+          }
+          const li = event.target.closest('li');
+          callback(+li.dataset.id);
+        });
+        break;
+      case 'selectAll':
+        // NOTE: callback == Controller.showAll
+        this.filterContainer.addEventListener('click', (event) => {
+          const filter = event.target.closest('.all');
+          if (!filter) {
+            return;
+          }
+          this._setSelectFilter(filter);
+          callback();
+        });
+        break;
+      case 'selectActive':
+        // NOTE: callback == Controller.showActive
+        this.filterContainer.addEventListener('click', (event) => {
+          const filter = event.target.closest('.active');
+          if (!filter) {
+            return;
+          }
+          this._setSelectFilter(filter);
+          callback();
+        });
+        break;
+      case 'selectCompleted':
+        // NOTE: callback == Controller.showCompleted
+        this.filterContainer.addEventListener('click', (event) => {
+          const filter = event.target.closest('.completed');
+          if (!filter) {
+            return;
+          }
+          this._setSelectFilter(filter);
+          callback();
+        });
+        break;
+      case 'edit':
+        // NOTE: callback == Controller.edit
+        this.todoList.addEventListener('dblclick', (event) => {
+          const todo = event.target.closest('li');
+          if (!todo) {
+            return;
+          }
+          callback(todo);
+        });
+        break;
+      case '_editEnd':
+        // NOTE: callback == Controller._editEnd
+        this.todoList.addEventListener('focusout', (event) => {
+          const todo = event.target.closest('li');
+          if (!todo) {
+            return;
+          }
+          callback(todo);
+        });
+        break;
+      case 'editApply':
+        // NOTE: callback == Controller.editApply
+        this.todoList.addEventListener('keypress', (event) => {
+          if (event.key !== 'Enter') {
+            return;
+          }
+          const input = event.target.closest('.edit');
+          const todo = input.closest('li');
+          callback(+todo.dataset.id, input.value);
+        });
+        break;
+      default:
+        console.log('eventName is not handling');
+    }
+  }
+
   _add(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (li) {
@@ -201,111 +306,6 @@ export default class View {
     } else if (this.currentFilter === 'completed' && !todo.completed) {
       this._setTodoCount(+this.todoCountView.innerText - 1);
       li.style.display = 'none';
-    }
-  }
-
-  setEventListener(eventName, callback) {
-    switch (eventName) {
-      case 'add':
-        // NOTE: callback == Controller.add
-        this.input.addEventListener('keypress', (event) => {
-          if (event.key === 'Enter') {
-            callback(this.input.value);
-          }
-        });
-        break;
-      case 'refresh':
-        // NOTE: callback == Controller.refreshPage
-        window.addEventListener('load', () => {
-          callback();
-        });
-        break;
-      case 'destroy':
-        // NOTE: callback == Controller.destroy
-        this.todoList.addEventListener('click', (event) => {
-          if (!event.target.closest('.destroy')) {
-            return;
-          }
-          const li = event.target.closest('li');
-          callback(+li.dataset.id);
-        });
-        break;
-      case 'toggle':
-        // NOTE: callback == Controller.toggleCheckBox
-        this.todoList.addEventListener('click', (event) => {
-          if (!event.target.closest('.toggle')) {
-            return;
-          }
-          const li = event.target.closest('li');
-          callback(+li.dataset.id);
-        });
-        break;
-      case 'selectAll':
-        // NOTE: callback == Controller.showAll
-        this.filterContainer.addEventListener('click', (event) => {
-          const filter = event.target.closest('.all');
-          if (!filter) {
-            return;
-          }
-          this._setSelectFilter(filter);
-          callback();
-        });
-        break;
-      case 'selectActive':
-        // NOTE: callback == Controller.showActive
-        this.filterContainer.addEventListener('click', (event) => {
-          const filter = event.target.closest('.active');
-          if (!filter) {
-            return;
-          }
-          this._setSelectFilter(filter);
-          callback();
-        });
-        break;
-      case 'selectCompleted':
-        // NOTE: callback == Controller.showCompleted
-        this.filterContainer.addEventListener('click', (event) => {
-          const filter = event.target.closest('.completed');
-          if (!filter) {
-            return;
-          }
-          this._setSelectFilter(filter);
-          callback();
-        });
-        break;
-      case 'edit':
-        // NOTE: callback == Controller.edit
-        this.todoList.addEventListener('dblclick', (event) => {
-          const todo = event.target.closest('li');
-          if (!todo) {
-            return;
-          }
-          callback(todo);
-        });
-        break;
-      case '_editEnd':
-        // NOTE: callback == Controller._editEnd
-        this.todoList.addEventListener('focusout', (event) => {
-          const todo = event.target.closest('li');
-          if (!todo) {
-            return;
-          }
-          callback(todo);
-        });
-        break;
-      case 'editApply':
-        // NOTE: callback == Controller.editApply
-        this.todoList.addEventListener('keypress', (event) => {
-          if (event.key !== 'Enter') {
-            return;
-          }
-          const input = event.target.closest('.edit');
-          const todo = input.closest('li');
-          callback(+todo.dataset.id, input.value);
-        });
-        break;
-      default:
-        console.log('eventName is not handling');
     }
   }
 }
