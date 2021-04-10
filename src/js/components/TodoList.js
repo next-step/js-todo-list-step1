@@ -42,10 +42,13 @@ class TodoList extends Observer {
 
   onEditMode(target) {
     const $li = target.closest(SELECTOR.LIST);
-    const $value = target.closest(SELECTOR.LABEL).innerText;
-    const $input = $li.querySelector(SELECTOR.EDIT_INPUT);
-    $li.className += SELECTOR.EDITING_MODE;
-    $input.value = $value;
+    // 이미 complete 된 투두는 변경 불가
+    if ($li.className !== SELECTOR.COMPLETED_LIST) {
+      const $value = target.closest(SELECTOR.LABEL).innerText;
+      const $input = $li.querySelector(SELECTOR.EDIT_INPUT);
+      $li.className += SELECTOR.EDITING_MODE;
+      $input.value = $value;
+    }
   }
 
   offEditMode(target) {
