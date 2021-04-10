@@ -75,7 +75,7 @@ class TodoList extends Observer {
       ? ($li.className = '')
       : ($li.className = SELECTOR.COMPLETED_LIST);
 
-    const updatedData = this.store.renderData.map((data) => {
+    const updatedData = this.store.originData.map((data) => {
       if (data.id === id) {
         return { ...data, complete: !data.complete };
       }
