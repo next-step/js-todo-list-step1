@@ -4,30 +4,25 @@ export default class DB {
     this.userName = userName;
     const temp = localStorage[this.userName];
     this.todos = temp ? JSON.parse(temp) : new Array();
-    this.setId(this.todos.length);
+    this._setId(this.todos.length);
   }
 
   new(todo) {
-    this.increaseId();
-    todo.id = this.getId();
+    todo.id = this._getId() + 1;
     todo.removed = false;
     return todo;
   }
 
   save(todos) {
-    this.setId(todos.length);
+    this._setId(todos.length);
     localStorage[this.userName] = JSON.stringify(todos);
   }
 
-  setId(num) {
+  _setId(num) {
     this._id = num;
   }
 
-  getId() {
+  _getId() {
     return this._id;
-  }
-
-  increaseId() {
-    this._id++;
   }
 }
