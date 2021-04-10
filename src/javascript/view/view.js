@@ -4,13 +4,13 @@
 */
 export default class View {
   constructor() {
-    this.todoList = document.querySelector('#todo-list');
-    this.input = document.querySelector('#new-todo-title');
-    this.todoCount = 0;
-    this.todoCountView = document.querySelector('.todo-count').children[0];
-    this.filterContainer = document.querySelector('.filters');
-    this.currentFilterView = this.filterContainer.querySelector('.all');
-    this.currentFilter = 'all';
+    this._todoList = document.querySelector('#todo-list');
+    this._input = document.querySelector('#new-todo-title');
+    this._todoCount = 0;
+    this._todoCountView = document.querySelector('.todo-count').children[0];
+    this._filterContainer = document.querySelector('.filters');
+    this._currentFilterView = this._filterContainer.querySelector('.all');
+    this._currentFilter = 'all';
     this.currentUser = 'default';
   }
 
@@ -58,9 +58,9 @@ export default class View {
     switch (eventName) {
       case 'add':
         // NOTE: callback == Controller.add
-        this.input.addEventListener('keypress', (event) => {
+        this._input.addEventListener('keypress', (event) => {
           if (event.key === 'Enter') {
-            callback(this.input.value);
+            callback(this._input.value);
           }
         });
         break;
@@ -72,7 +72,7 @@ export default class View {
         break;
       case 'destroy':
         // NOTE: callback == Controller.destroy
-        this.todoList.addEventListener('click', (event) => {
+        this._todoList.addEventListener('click', (event) => {
           if (!event.target.closest('.destroy')) {
             return;
           }
@@ -82,7 +82,7 @@ export default class View {
         break;
       case 'toggle':
         // NOTE: callback == Controller.toggleCheckBox
-        this.todoList.addEventListener('click', (event) => {
+        this._todoList.addEventListener('click', (event) => {
           if (!event.target.closest('.toggle')) {
             return;
           }
@@ -92,7 +92,7 @@ export default class View {
         break;
       case 'selectAll':
         // NOTE: callback == Controller.showAll
-        this.filterContainer.addEventListener('click', (event) => {
+        this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.all');
           if (!filter) {
             return;
@@ -103,7 +103,7 @@ export default class View {
         break;
       case 'selectActive':
         // NOTE: callback == Controller.showActive
-        this.filterContainer.addEventListener('click', (event) => {
+        this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.active');
           if (!filter) {
             return;
@@ -114,7 +114,7 @@ export default class View {
         break;
       case 'selectCompleted':
         // NOTE: callback == Controller.showCompleted
-        this.filterContainer.addEventListener('click', (event) => {
+        this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.completed');
           if (!filter) {
             return;
@@ -125,7 +125,7 @@ export default class View {
         break;
       case 'edit':
         // NOTE: callback == Controller.edit
-        this.todoList.addEventListener('dblclick', (event) => {
+        this._todoList.addEventListener('dblclick', (event) => {
           const todo = event.target.closest('li');
           if (!todo) {
             return;
@@ -135,7 +135,7 @@ export default class View {
         break;
       case 'editEnd':
         // NOTE: callback == Controller._editEnd
-        this.todoList.addEventListener('focusout', (event) => {
+        this._todoList.addEventListener('focusout', (event) => {
           const todo = event.target.closest('li');
           if (!todo) {
             return;
@@ -145,7 +145,7 @@ export default class View {
         break;
       case 'editApply':
         // NOTE: callback == Controller.editApply
-        this.todoList.addEventListener('keypress', (event) => {
+        this._todoList.addEventListener('keypress', (event) => {
           if (event.key !== 'Enter') {
             return;
           }
@@ -160,7 +160,7 @@ export default class View {
   }
 
   _add(todo) {
-    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    const li = this._todoList.querySelector(`li[data-id='${todo.id}']`);
     if (li) {
       return;
     }
@@ -175,13 +175,13 @@ export default class View {
                           <button class="destroy"></button>
                         </div>
                         <input class="edit" value="" />`;
-    this.todoList.appendChild(temp);
+    this._todoList.appendChild(temp);
     this._increaseTodoCount();
-    if (this.currentFilter === 'completed') {
+    if (this._currentFilter === 'completed') {
       temp.style.display = 'none';
       return;
     } else {
-      this._setTodoCount(+this.todoCountView.innerText + 1);
+      this._setTodoCount(+this._todoCountView.innerText + 1);
     }
   }
 
@@ -192,17 +192,17 @@ export default class View {
   }
 
   _remove(todo) {
-    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    const li = this._todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
     }
     li.remove();
     this._decreaseTodoCount();
-    this._setTodoCount(this.todoCountView.innerText - 1);
+    this._setTodoCount(this._todoCountView.innerText - 1);
   }
 
   _update(todo) {
-    const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
+    const li = this._todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
     }
@@ -219,7 +219,7 @@ export default class View {
   }
 
   _filterAll() {
-    const todos = this.todoList.querySelectorAll('li');
+    const todos = this._todoList.querySelectorAll('li');
     todos.forEach((todo) => {
       todo.style.display = 'block';
     });
@@ -228,7 +228,7 @@ export default class View {
 
   _filterActive() {
     let activeCount = 0;
-    const todos = this.todoList.querySelectorAll('li');
+    const todos = this._todoList.querySelectorAll('li');
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'none';
@@ -242,7 +242,7 @@ export default class View {
 
   _filterCompleted() {
     let completedCount = 0;
-    const todos = this.todoList.querySelectorAll('li');
+    const todos = this._todoList.querySelectorAll('li');
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'block';
@@ -255,26 +255,26 @@ export default class View {
   }
 
   _setSelectFilter(filter) {
-    this.currentFilterView.classList.remove('selected');
-    this.currentFilter = filter.className;
-    this.currentFilterView = filter;
-    this.currentFilterView.classList.add('selected');
+    this._currentFilterView.classList.remove('selected');
+    this._currentFilter = filter.className;
+    this._currentFilterView = filter;
+    this._currentFilterView.classList.add('selected');
   }
 
   _increaseTodoCount() {
-    this.todoCount++;
+    this._todoCount++;
   }
 
   _decreaseTodoCount() {
-    this.todoCount--;
+    this._todoCount--;
   }
 
   getTodoCount() {
-    return this.todoCount;
+    return this._todoCount;
   }
 
   _setTodoCount(count) {
-    this.todoCountView.innerText = count;
+    this._todoCountView.innerText = count;
   }
 
   _editMode(todo) {
@@ -287,24 +287,24 @@ export default class View {
     todo =
       todo instanceof Element
         ? todo
-        : this.todoList.querySelector(`li[data-id='${todo.id}']`);
+        : this._todoList.querySelector(`li[data-id='${todo.id}']`);
     todo.classList.remove('editing');
     const input = todo.querySelector('.edit');
     input.value = '';
   }
 
   _clearInput() {
-    this.input.value = '';
+    this._input.value = '';
   }
 
   _setDisplayStyleAndCount(li, todo) {
-    if (this.currentFilter === 'all') {
+    if (this._currentFilter === 'all') {
       return;
-    } else if (this.currentFilter === 'active' && todo.completed) {
+    } else if (this._currentFilter === 'active' && todo.completed) {
       li.style.display = 'none';
-      this._setTodoCount(+this.todoCountView.innerText - 1);
-    } else if (this.currentFilter === 'completed' && !todo.completed) {
-      this._setTodoCount(+this.todoCountView.innerText - 1);
+      this._setTodoCount(+this._todoCountView.innerText - 1);
+    } else if (this._currentFilter === 'completed' && !todo.completed) {
+      this._setTodoCount(+this._todoCountView.innerText - 1);
       li.style.display = 'none';
     }
   }
