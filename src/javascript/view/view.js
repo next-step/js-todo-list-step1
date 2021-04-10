@@ -27,7 +27,7 @@ export default class View {
         this._editMode(obj.todo);
         break;
       case 'editApply':
-        this._renderAgain(obj.todo);
+        this._update(obj.todo);
         break;
       case 'editEnd':
         this._editEnd(obj.todo);
@@ -36,7 +36,7 @@ export default class View {
         this._removeTodoFromList(obj.todo);
         break;
       case 'toggle':
-        this._renderAgain(obj.todo);
+        this._update(obj.todo);
         break;
       case 'refresh':
         this._renderAllTodo(obj.todos);
@@ -95,7 +95,7 @@ export default class View {
     this._setTodoCount(this.todoCountView.innerText - 1);
   }
 
-  _renderAgain(todo) {
+  _update(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
