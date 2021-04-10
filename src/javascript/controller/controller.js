@@ -28,7 +28,7 @@ export default class Controller {
     });
   }
 
-  destroy(todoId) {
+  remove(todoId) {
     this.model
       .remove(todoId, this.view.currentUser)
       .then((todo) => {
@@ -113,7 +113,7 @@ export default class Controller {
       this.refreshPage();
     });
     this.view.setEventListener('destroy', (todoId) => {
-      this.destroy(todoId);
+      this.remove(todoId);
     });
     this.view.setEventListener('toggle', (todoId) => {
       this.toggleCheckBox(todoId);
