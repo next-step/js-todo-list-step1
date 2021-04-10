@@ -73,7 +73,10 @@ export default class Controller {
         });
       })
       .catch((todo) => {
-        this.view.editEnd(todo);
+        this.view.render({
+          cmd: 'editEnd',
+          todo: todo,
+        });
       });
   }
 

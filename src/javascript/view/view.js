@@ -20,40 +20,40 @@ export default class View {
     }
     switch (cmd) {
       case 'add':
-        this.renderTodo(obj.todo);
-        this.clearInput();
+        this._renderTodo(obj.todo);
+        this._clearInput();
         break;
       case 'editStart':
-        this.editMode(obj.todo);
+        this._editMode(obj.todo);
         break;
       case 'editApply':
-        this.renderAgain(obj.todo);
+        this._renderAgain(obj.todo);
         break;
       case 'editEnd':
-        this.editEnd(obj.todo);
+        this._editEnd(obj.todo);
         break;
       case 'remove':
-        this.removeTodoFromList(obj.todo);
+        this._removeTodoFromList(obj.todo);
         break;
       case 'toggle':
-        this.renderAgain(obj.todo);
+        this._renderAgain(obj.todo);
         break;
       case 'refresh':
-        this.renderAllTodo(obj.todos);
+        this._renderAllTodo(obj.todos);
         break;
       case 'showAll':
-        this.filterAll();
+        this._filterAll();
         break;
       case 'showActive':
-        this.filterActive();
+        this._filterActive();
         break;
       case 'showCompleted':
-        this.filterCompleted();
+        this._filterCompleted();
         break;
     }
   }
 
-  renderTodo(todo) {
+  _renderTodo(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (li) {
       return;
@@ -70,32 +70,32 @@ export default class View {
                         </div>
                         <input class="edit" value="" />`;
     this.todoList.appendChild(temp);
-    this.increaseTodoCount();
+    this._increaseTodoCount();
     if (this.currentFilter.classList.contains('completed')) {
       temp.style.display = 'none';
       return;
     } else {
-      this.setTodoCount(+this.todoCountView.innerText + 1);
+      this._setTodoCount(+this.todoCountView.innerText + 1);
     }
   }
 
-  renderAllTodo(todos) {
+  _renderAllTodo(todos) {
     todos.forEach((todo) => {
-      this.renderTodo(todo);
+      this._renderTodo(todo);
     });
   }
 
-  removeTodoFromList(todo) {
+  _removeTodoFromList(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
     }
     li.remove();
-    this.decreaseTodoCount();
-    this.setTodoCount(this.todoCountView.innerText - 1);
+    this._decreaseTodoCount();
+    this._setTodoCount(this.todoCountView.innerText - 1);
   }
 
-  renderAgain(todo) {
+  _renderAgain(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
@@ -109,18 +109,18 @@ export default class View {
                       <button class="destroy"></button>
                     </div>
                     <input class="edit" value="" />`;
-    this.setDisplayStyleAndCount(li, todo);
+    this._setDisplayStyleAndCount(li, todo);
   }
 
-  filterAll() {
+  _filterAll() {
     const todos = this.todoList.querySelectorAll('li');
     todos.forEach((todo) => {
       todo.style.display = 'block';
     });
-    this.setTodoCount(this.getTodoCount());
+    this._setTodoCount(this.getTodoCount());
   }
 
-  filterActive() {
+  _filterActive() {
     let activeCount = 0;
     const todos = this.todoList.querySelectorAll('li');
     todos.forEach((todo) => {
@@ -131,10 +131,10 @@ export default class View {
         todo.style.display = 'block';
       }
     });
-    this.setTodoCount(activeCount);
+    this._setTodoCount(activeCount);
   }
 
-  filterCompleted() {
+  _filterCompleted() {
     let completedCount = 0;
     const todos = this.todoList.querySelectorAll('li');
     todos.forEach((todo) => {
@@ -145,7 +145,7 @@ export default class View {
         todo.style.display = 'none';
       }
     });
-    this.setTodoCount(completedCount);
+    this._setTodoCount(completedCount);
   }
 
   setSelectFilter(filter) {
@@ -154,11 +154,11 @@ export default class View {
     this.currentFilter.classList.add('selected');
   }
 
-  increaseTodoCount() {
+  _increaseTodoCount() {
     this.todoCount++;
   }
 
-  decreaseTodoCount() {
+  _decreaseTodoCount() {
     this.todoCount--;
   }
 
@@ -166,17 +166,17 @@ export default class View {
     return this.todoCount;
   }
 
-  setTodoCount(count) {
+  _setTodoCount(count) {
     this.todoCountView.innerText = count;
   }
 
-  editMode(todo) {
+  _editMode(todo) {
     todo.classList.add('editing');
     const input = todo.querySelector('.edit');
     input.focus();
   }
 
-  editEnd(todo) {
+  _editEnd(todo) {
     todo =
       todo instanceof Element
         ? todo
@@ -186,11 +186,11 @@ export default class View {
     input.value = '';
   }
 
-  clearInput() {
+  _clearInput() {
     this.input.value = '';
   }
 
-  setDisplayStyleAndCount(li, todo) {
+  _setDisplayStyleAndCount(li, todo) {
     if (this.currentFilter.classList.contains('all')) {
       return;
     } else if (
@@ -198,12 +198,12 @@ export default class View {
       todo.completed
     ) {
       li.style.display = 'none';
-      this.setTodoCount(+this.todoCountView.innerText - 1);
+      this._setTodoCount(+this.todoCountView.innerText - 1);
     } else if (
       this.currentFilter.classList.contains('completed') &&
       !todo.completed
     ) {
-      this.setTodoCount(+this.todoCountView.innerText - 1);
+      this._setTodoCount(+this.todoCountView.innerText - 1);
       li.style.display = 'none';
     }
   }
@@ -286,8 +286,8 @@ export default class View {
           callback(todo);
         });
         break;
-      case 'editEnd':
-        // NOTE: callback == Controller.editEnd
+      case '_editEnd':
+        // NOTE: callback == Controller._editEnd
         this.todoList.addEventListener('focusout', (event) => {
           const todo = event.target.closest('li');
           if (!todo) {
