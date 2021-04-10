@@ -7,6 +7,7 @@ export default class Model {
     // NOTE: 그리고 이전에는 storages 에서 모든 로직을 다 수행하고 있었는데
     // NOTE: 그 로직 전부를 여기에서 실행하고 db는 정말 데이터를 저장하는 용도로만 사용하자.
     this.storages = storages;
+    this.currentStorage;
     this.todos = {};
     for (let userName in storages) {
       this.todos[userName] = storages[userName].todos;
@@ -15,15 +16,22 @@ export default class Model {
     }
   }
 
+  _getStorageOf(userName) {
+    return this.storages[userName];
+  }
+
   async create(value, userName) {
     if (value.length === 0) {
       throw new RangeError('value is empty!!');
     }
-    const storage = this.storages[userName];
-    return storage.save({
-      content: value,
-      completed: false,
-    });
+    const storage = this._getStorageOf(userName);
+    this.todos[userName].push(
+      storage.save({
+        content: value,
+        completed: false,
+      })
+    );
+    return this.todos[userName][this.todos[userName].length - 1];
   }
 
   getTodosOf(userName) {
