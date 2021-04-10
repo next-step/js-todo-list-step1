@@ -33,7 +33,7 @@ export default class View {
         this._editEnd(obj.todo);
         break;
       case 'remove':
-        this._removeTodoFromList(obj.todo);
+        this._remove(obj.todo);
         break;
       case 'toggle':
         this._update(obj.todo);
@@ -85,7 +85,7 @@ export default class View {
     });
   }
 
-  _removeTodoFromList(todo) {
+  _remove(todo) {
     const li = this.todoList.querySelector(`li[data-id='${todo.id}']`);
     if (!li) {
       return;
