@@ -9,9 +9,9 @@ export const SELECTOR = {
   DESTROY: 'destroy',
   EDITING_MODE: 'editing',
   EDIT_INPUT: '.edit',
-  TODO_COUNTER: 'todo-count',
+  TODO_COUNTER: '.todo-count',
   COMPLETED_LIST: 'completed',
-  FILTER: 'filters',
+  FILTER: '.filters',
   SELECTED: ' selected',
 };
 

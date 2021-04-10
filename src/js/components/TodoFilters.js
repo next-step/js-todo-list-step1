@@ -13,12 +13,12 @@ class TodoFilters {
   }
 
   bindEvent() {
-    const container = document.querySelector(`.${SELECTOR.FILTER}`);
+    const container = document.querySelector(SELECTOR.FILTER);
     container.addEventListener('click', ({ target }) => this.onClick(target));
   }
 
   onClick(target) {
-    const $filters = target.closest('ul').children;
+    const $filters = target.closest(SELECTOR.FILTER).children;
     const status = target.className;
     this.resetStatus($filters);
     target.className += SELECTOR.SELECTED;
