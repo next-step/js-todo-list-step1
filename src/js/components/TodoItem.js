@@ -1,9 +1,9 @@
 export default class TodoItem {
-  constructor({ todoListUl, data, todoData, onCheckItem, onDeleteItem }) {
+  constructor({ todoListUl, data, onCheckItem, onModifyItem, onDeleteItem }) {
     this.todoListUl = todoListUl;
     this.data = data;
-    this.todoData = todoData;
     this.handleCheckItem = onCheckItem;
+    this.handleModifyItem = onModifyItem;
     this.handleDeleteItem = onDeleteItem;
 
     this.title = document.createTextNode(this.data.title);
@@ -40,13 +40,28 @@ export default class TodoItem {
 
   render() {
     this.completedCheck.addEventListener('click', () => {
-      this.item.classList.toggle('completed');
       this.handleCheckItem();
     });
 
     this.deleteButton.addEventListener('click', () => {
-      this.item.remove();
       this.handleDeleteItem();
     });
+
+    this.item.addEventListener('dblclick', () => {
+      const editingLi = document.querySelectorAll('li.editing');
+      editingLi.forEach((li) => li.classList.remove('editing'));
+      this.item.classList.add('editing');
+      this.editInput.focus();
+    });
+
+    this.editInput.onkeydown = (e) => {
+      if (e.keyCode === 13) {
+        const title = e.target.value.trim();
+        this.handleModifyItem(title);
+        e.target.value = '';
+      } else if (e.keyCode === 27) {
+        this.item.classList.remove('editing');
+      }
+    };
   }
 }

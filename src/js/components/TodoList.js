@@ -1,8 +1,9 @@
 import TodoItem from './TodoItem.js';
 
 export default class TodoList {
-  constructor({ todoListUl, todoData }) {
+  constructor({ todoListUl, todoCount, todoData }) {
     this.todoListUl = todoListUl;
+    this.todoCount = todoCount;
     this.todoData = todoData;
     this.render();
   }
@@ -14,7 +15,7 @@ export default class TodoList {
   }
 
   render() {
-    if (!this.todoData) return;
+    this.todoCount.innerHTML = this.todoData.length;
     this.todoData.map((data, i) => {
       new TodoItem({
         todoListUl: this.todoListUl,
@@ -23,10 +24,17 @@ export default class TodoList {
         onCheckItem: () => {
           data.completed = !data.completed;
           localStorage.setItem('item', JSON.stringify(this.todoData));
+          this.setState(this.todoData);
+        },
+        onModifyItem: (title) => {
+          data.title = title;
+          localStorage.setItem('item', JSON.stringify(this.todoData));
+          this.setState(this.todoData);
         },
         onDeleteItem: () => {
-          this.todoData = this.todoData.splice(i, 1);
+          this.todoData.splice(i, 1);
           localStorage.setItem('item', JSON.stringify(this.todoData));
+          this.setState(this.todoData);
         },
       });
     });
