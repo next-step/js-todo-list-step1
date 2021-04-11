@@ -1,6 +1,6 @@
 /**
  * @param {string} title
- * @param {id} number
+ * @param {number} id
  * @param {boolean} complete
  * @returns {string}
  */
