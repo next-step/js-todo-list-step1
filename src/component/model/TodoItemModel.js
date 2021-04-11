@@ -2,6 +2,7 @@ class TodoItemModel {
 	constructor(contents, id) {
 		this._contents = contents;
 		this._id = id;
+		this._completed = false;
 	}
 
 	get contents() {
@@ -14,6 +15,14 @@ class TodoItemModel {
 
 	get id() {
 		return this._id;
+	}
+
+	get completed() {
+		return this._completed;
+	}
+
+	set completed(completed) {
+		this._completed = completed;
 	}
 }
 

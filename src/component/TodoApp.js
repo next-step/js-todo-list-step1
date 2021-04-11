@@ -14,9 +14,18 @@ function TodoApp() {
 	const todoList = new TodoList({
 		target: listTarget,
 		status: null,
-		complete: null,
 		onDeleteButton: (id) => {
 			this.todoItems = this.todoItems.filter((item) => item.id !== id);
+			todoList.setState(this.todoItems);
+			todoCount.setState(this.todoItems);
+		},
+		onCompleted: (id) => {
+			this.todoItems = this.todoItems.map((item) => {
+				if (item.id === id) {
+					item.completed = !item.completed;
+				}
+				return item;
+			});
 			todoList.setState(this.todoItems);
 			todoCount.setState(this.todoItems);
 		}

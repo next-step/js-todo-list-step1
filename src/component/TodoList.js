@@ -1,4 +1,4 @@
-function TodoList({ target, onDeleteButton }) {
+function TodoList({ target, onDeleteButton, onCompleted }) {
 	this.setState = (updatedTodoItems) => {
 		this.render(updatedTodoItems);
 	};
@@ -17,11 +17,25 @@ function TodoList({ target, onDeleteButton }) {
 	};
 
 	const html = (itemModel) => {
-		const li = template("li");
+		const li = template("li", { class: itemModel.completed ? "completed" : "" });
 
 		const div = template("div", { class: "view" });
 
-		const input = template("input", { class: "toggle", type: "checkbox" });
+		const input = template(
+			"input",
+			itemModel.completed
+				? {
+						class: "toggle",
+						type: "checkbox",
+						checked: true,
+						onChange: onCompleted.bind(null, itemModel.id)
+				  }
+				: {
+						class: "toggle",
+						type: "checkbox",
+						onChange: onCompleted.bind(null, itemModel.id)
+				  }
+		);
 
 		const label = template("label", { class: "label" });
 		label.append(document.createTextNode(itemModel.contents));
