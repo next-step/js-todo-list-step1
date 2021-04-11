@@ -2,6 +2,7 @@ import TodoInput from "./TodoInput.js";
 import TodoItemModel from "./model/TodoItemModel.js";
 import TodoList from "./TodoList.js";
 import TodoCount from "./TodoCount.js";
+import KEY_CODE from "../constants/KeyCode.js";
 
 function TodoApp() {
 	let id = 0;
@@ -28,6 +29,38 @@ function TodoApp() {
 			});
 			todoList.setState(this.todoItems);
 			todoCount.setState(this.todoItems);
+		},
+		onEditing: (id) => {
+			this.todoItems = this.todoItems.map((item) => {
+				if (item.id === id) {
+					item.editing = true;
+				}
+				return item;
+			});
+			todoList.setState(this.todoItems);
+			todoCount.setState(this.todoItems);
+		},
+		onEdit: (id) => (event) => {
+			if (event.keyCode === KEY_CODE.ESC) {
+				this.todoItems.map((item) => {
+					if (item.id === id) {
+						item.editing = false;
+					}
+					return item;
+				});
+				todoList.setState(this.todoItems);
+				todoCount.setState(this.todoItems);
+			} else if (event.keyCode === KEY_CODE.ENTER) {
+				this.todoItems.map((item) => {
+					if (item.id === id) {
+						item.contents = event.target.value;
+						item.editing = false;
+					}
+					return item;
+				});
+				todoList.setState(this.todoItems);
+				todoCount.setState(this.todoItems);
+			}
 		}
 	});
 

@@ -1,4 +1,4 @@
-function TodoList({ target, onDeleteButton, onCompleted }) {
+function TodoList({ target, onDeleteButton, onCompleted, onEditing, onEdit }) {
 	this.setState = (updatedTodoItems) => {
 		this.render(updatedTodoItems);
 	};
@@ -17,7 +17,10 @@ function TodoList({ target, onDeleteButton, onCompleted }) {
 	};
 
 	const html = (itemModel) => {
-		const li = template("li", { class: itemModel.completed ? "completed" : "" });
+		const li = template("li", {
+			class: `${itemModel.completed ? "completed" : ""} ${itemModel.editing ? "editing" : ""}`.trim(),
+			onDblClick: onEditing.bind(null, itemModel.id)
+		});
 
 		const div = template("div", { class: "view" });
 
@@ -42,7 +45,11 @@ function TodoList({ target, onDeleteButton, onCompleted }) {
 
 		const button = template("button", { class: "destroy", onClick: onDeleteButton.bind(null, itemModel.id) });
 
-		const edit = template("input", { class: "edit", value: "새로운 타이틀" });
+		const edit = template("input", {
+			class: "edit",
+			value: itemModel.contents,
+			onKeyDown: onEdit.call(null, itemModel.id)
+		});
 
 		div.append(input, label, button);
 		li.append(div, edit);
@@ -50,8 +57,6 @@ function TodoList({ target, onDeleteButton, onCompleted }) {
 	};
 
 	this.render = (items) => {
-		console.log("TodoList render");
-
 		target.innerHTML = "";
 
 		items.reduce((acc, cur) => {

@@ -3,6 +3,7 @@ class TodoItemModel {
 		this._contents = contents;
 		this._id = id;
 		this._completed = false;
+		this._editing = false;
 	}
 
 	get contents() {
@@ -23,6 +24,14 @@ class TodoItemModel {
 
 	set completed(completed) {
 		this._completed = completed;
+	}
+
+	get editing() {
+		return this._editing;
+	}
+
+	set editing(editing) {
+		this._editing = editing;
 	}
 }
 
