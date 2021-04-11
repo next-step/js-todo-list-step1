@@ -34,7 +34,7 @@ todoFilterButton.forEach((el) => {
         ? data
         : el.classList.contains('completed')
         ? data.completed
-        : data.completed === false
+        : !data.completed
     );
     todoList.setState(filterData);
     el.classList.add('selected');
