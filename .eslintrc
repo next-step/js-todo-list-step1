@@ -11,6 +11,7 @@
   },
   "ignorePatterns": ["node_modules/"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "warn"
   }
 }
+   
