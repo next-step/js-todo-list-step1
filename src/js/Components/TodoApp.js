@@ -2,6 +2,7 @@ import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
 import TodoFilter from './TodoFilter.js';
+import TodoStore from './TodoStore.js';
 
 function TodoItem(todoText) {
   this.id = Date.now().toString();
@@ -10,7 +11,7 @@ function TodoItem(todoText) {
 }
 
 function TodoApp() {
-  this.todoItems = [];
+  this.todoItems = TodoStore.getStore() || [];
   this.filter = 'all';
 
   this.setFilter = (selectedFilter) => {
@@ -21,6 +22,7 @@ function TodoApp() {
   };
 
   this.setState = (updatedItems) => {
+    TodoStore.setStore(updatedItems);
     this.todoItems = updatedItems;
 
     if (this.filter === 'active') {
@@ -73,6 +75,13 @@ function TodoApp() {
   const todoCount = new TodoCount();
 
   const todoFilter = new TodoFilter({ onChangeFilter: handleChangeFilter });
+
+  const init = () =>
+    this.setFilter(
+      window.location.hash.length > 0 ? window.location.hash.slice(1) : 'all'
+    );
+
+  init();
 }
 
 export default TodoApp;
