@@ -15,8 +15,8 @@ class TodoApp {
     }
 
     init() {
-        this.store.on('todoList', this.viewUpdate.bind(this));
-        this.store.on('filter', this.viewUpdate.bind(this));
+        this.store.on('todoList', this.viewUpdatePipe.bind(this));
+        this.store.on('filter', this.viewUpdatePipe.bind(this));
         this.store.set({
             todoList: loadData() ? loadData() : {},
             filter: FILTER_TYPE.ALL
@@ -27,7 +27,7 @@ class TodoApp {
         new Filters(this.store);
     }
 
-    getTodoData() {
+    _getTodoData() {
         const todoList = this.store.get().todoList;
         const filter = this.store.get().filter;
 
@@ -38,7 +38,7 @@ class TodoApp {
         return { todoList, onFilteringTodoList };
     }
 
-    render({ todoList, onFilteringTodoList }) {
+    _render({ todoList, onFilteringTodoList }) {
         const todoListTemplate = onFilteringTodoList.map(({ title, id, isCompleted, isEditing }) => todoTemplate(title, id, isCompleted, isEditing)).join('');
 
         this.todoListEl.innerHTML = todoListTemplate;
@@ -47,15 +47,15 @@ class TodoApp {
         return todoList;
     }
 
-    saveTodoData(todoList) {
+    _saveTodoData(todoList) {
         saveData(todoList);
     }
 
-    viewUpdate() {
+    viewUpdatePipe() {
         pipe(
-            this.getTodoData.bind(this),
-            this.render.bind(this),
-            this.saveTodoData.bind(this)
+            this._getTodoData.bind(this),
+            this._render.bind(this),
+            this._saveTodoData.bind(this)
         )();
     }
 }
