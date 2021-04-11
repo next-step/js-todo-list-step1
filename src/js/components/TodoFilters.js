@@ -2,8 +2,8 @@ import { SELECTOR, STATUS } from '../utils/constant.js';
 
 const statusByIndex = {
   0: STATUS.ALL,
-  1: STATUS.COMPLETED,
-  2: STATUS.ACTIVE,
+  1: STATUS.ACTIVE,
+  2: STATUS.COMPLETED,
 };
 
 class TodoFilters {
@@ -19,8 +19,8 @@ class TodoFilters {
 
   onClick(target) {
     const $filters = target.closest(SELECTOR.FILTER).children;
-    const status = target.className;
     this.resetStatus($filters);
+    const status = target.className;
     target.className += SELECTOR.SELECTED;
     this.store.setStatus(status);
   }
