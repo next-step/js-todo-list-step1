@@ -117,6 +117,10 @@ function App() {
     }
     loadTodos();
   }
+  function handleClickFilters(event) {
+    filters.querySelector('.selected').classList.remove('selected');
+    event.target.classList.add('selected');
+  }
 
   function init() {
     todos =
@@ -129,6 +133,7 @@ function App() {
     // eventHandler
     newTodoTitle.addEventListener('keyup', handleKeyup);
     todoList.addEventListener('click', handleClickTodoList);
+    filters.addEventListener('click', handleClickFilters);
   }
   init();
 }
