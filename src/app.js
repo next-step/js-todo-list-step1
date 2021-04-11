@@ -6,23 +6,16 @@ import { FILTER_TYPE } from './constant.js';
 // store
 const store = new Store({
     filter: FILTER_TYPE.ALL,
-    todoList: [],
+    todoList: {},
 });
 
 store.on('filter', () => {
     const filter = store.get().filter;
-    let filterTodoList;
 
-    switch (filter) {
-        case FILTER_TYPE.ACTIVE:
-            filterTodoList = store.get().todoList.filter(item => !item.isCompleted);
-            break;
-        case FILTER_TYPE.COMPLETED:
-            filterTodoList = store.get().todoList.filter(item => item.isCompleted);
-            break;
-        default:
-            filterTodoList = store.get().todoList;
-    }
+    let filterTodoList;
+    if (filter === FILTER_TYPE.ALL) filterTodoList = Object.values(store.get().todoList);
+    else if (filter === FILTER_TYPE.ACTIVE) filterTodoList = Object.values(store.get().todoList).filter(item => !item.isCompleted);
+    else if (filter === FILTER_TYPE.COMPLETED) filterTodoList = Object.values(store.get().todoList).filter(item => item.isCompleted);
 
     const filterTodoListTemplate = filterTodoList.map(({ title, id, isCompleted, isEditing }) => newTodoTemplate(title, id, isCompleted, isEditing)).join('');
 
@@ -31,7 +24,7 @@ store.on('filter', () => {
 });
 
 store.on('todoList', () => {
-    const todoList = store.get().todoList;
+    const todoList = Object.values(store.get().todoList);
     const todoListTemplate = todoList.map(({ title, id, isCompleted, isEditing }) => newTodoTemplate(title, id, isCompleted, isEditing)).join('');
 
     todoListEl.innerHTML = todoListTemplate;
@@ -39,97 +32,79 @@ store.on('todoList', () => {
 });
 
 // todoapp
-const newTodoInputEl = getElement('input.new-todo');
+const inputEl = getElement('input.new-todo');
 const filtersEl = getElement('ul.filters');
 const todoListEl = getElement('ul.todo-list');
 const todoCountEl = getElement('span.todo-count strong');
 
-const newTodoInputElKeyHandler = ({ key, target }) => {
+const addTodoHandler = ({ key, target }) => {
     if (key !== 'Enter' || !target.value) return;
-    if (target.value.match(/<script>/)) return target.value = '';
 
     const todoList = store.get().todoList;
+    const id = new Date().getTime();
     const newTodo = {
         title: target.value,
-        id: new Date().getTime(),
+        id: id,
         isCompleted: false,
         isEditing: false,
     };
-
-    store.set({
-        todoList: [...todoList, newTodo]
-    });
-
+    todoList[id] = newTodo;
     target.value = '';
-};
-
-const toggleClickHandler = ({ id }) => {
-    const todoList = store.get().todoList;
-    const updateTodoList = todoList.map(item => {
-        if (item.id !== +id) return item;
-        return {
-            ...item,
-            isCompleted: !item.isCompleted
-        }
-    });
 
     store.set({
-        todoList: updateTodoList
+        todoList: { ...todoList }
     });
 };
 
-const destroyClickHandler = ({ id }) => {
+const toggleTodoItem = ({ id }) => {
     const todoList = store.get().todoList;
-    const updateTodoList = todoList.filter(item => item.id !== +id);
+    todoList[id].isCompleted = !todoList[id].isCompleted;
 
     store.set({
-        todoList: updateTodoList
+        todoList: { ...todoList }
     });
 };
 
-const todoListElClickHandler = ({ target }) => {
-    if (target.classList.contains('toggle')) return toggleClickHandler(target);
-    if (target.classList.contains('destroy')) return destroyClickHandler(target);
+const destroyTodoItem = ({ id }) => {
+    const todoList = store.get().todoList;
+    delete todoList[id];
+
+    store.set({
+        todoList: { ...todoList }
+    });
 };
 
-const todoListElDblClickHandler = ({ target }) => {
+const todoClickHandler = ({ target }) => {
+    if (target.classList.contains('toggle')) return toggleTodoItem(target);
+    if (target.classList.contains('destroy')) return destroyTodoItem(target);
+};
+
+const modifyHandler = ({ target }) => {
     if (!target.classList.contains('label')) return;
 
     const { id } = target.closest('li');
     const todoList = store.get().todoList;
-    const updateTodoList = todoList.map(item => {
-        if (item.id !== +id) return item;
-        return {
-            ...item,
-            isEditing: true
-        }
-    });
+    todoList[id].isEditing = true;
 
     store.set({
-        todoList: updateTodoList
+        todoList: { ...todoList }
     });
 };
 
-const todoListElKeyHandler = ({ key, target }) => {
+const confirmHandler = ({ key, target }) => {
     if (key !== 'Enter' || !target.value) return;
 
     const { id } = target.closest('li');
     const todoList = store.get().todoList;
-    const updateTodoList = todoList.map(item => {
-        item.isEditing = false;
-        if (item.id !== +id) return item;
-        return {
-            ...item,
-            title: target.value
-        }
-    });
+    todoList[id].title = target.value;
+    todoList[id].isEditing = false;
 
     store.set({
-        todoList: updateTodoList
+        todoList: { ...todoList }
     });
 };
 
-const filtersElClickHandler = ({ target }) => {
+const filtersHandler = ({ target }) => {
     if (target.tagName !== 'A') return;
     const type = target.classList[0];
 
@@ -141,10 +116,10 @@ const filtersElClickHandler = ({ target }) => {
     store.set({
         filter: FILTER_TYPE[type.toUpperCase()]
     });
-}
+};
 
-newTodoInputEl.addEventListener('keyup', newTodoInputElKeyHandler);
-todoListEl.addEventListener('click', todoListElClickHandler);
-todoListEl.addEventListener('dblclick', todoListElDblClickHandler);
-todoListEl.addEventListener('keyup', todoListElKeyHandler);
-filtersEl.addEventListener('click', filtersElClickHandler);
+inputEl.addEventListener('keyup', addTodoHandler);
+todoListEl.addEventListener('click', todoClickHandler);
+todoListEl.addEventListener('dblclick', modifyHandler);
+todoListEl.addEventListener('keyup', confirmHandler);
+filtersEl.addEventListener('click', filtersHandler);
