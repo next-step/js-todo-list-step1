@@ -118,7 +118,8 @@ function App() {
     loadTodos();
   }
   function handleClickFilters(event) {
-    filters.querySelector('.selected').classList.remove('selected');
+    const condition = filters.querySelector('.selected');
+    if (condition) condition.classList.remove('selected');
     event.target.classList.add('selected');
   }
 
