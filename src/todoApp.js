@@ -15,8 +15,8 @@ class TodoApp {
     }
 
     init() {
-        this.store.on('todoList', this.viewUpdatePipe.bind(this));
-        this.store.on('filter', this.viewUpdatePipe.bind(this));
+        this.store.on('todoList', this.updateViewPipe.bind(this));
+        this.store.on('filter', this.updateViewPipe.bind(this));
         this.store.set({
             todoList: loadData() ? loadData() : {},
             filter: FILTER_TYPE.ALL
@@ -51,7 +51,7 @@ class TodoApp {
         saveData(todoList);
     }
 
-    viewUpdatePipe() {
+    updateViewPipe() {
         pipe(
             this._getTodoData.bind(this),
             this._render.bind(this),
