@@ -28,10 +28,18 @@ function App() {
     todoList.insertAdjacentHTML('beforeend', li);
   }
 
+  function eraseTodo() {
+    const list = todoList.querySelectorAll('li');
+
+    for (let i = 0; i < list.length; i++) {
+      todoList.removeChild(list[i]);
+    }
+  }
+
   function loadTodos() {
     // TODO: todos를 보여줘야 하는 옵션(filter)을 추가해주어야 함
 
-    // eraseTodo();
+    eraseTodo();
     for (const todo of todos) {
       printTodo(todo);
     }
