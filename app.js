@@ -45,6 +45,8 @@ function App() {
     for (const todo of todos) {
       printTodo(todo);
     }
+    // count
+    // console.log(todos.length);
   }
 
   function addTodo(event) {
@@ -100,6 +102,7 @@ function App() {
     });
     todos = test;
     localStorage.setItem('todos', JSON.stringify(todos));
+    li.remove();
   }
 
   function handleClickTodoList(event) {
