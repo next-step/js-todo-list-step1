@@ -16,7 +16,7 @@ function TodoList({ onToggle, onDelete }) {
   listElement.addEventListener('click', clickItemEvent);
 
   this.render = (items = []) => {
-    if (items.length === 0) return null;
+    if (items.length === 0) listElement.innerHTML = '';
     listElement.innerHTML = items
       .map((item) => todoItemTemplate(item))
       .join('');
