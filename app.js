@@ -45,8 +45,7 @@ function App() {
     for (const todo of todos) {
       printTodo(todo);
     }
-    // count
-    // console.log(todos.length);
+    count.innerText = todos.length;
   }
 
   function addTodo(event) {
