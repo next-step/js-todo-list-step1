@@ -2,13 +2,16 @@
 import { count, filters, todoList, newTodoTitle } from './constant.js';
 
 function App() {
-  const todos =
-    localStorage.getItem('todos') === null
-      ? []
-      : JSON.parse(localStorage.getItem('todos'));
+  let todos;
 
   function saveTodo(todos) {
     localStorage.setItem('todos', JSON.stringify(todos));
+  }
+
+  function loadTodos() {
+    for (const todo of todos) {
+      // printTodo(todo);
+    }
   }
 
   function addTodo(event) {
@@ -38,6 +41,11 @@ function App() {
   }
 
   function init() {
+    todos =
+      localStorage.getItem('todos') === null
+        ? []
+        : JSON.parse(localStorage.getItem('todos'));
+    loadTodos();
     // loading
 
     // eventHandler
