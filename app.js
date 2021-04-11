@@ -4,10 +4,6 @@ import { count, filters, todoList, newTodoTitle } from './constant.js';
 function App() {
   let todos;
 
-  function saveTodo(todos) {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }
-
   function makeListElement(todo) {
     const type = todo.completed === true ? `"checkbox" checked` : 'checkbox';
     const li = `<li class="${
@@ -25,9 +21,22 @@ function App() {
   }
 
   function printTodo(todo) {
-    const li = makeListElement(todo);
-
-    todoList.insertAdjacentHTML('beforeend', li);
+    const selected = document.querySelector('.selected');
+    let li;
+    if (selected.classList.contains('all')) {
+      li = makeListElement(todo);
+      todoList.insertAdjacentHTML('beforeend', li);
+      return;
+    }
+    if (selected.classList.contains('active') && todo.completed === false) {
+      li = makeListElement(todo);
+      todoList.insertAdjacentHTML('beforeend', li);
+      return;
+    }
+    if (selected.classList.contains('completed') && todo.completed === true) {
+      li = makeListElement(todo);
+      todoList.insertAdjacentHTML('beforeend', li);
+    }
   }
 
   function eraseTodo() {
@@ -39,13 +48,15 @@ function App() {
   }
 
   function loadTodos() {
-    // TODO: todos를 보여줘야 하는 옵션(filter)을 추가해주어야 함
-
     eraseTodo();
     for (const todo of todos) {
       printTodo(todo);
     }
     count.innerText = todos.length;
+  }
+
+  function saveTodo(todos) {
+    localStorage.setItem('todos', JSON.stringify(todos));
   }
 
   function addTodo(event) {
@@ -117,10 +128,14 @@ function App() {
     }
     loadTodos();
   }
+
   function handleClickFilters(event) {
     const condition = filters.querySelector('.selected');
+
+    loadTodos();
     if (condition) condition.classList.remove('selected');
     event.target.classList.add('selected');
+    loadTodos();
   }
 
   function init() {
@@ -129,9 +144,7 @@ function App() {
         ? []
         : JSON.parse(localStorage.getItem('todos'));
     loadTodos();
-    // loading
 
-    // eventHandler
     newTodoTitle.addEventListener('keyup', handleKeyup);
     todoList.addEventListener('click', handleClickTodoList);
     filters.addEventListener('click', handleClickFilters);
