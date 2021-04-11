@@ -11,3 +11,5 @@ export const todoItemTemplate = ({ id, todo = '', completed = false }) => {
     </li>
   `;
 };
+
+export const todoCountTemplate = (total) => `총 <strong>${total}</strong> 개`;

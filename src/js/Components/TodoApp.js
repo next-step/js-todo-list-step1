@@ -1,5 +1,6 @@
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
+import TodoCount from './TodoCount.js';
 
 function TodoItem(todoText) {
   this.id = Date.now().toString();
@@ -13,6 +14,7 @@ function TodoApp() {
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
     todoList.render(this.todoItems);
+    todoCount.render(this.todoItems.length);
   };
 
   const handleAdd = (contents) => {
@@ -36,13 +38,15 @@ function TodoApp() {
     this.setState(this.todoItems);
   };
 
+  TodoInput({ onAdd: handleAdd });
+
   const todoList = new TodoList({
     onToggle: handleToggle,
     onDelete: handleDelete,
     onEdit: handleEdit,
   });
 
-  TodoInput({ onAdd: handleAdd });
+  const todoCount = new TodoCount();
 }
 
 export default TodoApp;
