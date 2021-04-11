@@ -8,9 +8,32 @@ function App() {
     localStorage.setItem('todos', JSON.stringify(todos));
   }
 
+  function makeListElement(todo) {
+    const type = todo.completed === true ? `"checkbox" checked` : 'checkbox';
+    const li = `<li class="${todo.completed === true ? 'completed' : 'false'}">
+		<div class="view">
+		<input class="toggle" type=${type} />
+		<label class="label">${todo.value}</label>
+		<button class="destroy"></button>
+		</div>
+		<input class="edit" value='${todo.value}' />
+		</li>`;
+
+    return li;
+  }
+
+  function printTodo(todo) {
+    const li = makeListElement(todo);
+
+    todoList.insertAdjacentHTML('beforeend', li);
+  }
+
   function loadTodos() {
+    // TODO: todos를 보여줘야 하는 옵션(filter)을 추가해주어야 함
+
+    // eraseTodo();
     for (const todo of todos) {
-      // printTodo(todo);
+      printTodo(todo);
     }
   }
 
@@ -21,17 +44,7 @@ function App() {
       key: Date.now()
     });
     saveTodo(todos);
-
-    // TODO: 아래는 render 영역으로 분리 필요
-    const todo = `<li>
-			<div class="view">
-			<input class="toggle" type="checkbox"/>
-			<label class="label">${event.target.value}</label>
-			<button class="destroy"></button>
-			</div>
-			<input class="edit" value='${event.target.value}' />
-			</li>`;
-    todoList.insertAdjacentHTML('beforeend', todo);
+    loadTodos();
     event.target.value = '';
   }
 
