@@ -69,7 +69,7 @@ class TodoList extends Observer {
     const value = target.value;
 
     // 내용이 변경 되었을 경우
-    if (value !== $label.innerText) {
+    if (value !== $label.innerText && value.length > 0) {
       $label.innerText = value;
       this.onUpdateTodo(+$li.dataset.id, value);
     }

@@ -19,7 +19,13 @@ class TodoInput {
    */
   onSubmit(e) {
     e.preventDefault();
-    const newTodo = todoItem(this.container.value); // TodoData 가공
+    const value = this.container.value;
+
+    // value가 empty 인 경우
+    if (!this.isValid(value)) {
+      return window.alert('1글자 이상 입력해주세요');
+    }
+    const newTodo = todoItem(value); // TodoData 가공
     this.container.value = ''; // value 값 초기화
     const todoData = [...this.store.originData, newTodo];
     this.store.setOriginData(todoData); // DataBase에 저장
@@ -31,5 +37,11 @@ class TodoInput {
       this.store.setRenderData(renderData);
     }
   }
+
+  /**
+   * @param {string} title
+   * @returns {boolean}
+   */
+  isValid = (title) => title.length > 0;
 }
 export default TodoInput;
