@@ -2,7 +2,11 @@ import { todoTemplate } from './template.js';
 import { getElement, saveData, loadData } from './util.js';
 import { FILTER_TYPE } from './constant.js';
 
-class TodoViewer {
+import TodoInput from './todoInput.js';
+import TodoList from './TodoList.js';
+import Filters from './filters.js';
+
+class TodoApp {
     constructor(store) {
         this.store = store;
         this.todoListEl = getElement('ul.todo-list');
@@ -17,6 +21,10 @@ class TodoViewer {
             todoList: loadData() ? loadData() : {},
             filter: FILTER_TYPE.ALL
         });
+
+        new TodoInput(this.store);
+        new TodoList(this.store);
+        new Filters(this.store);
     }
 
     render() {
@@ -36,4 +44,4 @@ class TodoViewer {
     }
 }
 
-export default TodoViewer
+export default TodoApp
