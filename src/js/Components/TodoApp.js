@@ -1,6 +1,7 @@
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
+import TodoFilter from './TodoFilter.js';
 
 function TodoItem(todoText) {
   this.id = Date.now().toString();
@@ -10,11 +11,23 @@ function TodoItem(todoText) {
 
 function TodoApp() {
   this.todoItems = [];
+  this.filter = 'all';
 
-  this.setState = (updatedItems) => {
+  this.setState = (updatedItems, updatedFilter = this.filter) => {
     this.todoItems = updatedItems;
-    todoList.render(this.todoItems);
-    todoCount.render(this.todoItems.length);
+    this.filter = updatedFilter;
+    if (this.filter === 'active') {
+      return render(this.todoItems.filter((item) => item.completed === false));
+    } else if (this.filter === 'completed') {
+      return render(this.todoItems.filter((item) => item.completed === true));
+    }
+    return render(this.todoItems);
+  };
+
+  const render = (updatedItems) => {
+    todoFilter.render(this.filter);
+    todoList.render(updatedItems);
+    todoCount.render(updatedItems.length);
   };
 
   const handleAdd = (contents) => {
@@ -38,6 +51,10 @@ function TodoApp() {
     this.setState(this.todoItems);
   };
 
+  const handleChangeFilter = (selectedFilter) => {
+    this.setState(this.todoItems, selectedFilter);
+  };
+
   TodoInput({ onAdd: handleAdd });
 
   const todoList = new TodoList({
@@ -47,6 +64,8 @@ function TodoApp() {
   });
 
   const todoCount = new TodoCount();
+
+  const todoFilter = new TodoFilter({ onChangeFilter: handleChangeFilter });
 }
 
 export default TodoApp;
