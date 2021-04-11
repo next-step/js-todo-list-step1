@@ -5,13 +5,15 @@ function App() {
   const todos = [];
 
   function handleKeyup(event) {
-    if (event.keyCode === 13 && event.target.value !== '') {
-      todos.push({
-        name: event.target.value,
-        completed: false,
-        key: Date.now()
-      });
-      const todo = `<li>
+    if (event.keyCode !== 13 || event.target.value === '') return;
+    todos.push({
+      name: event.target.value,
+      completed: false,
+      key: Date.now()
+    });
+
+    // TODO: 아래는 render 영역으로 분리 필요
+    const todo = `<li>
 			<div class="view">
 			<input class="toggle" type="checkbox"/>
 			<label class="label">${event.target.value}</label>
@@ -19,9 +21,8 @@ function App() {
 			</div>
 			<input class="edit" value='${event.target.value}' />
 			</li>`;
-      todoList.insertAdjacentHTML('beforeend', todo);
-      event.target.value = '';
-    }
+    todoList.insertAdjacentHTML('beforeend', todo);
+    event.target.value = '';
   }
 
   function init() {
