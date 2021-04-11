@@ -19,3 +19,7 @@ export const KEY_CODE = {
 export const MESSAGES = {
     DELETE: 'delete'
 }
+
+export const STORAGE_KEY = {
+    TODOLIST: 'todo-list'
+}

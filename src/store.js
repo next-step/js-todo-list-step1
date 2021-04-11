@@ -17,11 +17,6 @@ class Store {
         return props;
     }
 
-    onAndSync(props, listener) {
-        props = this.on(props, listener);
-        this._deferredUpdate(props, this._state, this._state);
-    }
-
     get() {
         return this._state;
     }

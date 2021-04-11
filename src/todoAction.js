@@ -12,7 +12,7 @@ class TodoAction {
 
     init() {
         this.inputEl.addEventListener('keyup', this.addTodoHandler.bind(this));
-        this.todoListEl.addEventListener('click', this.todoClickHandler.bind(this));
+        this.todoListEl.addEventListener('click', this.todoClickDelegationHandler.bind(this));
         this.todoListEl.addEventListener('dblclick', this.modifyHandler.bind(this));
         this.todoListEl.addEventListener('keyup', this.confirmHandler.bind(this));
         this.filtersEl.addEventListener('click', this.filtersHandler.bind(this));
@@ -55,7 +55,7 @@ class TodoAction {
         });
     }
 
-    todoClickHandler({ target }) {
+    todoClickDelegationHandler({ target }) {
         if (target.classList.contains(UI_CLASS.TOGGLE)) return this._toggleTodoItem(target);
         if (target.classList.contains(UI_CLASS.DESTROY)) return this._destroyTodoItem(target);
     }
