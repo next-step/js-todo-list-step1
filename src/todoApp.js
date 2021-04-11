@@ -73,7 +73,7 @@ class TodoApp {
         });
     }
 
-    toggleTodoItem({ id }) {
+    _toggleTodoItem({ id }) {
         const todoList = this.store.get().todoList;
         todoList[id].isCompleted = !todoList[id].isCompleted;
 
@@ -82,7 +82,7 @@ class TodoApp {
         });
     }
 
-    destroyTodoItem({ id }) {
+    _destroyTodoItem({ id }) {
         const todoList = this.store.get().todoList;
         delete todoList[id];
 
@@ -92,8 +92,8 @@ class TodoApp {
     }
 
     todoClickHandler({ target }) {
-        if (target.classList.contains(UI_CLASS.TOGGLE)) return this.toggleTodoItem(target);
-        if (target.classList.contains(UI_CLASS.DESTROY)) return this.destroyTodoItem(target);
+        if (target.classList.contains(UI_CLASS.TOGGLE)) return this._toggleTodoItem(target);
+        if (target.classList.contains(UI_CLASS.DESTROY)) return this._destroyTodoItem(target);
     }
 
     modifyHandler({ target }) {
