@@ -4,8 +4,7 @@ import { count, filters, todoList, newTodoTitle } from './constant.js';
 function App() {
   const todos = [];
 
-  function handleKeyup(event) {
-    if (event.keyCode !== 13 || event.target.value === '') return;
+  function addTodo(event) {
     todos.push({
       name: event.target.value,
       completed: false,
@@ -23,6 +22,11 @@ function App() {
 			</li>`;
     todoList.insertAdjacentHTML('beforeend', todo);
     event.target.value = '';
+  }
+
+  function handleKeyup(event) {
+    if (event.keyCode !== 13 || event.target.value === '') return;
+    addTodo(event);
   }
 
   function init() {
