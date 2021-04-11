@@ -17,8 +17,7 @@ function TodoApp() {
 
   const handleAdd = (contents) => {
     const newTodoItem = new TodoItem(contents);
-    this.todoItems.push(newTodoItem);
-    this.setState(this.todoItems);
+    this.setState([...this.todoItems, newTodoItem]);
   };
 
   const handleToggle = (id) => {
@@ -27,7 +26,14 @@ function TodoApp() {
     this.setState(this.todoItems);
   };
 
-  const todoList = new TodoList({ onToggle: handleToggle });
+  const handleDelete = (id) => {
+    this.setState(this.todoItems.filter((item) => item.id !== id));
+  };
+
+  const todoList = new TodoList({
+    onToggle: handleToggle,
+    onDelete: handleDelete,
+  });
 
   TodoInput({ onAdd: handleAdd });
 }
