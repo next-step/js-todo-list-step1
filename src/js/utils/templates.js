@@ -1,5 +1,8 @@
 /**
  * @param {string} title
+ * @param {id} number
+ * @param {boolean} complete
+ * @returns {string}
  */
 
 export const todoTemplate = (id, title, complete) => `

@@ -1,6 +1,6 @@
 import { SELECTOR } from '../utils/constant.js';
 import { STATUS } from '../utils/constant.js';
-import { todoItem } from '../utils/data.js';
+import todoItem from '../utils/data.js';
 
 class TodoInput {
   constructor(store) {

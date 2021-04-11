@@ -4,6 +4,8 @@
  * @returns {object}
  */
 
-export const todoItem = (title) => {
+const todoItem = (title) => {
   return { id: new Date().getTime(), title, complete: false };
 };
+
+export default todoItem;
