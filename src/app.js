@@ -1,6 +1,6 @@
 import Store from './store.js';
 import { newTodoTemplate } from './template.js';
-import { getElement } from './util.js';
+import { getElement, saveData, loadData } from './util.js';
 import { FILTER_TYPE } from './constant.js';
 
 // store
@@ -29,6 +29,11 @@ store.on('todoList', () => {
 
     todoListEl.innerHTML = todoListTemplate;
     todoCountEl.innerText = todoList.length;
+    saveData(store.get().todoList);
+});
+
+store.set({
+    todoList: loadData() ? loadData() : {}
 });
 
 // todoapp
