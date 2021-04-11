@@ -1,11 +1,16 @@
 /* eslint-disable import/extensions */
 import { count, filters, todoList, newTodoTitle } from './constant.js';
 
+const todos = [];
+
 function handleKeyup(event) {
-  if (event.keyCode === 13) {
-    // save
-  } else {
-    // ignore
+  if (event.keyCode === 13 && event.target.value !== '') {
+    todos.push({
+      name: event.target.value,
+      completed: false,
+      key: Date.now()
+    });
+    event.target.value = '';
   }
 }
 
@@ -15,5 +20,4 @@ function init() {
   // eventHandler
   newTodoTitle.addEventListener('keyup', handleKeyup);
 }
-
 init();
