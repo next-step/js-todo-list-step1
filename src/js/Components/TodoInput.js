@@ -6,8 +6,11 @@ const TodoInput = ({ onAdd }) => {
   const addTodoItem = (e) => {
     if (e.keyCode === KEYCODE_ENTER) {
       const todoTarget = e.target;
-      onAdd(todoTarget.value);
-      todoTarget.value = '';
+      const todoText = todoTarget.value.trim();
+      if (todoText.length > 0) {
+        onAdd(todoTarget.value);
+        todoTarget.value = '';
+      }
     }
   };
 
