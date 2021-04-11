@@ -23,6 +23,25 @@
 
 <br/>
 
+## ☺️ 구현 결과 및 설명
+
+![](https://i.imgur.com/B1vry5u.jpg)
+
+### 1. 옵저버 패턴 (Observer Pattern) 사용
+  - Todo Data와 현재 사용자에게 보여질 TodoList의 종류(Status) 를 담은 객체를 발행자(Subject) **TodoStore** 로 등록
+  - TodoList 와 TodoCounter 컴포넌트, 즉 상태의 변화에 따라 리렌더링 해야하는 컴포넌트를 관찰자(Observer)로 등록
+  - TodoStore 에서 상태에 대한 변경이 있을 때 마다 관찰자들에게 notify 하여 관찰자들 내부의 update 메서드 실행 , update 메서드는 뷰를 리렌더링 
+
+### 2. TodoStore 내부 properties (state) / Method 
+  - originData : 처음 localStorage (DataBase) 로부터 받아온 값을 저장, 즉 데이터의 원본을 저장
+  - renderData : Status 상태에 따라서 사용자에게 보여질 TodoData 저장 ( originData 로부터 필터링됨 )
+  - status : filter 항목에서 사용자가 선택한 상태 `all, active, complete` 
+  - setOriginData : localStorage에 저장된 데이터베이스 변경 시 호출 (생성,삭제,업데이트 시)
+  - setRenderData : 현재 보여줄 RenderData 변경 시 호출 (status가 변경되었을 시), 호출 시 notify 를 호출하여 관찰자들에게 알려줌
+  - setStatus : filter 항목에서 사용자가 선택한 상태로 변경
+
+
+
 <br/>
 
 ## 🎯 요구사항
@@ -38,7 +57,6 @@
 - [x] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
 
 <br/>
-
 ## 🔔 참고사항
 `TodoItem`을 추가할 시 아래 템플릿을 활용하면 됩니다.
 ```html
