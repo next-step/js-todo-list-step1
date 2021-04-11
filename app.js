@@ -61,6 +61,31 @@ function App() {
     addTodo(event);
   }
 
+  function handleInputClick(target) {
+    const li = target.closest('li');
+
+    target.getAttribute('checked') === null
+      ? target.setAttribute('checked', '')
+      : target.removeAttribute('checked');
+    if (li.className === 'false') {
+      li.classList.add('completed');
+      li.classList.remove('false');
+      return;
+    }
+    if (li.className === 'completed') {
+      li.classList.add('false');
+      li.classList.remove('completed');
+    }
+  }
+
+  function handleClickTodoList(event) {
+    const { target } = event;
+
+    if (target.tagName === 'INPUT') {
+      handleInputClick(target);
+    }
+  }
+
   function init() {
     todos =
       localStorage.getItem('todos') === null
@@ -71,6 +96,7 @@ function App() {
 
     // eventHandler
     newTodoTitle.addEventListener('keyup', handleKeyup);
+    todoList.addEventListener('click', handleClickTodoList);
   }
   init();
 }
