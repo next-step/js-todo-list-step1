@@ -13,19 +13,26 @@ function TodoApp() {
   this.todoItems = [];
   this.filter = 'all';
 
-  this.setState = (updatedItems, updatedFilter = this.filter) => {
+  this.setFilter = (selectedFilter) => {
+    this.filter = selectedFilter;
+    todoFilter.render(this.filter);
+
+    this.setState(this.todoItems);
+  };
+
+  this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
-    this.filter = updatedFilter;
+
     if (this.filter === 'active') {
       return render(this.todoItems.filter((item) => item.completed === false));
-    } else if (this.filter === 'completed') {
+    }
+    if (this.filter === 'completed') {
       return render(this.todoItems.filter((item) => item.completed === true));
     }
     return render(this.todoItems);
   };
 
   const render = (updatedItems) => {
-    todoFilter.render(this.filter);
     todoList.render(updatedItems);
     todoCount.render(updatedItems.length);
   };
@@ -52,7 +59,7 @@ function TodoApp() {
   };
 
   const handleChangeFilter = (selectedFilter) => {
-    this.setState(this.todoItems, selectedFilter);
+    this.setFilter(selectedFilter);
   };
 
   TodoInput({ onAdd: handleAdd });

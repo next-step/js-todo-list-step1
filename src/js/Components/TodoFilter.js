@@ -11,11 +11,10 @@ function TodoFilter({ onChangeFilter }) {
 
   const handleFilter = () => {
     const hash = window.location.hash;
-    if (hash === '') {
-      onChangeFilter('all');
-    } else if (hash.length > 0) {
-      onChangeFilter(hash.slice(1));
+    if (!!hash) {
+      return onChangeFilter(hash.slice(1));
     }
+    return onChangeFilter('all');
   };
 
   window.addEventListener('hashchange', handleFilter);
