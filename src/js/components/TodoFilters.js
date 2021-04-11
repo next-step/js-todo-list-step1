@@ -1,4 +1,4 @@
-import { SELECTOR, STATUS } from '../utils/constant.js';
+import { SELECTOR, CLASS_NAME, STATUS } from '../utils/constant.js';
 
 const statusByIndex = {
   0: STATUS.ALL,
@@ -24,7 +24,7 @@ class TodoFilters {
     const $filters = target.closest(SELECTOR.FILTER).children;
     this.resetStatus($filters);
     const status = target.className;
-    target.className += SELECTOR.SELECTED;
+    target.className += CLASS_NAME.SELECTED;
     this.store.setStatus(status);
   }
 

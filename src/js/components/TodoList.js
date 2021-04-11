@@ -1,22 +1,22 @@
-import { SELECTOR } from '../utils/constant.js';
-import { todoListTemplates } from '../utils/templates.js';
+import { SELECTOR, NODE_NAME, CLASS_NAME } from '../utils/constant.js';
+import { todoListTemplate } from '../utils/templates.js';
 import Observer from '../libs/Observer.js';
 
 class TodoList extends Observer {
   constructor(store) {
     super();
     this.store = store;
-    this.container = document.getElementById(SELECTOR.TODO_LIST);
+    this.container = document.querySelector(SELECTOR.TODO_LIST);
     this.bindEvent();
     this.render();
   }
 
   bindEvent() {
     this.container.addEventListener('click', ({ target }) => {
-      const $li = target.closest(SELECTOR.LIST);
+      const $li = target.closest(NODE_NAME.LIST);
       const id = +$li.dataset.id;
       const targetClass = target.className;
-      if (targetClass === SELECTOR.TOGGLE) {
+      if (targetClass === CLASS_NAME.TOGGLE) {
         this.onToggleComplete(id, $li, target);
       } else if (targetClass === SELECTOR.DESTROY) {
         this.onRemoveTodo(id);
@@ -24,7 +24,7 @@ class TodoList extends Observer {
     });
 
     this.container.addEventListener('dblclick', ({ target }) => {
-      if (target.className === SELECTOR.LABEL) {
+      if (target.className === NODE_NAME.LABEL) {
         this.onEditMode(target);
       }
     });
@@ -44,12 +44,12 @@ class TodoList extends Observer {
    * @param {EventTarget} target
    */
   onEditMode(target) {
-    const $li = target.closest(SELECTOR.LIST);
+    const $li = target.closest(NODE_NAME.LIST);
     // 이미 complete 된 투두는 변경 불가
-    if ($li.className !== SELECTOR.COMPLETED_LIST) {
-      const $value = target.closest(SELECTOR.LABEL).innerText;
+    if ($li.className !== CLASS_NAME.COMPLETED) {
+      const $value = target.closest(NODE_NAME.LABEL).innerText;
       const $input = $li.querySelector(SELECTOR.EDIT_INPUT);
-      $li.className += SELECTOR.EDITING_MODE;
+      $li.className += CLASS_NAME.EDITING;
       $input.value = $value;
     }
   }
@@ -58,8 +58,8 @@ class TodoList extends Observer {
    * @param {EventTarget} target
    */
   offEditMode(target) {
-    const $li = target.closest(SELECTOR.LIST);
-    const $label = $li.querySelector(SELECTOR.LABEL);
+    const $li = target.closest(NODE_NAME.LIST);
+    const $label = $li.querySelector(NODE_NAME.LABEL);
     const $value = target.value;
     if ($value !== $label.innerText) {
       $label.innerText = $value;
@@ -89,9 +89,9 @@ class TodoList extends Observer {
    */
   onToggleComplete(id, $li, target) {
     target.toggleAttribute('checked');
-    $li.className === SELECTOR.COMPLETED_LIST
+    $li.className === CLASS_NAME.COMPLETED
       ? ($li.className = '')
-      : ($li.className = SELECTOR.COMPLETED_LIST);
+      : ($li.className = CLASS_NAME.COMPLETED);
 
     const updatedData = this.store.originData.map((data) => {
       if (data.id === id) {
@@ -121,7 +121,7 @@ class TodoList extends Observer {
   }
 
   render() {
-    this.container.innerHTML = todoListTemplates(this.store.renderData);
+    this.container.innerHTML = todoListTemplate(this.store.renderData);
   }
 }
 

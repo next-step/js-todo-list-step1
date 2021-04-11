@@ -2,7 +2,7 @@
  * @param {string} title
  */
 
-export const todoTemplates = (id, title, complete) => `
+export const todoTemplate = (id, title, complete) => `
 <li data-id=${id} class=${complete ? 'completed' : ''}>
     <div class="view">
         <input class="toggle" type="checkbox" ${complete ? 'checked' : ''}/>
@@ -17,10 +17,10 @@ export const todoTemplates = (id, title, complete) => `
  * @returns {string}
  */
 
-export const todoListTemplates = (datas) => {
+export const todoListTemplate = (datas) => {
   let result = '';
   datas.forEach((v) => {
-    result += todoTemplates(v.id, v.title, v.complete);
+    result += todoTemplate(v.id, v.title, v.complete);
   });
   return result;
 };
@@ -29,5 +29,5 @@ export const todoListTemplates = (datas) => {
  * @param {number} counter
  * @returns {string}
  */
-export const todoCounterTemplates = (counter) =>
+export const todoCounterTemplate = (counter) =>
   `총 <strong>${counter}</strong> 개</span>`;

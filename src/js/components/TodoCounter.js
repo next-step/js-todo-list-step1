@@ -1,6 +1,6 @@
 import Observer from '../libs/Observer.js';
 import { SELECTOR } from '../utils/constant.js';
-import { todoCounterTemplates } from '../utils/templates.js';
+import { todoCounterTemplate } from '../utils/templates.js';
 
 class TodoCounter extends Observer {
   constructor(store) {
@@ -16,7 +16,7 @@ class TodoCounter extends Observer {
 
   render() {
     const counter = this.store.renderData.length;
-    this.container.innerHTML = todoCounterTemplates(counter);
+    this.container.innerHTML = todoCounterTemplate(counter);
   }
 }
 

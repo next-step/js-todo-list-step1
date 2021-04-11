@@ -3,8 +3,6 @@
  * @returns {object}
  */
 
-const todoItemGenerator = (title) => {
+export const todoItem = (title) => {
   return { id: new Date().getTime(), title, complete: false };
 };
-
-export default todoItemGenerator;
