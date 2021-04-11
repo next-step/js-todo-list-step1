@@ -1,9 +1,9 @@
-export const todoItemTemplate = ({ todo = '', completed = false }) => {
+export const todoItemTemplate = ({ id, todo = '', completed = false }) => {
   if (todo === '') return null;
   return `
-    <li ${completed && `class="completed"`}>
+    <li id="${id}" ${completed ? `class="completed"` : ''}>
       <div class="view">
-        <input class="toggle" type="checkbox" ${completed && `checked`} />
+        <input class="toggle" type="checkbox" ${completed ? `checked` : ''} />
         <label class="label">${todo}</label>
         <button class="destroy"></button>
       </div>
