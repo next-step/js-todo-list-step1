@@ -1,5 +1,4 @@
-import { STORAGE_NAME } from './constant.js';
-
+const TODO_STORAGE_KEY = '@todo-database';
 const storage = window.localStorage;
 
 const localStorage = {
@@ -8,7 +7,7 @@ const localStorage = {
    */
   setItem: (value) => {
     try {
-      storage.setItem(STORAGE_NAME, JSON.stringify(value));
+      storage.setItem(TODO_STORAGE_KEY, JSON.stringify(value));
     } catch (error) {
       throw error;
     }
@@ -16,7 +15,7 @@ const localStorage = {
   /**
    * @returns {object[]}
    */
-  getItem: () => JSON.parse(storage.getItem(STORAGE_NAME)) || [],
+  getItem: () => JSON.parse(storage.getItem(TODO_STORAGE_KEY)) || [],
 };
 
 export default localStorage;

@@ -2,6 +2,7 @@ import Observer from '../libs/Observer.js';
 import { SELECTOR } from '../utils/constant.js';
 import { todoCounterTemplate } from '../utils/templates.js';
 
+// 관찰자 클래스 상속
 class TodoCounter extends Observer {
   constructor(store) {
     super();

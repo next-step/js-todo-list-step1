@@ -27,5 +27,3 @@ export const STATUS = {
   COMPLETED: 'completed',
   ACTIVE: 'active',
 };
-
-export const STORAGE_NAME = '@todo-database';
