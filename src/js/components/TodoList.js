@@ -20,7 +20,6 @@ export default class TodoList {
       new TodoItem({
         todoListUl: this.todoListUl,
         data,
-        todoData: this.todoData,
         onCheckItem: () => {
           data.completed = !data.completed;
           localStorage.setItem('item', JSON.stringify(this.todoData));
