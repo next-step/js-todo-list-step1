@@ -21,36 +21,11 @@
 * https://developer.mozilla.org/ko/docs/Web/API/Element/classList
 * https://stickode.com/detail.html?no=846
 
-### 템플릿
-```html
-<ul id="todo-list" class="todo-list">
-  <li>
-    <div class="view">
-      <input class="toggle" type="checkbox"/>
-      <label class="label">새로운 타이틀</label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="새로운 타이틀" />
-  </li>
-  <li class="editing">
-    <div class="view">
-      <input class="toggle" type="checkbox" />
-      <label class="label">완료된 타이틀</label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="완료된 타이틀" />
-  </li>
-  <li class="completed">
-    <div class="view">
-      <input class="toggle" type="checkbox" checked/>
-      <label class="label">완료된 타이틀</label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="완료된 타이틀" />
-  </li>
-</ul>
-```
-
 ### 그 외
 * https://silver0r.tistory.com/119
 * https://stackoverflow.com/questions/3369593/how-to-detect-escape-key-press-with-pure-js-or-jquery
+
+### 자바스크립트 요소 찾기
+* https://jhmocu.tistory.com/102
+* https://dydals5678.tistory.com/11
+* https://itun.tistory.com/501
