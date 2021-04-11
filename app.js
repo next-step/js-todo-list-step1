@@ -2,14 +2,20 @@
 import { count, filters, todoList, newTodoTitle } from './constant.js';
 
 function App() {
+  // TODO: 새로고침 시, localstorage에 값이 있으면 그 값으로 todos가 반영되도록 하기
   const todos = [];
+
+  function saveTodo(todos) {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
 
   function addTodo(event) {
     todos.push({
-      name: event.target.value,
+      value: event.target.value,
       completed: false,
       key: Date.now()
     });
+    saveTodo(todos);
 
     // TODO: 아래는 render 영역으로 분리 필요
     const todo = `<li>
