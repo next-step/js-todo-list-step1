@@ -2,7 +2,10 @@ import TodoInput from "./TodoInput.js";
 import TodoItemModel from "./model/TodoItemModel.js";
 import TodoList from "./TodoList.js";
 import TodoCount from "./TodoCount.js";
+import TodoMode from "./TodoMode.js";
+
 import KEY_CODE from "../constants/KeyCode.js";
+import Mode from "../constants/Mode.js";
 
 function TodoApp() {
 	let id = 0;
@@ -75,6 +78,27 @@ function TodoApp() {
 			const newTodoItem = new TodoItemModel(contents, id++);
 			this.todoItems.push(newTodoItem);
 			this.setState(this.todoItems);
+		}
+	});
+
+	new TodoMode({
+		target: document.querySelector(".filters"),
+		onChangeMode: (mode) => {
+			let prevTodoItems;
+			switch (mode) {
+				case Mode.ALL:
+					prevTodoItems = this.todoItems;
+					break;
+				case Mode.ACTIVE:
+					console.log("what");
+					prevTodoItems = this.todoItems.filter((item) => !item.completed);
+					break;
+				case Mode.COMPLETED:
+					prevTodoItems = this.todoItems.filter((item) => item.completed);
+					break;
+			}
+			todoList.setState(prevTodoItems);
+			todoCount.setState(prevTodoItems);
 		}
 	});
 }
