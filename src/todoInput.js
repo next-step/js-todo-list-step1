@@ -1,5 +1,5 @@
-import { getElement } from '../util.js';
-import { KEY_CODE } from '../constant.js';
+import { getElement } from './util.js';
+import { KEY_CODE } from './constant.js';
 
 class TodoInput {
     constructor(store) {

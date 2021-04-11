@@ -1,5 +1,5 @@
-import { getElement } from '../util.js';
-import { UI_CLASS, KEY_CODE, MESSAGES } from '../constant.js';
+import { getElement } from './util.js';
+import { UI_CLASS, KEY_CODE, MESSAGES } from './constant.js';
 
 class TodoList {
     constructor(store) {

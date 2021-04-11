@@ -1,6 +1,6 @@
-import TodoInput from './components/todoInput.js';
-import TodoList from './components/TodoList.js';
-import Filters from './components/filters.js';
+import TodoInput from './todoInput.js';
+import TodoList from './TodoList.js';
+import Filters from './filters.js';
 
 class TodoReducer {
     constructor(store) {

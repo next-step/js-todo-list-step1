@@ -1,5 +1,5 @@
-import { getElement } from '../util.js';
-import { FILTER_TYPE, UI_CLASS } from '../constant.js';
+import { getElement } from './util.js';
+import { FILTER_TYPE, UI_CLASS } from './constant.js';
 
 class Filters {
     constructor(store) {
