@@ -1,9 +1,10 @@
 import Store from './store.js';
-import TodoApp from './todoApp.js';
+import TodoAction from './todoAction.js';
+import TodoRender from './todoRender.js';
 
 (function () {
     const store = new Store();
-    const todoApp = new TodoApp(store);
 
-    todoApp.run();
+    new TodoAction(store);
+    new TodoRender(store);
 })();

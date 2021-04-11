@@ -1,26 +1,16 @@
-import { todoTemplate } from './template.js';
-import { getElement, saveData, loadData } from './util.js';
+import { getElement } from './util.js';
 import { FILTER_TYPE, UI_CLASS, KEY_CODE, MESSAGES } from './constant.js';
 
-class TodoApp {
+class TodoAction {
     constructor(store) {
         this.store = store;
         this.inputEl = getElement('input.new-todo');
         this.filtersEl = getElement('ul.filters');
         this.todoListEl = getElement('ul.todo-list');
-        this.todoCountEl = getElement('span.todo-count strong');
+        this.init();
     }
 
-    storeInit() {
-        this.store.on('todoList', this.renderTodoList.bind(this));
-        this.store.on('filter', this.renderTodoList.bind(this));
-        this.store.set({
-            todoList: loadData() ? loadData() : {},
-            filter: FILTER_TYPE.ALL
-        });
-    }
-
-    appInit() {
+    init() {
         this.inputEl.addEventListener('keyup', this.addTodoHandler.bind(this));
         this.todoListEl.addEventListener('click', this.todoClickHandler.bind(this));
         this.todoListEl.addEventListener('dblclick', this.modifyHandler.bind(this));
@@ -28,30 +18,8 @@ class TodoApp {
         this.filtersEl.addEventListener('click', this.filtersHandler.bind(this));
     }
 
-    run() {
-        this.storeInit();
-        this.appInit();
-    }
-
-    renderTodoList() {
-        const todoList = this.store.get().todoList;
-        const filter = this.store.get().filter;
-
-        let onFilterTodoList = Object.values(todoList);
-        if (filter === FILTER_TYPE.ACTIVE) onFilterTodoList = Object.values(todoList).filter(item => !item.isCompleted);
-        if (filter === FILTER_TYPE.COMPLETED) onFilterTodoList = Object.values(todoList).filter(item => item.isCompleted);
-
-        const todoListTemplate = onFilterTodoList.map(({ title, id, isCompleted, isEditing }) => todoTemplate(title, id, isCompleted, isEditing)).join('');
-
-        this.todoListEl.innerHTML = todoListTemplate;
-        this.todoCountEl.innerText = onFilterTodoList.length;
-
-        saveData(todoList);
-    }
-
     addTodoHandler({ keyCode, target }) {
         if (keyCode !== KEY_CODE.ENTER || !target.value) return;
-
         const todoList = this.store.get().todoList;
         const id = new Date().getTime();
         const newTodo = {
@@ -94,7 +62,6 @@ class TodoApp {
 
     modifyHandler({ target }) {
         if (!target.classList.contains(UI_CLASS.LABEL)) return;
-
         const { id } = target.closest('li');
         const todoList = this.store.get().todoList;
         todoList[id].isEditing = true;
@@ -132,4 +99,4 @@ class TodoApp {
     }
 }
 
-export default TodoApp
+export default TodoAction
