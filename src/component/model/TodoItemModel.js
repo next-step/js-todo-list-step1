@@ -1,6 +1,7 @@
 class TodoItemModel {
-	constructor(contents) {
+	constructor(contents, id) {
 		this._contents = contents;
+		this._id = id;
 	}
 
 	get contents() {
@@ -9,6 +10,10 @@ class TodoItemModel {
 
 	set contents(contents) {
 		this._contents = contents;
+	}
+
+	get id() {
+		return this._id;
 	}
 }
 
