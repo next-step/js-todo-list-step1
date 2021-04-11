@@ -2,7 +2,7 @@ import { todoTemplate } from './template.js';
 import { getElement, saveData, loadData } from './util.js';
 import { FILTER_TYPE } from './constant.js';
 
-class TodoRender {
+class TodoViewer {
     constructor(store) {
         this.store = store;
         this.todoListEl = getElement('ul.todo-list');
@@ -36,4 +36,4 @@ class TodoRender {
     }
 }
 
-export default TodoRender
+export default TodoViewer
