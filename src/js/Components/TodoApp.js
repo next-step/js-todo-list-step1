@@ -30,9 +30,16 @@ function TodoApp() {
     this.setState(this.todoItems.filter((item) => item.id !== id));
   };
 
+  const handleEdit = (id, todo) => {
+    const editItem = this.todoItems.find((item) => item.id === id);
+    editItem.todo = todo;
+    this.setState(this.todoItems);
+  };
+
   const todoList = new TodoList({
     onToggle: handleToggle,
     onDelete: handleDelete,
+    onEdit: handleEdit,
   });
 
   TodoInput({ onAdd: handleAdd });
