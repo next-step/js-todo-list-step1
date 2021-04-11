@@ -17,6 +17,9 @@ class TodoFilters {
     container.addEventListener('click', ({ target }) => this.onClick(target));
   }
 
+  /**
+   * @param {EventTarget} target
+   */
   onClick(target) {
     const $filters = target.closest(SELECTOR.FILTER).children;
     this.resetStatus($filters);
@@ -25,10 +28,12 @@ class TodoFilters {
     this.store.setStatus(status);
   }
 
-  // reset css status
-  resetStatus($filters) {
+  /**
+   * @param {HTMLCollection} filters
+   */
+  resetStatus(filters) {
     for (let i = 0; i < 3; i++) {
-      const $anchor = $filters[i].children[0];
+      const $anchor = filters[i].children[0];
       $anchor.className = statusByIndex[i];
     }
   }

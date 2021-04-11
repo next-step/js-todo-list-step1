@@ -40,6 +40,9 @@ class TodoList extends Observer {
     });
   }
 
+  /**
+   * @param {EventTarget} target
+   */
   onEditMode(target) {
     const $li = target.closest(SELECTOR.LIST);
     // 이미 complete 된 투두는 변경 불가
@@ -51,6 +54,9 @@ class TodoList extends Observer {
     }
   }
 
+  /**
+   * @param {EventTarget} target
+   */
   offEditMode(target) {
     const $li = target.closest(SELECTOR.LIST);
     const $label = $li.querySelector(SELECTOR.LABEL);
@@ -62,6 +68,10 @@ class TodoList extends Observer {
     $li.className = '';
   }
 
+  /**
+   * @param {number} id
+   * @param {string} newTitle
+   */
   onUpdateTodo(id, newTitle) {
     const updatedData = this.store.originData.map((data) => {
       if (data.id === id) {
@@ -72,6 +82,11 @@ class TodoList extends Observer {
     this.store.setOriginData(updatedData);
   }
 
+  /**
+   * @param {number} id
+   * @param {Element} $li
+   * @param {EventTarget} target
+   */
   onToggleComplete(id, $li, target) {
     target.toggleAttribute('checked');
     $li.className === SELECTOR.COMPLETED_LIST
@@ -87,6 +102,9 @@ class TodoList extends Observer {
     this.store.setOriginData(updatedData);
   }
 
+  /**
+   * @param {number} id
+   */
   onRemoveTodo(id) {
     const updatedRenderData = this.store.renderData.filter(
       (data) => data.id !== id,

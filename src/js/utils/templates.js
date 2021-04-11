@@ -1,5 +1,4 @@
 /**
- *
  * @param {string} title
  */
 
@@ -13,6 +12,11 @@ export const todoTemplates = (id, title, complete) => `
     <input class="edit"/>
 </li>`;
 
+/**
+ * @param {object[]} datas
+ * @returns {string}
+ */
+
 export const todoListTemplates = (datas) => {
   let result = '';
   datas.forEach((v) => {
@@ -21,5 +25,9 @@ export const todoListTemplates = (datas) => {
   return result;
 };
 
+/**
+ * @param {number} counter
+ * @returns {string}
+ */
 export const todoCounterTemplates = (counter) =>
   `총 <strong>${counter}</strong> 개</span>`;

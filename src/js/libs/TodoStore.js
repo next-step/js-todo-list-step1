@@ -11,17 +11,25 @@ class TodoStore extends Subject {
     this.status = STATUS.ALL; // 투두 필터링 status
   }
 
+  /**
+   * @param {object[]} todoData
+   */
   setOriginData(todoData) {
     // 로컬 스토리지에 저장
     localStorage.setItem(todoData);
     this.originData = todoData;
   }
-
+  /**
+   * @param {object[]} renderData
+   */
   setRenderData(renderData) {
     this.renderData = renderData;
     this.notifyAll();
   }
 
+  /**
+   * @param {string} status
+   */
   setStatus(status) {
     this.status = status;
     switch (status) {

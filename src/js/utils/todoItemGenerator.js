@@ -1,6 +1,6 @@
 /**
- *
  * @param {string} title
+ * @returns {object}
  */
 
 const todoItemGenerator = (title) => {

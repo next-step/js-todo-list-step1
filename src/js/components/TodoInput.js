@@ -15,6 +15,9 @@ class TodoInput {
     form.addEventListener('submit', (e) => this.onSubmit(e));
   }
 
+  /**
+   * @param {Event} e
+   */
   onSubmit(e) {
     e.preventDefault();
     const newTodo = todoItemGenerator(this.container.value);
