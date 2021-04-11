@@ -6,24 +6,28 @@ function TodoList({ onToggle, onDelete, onEdit }) {
 
   const clickItemEvent = (e) => {
     const itemId = e.target.closest('li').id;
-    if (e.target.className === 'toggle') {
+    if (e.target.classList.contains('toggle')) {
       onToggle(itemId);
     }
-    if (e.target.className === 'destroy') {
+    if (e.target.classList.contains('destroy')) {
       onDelete(itemId);
     }
   };
 
   const doubleClickItemEvent = (e) => {
     const item = e.target.closest('li');
-    if (e.target.className === 'label') {
+    if (e.target.classList.contains('label')) {
       item.classList.add('editing');
-      item.addEventListener('keydown', keydownItemEvent);
     }
   };
 
   const keydownItemEvent = (e) => {
     const item = e.target.closest('li');
+
+    if (!item.classList.contains('editing')) {
+      return;
+    }
+
     if (e.keyCode === KEYCODE_ENTER) {
       onEdit(item.id, e.target.value);
       item.classList.remove('editing');
@@ -35,6 +39,7 @@ function TodoList({ onToggle, onDelete, onEdit }) {
 
   listElement.addEventListener('click', clickItemEvent);
   listElement.addEventListener('dblclick', doubleClickItemEvent);
+  listElement.addEventListener('keydown', keydownItemEvent);
 
   this.render = (items = []) => {
     if (items.length === 0) listElement.innerHTML = '';
