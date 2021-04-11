@@ -93,12 +93,27 @@ function App() {
     }
   }
 
+  function handleDeleteButtonClick(target) {
+    const li = target.closest('li');
+    const test = todos.filter(todo => {
+      return todo.id !== parseInt(li.id, 10);
+    });
+    todos = test;
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }
+
   function handleClickTodoList(event) {
     const { target } = event;
 
     if (target.tagName === 'INPUT') {
       handleInputClick(target);
+      return;
     }
+    if (target.tagName === 'BUTTON') {
+      handleDeleteButtonClick(target);
+      return;
+    }
+    loadTodos();
   }
 
   function init() {
