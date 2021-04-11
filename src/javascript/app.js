@@ -18,4 +18,4 @@ class App {
   }
 }
 
-window.todo = new App();
+new App();
