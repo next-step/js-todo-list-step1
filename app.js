@@ -10,11 +10,13 @@ function App() {
 
   function makeListElement(todo) {
     const type = todo.completed === true ? `"checkbox" checked` : 'checkbox';
-    const li = `<li class="${todo.completed === true ? 'completed' : 'false'}">
+    const li = `<li class="${
+      todo.completed === true ? 'completed' : 'false'
+    }" id=${todo.id}>
 		<div class="view">
-		<input class="toggle" type=${type} />
+		<input class="toggle" type=${type} id=${todo.id} />
 		<label class="label">${todo.value}</label>
-		<button class="destroy"></button>
+		<button class="destroy" id=${todo.id}></button>
 		</div>
 		<input class="edit" value='${todo.value}' />
 		</li>`;
@@ -49,7 +51,7 @@ function App() {
     todos.push({
       value: event.target.value,
       completed: false,
-      key: Date.now()
+      id: Date.now()
     });
     saveTodo(todos);
     loadTodos();
@@ -63,6 +65,7 @@ function App() {
 
   function handleInputClick(target) {
     const li = target.closest('li');
+    const array = JSON.parse(localStorage.getItem('todos'));
 
     target.getAttribute('checked') === null
       ? target.setAttribute('checked', '')
@@ -70,11 +73,23 @@ function App() {
     if (li.className === 'false') {
       li.classList.add('completed');
       li.classList.remove('false');
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].id === Number(li.id)) {
+          array[i].completed = true;
+        }
+      }
+      localStorage.setItem('todos', JSON.stringify(array));
       return;
     }
     if (li.className === 'completed') {
       li.classList.add('false');
       li.classList.remove('completed');
+      for (let i = 0; i < array.length; i++) {
+        if (array[i].id === Number(li.id)) {
+          array[i].completed = false;
+        }
+      }
+      localStorage.setItem('todos', JSON.stringify(array));
     }
   }
 
