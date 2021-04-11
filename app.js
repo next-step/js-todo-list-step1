@@ -11,6 +11,15 @@ function App() {
         completed: false,
         key: Date.now()
       });
+      const todo = `<li>
+			<div class="view">
+			<input class="toggle" type="checkbox"/>
+			<label class="label">${event.target.value}</label>
+			<button class="destroy"></button>
+			</div>
+			<input class="edit" value='${event.target.value}' />
+			</li>`;
+      todoList.insertAdjacentHTML('beforeend', todo);
       event.target.value = '';
     }
   }
