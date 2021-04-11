@@ -1,10 +1,4 @@
-import { SELECTOR, CLASS_NAME, STATUS } from '../utils/constant.js';
-
-const statusByIndex = {
-  0: STATUS.ALL,
-  1: STATUS.ACTIVE,
-  2: STATUS.COMPLETED,
-};
+import { SELECTOR, CLASS_NAME } from '../utils/constant.js';
 
 class TodoFilters {
   constructor(store) {
@@ -24,7 +18,7 @@ class TodoFilters {
     const $filters = target.closest(SELECTOR.FILTER).children;
     this.resetStatus($filters); // Filter 내부 ClassName 초기화
     const status = target.className; // 현재 target 의 className = 새로 바뀔 status
-    target.className += CLASS_NAME.SELECTED;
+    target.classList.add(CLASS_NAME.SELECTED);
     this.store.setStatus(status);
   }
 
@@ -35,7 +29,7 @@ class TodoFilters {
   resetStatus(filters) {
     for (let i = 0; i < 3; i++) {
       const $anchor = filters[i].children[0];
-      $anchor.className = statusByIndex[i];
+      $anchor.classList.remove(CLASS_NAME.SELECTED);
     }
   }
 }

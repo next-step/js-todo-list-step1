@@ -3,8 +3,6 @@ export const SELECTOR = {
   TODO_LIST: '#todo-list',
   TODO_INPUT: '#new-todo-title',
   TODO_FORM: '#todo-form',
-  TOGGLE: '.toggle',
-  DESTROY: '.destroy',
   EDIT_INPUT: '.edit',
   TODO_COUNTER: '.todo-count',
   FILTER: '.filters',
@@ -15,6 +13,7 @@ export const CLASS_NAME = {
   COMPLETED: 'completed',
   EDITING: 'editing',
   TOGGLE: 'toggle',
+  DESTROY: 'destroy',
 };
 
 export const NODE_NAME = {

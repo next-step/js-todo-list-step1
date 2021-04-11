@@ -2,6 +2,7 @@ import { SELECTOR, NODE_NAME, CLASS_NAME } from '../utils/constant.js';
 import { todoListTemplate } from '../utils/templates.js';
 import Observer from '../libs/Observer.js';
 
+// 관찰자
 class TodoList extends Observer {
   constructor(store) {
     super();
@@ -16,18 +17,18 @@ class TodoList extends Observer {
     this.container.addEventListener('click', ({ target }) => {
       const $li = target.closest(NODE_NAME.LIST);
       const id = +$li.dataset.id;
-      const targetClass = target.className;
+      const targetClassList = target.classList;
 
-      if (targetClass === CLASS_NAME.TOGGLE) {
+      if (targetClassList.contains(CLASS_NAME.TOGGLE)) {
         this.onToggleComplete(id, $li, target);
-      } else if (targetClass === SELECTOR.DESTROY) {
+      } else if (targetClassList.contains(CLASS_NAME.DESTROY)) {
         this.onRemoveTodo(id);
       }
     });
 
     // 투두 수정
     this.container.addEventListener('dblclick', ({ target }) => {
-      if (target.className === NODE_NAME.LABEL) {
+      if (target.classList.contains(NODE_NAME.LABEL)) {
         this.onEditMode(target);
       }
     });
@@ -51,10 +52,10 @@ class TodoList extends Observer {
   onEditMode(target) {
     const $li = target.closest(NODE_NAME.LIST);
     // 이미 complete 된 투두는 변경 불가
-    if ($li.className === CLASS_NAME.COMPLETED) return;
+    if ($li.classList.contains(CLASS_NAME.COMPLETED)) return;
     const value = target.closest(NODE_NAME.LABEL).innerText;
     const $input = $li.querySelector(SELECTOR.EDIT_INPUT);
-    $li.className += CLASS_NAME.EDITING;
+    $li.classList.add(CLASS_NAME.EDITING);
     $input.value = value;
   }
 
@@ -72,7 +73,7 @@ class TodoList extends Observer {
       $label.innerText = value;
       this.onUpdateTodo(+$li.dataset.id, value);
     }
-    $li.className = '';
+    $li.classList.remove(CLASS_NAME.EDITING);
   }
 
   /**
@@ -98,9 +99,7 @@ class TodoList extends Observer {
    */
   onToggleComplete(id, $li, target) {
     target.toggleAttribute('checked');
-    $li.className === CLASS_NAME.COMPLETED
-      ? ($li.className = '')
-      : ($li.className = CLASS_NAME.COMPLETED);
+    $li.classList.toggle(CLASS_NAME.COMPLETED);
 
     const updatedData = this.store.originData.map((data) => {
       if (data.id === id) {

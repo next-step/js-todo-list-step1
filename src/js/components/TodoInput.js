@@ -9,7 +9,6 @@ class TodoInput {
     this.bindEvent();
   }
 
-  // 필요한 이벤트 바인딩
   bindEvent() {
     const form = document.querySelector(SELECTOR.TODO_FORM);
     form.addEventListener('submit', (e) => this.onSubmit(e));
