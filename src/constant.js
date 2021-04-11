@@ -1,8 +1,3 @@
-export const STATE = {
-    FILTER: 'filter',
-    TODO_LIST: 'todoList'
-};
-
 export const FILTER_TYPE = {
     ALL: 'all',
     ACTIVE: 'active',
@@ -15,3 +10,12 @@ export const UI_CLASS = {
     LABEL: 'label',
     SELECTED: 'selected'
 };
+
+export const KEY_CODE = {
+    ENTER: 13,
+    ESCAPE: 27
+}
+
+export const MESSAGES = {
+    DELETE: 'delete'
+}

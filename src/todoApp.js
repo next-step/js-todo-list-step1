@@ -1,6 +1,6 @@
 import { todoTemplate } from './template.js';
 import { getElement, saveData, loadData } from './util.js';
-import { STATE, FILTER_TYPE, UI_CLASS } from './constant.js';
+import { FILTER_TYPE, UI_CLASS, KEY_CODE, MESSAGES } from './constant.js';
 
 class TodoApp {
     constructor(store) {
@@ -12,29 +12,8 @@ class TodoApp {
     }
 
     storeInit() {
-        this.store.on(STATE.TODO_LIST, () => {
-            const todoList = Object.values(this.store.get().todoList);
-            const todoListTemplate = todoList.map(({ title, id, isCompleted, isEditing }) => todoTemplate(title, id, isCompleted, isEditing)).join('');
-
-            this.todoListEl.innerHTML = todoListTemplate;
-            this.todoCountEl.innerText = todoList.length;
-            saveData(this.store.get().todoList);
-        });
-
-        this.store.on(STATE.FILTER, () => {
-            const filter = this.store.get().filter;
-
-            let filterTodoList;
-            if (filter === FILTER_TYPE.ALL) filterTodoList = Object.values(this.store.get().todoList);
-            else if (filter === FILTER_TYPE.ACTIVE) filterTodoList = Object.values(this.store.get().todoList).filter(item => !item.isCompleted);
-            else if (filter === FILTER_TYPE.COMPLETED) filterTodoList = Object.values(this.store.get().todoList).filter(item => item.isCompleted);
-
-            const filterTodoListTemplate = filterTodoList.map(({ title, id, isCompleted, isEditing }) => todoTemplate(title, id, isCompleted, isEditing)).join('');
-
-            this.todoListEl.innerHTML = filterTodoListTemplate;
-            this.todoCountEl.innerText = filterTodoList.length;
-        });
-
+        this.store.on('todoList', this.renderTodoList.bind(this));
+        this.store.on('filter', this.renderTodoList.bind(this));
         this.store.set({
             todoList: loadData() ? loadData() : {},
             filter: FILTER_TYPE.ALL
@@ -54,8 +33,24 @@ class TodoApp {
         this.appInit();
     }
 
-    addTodoHandler({ key, target }) {
-        if (key !== 'Enter' || !target.value) return;
+    renderTodoList() {
+        const todoList = this.store.get().todoList;
+        const filter = this.store.get().filter;
+
+        let onFilterTodoList = Object.values(todoList);
+        if (filter === FILTER_TYPE.ACTIVE) onFilterTodoList = Object.values(todoList).filter(item => !item.isCompleted);
+        if (filter === FILTER_TYPE.COMPLETED) onFilterTodoList = Object.values(todoList).filter(item => item.isCompleted);
+
+        const todoListTemplate = onFilterTodoList.map(({ title, id, isCompleted, isEditing }) => todoTemplate(title, id, isCompleted, isEditing)).join('');
+
+        this.todoListEl.innerHTML = todoListTemplate;
+        this.todoCountEl.innerText = onFilterTodoList.length;
+
+        saveData(todoList);
+    }
+
+    addTodoHandler({ keyCode, target }) {
+        if (keyCode !== KEY_CODE.ENTER || !target.value) return;
 
         const todoList = this.store.get().todoList;
         const id = new Date().getTime();
@@ -63,7 +58,7 @@ class TodoApp {
             title: target.value,
             id: id,
             isCompleted: false,
-            isEditing: false,
+            isEditing: false
         };
         todoList[id] = newTodo;
         target.value = '';
@@ -83,6 +78,7 @@ class TodoApp {
     }
 
     _destroyTodoItem({ id }) {
+        if (!confirm(MESSAGES.DELETE)) return;
         const todoList = this.store.get().todoList;
         delete todoList[id];
 
@@ -108,17 +104,17 @@ class TodoApp {
         });
     }
 
-    confirmHandler({ key, target }) {
-        if (key !== 'Enter' || !target.value) return;
+    confirmHandler({ keyCode, target }) {
+        if (keyCode === KEY_CODE.ENTER || keyCode === KEY_CODE.ESCAPE) {
+            const { id } = target.closest('li');
+            const todoList = this.store.get().todoList;
+            if (keyCode === KEY_CODE.ENTER) todoList[id].title = target.value;
+            todoList[id].isEditing = false;
 
-        const { id } = target.closest('li');
-        const todoList = this.store.get().todoList;
-        todoList[id].title = target.value;
-        todoList[id].isEditing = false;
-
-        this.store.set({
-            todoList: { ...todoList }
-        });
+            this.store.set({
+                todoList: { ...todoList }
+            });
+        }
     }
 
     filtersHandler({ target }) {
