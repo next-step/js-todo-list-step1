@@ -37,7 +37,6 @@ function addTodo(e) {
     todoEdit.setAttribute("value", todoInput.value);
     todoInput.value = "";
     totalCount += 1;
-    // uncompletedCount += 1;
     todoCount.innerText = String(totalCount);
   }
 }
@@ -55,8 +54,7 @@ function clickTodo(e) {
       item.setAttribute("false", "");
       item.parentNode.parentNode.classList.replace("completed", "false");
     }
-  }
-  else if (item.classList[0] === "destroy") {
+  } else if (item.classList[0] === "destroy") {
     totalCount -= 1;
     todoCount.innerText = String(totalCount);
     item.parentNode.parentNode.remove();
@@ -73,7 +71,7 @@ function dblclickTodo(e) {
 
 function editTodo(e) {
   const item = e.target;
-  
+
   // e.preventDefault();
   // console.log(item);
   // console.log(e.key);
@@ -95,26 +93,41 @@ function editTodo(e) {
 
 function filterTodo(e) {
   const item = e.target;
+  let viewCount = 0;
 
   if (item.classList.contains("all")) {
     for (let i = 0; i < totalCount; i++) {
-      todoList.childNodes[i].style.display = 'block';
+      todoList.childNodes[i].style.display = "block";
     }
-  } else if (item.classList.contains("completed")) {
-    for (let i = 0; i < totalCount; i++) {
-      if (todoList.childNodes[i].classList.contains("false")) {
-        todoList.childNodes[i].style.display = 'none';
-      } else {
-        todoList.childNodes[i].style.display = 'block';
-      }
-    }
+    document.querySelector(".filters .all").classList.add("selected"); // 왜 "a .active"는 안될까?
+    document.querySelector(".filters .active").classList.remove("selected");
+    document.querySelector(".filters .completed").classList.remove("selected");
+    todoCount.innerText = String(totalCount);
   } else if (item.classList.contains("active")) {
     for (let i = 0; i < totalCount; i++) {
       if (todoList.childNodes[i].classList.contains("completed")) {
-        todoList.childNodes[i].style.display = 'none';
+        todoList.childNodes[i].style.display = "none";
       } else {
-        todoList.childNodes[i].style.display = 'block';
+        todoList.childNodes[i].style.display = "block";
+        viewCount++;
       }
     }
+    document.querySelector(".filters .all").classList.remove("selected");
+    document.querySelector(".filters .active").classList.add("selected");
+    document.querySelector(".filters .completed").classList.remove("selected");
+    todoCount.innerText = String(viewCount);
+  } else if (item.classList.contains("completed")) {
+    for (let i = 0; i < totalCount; i++) {
+      if (todoList.childNodes[i].classList.contains("false")) {
+        todoList.childNodes[i].style.display = "none";
+      } else {
+        todoList.childNodes[i].style.display = "block";
+        viewCount++;
+      }
+    }
+    document.querySelector(".filters .all").classList.remove("selected");
+    document.querySelector(".filters .active").classList.remove("selected");
+    document.querySelector(".filters .completed").classList.add("selected");
+    todoCount.innerText = String(viewCount);
   }
 }
