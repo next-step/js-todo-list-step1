@@ -18,7 +18,7 @@ const drawTodo = (todoObj) => {
   const label = li.querySelector('label');
   toggleBtn.addEventListener('click', handleToggleClick);
   delBtn.addEventListener('click', handleDelBtnClick);
-  label.addEventListener('dblclick', handleEdit)
+  label.addEventListener('dblclick', handleEditDoubleClick)
 }
 
 const createTodo = (inputValue) => {
@@ -53,19 +53,21 @@ const handleDelBtnClick = (e) => {
   todos = result;
 }
 
-const handleEdit = (e) => {
+const handleEditDoubleClick = (e) => {
   const targetLabel = e.target;
   const targetLi = e.target.closest('li');
   const editInput = targetLabel.parentNode.nextElementSibling;
   targetLi.classList.add('editing');
-  editInput.addEventListener('keyup', (e) => {
-    if (e.keyCode === 27) {
+  editInput.addEventListener('keyup', (e2) => {
+    if (e2.keyCode === 27) {//esc
       targetLi.classList.remove('editing');
+      // editInput.value = targetLabel.value;
+      editInput.value = targetLabel.innerHTML;
     }
-    if (e.keyCode === 13){
+    if (e2.keyCode === 13){//enter
       // console.log(e.target.value, editInput.value);
-      e.target.innerHTML = editInput.value;
       targetLi.classList.remove('editing');
+      targetLabel.innerHTML = editInput.value;
     }
   });
 }
