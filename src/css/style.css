@@ -217,6 +217,7 @@ main {
     cursor: pointer;
 }
 
+
 .todo-list li .destroy:hover {
     color: #af5b5e;
 }
