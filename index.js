@@ -1,4 +1,6 @@
 const todoInput = document.querySelector('.new-todo');
+const todoCount = document.querySelector('.todo-count strong');
+
 let todos = [];
 
 const drawTodo = (todoObj) => {
@@ -27,7 +29,9 @@ const createTodo = (inputValue) => {
     title: inputValue
   };
   todos.push(todo);
+  saveTodos();
   drawTodo(todo);
+  countTodos();
 }
 
 const handleSubmit = (e) => {
@@ -51,6 +55,8 @@ const handleDelBtnClick = (e) => {
   const id = e.target.closest('li').id;
   const result = todos.filter(todo => todo.id !== parseInt(id));
   todos = result;
+  saveTodos();
+  countTodos();
 }
 
 const handleEditDoubleClick = (e) => {
@@ -61,18 +67,38 @@ const handleEditDoubleClick = (e) => {
   editInput.addEventListener('keyup', (e2) => {
     if (e2.keyCode === 27) {//esc
       targetLi.classList.remove('editing');
-      // editInput.value = targetLabel.value;
       editInput.value = targetLabel.innerHTML;
     }
     if (e2.keyCode === 13){//enter
-      // console.log(e.target.value, editInput.value);
       targetLi.classList.remove('editing');
       targetLabel.innerHTML = editInput.value;
+      const theObj = todos.find(todo => todo.id === parseInt(targetLi.id));
+      theObj.title = editInput.value;
+      saveTodos();
     }
   });
 }
 
+const countTodos = () => {
+  todoCount.innerHTML = todos.length;
+}
+
+const saveTodos = () => {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+const loadTodos = () => {
+  const currentTodos = localStorage.getItem('todos');
+  if (currentTodos) {
+    const parsedTodos = JSON.parse(currentTodos);
+    todos = parsedTodos;
+    parsedTodos.map(todo => drawTodo(todo));
+  }
+  countTodos();
+}
+
 const init = () => {
+  loadTodos();
   todoInput.addEventListener('keyup', handleSubmit);
 }
 
