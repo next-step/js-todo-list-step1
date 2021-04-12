@@ -24,6 +24,18 @@ export default function TodoList() {
     ) {
       event.target.setAttribute("checked", "");
       itemTag.classList.toggle("completed");
+    } else if (
+      event.target &&
+      event.target.nodeName === "BUTTON" &&
+      event.target.className === "destroy"
+    ) {
+      const deleteIndex = this.todoItems.findIndex(
+        (item) => item.id == itemTag.id
+      );
+      if (deleteIndex > -1) {
+        this.todoItems.splice(deleteIndex, 1);
+        this.setState(this.todoItems);
+      }
     }
   });
 }
