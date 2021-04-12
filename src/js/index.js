@@ -33,11 +33,14 @@ const enterTitle = (event) => {
       finBtn.id = id;
 
       label.textContent = inputText;
+      edit.setAttribute("value", inputText);
+
       todoTitleInput.value = "";
 
       checkBox.addEventListener("click", checkFin);
-
       finBtn.addEventListener("click", removeInput);
+      label.addEventListener("dblclick", editInput);
+      edit.addEventListener("keydown", finEdit);
 
       function checkFin(event) {
         if (list.className === "false") {
@@ -51,6 +54,22 @@ const enterTitle = (event) => {
 
       function removeInput(event) {
         todoList.removeChild(list);
+      }
+
+      function editInput(event) {
+        list.classList.add("editing");
+      }
+
+      function finEdit(event) {
+        const editText = edit.value;
+        if (event.key === "Escape") {
+          list.classList.remove("editing");
+          edit.setAttribute("value", editText);
+        }
+        if (!event.isComposing && event.key === "Enter") {
+          list.classList.remove("editing");
+          label.textContent = editText;
+        }
       }
     }
   }
