@@ -7,7 +7,7 @@ const $showAll = document.querySelector('.all');
 const $showActive = document.querySelector('.active');
 const $showCompleted = document.querySelector('.completed');
 
-function eventInit() {
+const eventInit =()=> {
 
     $inputTodo.addEventListener('keypress', addTodo);
     $showAll.addEventListener('click', showAll);
@@ -15,61 +15,7 @@ function eventInit() {
     $showCompleted.addEventListener('click', showCompleted);
 }
 
-eventInit();
-
-function showAll () {
-    Array.from($todoList.children).forEach(li => li.remove());
-    $todoApp.querySelectorAll('.selected').forEach(a => a.classList.remove('selected'))
-    $showAll.classList.toggle('selected');
-    todos.forEach(todo => {
-        AddElement(todo.text, todo.complete)
-    });
-    $todoCount.innerText=todos.length;
-}
-
-function showActive () {
-    Array.from($todoList.children).forEach(li => li.remove());
-    $todoApp.querySelectorAll('.selected').forEach(a => a.classList.remove('selected'))
-    $showActive.classList.toggle('selected');
-    let count=0;
-    todos.forEach(todo => {
-        if(!todo.complete){
-            AddElement(todo.text, todo.complete)
-            count++;
-        }
-    });
-    $todoCount.innerText=count;
-}
-
-function showCompleted () {
-    Array.from($todoList.children).forEach(li => li.remove());
-    $todoApp.querySelectorAll('.selected').forEach(a => a.classList.remove('selected'))
-    $showCompleted.classList.toggle('selected');
-    let count=0;
-    todos.forEach(todo => {
-        if(todo.complete){
-            AddElement(todo.text, todo.complete)
-            count++;
-        }
-    });
-    $todoCount.innerText=count;
-}
-
-let todos=[];
-let localTodos=localStorage.getItem('todos');
-if(localStorage){
-    todos=JSON.parse(localTodos);
-}
-
-todos.forEach(todo => {
-    AddElement(todo.text, todo.complete)
-});
-$todoCount.innerText=todos.length;
-
-
-
-
-function addTodo(e) {
+const addTodo = (e) => {
     if (e.key === 'Enter') {
         todos.push({
             text: e.target.value,
@@ -84,11 +30,58 @@ function addTodo(e) {
     }
 }
 
-function setLocalStorage() {
-    localStorage.setItem('todos', JSON.stringify(todos));
+const showAll= () => {
+    Array.from($todoList.children).forEach(li => li.remove());
+    $todoApp.querySelectorAll('.selected').forEach(a => a.classList.remove('selected'))
+    $showAll.classList.toggle('selected');
+    todos.forEach(todo => {
+        AddElement(todo.text, todo.complete)
+    });
+    $todoCount.innerText=todos.length;
 }
 
-function AddElement(text, complete) {
+const showActive = ()=> {
+    Array.from($todoList.children).forEach(li => li.remove());
+    $todoApp.querySelectorAll('.selected').forEach(a => a.classList.remove('selected'))
+    $showActive.classList.toggle('selected');
+    let count=0;
+    todos.forEach(todo => {
+        if(!todo.complete){
+            AddElement(todo.text, todo.complete)
+            count++;
+        }
+    });
+    $todoCount.innerText=count;
+}
+
+const showCompleted = () => {
+    Array.from($todoList.children).forEach(li => li.remove());
+    $todoApp.querySelectorAll('.selected').forEach(a => a.classList.remove('selected'))
+    $showCompleted.classList.toggle('selected');
+    let count=0;
+    todos.forEach(todo => {
+        if(todo.complete){
+            AddElement(todo.text, todo.complete)
+            count++;
+        }
+    });
+    $todoCount.innerText=count;
+}
+
+let todos=[];
+const setTodoListFromLocalStorage = () => {
+    let localTodos=localStorage.getItem('todos');
+    if(localStorage){
+        todos=JSON.parse(localTodos);
+    }
+    
+    todos.forEach(todo => {
+        AddElement(todo.text, todo.complete)
+    });
+    $todoCount.innerText=todos.length;
+}
+
+const AddElement = (text, complete) => {
     let li = document.createElement('li');
     let div = document.createElement('div');
     if(complete) {
@@ -123,7 +116,7 @@ function AddElement(text, complete) {
     $todoList.appendChild(li);
 }
 
-function editComplete(e) {
+const editComplete = (e) => {
     if(e.key==='Enter'){
         let newText = e.target.value;
         let label = e.target.previousSibling.querySelector('label');
@@ -144,12 +137,12 @@ function editComplete(e) {
     }
 }
 
-function edit(e) {
+const edit = (e) => {
     console.log(e)
     e.target.parentNode.parentNode.classList.toggle('editing')
 }
 
-function destroy(e) {
+const destroy = (e) => {
     e.target.parentNode.parentNode.remove();
 
     todos = todos.filter(todo => {
@@ -159,7 +152,7 @@ function destroy(e) {
     $todoCount.innerText = todos.length;
 }
 
-function checkboxChange(e) {
+const checkboxChange = (e) => {
     if (e.target.checked)
         e.target.removeAttribute('checked');
     e.target.parentNode.parentNode.classList.toggle('completed');
@@ -172,3 +165,10 @@ function checkboxChange(e) {
     setLocalStorage();
 }
 
+const setLocalStorage = () => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+
+setTodoListFromLocalStorage();
+eventInit();
