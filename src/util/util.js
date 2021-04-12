@@ -5,3 +5,7 @@ export function checkKey(eventKey, key) {
 
   return false;
 }
+
+export function getClosestTag(event, tag) {
+  return event.target.closest(tag);
+}
