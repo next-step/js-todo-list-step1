@@ -67,7 +67,11 @@ function onChangeCountHandler() {
 }
 
 //6. todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
-allBtn.addEventListener('click', function(e) {
+allBtn.addEventListener('click', function() {
+    allBtn.className = "all selected";
+    activeBtn.className = "active";
+    completeBtn.className = "completed";
+
     const allLi = todoList.querySelectorAll("li");
     for (let liTag of allLi) {
         liTag.style.display = "block";
@@ -76,7 +80,11 @@ allBtn.addEventListener('click', function(e) {
     onChangeCountHandler()
 });
 
-activeBtn.addEventListener('click', function(e) {
+activeBtn.addEventListener('click', function() {
+    allBtn.className = "all";
+    activeBtn.className = "active selected";
+    completeBtn.className = "completed";
+
     const allLi = todoList.querySelectorAll("li");
     let activeCount = 0;
     for (let liTag of allLi) {
@@ -92,7 +100,11 @@ activeBtn.addEventListener('click', function(e) {
     document.querySelector("strong").innerHTML = activeCount;    
 });
 
-completeBtn.addEventListener('click', function(e) {
+completeBtn.addEventListener('click', function() {
+    allBtn.className = "all";
+    activeBtn.className = "active";
+    completeBtn.className = "completed selected";
+
     const allLi = todoList.querySelectorAll("li");
     let completeCount = 0;
     for (let liTag of allLi) {
