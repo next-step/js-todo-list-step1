@@ -11,3 +11,7 @@ export const KeyType = {
 export const TextType = {
   EMPTY: '',
 };
+
+export const TagName = {
+  A: 'A',
+};
