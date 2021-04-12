@@ -17,6 +17,10 @@ export default class TodoItem {
     this.isCompleted = !this.isCompleted;
   }
 
+  equalsId(id) {
+    return this.id === id;
+  }
+
   render() {
     return `
       <li class="${this.isCompleted ? TodoItemStatus.COMPLETED : TodoItemStatus.VIEW}" data-id=${this.id}>

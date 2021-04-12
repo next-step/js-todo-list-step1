@@ -14,4 +14,5 @@ export const TextType = {
 
 export const TagName = {
   A: 'A',
+  LIST: 'li',
 };
