@@ -21,21 +21,16 @@ function App() {
   }
 
   function printTodo(todo) {
-    const selected = document.querySelector('.selected');
     let li;
-    if (selected.classList.contains('all')) {
+    const selected = document.querySelector('.selected');
+
+    if (selected.classList.contains('all') ||
+    (selected.classList.contains('active') && todo.completed === false) || 
+    (selected.classList.contains('completed') && todo.completed === true))
+    {
       li = makeListElement(todo);
       todoList.insertAdjacentHTML('beforeend', li);
       return;
-    }
-    if (selected.classList.contains('active') && todo.completed === false) {
-      li = makeListElement(todo);
-      todoList.insertAdjacentHTML('beforeend', li);
-      return;
-    }
-    if (selected.classList.contains('completed') && todo.completed === true) {
-      li = makeListElement(todo);
-      todoList.insertAdjacentHTML('beforeend', li);
     }
   }
 
@@ -79,7 +74,7 @@ function App() {
 
   function handleInputClick(target) {
     const li = target.closest('li');
-    const array = JSON.parse(localStorage.getItem('todos'));
+    const todosArray = JSON.parse(localStorage.getItem('todos'));
 
     target.getAttribute('checked') === null
       ? target.setAttribute('checked', '')
@@ -87,24 +82,23 @@ function App() {
     if (li.className === 'false') {
       li.classList.add('completed');
       li.classList.remove('false');
-      for (let i = 0; i < array.length; i++) {
-        if (array[i].id === Number(li.id)) {
-          array[i].completed = true;
+      for (let i = 0; i < todosArray.length; i++) {
+        if (todosArray[i].id === Number(li.id)) {
+          todosArray[i].completed = true;
         }
       }
-      localStorage.setItem('todos', JSON.stringify(array));
-      loadTodos()
+      localStorage.setItem('todos', JSON.stringify(todosArray));
       return;
     }
     if (li.className === 'completed') {
       li.classList.add('false');
       li.classList.remove('completed');
-      for (let i = 0; i < array.length; i++) {
+      for (let i = 0; i < todosArray.length; i++) {
         if (array[i].id === Number(li.id)) {
           array[i].completed = false;
         }
       }
-      localStorage.setItem('todos', JSON.stringify(array));
+      localStorage.setItem('todos', JSON.stringify(todosArray));
     }
   }
 
@@ -134,8 +128,9 @@ function App() {
   function handleClickFilters(event) {
     const condition = filters.querySelector('.selected');
 
-    loadTodos();
-    if (condition) condition.classList.remove('selected');
+    if (condition) {
+      condition.classList.remove('selected');
+    }
     event.target.classList.add('selected');
     loadTodos();
   }
@@ -151,7 +146,9 @@ function App() {
     todoList.addEventListener('click', handleClickTodoList);
     filters.addEventListener('click', handleClickFilters);
   }
+
   init();
 }
 
-App();
+const app = App;
+app();
