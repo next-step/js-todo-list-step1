@@ -54,7 +54,7 @@ function App() {
     for (let todo in todosArray) {
       printTodo(todosArray[todo]);
     }
-    count.innerText = todosArray.length; // TODO: Fix
+    count.innerText = todoList.querySelectorAll("li").length;
   }
 
   function saveTodo(todos) {
