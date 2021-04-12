@@ -1,10 +1,17 @@
 const todoTitleInput = document.getElementById("new-todo-title");
 const todoList = document.getElementById("todo-list");
+const todoCount = document.querySelector(".todo-count");
+const countingNum = todoCount.querySelector("strong");
 
-const enterTitle = (event) => {
+let countItems = 0;
+
+const addItem = (event) => {
   if (!event.isComposing && event.key === "Enter") {
     const inputText = todoTitleInput.value;
     if (inputText !== "") {
+      countItems++;
+      countingNum.textContent = countItems;
+
       const id = Date.now();
 
       const list = document.createElement("li");
@@ -38,8 +45,8 @@ const enterTitle = (event) => {
       todoTitleInput.value = "";
 
       checkBox.addEventListener("click", checkFin);
-      finBtn.addEventListener("click", removeInput);
-      label.addEventListener("dblclick", editInput);
+      finBtn.addEventListener("click", removeItem);
+      label.addEventListener("dblclick", editItem);
       edit.addEventListener("keydown", finEdit);
 
       function checkFin(event) {
@@ -52,11 +59,13 @@ const enterTitle = (event) => {
         }
       }
 
-      function removeInput(event) {
+      function removeItem(event) {
         todoList.removeChild(list);
+        countItems--;
+        countingNum.textContent = countItems;
       }
 
-      function editInput(event) {
+      function editItem(event) {
         list.classList.add("editing");
       }
 
@@ -75,4 +84,4 @@ const enterTitle = (event) => {
   }
 };
 
-todoTitleInput.addEventListener("keydown", enterTitle);
+todoTitleInput.addEventListener("keydown", addItem);
