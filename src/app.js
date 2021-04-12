@@ -83,7 +83,8 @@ function editTodo(e) {
     item.parentNode.classList.remove("editing");
   }
   // else if (e.key === "Enter" && item.parentNode.hasAttribute('editing')) {
-  else if (e.key === "Enter") { // 이렇게 해도 되나?
+  else if (e.key === "Enter") {
+    // 이렇게 해도 되나?
     const todoLabel = item.parentNode.childNodes[0].childNodes[1]; // 이런 식 말고 다른 방법 없나?
     item.innerText = item.value;
     todoLabel.innerText = item.value;
