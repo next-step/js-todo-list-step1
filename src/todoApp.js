@@ -31,24 +31,14 @@ class TodoApp {
     const filter = this.store.get().filter;
 
     let onFilteringTodoList = Object.values(todoList);
-    if (filter === FILTER_TYPE.ACTIVE)
-      onFilteringTodoList = Object.values(todoList).filter(
-        (item) => !item.isCompleted
-      );
-    if (filter === FILTER_TYPE.COMPLETED)
-      onFilteringTodoList = Object.values(todoList).filter(
-        (item) => item.isCompleted
-      );
+    if (filter === FILTER_TYPE.ACTIVE) onFilteringTodoList = Object.values(todoList).filter((item) => !item.isCompleted);
+    if (filter === FILTER_TYPE.COMPLETED) onFilteringTodoList = Object.values(todoList).filter((item) => item.isCompleted);
 
     return { todoList, onFilteringTodoList };
   }
 
   _render({ todoList, onFilteringTodoList }) {
-    const todoListTemplate = onFilteringTodoList
-      .map(({ title, id, isCompleted, isEditing }) =>
-        todoTemplate(title, id, isCompleted, isEditing)
-      )
-      .join("");
+    const todoListTemplate = onFilteringTodoList.map(({ title, id, isCompleted, isEditing }) => todoTemplate(title, id, isCompleted, isEditing)).join("");
 
     this.todoListEl.innerHTML = todoListTemplate;
     this.todoCountEl.innerText = onFilteringTodoList.length;
