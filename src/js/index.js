@@ -5,6 +5,8 @@ const enterTitle = (event) => {
   if (!event.isComposing && event.key === "Enter") {
     const inputText = todoTitleInput.value;
     if (inputText !== "") {
+      const id = Date.now();
+
       const list = document.createElement("li");
       const view = document.createElement("div");
       const checkBox = document.createElement("input");
@@ -20,20 +22,24 @@ const enterTitle = (event) => {
       view.appendChild(finBtn);
 
       list.className = "false";
+      list.id = id;
       view.className = "view";
       edit.className = "edit";
       checkBox.className = "toggle";
+      checkBox.id = id;
       checkBox.type = "checkbox";
       label.className = "label";
       finBtn.className = "destroy";
+      finBtn.id = id;
 
       label.textContent = inputText;
       todoTitleInput.value = "";
 
       checkBox.addEventListener("click", checkFin);
 
+      finBtn.addEventListener("click", removeInput);
+
       function checkFin(event) {
-        console.dir(checkBox.checked);
         if (list.className === "false") {
           list.className = "completed";
           checkBox.setAttribute("checked", true);
@@ -41,6 +47,10 @@ const enterTitle = (event) => {
           list.className = "false";
           checkBox.setAttribute("checked", false);
         }
+      }
+
+      function removeInput(event) {
+        todoList.removeChild(list);
       }
     }
   }
