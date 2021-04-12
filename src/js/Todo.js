@@ -1,41 +1,31 @@
 class Todo {
     constructor() {
+        this._todoListKey = "todo";
         this._todoItems = [];
+        this._id = 0;
         this._todoInput = document.getElementById('new-todo-title');
         this._todoList = document.getElementById('todo-list');
         this._todoFilter = document.querySelector('.filters');
         this._todoCount = document.querySelector('.todo-count').firstElementChild;
+        this.loadTodos();
     }
 
     add(todo) {
-        this._isDone = false;
-        this._todoLi = document.createElement('li');
-        this._view = document.createElement('div');
-        this._toggle = document.createElement('input');
-        this._label = document.createElement('label');
-        this._labelTest = document.createTextNode(todo);
-        this._destroy = document.createElement('button');
-        this._edit = document.createElement('input');
-        this._view.className = 'view';
-        this._toggle.className = 'toggle';
-        this._label.className = 'label';
-        this._destroy.className = 'destroy';
-        this._edit.className = 'edit';
-        this._toggle.setAttribute("type", "checkbox");
-        this._label.append(this._labelTest);
-        this._edit.setAttribute("value", todo);
-        this._view.append(this._toggle, this._label, this._destroy);
-
-        this._todoLi.append(this._view, this._edit);
-        this._todoList.append(this._todoLi);
-        this._todoCount.innerText = this.todoCount;
-        this._todoItems.push(this._todoLi);
+        const todoObj = {
+            text : todo,
+            id : this._id,
+            class : '',
+            checked : 'false'
+        }
+        this._todoItems.push(todoObj);
+        this.saveLocalStorage();
+        this.loadTodos();
     }
 
     destroy(target, li) {
         target.removeChild(li);
         this._todoCount.innerText = this.todoCount;
-        this.updateItems();
+        this.deleteItems(li);
     }
 
     edit({target, key},labelArea, originalValue) {
@@ -51,6 +41,44 @@ class Todo {
         }
     }
 
+    printTodos(todoObj) {
+        this._isDone = false;
+        this._todoLi = document.createElement('li');
+        this._view = document.createElement('div');
+        this._toggle = document.createElement('input');
+        this._label = document.createElement('label');
+        this._labelTest = document.createTextNode(todoObj.text);
+        this._destroy = document.createElement('button');
+        this._edit = document.createElement('input');
+        this._view.className = 'view';
+        this._toggle.className = 'toggle';
+        this._label.className = 'label';
+        this._destroy.className = 'destroy';
+        this._edit.className = 'edit';
+        this._toggle.setAttribute("type", "checkbox");
+        if (todoObj.checked == 'true') {
+            this._toggle.setAttribute('checked', '');
+        }
+        this._label.append(this._labelTest);
+        this._edit.setAttribute("value", todoObj.text);
+        this._view.append(this._toggle, this._label, this._destroy);
+        this._todoLi.append(this._view, this._edit);
+        this._todoLi.id = todoObj.id;
+        this._todoLi.className = todoObj.class;
+        this._todoList.append(this._todoLi);
+    }
+
+    loadTodos() {
+        this.initTodoList();
+        const that = this;
+        this._todoItems = this.getLocalStorage();
+        this._id = this._todoItems.length > 0 ? this._todoItems[this._todoItems.length - 1].id + 1 : 1;
+        this._todoItems.forEach(function(todo) {
+            that.printTodos(todo);
+        });
+        this._todoCount.innerText = this.todoCount;
+    }
+
     changeTodoState(li, toggleCheck) {
         if (li.className == '') {
             li.classList.add('completed');
@@ -59,45 +87,78 @@ class Todo {
             li.removeAttribute('class');
             toggleCheck.removeAttribute('checked');
         }
-        this.updateItems();
+        this.updateItems(li);
     }
     
-    updateItems() {
-        this._todoItems = [];
-        this._todoList.childNodes.forEach(element => {
-            this._todoItems.push(element);
+    updateItems(li) {
+        this._todoItems.forEach(function(todo) {
+            if (todo.id == parseInt(li.id)) {
+                todo.class = li.className;
+                todo.checked = li.classList.contains('completed')? 'true' : 'false';
+            }
+        })
+        this.saveLocalStorage();
+    }
+
+    deleteItems(li) {
+        const filterdItems = this._todoItems.filter(function (todo) {
+            return todo.id != parseInt(li.id);
+        });
+        this._todoItems = filterdItems;
+        this.saveLocalStorage();
+    }
+
+    renumberedItems(todoItems) {
+        let newId = 1;
+        todoItems.forEach(function(todo){
+            todo.id = newId;
+            newId++;
         });
     }
 
     initTodoList() {
-        while (this._todoList.firstChild) {
-            this._todoList.removeChild(this._todoList.firstChild);
-        }
+         while (this._todoList.firstChild) {
+             this._todoList.removeChild(this._todoList.firstChild);
+         }
     }
 
     allList() {
-        this.initTodoList();
-        this._todoItems.forEach(element=> {
-            this._todoList.append(element);
-        });
+        this.loadTodos();
     }
 
     activeList() {
         this.initTodoList();
-        this._todoItems.forEach(element=> {
-            if (element.className != 'completed') {
-                this._todoList.append(element);
+        const todoApp = this;
+        const parsedTodos = this.getLocalStorage();
+        parsedTodos.forEach(function(todo) {
+            if (todo.class != 'completed') {
+                todoApp.printTodos(todo);
             }
-        });
+        });  
+        this._todoCount.innerText = this.todoCount;
     }
 
     completedList() {
         this.initTodoList();
-        this._todoItems.forEach(element=> {
-            if (element.className == 'completed') {
-                this._todoList.append(element);
+        const todoApp = this;
+        const parsedTodos = this.getLocalStorage();
+        parsedTodos.forEach(function(todo) {
+            if (todo.class == 'completed') {
+                todoApp.printTodos(todo);
             }
-        });
+        });  
+        this._todoCount.innerText = this.todoCount;
+    }
+    
+    getLocalStorage() {
+        const loadedTodos = localStorage.getItem(this._todoListKey);
+        if (!loadedTodos) return [];
+        const paredTodos = JSON.parse(loadedTodos);
+        return paredTodos;
+    }
+
+    saveLocalStorage() {
+        localStorage.setItem(this._todoListKey, JSON.stringify(this._todoItems))
     }
 
     get todoCount() {
