@@ -48,11 +48,13 @@ function App() {
   }
 
   function loadTodos() {
+    const todosArray = JSON.parse(localStorage.getItem('todos'));
+    
     eraseTodo();
-    for (const todo of todos) {
-      printTodo(todo);
+    for (let todo in todosArray) {
+      printTodo(todosArray[todo]);
     }
-    count.innerText = todos.length;
+    count.innerText = todosArray.length; // TODO: Fix
   }
 
   function saveTodo(todos) {
@@ -91,6 +93,7 @@ function App() {
         }
       }
       localStorage.setItem('todos', JSON.stringify(array));
+      loadTodos()
       return;
     }
     if (li.className === 'completed') {
@@ -107,10 +110,10 @@ function App() {
 
   function handleDeleteButtonClick(target) {
     const li = target.closest('li');
-    const test = todos.filter(todo => {
+    const deleteResult = todos.filter(todo => {
       return todo.id !== parseInt(li.id, 10);
     });
-    todos = test;
+    todos = deleteResult;
     localStorage.setItem('todos', JSON.stringify(todos));
     li.remove();
   }
@@ -120,13 +123,12 @@ function App() {
 
     if (target.tagName === 'INPUT') {
       handleInputClick(target);
-      return;
     }
     if (target.tagName === 'BUTTON') {
       handleDeleteButtonClick(target);
-      return;
     }
     loadTodos();
+    return;
   }
 
   function handleClickFilters(event) {
