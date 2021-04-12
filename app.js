@@ -24,13 +24,13 @@ function App() {
     let li;
     const selected = document.querySelector('.selected');
 
-    if (selected.classList.contains('all') ||
-    (selected.classList.contains('active') && todo.completed === false) || 
-    (selected.classList.contains('completed') && todo.completed === true))
-    {
+    if (
+      selected.classList.contains('all') ||
+      (selected.classList.contains('active') && todo.completed === false) ||
+      (selected.classList.contains('completed') && todo.completed === true)
+    ) {
       li = makeListElement(todo);
       todoList.insertAdjacentHTML('beforeend', li);
-      return;
     }
   }
 
@@ -44,12 +44,14 @@ function App() {
 
   function loadTodos() {
     const todosArray = JSON.parse(localStorage.getItem('todos'));
-    
+
     eraseTodo();
-    for (let todo in todosArray) {
-      printTodo(todosArray[todo]);
+    for (const todo in todosArray) {
+      if (todosArray[todo]) {
+        printTodo(todosArray[todo]);
+      }
     }
-    count.innerText = todoList.querySelectorAll("li").length;
+    count.innerText = todoList.querySelectorAll('li').length;
   }
 
   function saveTodo(todos) {
@@ -94,8 +96,8 @@ function App() {
       li.classList.add('false');
       li.classList.remove('completed');
       for (let i = 0; i < todosArray.length; i++) {
-        if (array[i].id === Number(li.id)) {
-          array[i].completed = false;
+        if (todosArray[i].id === Number(li.id)) {
+          todosArray[i].completed = false;
         }
       }
       localStorage.setItem('todos', JSON.stringify(todosArray));
@@ -122,7 +124,6 @@ function App() {
       handleDeleteButtonClick(target);
     }
     loadTodos();
-    return;
   }
 
   function handleClickFilters(event) {
