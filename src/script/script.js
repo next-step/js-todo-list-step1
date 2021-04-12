@@ -1,5 +1,8 @@
 const addItem = document.getElementById('new-todo-title');
 const todoList = document.getElementById('todo-list');
+const allBtn = document.querySelector('a.all');
+const activeBtn = document.querySelector('a.active');
+const completeBtn = document.querySelector('a.completed');
 
 //1. todo list에 todoItem을 키보드로 입력하여 추가하기
 addItem.addEventListener('keyup', function(e) {
@@ -13,6 +16,7 @@ addItem.addEventListener('keyup', function(e) {
                             + '<input class="edit" value="' + addItem.value + '" onkeyup="onSaveEditHandler(this);"/>'
                             + '</li>';
         addItem.value = '';
+        onChangeCountHandler();
     }
 });
 
@@ -33,6 +37,7 @@ function onCheckItemHandler(doneChk) {
 function onDelItemHandler(delBtn) {
     const delItem = delBtn.parentNode.parentNode;
     delItem.parentNode.removeChild(delItem);
+    onChangeCountHandler();
 }
 
 //4. todo list를 더블클릭했을 때 input 모드로 변경 
@@ -54,3 +59,51 @@ function onSaveEditHandler(editTxt) {
         liTag.className = "";
     }
 }
+
+//5. todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
+function onChangeCountHandler() {
+    const count = document.querySelectorAll(".toggle").length;
+    document.querySelector("strong").innerHTML = count;    
+}
+
+//6. todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
+allBtn.addEventListener('click', function(e) {
+    const allLi = todoList.querySelectorAll("li");
+    for (let liTag of allLi) {
+        liTag.style.display = "block";
+    }
+
+    onChangeCountHandler()
+});
+
+activeBtn.addEventListener('click', function(e) {
+    const allLi = todoList.querySelectorAll("li");
+    let activeCount = 0;
+    for (let liTag of allLi) {
+        if(liTag.className === 'completed') {
+            liTag.style.display = "none";
+        } else {
+            liTag.style.display = "block";
+            activeCount += 1;
+        }
+    }
+
+    const count = document.querySelectorAll(".toggle").length;
+    document.querySelector("strong").innerHTML = activeCount;    
+});
+
+completeBtn.addEventListener('click', function(e) {
+    const allLi = todoList.querySelectorAll("li");
+    let completeCount = 0;
+    for (let liTag of allLi) {
+        if(liTag.className === 'completed') {
+            liTag.style.display = "block";
+            completeCount += 1;
+        } else {
+            liTag.style.display = "none";
+        }
+    }
+
+    const count = document.querySelectorAll(".toggle").length;
+    document.querySelector("strong").innerHTML = completeCount;  
+});
