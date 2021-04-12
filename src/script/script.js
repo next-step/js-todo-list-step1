@@ -10,7 +10,7 @@ addItem.addEventListener('keyup', function(e) {
                             + '<label class="label">' + addItem.value + '</label>'
                             + '<button class="destroy" onclick="onDelItemHandler(this);"></button>'
                             + '</div>'
-                            + '<input class="edit" value="' + addItem.value + '" />'
+                            + '<input class="edit" value="' + addItem.value + '" onkeyup="onSaveEditHandler(this);"/>'
                             + '</li>';
         addItem.value = '';
     }
@@ -39,6 +39,18 @@ function onDelItemHandler(delBtn) {
 // (li tag 에 editing class 추가) 
 // 단, 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
 function onEditItemHandler(editItem) {
-    console.log('ddd');
     editItem.className += "editing";
+}
+
+function onSaveEditHandler(editTxt) {
+    const liTag = editTxt.parentNode;
+
+    if(this.event.key === 'Enter') {
+        liTag.querySelector(".label").innerHTML = editTxt.value;
+        liTag.className = "";
+
+    } else if(this.event.keyCode == 27) {
+        editTxt.value = liTag.querySelector(".label").innerHTML;
+        liTag.className = "";
+    }
 }
