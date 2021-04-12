@@ -1,25 +1,26 @@
 // Selectors
 const todoInput = document.querySelector(".new-todo");
 const todoList = document.querySelector(".todo-list");
-const todoCount = document.querySelector(".todo-count").childNodes[1];
+const todoCount = document.querySelector(".todo-count strong");
+const todoFilter = document.querySelector(".filters");
 
 // Event Listeners
 todoInput.addEventListener("keyup", addTodo);
 todoList.addEventListener("click", clickTodo);
 todoList.addEventListener("dblclick", dblclickTodo);
 todoList.addEventListener("keyup", editTodo);
+todoFilter.addEventListener("click", filterTodo);
+
+// Global Variable
+let totalCount = 0;
 
 // Functions
 function makeElem(type, parentNode, className = "") {
-  const ret = document.createElement(type);
-  parentNode.appendChild(ret);
-  if (className != "") ret.classList.add(className);
-  return ret;
+  const elem = document.createElement(type);
+  parentNode.appendChild(elem);
+  if (className != "") elem.classList.add(className);
+  return elem;
 }
-
-let totalCount = 0;
-let completedCount = 0;
-let uncompletedCount = 0;
 
 function addTodo(e) {
   if (e.key === "Enter" && todoInput.value) {
@@ -36,7 +37,7 @@ function addTodo(e) {
     todoEdit.setAttribute("value", todoInput.value);
     todoInput.value = "";
     totalCount += 1;
-    uncompletedCount += 1;
+    // uncompletedCount += 1;
     todoCount.innerText = String(totalCount);
   }
 }
@@ -73,14 +74,10 @@ function dblclickTodo(e) {
 function editTodo(e) {
   const item = e.target;
   
-  // console.log(item);
-
   // e.preventDefault();
+  // console.log(item);
   // console.log(e.key);
   // console.log(e.keyCode);
-
-  // const test = document.querySelector('.edit');
-  // console.log(test.value);
 
   if (e.key === "Escape") {
     const todoLabel = item.parentNode.childNodes[0].childNodes[1];
@@ -93,5 +90,31 @@ function editTodo(e) {
     item.innerText = item.value;
     todoLabel.innerText = item.value;
     item.parentNode.classList.remove("editing");
+  }
+}
+
+function filterTodo(e) {
+  const item = e.target;
+
+  if (item.classList.contains("all")) {
+    for (let i = 0; i < totalCount; i++) {
+      todoList.childNodes[i].style.display = 'block';
+    }
+  } else if (item.classList.contains("completed")) {
+    for (let i = 0; i < totalCount; i++) {
+      if (todoList.childNodes[i].classList.contains("false")) {
+        todoList.childNodes[i].style.display = 'none';
+      } else {
+        todoList.childNodes[i].style.display = 'block';
+      }
+    }
+  } else if (item.classList.contains("active")) {
+    for (let i = 0; i < totalCount; i++) {
+      if (todoList.childNodes[i].classList.contains("completed")) {
+        todoList.childNodes[i].style.display = 'none';
+      } else {
+        todoList.childNodes[i].style.display = 'block';
+      }
+    }
   }
 }
