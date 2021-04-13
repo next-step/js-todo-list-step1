@@ -1,3 +1,47 @@
+# 블랙커피 스터디 레벨1 (1주차)
+
+## 1주차 미션 : TodoList CRUD
+
+### 요구사항
+- [x] todo list에 todoItem을 키보드로 입력하여 추가하기
+- [x] todo list의 체크박스를 클릭하여 complete 상태로 변경. (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
+- [x] todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
+- [ ] todo list를 더블클릭했을 때 input 모드로 변경. (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
+- [x] todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
+- [x] todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
+- [x] (심화)localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
+
+### 공부할 내용
+- [ ] DOM
+- [ ] BOM
+- [ ] JavaScript Data Type
+- [ ] 프론트엔드 상태관리
+- [ ] EVENT
+
+
+### 구조
+- index.js에서 localStorageInit(), setEventAddCard(), setEventFilter()를 호출
+    - localStorageInit()은 TODO/DONE key를 셋팅함
+    - setEventAddCard()는 inputbox에서 enter 입력시 todo에 카드를 추가한다( 입력값이 공백일 때는 추가하지 않음, enter입력시 입력값 초기화)
+    - setEventFilter()는 전체보기/해야할일/완료한일이 selected되었는지에 따라 동작할 이벤트를 걸어줌
+-  index.js에서 위에 이벤트를 걸고나면 renderCard()를 호출하여 localStorage에서 값을 불러와 render를 수행함
+- renderElement는 setEventFilter의 상태에 따라 크게 3가지로 나눠서 render를 수행 renderAll / renderActive / renderCompleted
+    - renderAll은 renderActive와 renderCompleted를 수행
+    - renderActive는 localStorage에서 TODO를 가져와 dom을 추가 함.
+    - renderCompleted는 localStorage에서 DONE을 가져와 dom을 추가 함.
+- 이렇게 render를 하고나면 setEventCheckBox / counter / setEventDeleteCard event를 등록함
+    - setEventCheckBox는 체크박스가 클릭되면 클릭된 css를 적용하고 localStorage에서 위치도 바꿔줌
+    - counter는 현재 Filter상태에 맞는 localStorage의 value의 길이를 출력해줌
+    - setEventDeleteCard는 card에 hover했을 경우 x버튼이 나타나며, x버튼을 누르면 localStorage에서 삭제 후 다시 랜더
+
+
+
+
+
+
+
+---------
+
 <p align="middle" >
   <img width="200px;" src="./src/images/check_list.png"/>
 </p>
