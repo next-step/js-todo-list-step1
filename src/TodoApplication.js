@@ -8,9 +8,11 @@ export default class TodoApplication {
   constructor() {
     this.todoItems = [];
     this.filterType = FilterType.ALL;
+
     this.todoInput = new TodoInput({ onAddTodoItem: this.onAddTodoItem.bind(this) });
     this.todoList = new TodoList(this.todoItems, {
       onToggleTodoItem: this.onToggleTodoItem.bind(this),
+      onEditTodoItem: this.onEditTodoItem.bind(this),
       onDeleteTodoItem: this.onDeleteTodoItem.bind(this),
     });
     this.todoCount = new TodoCount(this.todoItems.length);
@@ -27,6 +29,17 @@ export default class TodoApplication {
     const updatedTodoItems = this.todoItems.map((todoItem) => {
       if (todoItem.equalsId(id)) {
         todoItem.toggleCompleted();
+      }
+      return todoItem;
+    });
+    this.todoItems = updatedTodoItems;
+    this.setState(this.todoItems, this.filterType);
+  }
+
+  onEditTodoItem(id, content) {
+    const updatedTodoItems = this.todoItems.map((todoItem) => {
+      if (todoItem.equalsId(id)) {
+        todoItem.updateContent(content);
       }
       return todoItem;
     });

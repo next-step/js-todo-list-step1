@@ -1,19 +1,20 @@
-export const EventType = {
+export const EventType = Object.freeze({
   CLICK: 'click',
   DOUBLE_CLICK: 'dblclick',
   KEY_PRESS: 'keypress',
   KEY_DOWN: 'keydown',
-};
+});
 
-export const KeyType = {
+export const KeyType = Object.freeze({
   ENTER: 'Enter',
-};
+  ESC: 'Escape',
+});
 
-export const TextType = {
+export const TextType = Object.freeze({
   EMPTY: '',
-};
+});
 
-export const TagName = {
+export const TagName = Object.freeze({
   A: 'A',
   LIST: 'li',
-};
+});

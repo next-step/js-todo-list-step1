@@ -1,10 +1,10 @@
 import { generateUuid } from '../utils/Uuid.js';
 
-export const TodoItemStatus = {
+export const TodoItemStatus = Object.freeze({
   EDITING: 'editing',
   VIEW: 'view',
   COMPLETED: 'completed',
-};
+});
 
 export default class TodoItem {
   constructor({ id = generateUuid(), content, isCompleted = false }) {
@@ -15,6 +15,10 @@ export default class TodoItem {
 
   toggleCompleted() {
     this.isCompleted = !this.isCompleted;
+  }
+
+  updateContent(content) {
+    this.content = content;
   }
 
   equalsId(id) {
