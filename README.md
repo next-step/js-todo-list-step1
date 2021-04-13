@@ -2,6 +2,10 @@
 
 ## 1주차 미션 : TodoList CRUD
 
+## 데모링크
+
+[TODO-LIST-zel0rd-DEMO](http://zelord.tk:3003/)
+
 ### 요구사항
 - [x] todo list에 todoItem을 키보드로 입력하여 추가하기
 - [x] todo list의 체크박스를 클릭하여 complete 상태로 변경. (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
