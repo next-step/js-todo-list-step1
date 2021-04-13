@@ -13,14 +13,14 @@ function TodoList({ onToggle, onDelete, onEdit }) {
     }
   };
 
-  const doubleClickItemEvent = (e) => {
+  const startEditMode = (e) => {
     const item = e.target.closest('li');
     if (e.target.classList.contains('label')) {
       item.classList.add('editing');
     }
   };
 
-  const keydownItemEvent = (e) => {
+  const editModeKeydownEvent = (e) => {
     const item = e.target.closest('li');
 
     if (!item.classList.contains('editing')) {
@@ -38,8 +38,8 @@ function TodoList({ onToggle, onDelete, onEdit }) {
   };
 
   listElement.addEventListener('click', clickItemEvent);
-  listElement.addEventListener('dblclick', doubleClickItemEvent);
-  listElement.addEventListener('keydown', keydownItemEvent);
+  listElement.addEventListener('dblclick', startEditMode);
+  listElement.addEventListener('keydown', editModeKeydownEvent);
 
   this.render = (items = []) => {
     if (items.length === 0) listElement.innerHTML = '';
