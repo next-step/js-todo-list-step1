@@ -22,7 +22,7 @@ export const todoTemplate = (id, title, complete) => `
 
 export const todoListTemplate = (datas) => {
   let result = '';
-  datas.forEach((v) => {
+  datas.map((v) => {
     result += todoTemplate(v.id, v.title, v.complete);
   });
   return result;

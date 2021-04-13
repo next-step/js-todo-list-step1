@@ -35,7 +35,7 @@ class TodoList extends Observer {
 
     // 투두 수정 완료
     this.container.addEventListener('keyup', ({ key }) => {
-      if (key === 'Escape') {
+      if (key === 'Escape' || key === 'Enter') {
         const $editList = this.container.querySelectorAll(SELECTOR.EDIT_INPUT);
         const $activeInput = Array.from($editList).find(
           (element) => element === document.activeElement,
