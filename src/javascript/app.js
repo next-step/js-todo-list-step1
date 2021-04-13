@@ -7,6 +7,7 @@ import DB from './db.js';
 // TODO: 이후 userNames 는 localStorages에서 `userNames` 키로 가져오기
 class App {
   constructor() {
+    location.href = '#';
     this.storages = {};
     this.userNames = ['default', 'test', 'test2'];
     this.userNames.map((name) => {
