@@ -42,6 +42,10 @@ function App() {
     }
   }
 
+  function editTodos() {
+    console.log('dblclicked');
+  }
+
   function loadTodos() {
     const todosArray = JSON.parse(localStorage.getItem('todos'));
 
@@ -52,6 +56,11 @@ function App() {
       }
     }
     count.innerText = todoList.querySelectorAll('li').length;
+    const listItems = todoList.querySelectorAll('li');
+    for (const listItem of listItems)
+      listItem.addEventListener('dblclick', () => {
+        editTodos();
+      });
   }
 
   function saveTodo(todos) {
@@ -62,7 +71,8 @@ function App() {
     todos.push({
       value: event.target.value,
       completed: false,
-      id: Date.now()
+      id: Date.now(),
+      editing: ''
     });
     saveTodo(todos);
     loadTodos();
