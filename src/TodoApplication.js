@@ -8,7 +8,7 @@ export default class TodoApplication {
   constructor() {
     this.todoItems = [];
     this.filterType = FilterType.ALL;
-    this.todoInput = new TodoInput({ onAdd: this.onAdd.bind(this) });
+    this.todoInput = new TodoInput({ onAddTodoItem: this.onAddTodoItem.bind(this) });
     this.todoList = new TodoList(this.todoItems, {
       onToggleTodoItem: this.onToggleTodoItem.bind(this),
       onDeleteTodoItem: this.onDeleteTodoItem.bind(this),
@@ -17,7 +17,7 @@ export default class TodoApplication {
     this.todoFilter = new TodoFilter(this.filterType, { onChange: this.onChangeFilter.bind(this) });
   }
 
-  onAdd(content) {
+  onAddTodoItem(content) {
     const todoItem = new TodoItem({ content });
     this.todoItems.push(todoItem);
     this.setState(this.todoItems, this.filterType);

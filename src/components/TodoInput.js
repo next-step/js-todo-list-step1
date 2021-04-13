@@ -1,12 +1,12 @@
 import { EventType, KeyType, TextType } from '../utils/constants.js';
 
 export default class TodoInput {
-  constructor({ onAdd }) {
+  constructor({ onAddTodoItem }) {
     this.$input = document.querySelector('.new-todo');
-    this.$input.addEventListener(EventType.KEY_DOWN, (event) => this.addTodoItem(event, onAdd));
+    this.$input.addEventListener(EventType.KEY_DOWN, (event) => this.addTodoItem(event, onAddTodoItem));
   }
 
-  addTodoItem(event, onAdd) {
+  addTodoItem(event, onAddTodoItem) {
     const { target, key } = event;
     if (key !== KeyType.ENTER) {
       return;
@@ -17,7 +17,7 @@ export default class TodoInput {
       return;
     }
 
-    onAdd(content);
+    onAddTodoItem(content);
     target.value = TextType.EMPTY;
   }
 }

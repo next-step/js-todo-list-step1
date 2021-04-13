@@ -1,5 +1,6 @@
 export const EventType = {
   CLICK: 'click',
+  DOUBLE_CLICK: 'dblclick',
   KEY_PRESS: 'keypress',
   KEY_DOWN: 'keydown',
 };
