@@ -116,7 +116,7 @@ const loadTodos = () => {
 const init = () => {
   loadTodos();
   todoInput.addEventListener('keyup', handleSubmit); //인풋 입력하고 엔터 누를 시 submit
-  activeTodosBtn.addEventListener('click', () => console.log('hey'));
+  // activeTodosBtn.addEventListener('click', () => console.log('hey')); //마지막 요구사항 미완
 }
 
 init();
