@@ -22,11 +22,8 @@ export default class View {
     if (!cmd) {
       return;
     }
-    const commands = {
-      add: () => {
-        this._add(obj.todo);
-        this._clearInput();
-      },
+    const options = {
+      add: () => this._add(obj.todo),
       editStart: () => this._editMode(obj.todo),
       editApply: () => this._update(obj.todo),
       editEnd: () => this._editEnd(obj.todo),
@@ -37,7 +34,7 @@ export default class View {
       showActive: () => this._filterActive(),
       showCompleted: () => this._filterCompleted(),
     };
-    commands[cmd]();
+    options[cmd]();
   }
 
   setCurrentUser(name) {
@@ -171,6 +168,7 @@ export default class View {
                         <input class="edit" value="" />`;
     this._todoList.appendChild(temp);
     this._increaseTodoCount();
+    this._clearInput();
     if (this._currentFilter === 'completed') {
       temp.style.display = 'none';
       return;
