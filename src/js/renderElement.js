@@ -1,7 +1,8 @@
 let container = document.querySelector(".todo-list");
-import setToggle from "./onCardEvent.js";
-import { deleteValue, pushValue } from "./localStorageFunc.js";
-
+import setEventCheckBox from "./setEventCheckBox.js";
+import counter from "./setEventCounter.js";
+import setEventAddCard from "./setEventDeleteCard.js";
+import setEventDeleteCard from "./setEventDeleteCard.js";
 let renderAll = () => {
   renderActive();
   renderCompleted();
@@ -26,22 +27,6 @@ let renderActive = () => {
   }
 };
 
-let addDeleteEvent = () => {
-  let deleteBtn = document.querySelectorAll(".destroy");
-  deleteBtn.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      let value = btn.parentElement.children[1].textContent;
-      let isChecked = btn.parentElement.children[0].checked;
-      if (isChecked) {
-        deleteValue(value, "DONE");
-      } else {
-        deleteValue(value, "TODO");
-      }
-      renderCard();
-    });
-  });
-};
-
 let renderCompleted = () => {
   if (localStorage.getItem("DONE") !== "") {
     let cardContents = localStorage.getItem("DONE").split(",");
@@ -62,41 +47,6 @@ let renderCompleted = () => {
   }
 };
 
-let editEvent = () => {
-  let cards = document.querySelectorAll(".todo-list > li");
-  // cards[0].children[0].children[1];
-  cards.forEach((card) => {
-    card.children[1].addEventListener("dblcick", function () {
-      card[1].classList.toggle("editing");
-    });
-  });
-};
-
-let counter = (status) => {
-  let count = 0;
-  if (status === "all") {
-    if (localStorage.getItem("TODO") !== "") {
-      count += localStorage.getItem("TODO").split(",").length;
-    }
-    if (localStorage.getItem("DONE") !== "") {
-      count += localStorage.getItem("DONE").split(",").length;
-    }
-  }
-  if (status === "active") {
-    if (localStorage.getItem("TODO") !== "") {
-      count += localStorage.getItem("TODO").split(",").length;
-    }
-  }
-  if (status === "completed") {
-    if (localStorage.getItem("DONE") !== "") {
-      count += localStorage.getItem("DONE").split(",").length;
-    }
-  }
-
-  let countElement = document.querySelector(".todo-count");
-  countElement.children[0].textContent = count;
-};
-
 let renderCard = () => {
   let isSelected = document.querySelector(".selected").classList[0];
   if (isSelected === "all") {
@@ -113,9 +63,10 @@ let renderCard = () => {
     container.innerHTML = "";
     renderCompleted();
   }
-  setToggle();
-  addDeleteEvent();
+  setEventCheckBox();
+  setEventAddCard();
   counter(isSelected);
+  setEventDeleteCard();
   // editEvent();
 };
 

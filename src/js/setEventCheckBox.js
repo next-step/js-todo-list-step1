@@ -15,7 +15,7 @@ let toggleLocalStorage = (value) => {
   }
 };
 
-let setToggle = () => {
+let setEventCheckBox = () => {
   let toggles = document.querySelectorAll(".toggle");
   toggles.forEach((toggle) => {
     toggle.addEventListener("click", function () {
@@ -25,4 +25,4 @@ let setToggle = () => {
   });
 };
 
-export default setToggle;
+export default setEventCheckBox;
