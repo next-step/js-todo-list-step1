@@ -117,7 +117,7 @@ const App = {
     App.addTodo(event);
   },
 
-  handleInputClick(target) {
+  handleToggleClick(target) {
     const li = target.closest('li');
     const todosArray = JSON.parse(localStorage.getItem('todos'));
 
@@ -164,7 +164,7 @@ const App = {
     const { target } = event;
 
     if (target.className === 'toggle') {
-      App.handleInputClick(target);
+      App.handleToggleClick(target);
     }
     if (target.className === 'destroy') {
       App.handleDestroyButtonClick(target);
