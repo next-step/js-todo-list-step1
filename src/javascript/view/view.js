@@ -46,22 +46,22 @@ export default class View {
   }
 
   setEventListener(eventName, callback) {
-    switch (eventName) {
-      case EVENT_NAME.ADD:
+    const options = {
+      add: () => {
         // NOTE: callback == Controller.add
         this._input.addEventListener('keypress', (event) => {
           if (event.key === 'Enter') {
             callback(this._input.value);
           }
         });
-        break;
-      case EVENT_NAME.REFRESH:
+      },
+      refresh: () => {
         // NOTE: callback == Controller.refreshPage
         window.addEventListener('load', () => {
           callback();
         });
-        break;
-      case EVENT_NAME.DESTROY:
+      },
+      destroy: () => {
         // NOTE: callback == Controller.destroy
         this._todoList.addEventListener('click', (event) => {
           if (!event.target.closest('.destroy')) {
@@ -70,8 +70,8 @@ export default class View {
           const li = event.target.closest('li');
           callback(+li.dataset.id);
         });
-        break;
-      case EVENT_NAME.TOGGLE:
+      },
+      toggle: () => {
         // NOTE: callback == Controller.toggleCheckBox
         this._todoList.addEventListener('click', (event) => {
           if (!event.target.closest('.toggle')) {
@@ -80,8 +80,8 @@ export default class View {
           const li = event.target.closest('li');
           callback(+li.dataset.id);
         });
-        break;
-      case EVENT_NAME.SELECT_ALL:
+      },
+      selectAll: () => {
         // NOTE: callback == Controller.showAll
         this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.all');
@@ -91,8 +91,8 @@ export default class View {
           this._setSelectFilter(filter);
           callback();
         });
-        break;
-      case EVENT_NAME.SELECT_ACTIVE:
+      },
+      selectActive: () => {
         // NOTE: callback == Controller.showActive
         this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.active');
@@ -102,8 +102,8 @@ export default class View {
           this._setSelectFilter(filter);
           callback();
         });
-        break;
-      case EVENT_NAME.SELECT_COMPLETED:
+      },
+      selectCompleted: () => {
         // NOTE: callback == Controller.showCompleted
         this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.completed');
@@ -113,8 +113,8 @@ export default class View {
           this._setSelectFilter(filter);
           callback();
         });
-        break;
-      case EVENT_NAME.EDIT:
+      },
+      edit: () => {
         // NOTE: callback == Controller.edit
         this._todoList.addEventListener('dblclick', (event) => {
           const todo = event.target.closest('li');
@@ -123,8 +123,8 @@ export default class View {
           }
           callback(todo);
         });
-        break;
-      case EVENT_NAME.EDIT_END:
+      },
+      editEnd: () => {
         // NOTE: callback == Controller._editEnd
         this._todoList.addEventListener('focusout', (event) => {
           const todo = event.target.closest('li');
@@ -133,8 +133,8 @@ export default class View {
           }
           callback(todo);
         });
-        break;
-      case EVENT_NAME.EDIT_APPLY:
+      },
+      editApply: () => {
         // NOTE: callback == Controller.editApply
         this._todoList.addEventListener('keypress', (event) => {
           if (event.key !== 'Enter') {
@@ -144,10 +144,9 @@ export default class View {
           const todo = input.closest('li');
           callback(+todo.dataset.id, input.value);
         });
-        break;
-      default:
-        console.log('eventName is not handling');
-    }
+      },
+    };
+    options[eventName]();
   }
 
   _add(todo) {
