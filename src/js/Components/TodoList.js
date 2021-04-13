@@ -1,4 +1,3 @@
-import { KEYCODE_ENTER, KEYCODE_ESC } from '../enum.js';
 import { todoItemTemplate } from '../templates.js';
 
 function TodoList({ onToggle, onDelete, onEdit }) {
@@ -27,12 +26,13 @@ function TodoList({ onToggle, onDelete, onEdit }) {
     if (!item.classList.contains('editing')) {
       return;
     }
+    console.log(e.key);
 
-    if (e.keyCode === KEYCODE_ENTER) {
+    if (e.key === 'Enter') {
       onEdit(item.id, e.target.value);
       item.classList.remove('editing');
     }
-    if (e.keyCode === KEYCODE_ESC) {
+    if (e.key === 'Esc' || e.key === 'Escape') {
       item.classList.remove('editing');
     }
   };

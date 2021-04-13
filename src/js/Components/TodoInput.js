@@ -1,10 +1,8 @@
-import { KEYCODE_ENTER } from '../enum.js';
-
 const TodoInput = ({ onAdd }) => {
   const inputElement = document.querySelector('#new-todo-title');
 
   const addTodoItem = (e) => {
-    if (e.keyCode === KEYCODE_ENTER) {
+    if (e.key === 'Enter') {
       const todoTarget = e.target;
       const todoText = todoTarget.value.trim();
       if (todoText.length > 0) {
