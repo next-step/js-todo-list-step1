@@ -1,3 +1,12 @@
+export function TodoItem (itemList) {
+    var todoItemList = [];
+
+    if (itemList !== undefined && itemList !== null) {
+        todoItemList = itemList;
+    }
+
+    return todoItemList;
+}
 
 export function todoItemTemplate (item) {
     let returnValue = ``;

@@ -1,4 +1,4 @@
-import { todoItemTemplate } from "./components/TodoItem.js";
+import { TodoItem, todoItemTemplate } from "./components/TodoItem.js";
 
 var todoInput = document.getElementById('new-todo-title');
 var todoList = document.getElementById('todo-list');
@@ -8,15 +8,18 @@ var btn_all = document.querySelector('.all');
 var btn_active = document.querySelector('.active');
 var btn_completed = document.querySelector('.completed');
 
-var todoItems = [];
+var todoItems = new TodoItem(JSON.parse(localStorage.getItem('todoItems')));
 
-var todoItemID = 0;
+var todoItemID = (todoItems !== undefined && todoItems !== null) ? todoItems.length : 0;
 
 window.onload = () => {
     todoInput.addEventListener('keydown', onChangeTodoInput);
+
     btn_all.addEventListener('click', showAllTodoList);
     btn_active.addEventListener('click', showActiveTodoList);
     btn_completed.addEventListener('click', showCompletedTodoList);
+
+    render(todoItems);
 }
 
 const addTodoItem = (contents) => {
@@ -25,7 +28,7 @@ const addTodoItem = (contents) => {
         status : "view",
         contents : contents
     }
-
+    
     todoItems.push(item);
     render(todoItems);
 }
@@ -47,6 +50,8 @@ const render = (items) => {
     todoList.addEventListener('click', onDestroyTodoItem);
     
     todoCount.innerHTML = todoItems.length;
+
+    localStorage.setItem('todoItems', JSON.stringify(todoItems));
 }
 
 const showAllTodoList = () => {
@@ -96,6 +101,7 @@ const onDestroyTodoItem = (e) => {
     if (e.target.className === "destroy") {
         if (confirm("정말 삭제하시겠습니까?") == true) {            
             todoItems = todoItems.filter(item => item.id != e.target.id);
+            
             render(todoItems);
         } else {
             return;
