@@ -3,14 +3,15 @@
         이후에는 DOM 요소로 user를 선택할 수 있게 수정해야한다.
 */
 import { EVENT_NAME, RENDER_COMMAND } from '../utils/constants.js';
+import { $, $$ } from '../utils/querySelector.js';
 export default class View {
   constructor() {
-    this._todoList = document.querySelector('#todo-list');
-    this._input = document.querySelector('#new-todo-title');
+    this._todoList = $('#todo-list');
+    this._input = $('#new-todo-title');
     this._todoCount = 0;
-    this._todoCountView = document.querySelector('.todo-count').children[0];
-    this._filterContainer = document.querySelector('.filters');
-    this._currentFilterView = this._filterContainer.querySelector('.all');
+    this._todoCountView = $('.todo-count').children[0];
+    this._filterContainer = $('.filters');
+    this._currentFilterView = $('.all', this._filterContainer);
     this._currentFilter = 'all';
     this.setCurrentUser('default');
   }
@@ -169,7 +170,7 @@ export default class View {
   }
 
   _add(todo) {
-    const li = this._todoList.querySelector(`li[data-id='${todo.id}']`);
+    const li = this._getTodoById(todo.id);
     if (li) {
       return;
     }
@@ -201,7 +202,7 @@ export default class View {
   }
 
   _remove(todo) {
-    const li = this._todoList.querySelector(`li[data-id='${todo.id}']`);
+    const li = this._getTodoById(todo.id);
     if (!li) {
       return;
     }
@@ -211,7 +212,7 @@ export default class View {
   }
 
   _update(todo) {
-    const li = this._todoList.querySelector(`li[data-id='${todo.id}']`);
+    const li = this._getTodoById(todo.id);
     if (!li) {
       return;
     }
@@ -228,7 +229,7 @@ export default class View {
   }
 
   _filterAll() {
-    const todos = this._todoList.querySelectorAll('li');
+    const todos = $$('li', this._todoList);
     todos.forEach((todo) => {
       todo.style.display = 'block';
     });
@@ -237,7 +238,7 @@ export default class View {
 
   _filterActive() {
     let activeCount = 0;
-    const todos = this._todoList.querySelectorAll('li');
+    const todos = $$('li', this._todoList);
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'none';
@@ -251,7 +252,7 @@ export default class View {
 
   _filterCompleted() {
     let completedCount = 0;
-    const todos = this._todoList.querySelectorAll('li');
+    const todos = $$('li', this._todoList);
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'block';
@@ -288,17 +289,14 @@ export default class View {
 
   _editMode(todo) {
     todo.classList.add('editing');
-    const input = todo.querySelector('.edit');
+    const input = $('.edit', todo);
     input.focus();
   }
 
   _editEnd(todo) {
-    todo =
-      todo instanceof Element
-        ? todo
-        : this._todoList.querySelector(`li[data-id='${todo.id}']`);
+    todo = todo instanceof Element ? todo : this._getTodoById(todo.id);
     todo.classList.remove('editing');
-    const input = todo.querySelector('.edit');
+    const input = $('.edit', todo);
     input.value = '';
   }
 
@@ -316,5 +314,9 @@ export default class View {
       this._setTodoCount(+this._todoCountView.innerText - 1);
       li.style.display = 'none';
     }
+  }
+
+  _getTodoById(id) {
+    return $(`li[data-id='${id}']`, this._todoList);
   }
 }
