@@ -2,7 +2,7 @@
   NOTE: 현재는 currentUser 를 default로 바로 등록하고 있지만,
         이후에는 DOM 요소로 user를 선택할 수 있게 수정해야한다.
 */
-import { RENDER_COMMAND } from '../utils/constants.js';
+import { EVENT_NAME, RENDER_COMMAND } from '../utils/constants.js';
 export default class View {
   constructor() {
     this._todoList = document.querySelector('#todo-list');
@@ -65,7 +65,7 @@ export default class View {
 
   setEventListener(eventName, callback) {
     switch (eventName) {
-      case 'add':
+      case EVENT_NAME.ADD:
         // NOTE: callback == Controller.add
         this._input.addEventListener('keypress', (event) => {
           if (event.key === 'Enter') {
@@ -73,13 +73,13 @@ export default class View {
           }
         });
         break;
-      case 'refresh':
+      case EVENT_NAME.REFRESH:
         // NOTE: callback == Controller.refreshPage
         window.addEventListener('load', () => {
           callback();
         });
         break;
-      case 'destroy':
+      case EVENT_NAME.DESTROY:
         // NOTE: callback == Controller.destroy
         this._todoList.addEventListener('click', (event) => {
           if (!event.target.closest('.destroy')) {
@@ -89,7 +89,7 @@ export default class View {
           callback(+li.dataset.id);
         });
         break;
-      case 'toggle':
+      case EVENT_NAME.TOGGLE:
         // NOTE: callback == Controller.toggleCheckBox
         this._todoList.addEventListener('click', (event) => {
           if (!event.target.closest('.toggle')) {
@@ -99,7 +99,7 @@ export default class View {
           callback(+li.dataset.id);
         });
         break;
-      case 'selectAll':
+      case EVENT_NAME.SELECT_ALL:
         // NOTE: callback == Controller.showAll
         this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.all');
@@ -110,7 +110,7 @@ export default class View {
           callback();
         });
         break;
-      case 'selectActive':
+      case EVENT_NAME.SELECT_ACTIVE:
         // NOTE: callback == Controller.showActive
         this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.active');
@@ -121,7 +121,7 @@ export default class View {
           callback();
         });
         break;
-      case 'selectCompleted':
+      case EVENT_NAME.SELECT_COMPLETED:
         // NOTE: callback == Controller.showCompleted
         this._filterContainer.addEventListener('click', (event) => {
           const filter = event.target.closest('.completed');
@@ -132,7 +132,7 @@ export default class View {
           callback();
         });
         break;
-      case 'edit':
+      case EVENT_NAME.EDIT:
         // NOTE: callback == Controller.edit
         this._todoList.addEventListener('dblclick', (event) => {
           const todo = event.target.closest('li');
@@ -142,7 +142,7 @@ export default class View {
           callback(todo);
         });
         break;
-      case 'editEnd':
+      case EVENT_NAME.EDIT_END:
         // NOTE: callback == Controller._editEnd
         this._todoList.addEventListener('focusout', (event) => {
           const todo = event.target.closest('li');
@@ -152,7 +152,7 @@ export default class View {
           callback(todo);
         });
         break;
-      case 'editApply':
+      case EVENT_NAME.EDIT_APPLY:
         // NOTE: callback == Controller.editApply
         this._todoList.addEventListener('keypress', (event) => {
           if (event.key !== 'Enter') {
