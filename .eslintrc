@@ -39,6 +39,7 @@
     "document": true,
     "window": true,
     "alert": true,
-    "Element": true
+    "Element": true,
+    "location": true,
   }
 }
