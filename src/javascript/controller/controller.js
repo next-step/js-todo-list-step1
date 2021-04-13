@@ -94,19 +94,19 @@ export default class Controller {
 
   showAll() {
     this.view.render({
-      cmd: 'showAll',
+      cmd: RENDER_COMMAND.SHOW_ALL,
     });
   }
 
   showActive() {
     this.view.render({
-      cmd: 'showActive',
+      cmd: RENDER_COMMAND.SHOW_ACTIVE,
     });
   }
 
   showCompleted() {
     this.view.render({
-      cmd: 'showCompleted',
+      cmd: RENDER_COMMAND.SHOW_COMPLETED,
     });
   }
 
