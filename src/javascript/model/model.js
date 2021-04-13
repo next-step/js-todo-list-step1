@@ -1,3 +1,4 @@
+import { ERROR_MESSAGE } from '../utils/constants.js';
 export default class Model {
   constructor(storages) {
     this._storages = storages;
@@ -9,7 +10,7 @@ export default class Model {
 
   async create(value, userName) {
     if (value.length === 0) {
-      throw new Error('입력칸이 비어있습니다.');
+      throw new Error(ERROR_MESSAGE.CONTENT_EMPTY);
     }
     this._setCurrentStorage(userName);
     this._todos[userName].push(
@@ -26,7 +27,7 @@ export default class Model {
     this._setCurrentStorage(userName);
     const targetTodo = this._findTodoById(todoId, userName);
     if (!targetTodo) {
-      throw new Error('예상치 못한 문제가 발생했습니다. 새로고침을 해주세요.');
+      throw new Error(ERROR_MESSAGE.UNEXPECTED);
     }
     targetTodo.removed = true;
     this._currentStorage.save(this._todos[userName]);
@@ -37,7 +38,7 @@ export default class Model {
     this._setCurrentStorage(userName);
     const targetTodo = this._findTodoById(todoId, userName);
     if (!targetTodo) {
-      throw new Error('예상치 못한 문제가 발생했습니다. 새로고침을 해주세요.');
+      throw new Error(ERROR_MESSAGE.UNEXPECTED);
     }
     targetTodo.completed = !targetTodo.completed;
     this._currentStorage.save(this._todos[userName]);
@@ -48,7 +49,7 @@ export default class Model {
     this._setCurrentStorage(userName);
     const targetTodo = this._findTodoById(todoId, userName);
     if (!targetTodo) {
-      throw new Error('예상치 못한 문제가 발생했습니다. 새로고침을 해주세요.');
+      throw new Error(ERROR_MESSAGE.UNEXPECTED);
     }
     if (content.length === 0) {
       throw targetTodo;
