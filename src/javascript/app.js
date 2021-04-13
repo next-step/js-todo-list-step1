@@ -9,7 +9,7 @@ class App {
   constructor() {
     this.storages = {};
     this.userNames = ['default', 'test', 'test2'];
-    this.userNames.forEach((name) => {
+    this.userNames.map((name) => {
       this.storages[name] = new DB(name);
     });
     this.model = new Model(this.storages);

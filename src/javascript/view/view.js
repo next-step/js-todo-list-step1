@@ -195,7 +195,7 @@ export default class View {
   }
 
   _addAll(todos) {
-    todos.forEach((todo) => {
+    todos.map((todo) => {
       this._add(todo);
     });
   }
