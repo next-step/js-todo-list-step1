@@ -1,3 +1,4 @@
+import { EVENT_NAME, RENDER_COMMAND } from '../utils/constants.js';
 export default class Controller {
   constructor(model, view) {
     this.model = model;
@@ -11,7 +12,7 @@ export default class Controller {
       .create(value, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
-          cmd: 'add',
+          cmd: RENDER_COMMAND.ADD,
           todo: todo,
         });
       })
@@ -23,7 +24,7 @@ export default class Controller {
   refreshPage() {
     const todos = this.model.getTodosOf(this.view.getCurrentUser());
     this.view.render({
-      cmd: 'refresh',
+      cmd: RENDER_COMMAND.REFRESH,
       todos: todos,
     });
   }
@@ -33,7 +34,7 @@ export default class Controller {
       .remove(todoId, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
-          cmd: 'remove',
+          cmd: RENDER_COMMAND.REMOVE,
           todo: todo,
         });
       })
@@ -47,7 +48,7 @@ export default class Controller {
       .updateStatus(todoId, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
-          cmd: 'toggle',
+          cmd: RENDER_COMMAND.TOGGLE,
           todo: todo,
         });
       })
@@ -58,7 +59,7 @@ export default class Controller {
 
   edit(todo) {
     this.view.render({
-      cmd: 'editStart',
+      cmd: RENDER_COMMAND.EDIT_START,
       todo: todo,
     });
   }
@@ -68,7 +69,7 @@ export default class Controller {
       .updateContent(todoId, content, this.view.getCurrentUser())
       .then((todo) => {
         this.view.render({
-          cmd: 'editApply',
+          cmd: RENDER_COMMAND.EDIT_APPLY,
           todo: todo,
         });
       })
@@ -77,7 +78,7 @@ export default class Controller {
           alert(error);
         } else {
           this.view.render({
-            cmd: 'editEnd',
+            cmd: RENDER_COMMAND.EDIT_END,
             todo: error,
           });
         }
@@ -86,7 +87,7 @@ export default class Controller {
 
   editEnd(todo) {
     this.view.render({
-      cmd: 'editEnd',
+      cmd: RENDER_COMMAND.EDIT_END,
       todo: todo,
     });
   }
@@ -110,34 +111,34 @@ export default class Controller {
   }
 
   setEventListeners() {
-    this.view.setEventListener('add', (value) => {
+    this.view.setEventListener(EVENT_NAME.ADD, (value) => {
       this.add(value);
     });
-    this.view.setEventListener('refresh', () => {
+    this.view.setEventListener(EVENT_NAME.REFRESH, () => {
       this.refreshPage();
     });
-    this.view.setEventListener('destroy', (todoId) => {
+    this.view.setEventListener(EVENT_NAME.DESTROY, (todoId) => {
       this.remove(todoId);
     });
-    this.view.setEventListener('toggle', (todoId) => {
+    this.view.setEventListener(EVENT_NAME.TOGGLE, (todoId) => {
       this.toggleCheckBox(todoId);
     });
-    this.view.setEventListener('selectAll', () => {
+    this.view.setEventListener(EVENT_NAME.SELECT_ALL, () => {
       this.showAll();
     });
-    this.view.setEventListener('selectActive', () => {
+    this.view.setEventListener(EVENT_NAME.SELECT_ACTIVE, () => {
       this.showActive();
     });
-    this.view.setEventListener('selectCompleted', () => {
+    this.view.setEventListener(EVENT_NAME.SELECT_COMPLETED, () => {
       this.showCompleted();
     });
-    this.view.setEventListener('edit', (todo) => {
+    this.view.setEventListener(EVENT_NAME.EDIT, (todo) => {
       this.edit(todo);
     });
-    this.view.setEventListener('editEnd', (todo) => {
+    this.view.setEventListener(EVENT_NAME.EDIT_END, (todo) => {
       this.editEnd(todo);
     });
-    this.view.setEventListener('editApply', (todoId, content) => {
+    this.view.setEventListener(EVENT_NAME.EDIT_APPLY, (todoId, content) => {
       this.editApply(todoId, content);
     });
   }

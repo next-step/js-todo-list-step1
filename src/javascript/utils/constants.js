@@ -15,3 +15,16 @@ export const RENDER_COMMAND = {
   SHOW_ACTIVE: 'showActive',
   SHOW_COMPLETED: 'showCompleted',
 };
+
+export const EVENT_NAME = {
+  ADD: 'add',
+  REFRESH: 'refresh',
+  DESTROY: 'destroy',
+  TOGGLE: 'toggle',
+  SELECT_ALL: 'selectAll',
+  SELECT_ACTIVE: 'selectActive',
+  SELECT_COMPLETED: 'selectCompleted',
+  EDIT: 'edit',
+  EDIT_END: 'editEnd',
+  EDIT_APPLY: 'editApply',
+};
