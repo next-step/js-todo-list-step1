@@ -3,6 +3,7 @@ import { EventType, KeyType, TextType } from '../utils/constants.js';
 export default class TodoInput {
   constructor({ onAddTodoItem }) {
     this.$input = document.querySelector('.new-todo');
+
     this.$input.addEventListener(EventType.KEY_DOWN, (event) => this.addTodoItem(event, onAddTodoItem));
   }
 
@@ -18,6 +19,7 @@ export default class TodoInput {
     }
 
     onAddTodoItem(content);
+
     target.value = TextType.EMPTY;
   }
 }

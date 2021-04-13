@@ -21,8 +21,8 @@ export const FilterType = Object.freeze({
 export default class TodoFilter {
   constructor(filter = FilterType.ALL, { onChange }) {
     this.filter = filter;
-
     this.$filters = document.querySelector('.filters');
+
     this.$filters.addEventListener(EventType.CLICK, (event) => {
       this.changeFilter(event, onChange);
     });
@@ -35,6 +35,7 @@ export default class TodoFilter {
     if (target.tagName !== TagName.A) {
       return;
     }
+
     const filter = Object.values(FilterType).find((filterType) => target.classList.contains(filterType.name));
     if (!filter) {
       return;
@@ -45,6 +46,7 @@ export default class TodoFilter {
 
   setState(filter) {
     this.filter = filter;
+
     this.render(filter);
   }
 

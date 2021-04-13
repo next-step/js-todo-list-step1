@@ -22,6 +22,7 @@ export default class TodoApplication {
   onAddTodoItem(content) {
     const todoItem = new TodoItem({ content });
     this.todoItems.push(todoItem);
+
     this.setState(this.todoItems, this.filterType);
   }
 
@@ -33,6 +34,7 @@ export default class TodoApplication {
       return todoItem;
     });
     this.todoItems = updatedTodoItems;
+
     this.setState(this.todoItems, this.filterType);
   }
 
@@ -44,22 +46,26 @@ export default class TodoApplication {
       return todoItem;
     });
     this.todoItems = updatedTodoItems;
+
     this.setState(this.todoItems, this.filterType);
   }
 
   onDeleteTodoItem(id) {
     const updatedTodoItems = this.todoItems.filter((todoItem) => !todoItem.equalsId(id));
     this.todoItems = updatedTodoItems;
+
     this.setState(this.todoItems, this.filterType);
   }
 
   onChangeFilter(filterType) {
     this.filterType = filterType;
+
     this.setState(this.todoItems, this.filterType);
   }
 
   setState(todoItems, filterType) {
     const filteredTodoItems = filterType.filter(todoItems);
+
     this.todoList.setState(filteredTodoItems);
     this.todoCount.setState(filteredTodoItems.length);
     this.todoFilter.setState(filterType);

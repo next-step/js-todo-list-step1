@@ -1,12 +1,14 @@
 export default class TodoCount {
   constructor(todoCount) {
-    this.$todoCount = document.querySelector('.todo-count');
     this.todoCount = todoCount;
+    this.$todoCount = document.querySelector('.todo-count');
+
     this.render(todoCount);
   }
 
   setState(todoCount) {
     this.todoCount = todoCount;
+
     this.render(todoCount);
   }
 

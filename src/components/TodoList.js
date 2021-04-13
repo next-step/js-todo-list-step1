@@ -9,8 +9,8 @@ const TodoItemStatus = Object.freeze({
 export default class TodoList {
   constructor(todoItems, { onToggleTodoItem, onEditTodoItem, onDeleteTodoItem }) {
     this.todoItems = todoItems;
-
     this.$todoList = document.querySelector('.todo-list');
+
     this.$todoList.addEventListener(EventType.CLICK, (event) => {
       this.toggleTodoItem(event, onToggleTodoItem);
       this.deleteTodoItem(event, onDeleteTodoItem);
