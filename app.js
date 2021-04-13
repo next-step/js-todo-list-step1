@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { count, filters, todoList, newTodoTitle } from './constant.js';
+import { count, filters, todoList, newTodoTitle, ENTER } from './constant.js';
 
 const App = {
   todos: [],
@@ -43,14 +43,14 @@ const App = {
   },
 
   handleInputEditing(event) {
-    if (event.keyCode !== 13 && event.keyCode !== 27) return;
+    if (event.keyCode !== ENTER && event.keyCode !== 27) return;
     const { target } = event;
     const li = target.closest('li');
     const todosArray = JSON.parse(localStorage.getItem('todos'));
 
     // TODO: keycode const
 
-    if (event.keyCode === 13) {
+    if (event.keyCode === ENTER) {
       for (let i = 0; i < todosArray.length; i++) {
         if (todosArray[i].id === Number(li.id)) {
           todosArray[i].value = document.querySelector('.edit').value;
@@ -109,7 +109,7 @@ const App = {
   handleKeyup(event) {
     if (
       event.target.tagName !== 'INPUT' ||
-      event.keyCode !== 13 ||
+      event.keyCode !== ENTER ||
       event.target.value === ''
     )
       return;
