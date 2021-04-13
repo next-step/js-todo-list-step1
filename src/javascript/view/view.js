@@ -4,6 +4,7 @@
 */
 import { EVENT_NAME, RENDER_COMMAND } from '../utils/constants.js';
 import { $, $$ } from '../utils/querySelector.js';
+
 export default class View {
   constructor() {
     this._todoList = $('#todo-list');
@@ -21,39 +22,22 @@ export default class View {
     if (!cmd) {
       return;
     }
-    switch (cmd) {
-      case RENDER_COMMAND.ADD:
+    const commands = {
+      add: () => {
         this._add(obj.todo);
         this._clearInput();
-        break;
-      case RENDER_COMMAND.EDIT_START:
-        this._editMode(obj.todo);
-        break;
-      case RENDER_COMMAND.EDIT_APPLY:
-        this._update(obj.todo);
-        break;
-      case RENDER_COMMAND.EDIT_END:
-        this._editEnd(obj.todo);
-        break;
-      case RENDER_COMMAND.REMOVE:
-        this._remove(obj.todo);
-        break;
-      case RENDER_COMMAND.TOGGLE:
-        this._update(obj.todo);
-        break;
-      case RENDER_COMMAND.REFRESH:
-        this._addAll(obj.todos);
-        break;
-      case RENDER_COMMAND.SHOW_ALL:
-        this._filterAll();
-        break;
-      case RENDER_COMMAND.SHOW_ACTIVE:
-        this._filterActive();
-        break;
-      case RENDER_COMMAND.SHOW_COMPLETED:
-        this._filterCompleted();
-        break;
-    }
+      },
+      editStart: () => this._editMode(obj.todo),
+      editApply: () => this._update(obj.todo),
+      editEnd: () => this._editEnd(obj.todo),
+      remove: () => this._remove(obj.todo),
+      toggle: () => this._update(obj.todo),
+      refresh: () => this._addAll(obj.todos),
+      showAll: () => this._filterAll(),
+      showActive: () => this._filterActive(),
+      showCompleted: () => this._filterCompleted(),
+    };
+    commands[cmd]();
   }
 
   setCurrentUser(name) {
