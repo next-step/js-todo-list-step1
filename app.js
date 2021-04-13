@@ -1,10 +1,10 @@
 /* eslint-disable import/extensions */
 import { count, filters, todoList, newTodoTitle } from './constant.js';
 
-function App() {
-  let todos;
+const App = {
+  todos: [],
 
-  function makeListElement(todo) {
+  makeListElement(todo) {
     const type = todo.completed === true ? `"checkbox" checked` : 'checkbox';
     const li = `<li class="${
       todo.completed === true ? 'completed' : 'false'
@@ -18,9 +18,9 @@ function App() {
 		</li>`;
 
     return li;
-  }
+  },
 
-  function printTodo(todo) {
+  printTodo(todo) {
     let li;
     const selected = document.querySelector('.selected');
 
@@ -29,23 +29,25 @@ function App() {
       (selected.classList.contains('active') && todo.completed === false) ||
       (selected.classList.contains('completed') && todo.completed === true)
     ) {
-      li = makeListElement(todo);
+      li = App.makeListElement(todo);
       todoList.insertAdjacentHTML('beforeend', li);
     }
-  }
+  },
 
-  function eraseTodo() {
+  eraseTodo() {
     const list = todoList.querySelectorAll('li');
 
     for (let i = 0; i < list.length; i++) {
       todoList.removeChild(list[i]);
     }
-  }
+  },
 
-  function handleInputEditing(event) {
+  handleInputEditing(event) {
+    if (event.keyCode !== 13 && event.keyCode !== 27) return;
     const { target } = event;
     const li = target.closest('li');
     const todosArray = JSON.parse(localStorage.getItem('todos'));
+
     // TODO: keycode const
 
     if (event.keyCode === 13) {
@@ -54,63 +56,68 @@ function App() {
           todosArray[i].value = document.querySelector('.edit').value;
           localStorage.setItem('todos', JSON.stringify(todosArray));
           target.closest('li').classList.remove('editing');
+          App.loadTodos();
+          return;
         }
       }
-      // this.loadTodos(); // ERROR
-      return;
     }
     if (event.keyCode === 27) {
       target.closest('li').classList.remove('editing');
     }
-  }
+  },
 
-  function editTodos(event) {
+  editTodos(event) {
     const { target } = event;
     const li = target.closest('li');
     li.classList.add('editing');
     const input = li.querySelector('.edit');
-    input.addEventListener('keyup', handleInputEditing);
-  }
+    input.addEventListener('keyup', App.handleInputEditing);
+  },
 
-  function loadTodos() {
+  loadTodos() {
     const todosArray = JSON.parse(localStorage.getItem('todos'));
 
-    eraseTodo();
+    App.eraseTodo();
     for (const todo in todosArray) {
       if (todosArray[todo]) {
-        printTodo(todosArray[todo]);
+        App.printTodo(todosArray[todo]);
       }
     }
     count.innerText = todoList.querySelectorAll('li').length;
     const listItems = todoList.querySelectorAll('li');
     for (const listItem of listItems) {
-      listItem.addEventListener('dbclick', editTodos);
+      listItem.addEventListener('dbclick', App.editTodos);
     }
-  }
+  },
 
-  function saveTodo(todos) {
+  saveTodo(todos) {
     localStorage.setItem('todos', JSON.stringify(todos));
-  }
+  },
 
-  function addTodo(event) {
-    todos.push({
+  addTodo(event) {
+    App.todos.push({
       value: event.target.value,
       completed: false,
       id: Date.now(),
       editing: ''
     });
-    saveTodo(todos);
-    loadTodos();
+    App.saveTodo(App.todos);
+    App.loadTodos();
     event.target.value = '';
-  }
+  },
 
-  function handleKeyup(event) {
-    if (event.keyCode !== 13 || event.target.value === '') return;
+  handleKeyup(event) {
+    if (
+      event.target.tagName !== 'INPUT' ||
+      event.keyCode !== 13 ||
+      event.target.value === ''
+    )
+      return;
     // TODO: refactor => 13 => enterkey
-    addTodo(event);
-  }
+    App.addTodo(event);
+  },
 
-  function handleInputClick(target) {
+  handleInputClick(target) {
     const li = target.closest('li');
     const todosArray = JSON.parse(localStorage.getItem('todos'));
 
@@ -126,7 +133,7 @@ function App() {
         }
       }
       localStorage.setItem('todos', JSON.stringify(todosArray));
-      loadTodos();
+      App.loadTodos();
       return;
     }
     if (li.className === 'completed') {
@@ -138,60 +145,57 @@ function App() {
         }
       }
       localStorage.setItem('todos', JSON.stringify(todosArray));
-      loadTodos();
+      App.loadTodos();
     }
-  }
+  },
 
-  function handleDestroyButtonClick(target) {
+  handleDestroyButtonClick(target) {
     const li = target.closest('li');
-    const deleteResult = todos.filter(todo => {
+    const deleteResult = App.todos.filter(todo => {
       return todo.id !== parseInt(li.id, 10);
     });
-    todos = deleteResult;
-    localStorage.setItem('todos', JSON.stringify(todos));
+    App.todos = deleteResult;
+    localStorage.setItem('todos', JSON.stringify(App.todos));
     li.remove();
-    loadTodos();
-  }
+    App.loadTodos();
+  },
 
-  function handleClickTodoList(event) {
+  handleClickTodoList(event) {
     const { target } = event;
 
     if (target.className === 'toggle') {
-      handleInputClick(target);
+      App.handleInputClick(target);
     }
     if (target.className === 'destroy') {
-      handleDestroyButtonClick(target);
+      App.handleDestroyButtonClick(target);
     }
-  }
+  },
 
-  function handleClickFilters(event) {
+  handleClickFilters(event) {
     const condition = filters.querySelector('.selected');
 
     if (condition) {
       condition.classList.remove('selected');
     }
     event.target.classList.add('selected');
-    loadTodos();
-  }
+    App.loadTodos();
+  },
 
-  function init() {
-    todos =
+  init() {
+    App.todos =
       localStorage.getItem('todos') === null
         ? []
         : JSON.parse(localStorage.getItem('todos'));
-    loadTodos();
+    App.loadTodos();
 
-    newTodoTitle.addEventListener('keyup', handleKeyup);
-    todoList.addEventListener('click', handleClickTodoList);
-    filters.addEventListener('click', handleClickFilters);
+    newTodoTitle.addEventListener('keyup', App.handleKeyup);
+    todoList.addEventListener('click', App.handleClickTodoList);
+    filters.addEventListener('click', App.handleClickFilters);
     const listItems = todoList.querySelectorAll('li');
     for (const listItem of listItems) {
-      listItem.addEventListener('dblclick', editTodos);
+      listItem.addEventListener('dblclick', App.editTodos);
     }
   }
+};
 
-  init();
-}
-
-const app = App;
-app();
+App.init();
