@@ -42,8 +42,26 @@ function App() {
     }
   }
 
-  function editTodos() {
-    console.log('dblclicked');
+  function handleInputEditing(event) {
+    // TODO: keycode const
+
+    if (event.keyCode === 13) {
+      console.log('enter');
+      // 새로운 값 반영
+      return;
+    }
+    if (event.keyCode === 27) {
+      console.log('esc');
+      // 취소
+    }
+  }
+
+  function editTodos(event) {
+    const { target } = event;
+    const li = target.closest('li');
+    li.classList.add('editing');
+    const input = li.querySelector('.edit');
+    input.addEventListener('keyup', handleInputEditing);
   }
 
   function loadTodos() {
@@ -57,10 +75,9 @@ function App() {
     }
     count.innerText = todoList.querySelectorAll('li').length;
     const listItems = todoList.querySelectorAll('li');
-    for (const listItem of listItems)
-      listItem.addEventListener('dblclick', () => {
-        editTodos();
-      });
+    for (const listItem of listItems) {
+      listItem.addEventListener('dbclick', editTodos);
+    }
   }
 
   function saveTodo(todos) {
@@ -81,6 +98,7 @@ function App() {
 
   function handleKeyup(event) {
     if (event.keyCode !== 13 || event.target.value === '') return;
+    // TODO: refactor => 13 => enterkey
     addTodo(event);
   }
 
@@ -100,6 +118,7 @@ function App() {
         }
       }
       localStorage.setItem('todos', JSON.stringify(todosArray));
+      loadTodos();
       return;
     }
     if (li.className === 'completed') {
@@ -111,10 +130,11 @@ function App() {
         }
       }
       localStorage.setItem('todos', JSON.stringify(todosArray));
+      loadTodos();
     }
   }
 
-  function handleDeleteButtonClick(target) {
+  function handleDestroyButtonClick(target) {
     const li = target.closest('li');
     const deleteResult = todos.filter(todo => {
       return todo.id !== parseInt(li.id, 10);
@@ -122,18 +142,18 @@ function App() {
     todos = deleteResult;
     localStorage.setItem('todos', JSON.stringify(todos));
     li.remove();
+    loadTodos();
   }
 
   function handleClickTodoList(event) {
     const { target } = event;
 
-    if (target.tagName === 'INPUT') {
+    if (target.className === 'toggle') {
       handleInputClick(target);
     }
-    if (target.tagName === 'BUTTON') {
-      handleDeleteButtonClick(target);
+    if (target.className === 'destroy') {
+      handleDestroyButtonClick(target);
     }
-    loadTodos();
   }
 
   function handleClickFilters(event) {
@@ -156,6 +176,10 @@ function App() {
     newTodoTitle.addEventListener('keyup', handleKeyup);
     todoList.addEventListener('click', handleClickTodoList);
     filters.addEventListener('click', handleClickFilters);
+    const listItems = todoList.querySelectorAll('li');
+    for (const listItem of listItems) {
+      listItem.addEventListener('dblclick', editTodos);
+    }
   }
 
   init();
