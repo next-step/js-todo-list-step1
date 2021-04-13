@@ -43,16 +43,24 @@ function App() {
   }
 
   function handleInputEditing(event) {
+    const { target } = event;
+    const li = target.closest('li');
+    const todosArray = JSON.parse(localStorage.getItem('todos'));
     // TODO: keycode const
 
     if (event.keyCode === 13) {
-      console.log('enter');
-      // 새로운 값 반영
+      for (let i = 0; i < todosArray.length; i++) {
+        if (todosArray[i].id === Number(li.id)) {
+          todosArray[i].value = document.querySelector('.edit').value;
+          localStorage.setItem('todos', JSON.stringify(todosArray));
+          target.closest('li').classList.remove('editing');
+        }
+      }
+      // this.loadTodos(); // ERROR
       return;
     }
     if (event.keyCode === 27) {
-      console.log('esc');
-      // 취소
+      target.closest('li').classList.remove('editing');
     }
   }
 
