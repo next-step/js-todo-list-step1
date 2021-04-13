@@ -7,7 +7,7 @@ import counter from "./setEventCounter.js";
 let init = () => {
   localStorageInit(); // DONE, TODO가 없는 경우 setItem
   renderCard(); // localstorage의 데이터를 랜더
-  setEventCheckBox();
+  // setEventCheckBox();
   setEventAddCard(); // input값을 localStorage에 추가하는 Event할당
   setEventFilter(); // Filter Box에
 };

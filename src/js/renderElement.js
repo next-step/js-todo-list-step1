@@ -64,7 +64,7 @@ let renderCard = () => {
     renderCompleted();
   }
   setEventCheckBox();
-  setEventAddCard();
+  // setEventAddCard();
   counter(isSelected);
   setEventDeleteCard();
   // editEvent();
