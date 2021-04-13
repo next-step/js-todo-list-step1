@@ -1,7 +1,6 @@
 export const EventType = Object.freeze({
   CLICK: 'click',
   DOUBLE_CLICK: 'dblclick',
-  KEY_PRESS: 'keypress',
   KEY_DOWN: 'keydown',
 });
 
