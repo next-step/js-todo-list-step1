@@ -2,6 +2,7 @@
   NOTE: 현재는 currentUser 를 default로 바로 등록하고 있지만,
         이후에는 DOM 요소로 user를 선택할 수 있게 수정해야한다.
 */
+import { RENDER_COMMAND } from '../utils/constants.js';
 export default class View {
   constructor() {
     this._todoList = document.querySelector('#todo-list');
@@ -20,35 +21,35 @@ export default class View {
       return;
     }
     switch (cmd) {
-      case 'add':
+      case RENDER_COMMAND.ADD:
         this._add(obj.todo);
         this._clearInput();
         break;
-      case 'editStart':
+      case RENDER_COMMAND.EDIT_START:
         this._editMode(obj.todo);
         break;
-      case 'editApply':
+      case RENDER_COMMAND.EDIT_APPLY:
         this._update(obj.todo);
         break;
-      case 'editEnd':
+      case RENDER_COMMAND.EDIT_END:
         this._editEnd(obj.todo);
         break;
-      case 'remove':
+      case RENDER_COMMAND.REMOVE:
         this._remove(obj.todo);
         break;
-      case 'toggle':
+      case RENDER_COMMAND.TOGGLE:
         this._update(obj.todo);
         break;
-      case 'refresh':
+      case RENDER_COMMAND.REFRESH:
         this._addAll(obj.todos);
         break;
-      case 'showAll':
+      case RENDER_COMMAND.SHOW_ALL:
         this._filterAll();
         break;
-      case 'showActive':
+      case RENDER_COMMAND.SHOW_ACTIVE:
         this._filterActive();
         break;
-      case 'showCompleted':
+      case RENDER_COMMAND.SHOW_COMPLETED:
         this._filterCompleted();
         break;
     }
