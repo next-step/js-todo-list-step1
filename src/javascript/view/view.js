@@ -3,9 +3,11 @@
         이후에는 DOM 요소로 user를 선택할 수 있게 수정해야한다.
 */
 import { $, $$ } from '../utils/querySelector.js';
+import TodoListView from './todoListView.js';
 
 export default class View {
   constructor() {
+    this.todoListView = new TodoListView();
     this._todoList = $('#todo-list');
     this._input = $('#new-todo-title');
     this._todoCount = 0;
@@ -60,26 +62,6 @@ export default class View {
           callback();
         });
       },
-      destroy: () => {
-        // NOTE: callback == Controller.destroy
-        this._todoList.addEventListener('click', (event) => {
-          if (!event.target.closest('.destroy')) {
-            return;
-          }
-          const li = event.target.closest('li');
-          callback(+li.dataset.id);
-        });
-      },
-      toggle: () => {
-        // NOTE: callback == Controller.toggleCheckBox
-        this._todoList.addEventListener('click', (event) => {
-          if (!event.target.closest('.toggle')) {
-            return;
-          }
-          const li = event.target.closest('li');
-          callback(+li.dataset.id);
-        });
-      },
       selectAll: () => {
         // NOTE: callback == Controller.showAll
         this._filterContainer.addEventListener('click', (event) => {
@@ -113,37 +95,16 @@ export default class View {
           callback();
         });
       },
-      edit: () => {
-        // NOTE: callback == Controller.edit
-        this._todoList.addEventListener('dblclick', (event) => {
-          const todo = event.target.closest('li');
-          if (!todo) {
-            return;
-          }
-          callback(todo);
-        });
-      },
-      editEnd: () => {
-        // NOTE: callback == Controller._editEnd
-        this._todoList.addEventListener('focusout', (event) => {
-          const todo = event.target.closest('li');
-          if (!todo) {
-            return;
-          }
-          callback(todo);
-        });
-      },
-      editApply: () => {
-        // NOTE: callback == Controller.editApply
-        this._todoList.addEventListener('keypress', (event) => {
-          if (event.key !== 'Enter') {
-            return;
-          }
-          const input = event.target.closest('.edit');
-          const todo = input.closest('li');
-          callback(+todo.dataset.id, input.value);
-        });
-      },
+      // NOTE: callback == Controller.destroy
+      destroy: () => this.todoListView.setRemoveEvent(callback),
+      // NOTE: callback == Controller.toggleCheckBox
+      toggle: () => this.todoListView.setToggleEvent(callback),
+      // NOTE: callback == Controller.edit
+      edit: () => this.todoListView.setEditStartEvent(callback),
+      // NOTE: callback == Controller._editEnd
+      editEnd: () => this.todoListView.setEditEndEvent(callback),
+      // NOTE: callback == Controller.editApply
+      editApply: () => this.todoListView.setEditApplyEvent(callback),
     };
     options[eventName]();
   }
@@ -182,11 +143,7 @@ export default class View {
   }
 
   _remove(todo) {
-    const li = this._getTodoById(todo.id);
-    if (!li) {
-      return;
-    }
-    li.remove();
+    this.todoListView.remove(todo);
     this._decreaseTodoCount();
     this._setTodoCount(this._todoCountView.innerText - 1);
   }
@@ -196,15 +153,7 @@ export default class View {
     if (!li) {
       return;
     }
-    li.className = todo.completed ? 'completed' : 'active';
-    li.innerHTML = `
-                    <div class="view">
-                      <input class="toggle" type="checkbox"
-                      ${todo.completed ? 'checked' : ''}/>
-                      <label class="label">${todo.content}</label>
-                      <button class="destroy"></button>
-                    </div>
-                    <input class="edit" value="" />`;
+    this.todoListView.update(todo);
     this._setDisplayStyleAndCount(li, todo);
   }
 
@@ -268,16 +217,11 @@ export default class View {
   }
 
   _editMode(todo) {
-    todo.classList.add('editing');
-    const input = $('.edit', todo);
-    input.focus();
+    this.todoListView.editStart(todo);
   }
 
   _editEnd(todo) {
-    todo = todo instanceof Element ? todo : this._getTodoById(todo.id);
-    todo.classList.remove('editing');
-    const input = $('.edit', todo);
-    input.value = '';
+    this.todoListView.editEnd(todo);
   }
 
   _clearInput() {
