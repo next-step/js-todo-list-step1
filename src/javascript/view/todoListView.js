@@ -143,7 +143,7 @@ export default class TodoListView {
   }
 
   setEditApplyEvent(callback) {
-    this.el.addEventListener('keypress', (event) => {
+    this.el.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') {
         return;
       }
