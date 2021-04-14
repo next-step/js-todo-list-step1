@@ -58,6 +58,54 @@ export default class TodoListView {
                     <input class="edit" value="" />`;
   }
 
+  filterAll() {
+    const todos = $$('li', this.el);
+    todos.forEach((todo) => {
+      todo.style.display = 'block';
+    });
+    return todos.length;
+  }
+
+  filterActive() {
+    let activeCount = 0;
+    const todos = $$('li', this.el);
+    todos.forEach((todo) => {
+      if (todo.classList.contains('completed')) {
+        todo.style.display = 'none';
+      } else {
+        activeCount++;
+        todo.style.display = 'block';
+      }
+    });
+    return activeCount;
+  }
+
+  filterCompleted() {
+    let completedCount = 0;
+    const todos = $$('li', this.el);
+    todos.forEach((todo) => {
+      if (todo.classList.contains('completed')) {
+        todo.style.display = 'block';
+        completedCount++;
+      } else {
+        todo.style.display = 'none';
+      }
+    });
+    return completedCount;
+  }
+
+  hide(todo) {
+    const li = this._getTodoById(todo.id);
+    if (!li) {
+      return;
+    }
+    li.style.display = 'none';
+  }
+
+  _getTodoById(id) {
+    return $(`li[data-id='${id}']`, this.el);
+  }
+
   setRemoveEvent(callback) {
     this.el.addEventListener('click', (event) => {
       if (!event.target.closest('.destroy')) {
@@ -107,9 +155,5 @@ export default class TodoListView {
       const todo = input.closest('li');
       callback(+todo.dataset.id, input.value);
     });
-  }
-
-  _getTodoById(id) {
-    return $(`li[data-id='${id}']`, this.el);
   }
 }

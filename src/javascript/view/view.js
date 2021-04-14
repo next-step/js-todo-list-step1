@@ -5,17 +5,14 @@
 import { $, $$ } from '../utils/querySelector.js';
 import TodoListView from './todoListView.js';
 import InputView from './inputView.js';
+import TodoCountView from './todoCountView.js';
 
 export default class View {
   constructor() {
     this.todoListView = new TodoListView();
     this.inputView = new InputView();
-    this._todoList = $('#todo-list');
-    this._todoCount = 0;
-    this._todoCountView = $('.todo-count').children[0];
-    this._filterContainer = $('.filters');
-    this._currentFilterView = $('.all', this._filterContainer);
-    this._currentFilter = 'all';
+    this.todoCountView = new TodoCountView();
+
     this.setCurrentUser('default');
   }
 
@@ -61,44 +58,16 @@ export default class View {
       editEnd: () => this.todoListView.setEditEndEvent(callback),
       // NOTE: callback == Controller.editApply
       editApply: () => this.todoListView.setEditApplyEvent(callback),
-
-      // TODO: 모듈화 할 것들
+      // NOTE: callback == Controller.showAll
+      selectAll: () => this.todoCountView.setSelectAllEvent(callback),
+      // NOTE: callback == Controller.showActive
+      selectActive: () => this.todoCountView.setSelectActiveEvent(callback),
+      // NOTE: callback == Controller.showCompleted
+      selectCompleted: () =>
+        this.todoCountView.setSelectCompletedEvent(callback),
       refresh: () => {
         // NOTE: callback == Controller.refreshPage
         window.addEventListener('load', () => {
-          callback();
-        });
-      },
-      selectAll: () => {
-        // NOTE: callback == Controller.showAll
-        this._filterContainer.addEventListener('click', (event) => {
-          const filter = event.target.closest('.all');
-          if (!filter) {
-            return;
-          }
-          this._setSelectFilter(filter);
-          callback();
-        });
-      },
-      selectActive: () => {
-        // NOTE: callback == Controller.showActive
-        this._filterContainer.addEventListener('click', (event) => {
-          const filter = event.target.closest('.active');
-          if (!filter) {
-            return;
-          }
-          this._setSelectFilter(filter);
-          callback();
-        });
-      },
-      selectCompleted: () => {
-        // NOTE: callback == Controller.showCompleted
-        this._filterContainer.addEventListener('click', (event) => {
-          const filter = event.target.closest('.completed');
-          if (!filter) {
-            return;
-          }
-          this._setSelectFilter(filter);
           callback();
         });
       },
@@ -108,16 +77,15 @@ export default class View {
 
   _add(todo) {
     this.todoListView.add(todo);
-    this._increaseTodoCount();
     this.inputView.clear();
-
-    // 여기서 temp는 만들어지는 DOM 요소였음
-    if (this._currentFilter === 'completed') {
-      // temp.style.display = 'none';
-      return;
+    if (this.todoCountView.getCurrentFilter() === 'completed') {
+      this.todoListView.hide(todo);
     } else {
-      this._setTodoCount(+this._todoCountView.innerText + 1);
+      this.todoCountView.setTodoCount(
+        this.todoCountView.getInnerTextCount() + 1
+      );
     }
+    this.todoCountView.increaseTodoCount();
   }
 
   _addAll(todos) {
@@ -128,76 +96,42 @@ export default class View {
 
   _remove(todo) {
     this.todoListView.remove(todo);
-    this._decreaseTodoCount();
-    this._setTodoCount(this._todoCountView.innerText - 1);
+    this.todoCountView.decreaseTodoCount();
+    this.todoCountView.setTodoCount(this.todoCountView.getInnerTextCount() - 1);
   }
 
   _update(todo) {
-    const li = this._getTodoById(todo.id);
-    if (!li) {
-      return;
-    }
     this.todoListView.update(todo);
-    this._setDisplayStyleAndCount(li, todo);
+    const currentFilter = this.todoCountView.getCurrentFilter();
+
+    if (currentFilter === 'all') {
+      return;
+    } else if (currentFilter === 'active' && todo.completed) {
+      this.todoListView.hide(todo);
+      this.todoCountView.setTodoCount(
+        this.todoCountView.getInnerTextCount() - 1
+      );
+    } else if (currentFilter === 'completed' && !todo.completd) {
+      this.todoListView.hide(todo);
+      this.todoCountView.setTodoCount(
+        this.todoCountView.getInnerTextCount() - 1
+      );
+    }
   }
 
   _filterAll() {
-    const todos = $$('li', this._todoList);
-    todos.forEach((todo) => {
-      todo.style.display = 'block';
-    });
-    this._setTodoCount(this.getTodoCount());
+    const count = this.todoListView.filterAll();
+    this.todoCountView.setTodoCount(count);
   }
 
   _filterActive() {
-    let activeCount = 0;
-    const todos = $$('li', this._todoList);
-    todos.forEach((todo) => {
-      if (todo.classList.contains('completed')) {
-        todo.style.display = 'none';
-      } else {
-        activeCount++;
-        todo.style.display = 'block';
-      }
-    });
-    this._setTodoCount(activeCount);
+    const count = this.todoListView.filterActive();
+    this.todoCountView.setTodoCount(count);
   }
 
   _filterCompleted() {
-    let completedCount = 0;
-    const todos = $$('li', this._todoList);
-    todos.forEach((todo) => {
-      if (todo.classList.contains('completed')) {
-        todo.style.display = 'block';
-        completedCount++;
-      } else {
-        todo.style.display = 'none';
-      }
-    });
-    this._setTodoCount(completedCount);
-  }
-
-  _setSelectFilter(filter) {
-    this._currentFilterView.classList.remove('selected');
-    this._currentFilter = filter.className;
-    this._currentFilterView = filter;
-    this._currentFilterView.classList.add('selected');
-  }
-
-  _increaseTodoCount() {
-    this._todoCount++;
-  }
-
-  _decreaseTodoCount() {
-    this._todoCount--;
-  }
-
-  getTodoCount() {
-    return this._todoCount;
-  }
-
-  _setTodoCount(count) {
-    this._todoCountView.innerText = count;
+    const count = this.todoListView.filterCompleted();
+    this.todoCountView.setTodoCount(count);
   }
 
   _editMode(todo) {
@@ -210,21 +144,5 @@ export default class View {
 
   _clearInput() {
     this.InputView.clear();
-  }
-
-  _setDisplayStyleAndCount(li, todo) {
-    if (this._currentFilter === 'all') {
-      return;
-    } else if (this._currentFilter === 'active' && todo.completed) {
-      li.style.display = 'none';
-      this._setTodoCount(+this._todoCountView.innerText - 1);
-    } else if (this._currentFilter === 'completed' && !todo.completed) {
-      this._setTodoCount(+this._todoCountView.innerText - 1);
-      li.style.display = 'none';
-    }
-  }
-
-  _getTodoById(id) {
-    return $(`li[data-id='${id}']`, this._todoList);
   }
 }
