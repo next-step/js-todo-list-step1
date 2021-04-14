@@ -2,20 +2,15 @@ window.onload = () => {
 
     const newTodoInput = document.getElementById('new-todo-title');
     const todoList = document.getElementById('todo-list');
-    const totalCount = document.getElementsByClassName('todo-count')[0].getElementsByTagName('strong')[0];
+    const totalCount = document
+        .getElementsByClassName('todo-count')[0]
+        .getElementsByTagName('strong')[0];
     const filters = document.getElementsByClassName('filters')[0];
-
-    // 이벤트
-    newTodoInput.addEventListener('keydown', addTodoList); // 추가 입력폼 액션
-    todoList.addEventListener('click', clickTodoList); // 완료, 삭제 버튼 클릭
-    todoList.addEventListener('dblclick', doubleClickTodoList); // Todo 더블클릭
-    todoList.addEventListener("keyup", editTodoList); // 수정 입력폼 액션
-    filters.addEventListener("click", clickFilter);
 
     // 추가
     function addTodoList(event) {
         // 입력값이 엔터일 경우에만
-        if(event.key != 'Enter'){
+        if(event.key !== 'Enter'){
             return;
         }
 
@@ -63,7 +58,7 @@ window.onload = () => {
 
     // 체크/삭제
     function clickTodoList(event) {
-        const className = event.target.className;
+        const {className} = event.target;
 
         switch (className) {
             case 'destroy':
@@ -86,35 +81,36 @@ window.onload = () => {
     // 체크
     function toggleTodoList(event) {
         const toggleParentNode = event.target.parentNode;
-        const node = toggleParentNode;
+        const {parentNode} = toggleParentNode;
         if (event.target.checked) {
-            node.classList.add('completed');
+            parentNode.classList.add('completed');
         } else {
-            node.classList.remove('completed');
+            parentNode.classList.remove('completed');
         }
     }
 
     // 라벨 더블클릭
     function doubleClickTodoList(event) {
         const editedParentNode = event.target.parentNode;
-        const node = editedParentNode.parentNode;
+        const {parentNode} = editedParentNode;
 
         if (event.target.className === 'label') {
-            node.classList.add('editing');
+            parentNode.classList.add('editing');
         }
     }
 
     // 라벨 수정 or 나가기
     function editTodoList(event) {
-        const editingParentNode = event.target.parentNode;
+        const {parentNode} = event.target;
 
         switch (event.key) {
             case 'Escape':
-                editingParentNode.classList.remove('editing');
+                event.target.value = '';
+                parentNode.classList.remove('editing');
                 break;
             case 'Enter':
                 event.target.closest('li').querySelector('label').innerText = event.target.value;
-                editingParentNode.classList.remove('editing');
+                parentNode.classList.remove('editing');
                 break;
           }
 
@@ -132,11 +128,13 @@ window.onload = () => {
         // 선택한 filter에 따른 액션
         switch (true) {
             case event.target.classList.contains('all'):
+                console.log('all');
                 for (let i = 0; i < todoList.children.length; i++) {
                     todoList.children[i].classList.remove('hidden');
                 }
                 break;
             case event.target.classList.contains('active'):
+                console.log('active');
                 for (let i = 0; i < todoList.children.length; i++) {
                     if (todoList.children[i].classList.contains('completed')) {
                         todoList.children[i].classList.add('hidden');
@@ -146,6 +144,7 @@ window.onload = () => {
                 }
                 break;           
             case event.target.classList.contains('completed'):
+                console.log('completed');
                 for (let i = 0; i < todoList.children.length; i++) {
                     if (todoList.children[i].classList.contains('completed')) {
                         todoList.children[i].classList.remove('hidden');
@@ -157,5 +156,11 @@ window.onload = () => {
           }
     }
 
+    // 이벤트
+    newTodoInput.addEventListener('keydown', addTodoList); // 추가 입력폼 액션
+    todoList.addEventListener('click', clickTodoList); // 완료, 삭제 버튼 클릭
+    todoList.addEventListener('dblclick', doubleClickTodoList); // Todo 더블클릭
+    todoList.addEventListener("keyup", editTodoList); // 수정 입력폼 액션
+    filters.addEventListener("click", clickFilter);
 
 }
