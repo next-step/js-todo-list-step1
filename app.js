@@ -93,7 +93,7 @@ const App = {
     count.innerText = todoList.querySelectorAll('li').length;
     const listItems = todoList.querySelectorAll('li');
     for (const listItem of listItems) {
-      listItem.addEventListener('dbclick', App.editTodos);
+      listItem.addEventListener('dblclick', App.editTodos);
     }
   },
 
