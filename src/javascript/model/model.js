@@ -9,7 +9,7 @@ export default class Model {
   }
 
   async create(value, userName) {
-    if (value.length === 0) {
+    if (!value.length) {
       throw new Error(ERROR_MESSAGE.CONTENT_EMPTY);
     }
     this._setCurrentStorage(userName);
@@ -51,7 +51,7 @@ export default class Model {
     if (!targetTodo) {
       throw new Error(ERROR_MESSAGE.UNEXPECTED);
     }
-    if (content.length === 0) {
+    if (!content.length) {
       throw targetTodo;
     }
     targetTodo.content = content;
