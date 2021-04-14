@@ -4,12 +4,13 @@
 */
 import { $, $$ } from '../utils/querySelector.js';
 import TodoListView from './todoListView.js';
+import InputView from './inputView.js';
 
 export default class View {
   constructor() {
     this.todoListView = new TodoListView();
+    this.inputView = new InputView();
     this._todoList = $('#todo-list');
-    this._input = $('#new-todo-title');
     this._todoCount = 0;
     this._todoCountView = $('.todo-count').children[0];
     this._filterContainer = $('.filters');
@@ -48,14 +49,20 @@ export default class View {
 
   setEventListener(eventName, callback) {
     const options = {
-      add: () => {
-        // NOTE: callback == Controller.add
-        this._input.addEventListener('keypress', (event) => {
-          if (event.key === 'Enter') {
-            callback(this._input.value);
-          }
-        });
-      },
+      // NOTE: callback == Controller.add
+      add: () => this.inputView.setAddEvent(callback),
+      // NOTE: callback == Controller.destroy
+      destroy: () => this.todoListView.setRemoveEvent(callback),
+      // NOTE: callback == Controller.toggleCheckBox
+      toggle: () => this.todoListView.setToggleEvent(callback),
+      // NOTE: callback == Controller.edit
+      edit: () => this.todoListView.setEditStartEvent(callback),
+      // NOTE: callback == Controller._editEnd
+      editEnd: () => this.todoListView.setEditEndEvent(callback),
+      // NOTE: callback == Controller.editApply
+      editApply: () => this.todoListView.setEditApplyEvent(callback),
+
+      // TODO: 모듈화 할 것들
       refresh: () => {
         // NOTE: callback == Controller.refreshPage
         window.addEventListener('load', () => {
@@ -95,25 +102,11 @@ export default class View {
           callback();
         });
       },
-      // NOTE: callback == Controller.destroy
-      destroy: () => this.todoListView.setRemoveEvent(callback),
-      // NOTE: callback == Controller.toggleCheckBox
-      toggle: () => this.todoListView.setToggleEvent(callback),
-      // NOTE: callback == Controller.edit
-      edit: () => this.todoListView.setEditStartEvent(callback),
-      // NOTE: callback == Controller._editEnd
-      editEnd: () => this.todoListView.setEditEndEvent(callback),
-      // NOTE: callback == Controller.editApply
-      editApply: () => this.todoListView.setEditApplyEvent(callback),
     };
     options[eventName]();
   }
 
   _add(todo) {
-    const li = this._getTodoById(todo.id);
-    if (li) {
-      return;
-    }
     const temp = document.createElement('li');
     temp.dataset.id = todo.id;
     temp.classList.add(todo.completed ? 'completed' : 'active');
@@ -127,7 +120,9 @@ export default class View {
                         <input class="edit" value="" />`;
     this._todoList.appendChild(temp);
     this._increaseTodoCount();
-    this._clearInput();
+
+    this.inputView.clear();
+
     if (this._currentFilter === 'completed') {
       temp.style.display = 'none';
       return;
@@ -225,7 +220,7 @@ export default class View {
   }
 
   _clearInput() {
-    this._input.value = '';
+    this.InputView.clear();
   }
 
   _setDisplayStyleAndCount(li, todo) {
