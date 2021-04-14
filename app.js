@@ -127,31 +127,15 @@ const App = {
     target.getAttribute('checked') === null
       ? target.setAttribute('checked', '')
       : target.removeAttribute('checked');
-    if (li.className === 'false') {
-      li.classList.add('completed');
-      li.classList.remove('false');
-      for (let i = 0; i < todosArray.length; i++) {
-        if (todosArray[i].id === Number(li.id)) {
-          todosArray[i].completed = true;
-        }
+    li.classList.toggle('completed');
+    todosArray.forEach(todo => {
+      if (todo.id === Number(li.id)) {
+        todo.completed = !todo.completed;
       }
-      localStorage.setItem('todos', JSON.stringify(todosArray));
-      App.todos = todosArray;
-      App.render();
-      return;
-    }
-    if (li.className === 'completed') {
-      li.classList.add('false');
-      li.classList.remove('completed');
-      for (let i = 0; i < todosArray.length; i++) {
-        if (todosArray[i].id === Number(li.id)) {
-          todosArray[i].completed = false;
-        }
-      }
-      localStorage.setItem('todos', JSON.stringify(todosArray));
-      App.todos = todosArray;
-      App.render();
-    }
+    });
+    localStorage.setItem('todos', JSON.stringify(todosArray));
+    App.todos = todosArray;
+    App.render();
   },
 
   handleDestroyButtonClick(target) {
