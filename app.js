@@ -72,7 +72,6 @@ const App = {
     if (event.key === ENTER) {
       for (const todosArrayElement of todosArray) {
         App.reflectInputEditing(todosArrayElement, todosArray, li);
-        return;
       }
     }
   },
