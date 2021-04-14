@@ -107,24 +107,13 @@ export default class View {
   }
 
   _add(todo) {
-    const temp = document.createElement('li');
-    temp.dataset.id = todo.id;
-    temp.classList.add(todo.completed ? 'completed' : 'active');
-    temp.innerHTML = `
-                        <div class="view">
-                          <input class="toggle" type="checkbox"
-                          ${todo.completed ? 'checked' : ''}/>
-                          <label class="label">${todo.content}</label>
-                          <button class="destroy"></button>
-                        </div>
-                        <input class="edit" value="" />`;
-    this._todoList.appendChild(temp);
+    this.todoListView.add(todo);
     this._increaseTodoCount();
-
     this.inputView.clear();
 
+    // 여기서 temp는 만들어지는 DOM 요소였음
     if (this._currentFilter === 'completed') {
-      temp.style.display = 'none';
+      // temp.style.display = 'none';
       return;
     } else {
       this._setTodoCount(+this._todoCountView.innerText + 1);

@@ -5,6 +5,22 @@ export default class TodoListView {
     this.el = $('#todo-list');
   }
 
+  add(todo) {
+    const li = `
+                <li data-id=${todo.id} class=${
+      todo.completed ? 'completed' : 'active'
+    }>
+                  <div class="view">
+                    <input class="toggle" type="checkbox"
+                      ${todo.completed ? 'checked' : ''}/>
+                    <label class="label">${todo.content}</label>
+                    <button class="destroy"></button>
+                  </div>
+                  <input class="edit" value="" />
+                </li>`;
+    this.el.insertAdjacentHTML('beforeend', li);
+  }
+
   remove(todo) {
     const li = this._getTodoById(todo.id);
     if (!li) {
