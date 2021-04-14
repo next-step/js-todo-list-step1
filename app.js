@@ -44,8 +44,8 @@ const App = {
   eraseTodo() {
     const list = todoList.querySelectorAll('li');
 
-    for (let i = 0; i < list.length; i++) {
-      todoList.removeChild(list[i]);
+    for (const listItem of list) {
+      todoList.removeChild(listItem);
     }
   },
 
