@@ -49,6 +49,15 @@ const App = {
     }
   },
 
+  reflectInputEditing(todosArrayElement, todosArray, li) {
+    if (todosArrayElement.id !== Number(li.id)) return;
+    todosArrayElement.value = li.querySelector('.edit').value;
+    localStorage.setItem('todos', JSON.stringify(todosArray));
+    App.todos = todosArray;
+    li.classList.remove('editing');
+    App.render();
+  },
+
   handleInputEditing(event) {
     if (event.keyCode !== ENTER && event.keyCode !== ESC) return;
     const { target } = event;
@@ -61,14 +70,9 @@ const App = {
       return;
     }
     if (event.keyCode === ENTER) {
-      for (let i = 0; i < todosArray.length; i++) {
-        if (todosArray[i].id === Number(li.id)) {
-          todosArray[i].value = li.querySelector('.edit').value;
-          localStorage.setItem('todos', JSON.stringify(todosArray));
-          li.classList.remove('editing');
-          App.render();
-          return;
-        }
+      for (const todosArrayElement of todosArray) {
+        App.reflectInputEditing(todosArrayElement, todosArray, li);
+        return;
       }
     }
   },
