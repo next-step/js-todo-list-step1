@@ -7,12 +7,13 @@ export default class TodoListView {
 
   add(todo) {
     const li = `
-                <li data-id=${todo.id} class=${
-      todo.completed ? 'completed' : 'active'
-    }>
+                <li
+                data-id=${todo.id}
+                class=${todo.completed ? 'completed' : 'active'}>
                   <div class="view">
-                    <input class="toggle" type="checkbox"
-                      ${todo.completed ? 'checked' : ''}/>
+                    <input class="toggle"
+                            type="checkbox"
+                            ${todo.completed ? 'checked' : ''}/>
                     <label class="label">${todo.content}</label>
                     <button class="destroy"></button>
                   </div>
@@ -51,7 +52,7 @@ export default class TodoListView {
     li.innerHTML = `
                     <div class="view">
                       <input class="toggle" type="checkbox"
-                      ${todo.completed ? 'checked' : ''}/>
+                        ${todo.completed ? 'checked' : ''}/>
                       <label class="label">${todo.content}</label>
                       <button class="destroy"></button>
                     </div>
