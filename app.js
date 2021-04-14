@@ -59,17 +59,17 @@ const App = {
   },
 
   handleInputEditing(event) {
-    if (event.keyCode !== ENTER && event.keyCode !== ESC) return;
+    if (event.key !== ENTER && event.key !== ESC) return;
     const { target } = event;
     const li = target.closest('li');
     const todosArray = JSON.parse(localStorage.getItem('todos'));
 
-    if (event.keyCode === ESC) {
+    if (event.key === ESC) {
       li.classList.remove('editing');
       App.render();
       return;
     }
-    if (event.keyCode === ENTER) {
+    if (event.key === ENTER) {
       for (const todosArrayElement of todosArray) {
         App.reflectInputEditing(todosArrayElement, todosArray, li);
         return;
@@ -117,7 +117,7 @@ const App = {
   handleKeyup(event) {
     if (
       event.target.id !== 'new-todo-title' ||
-      event.keyCode !== ENTER ||
+      event.key !== ENTER ||
       event.target.value === ''
     )
       return;
