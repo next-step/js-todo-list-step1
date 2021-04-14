@@ -2,7 +2,6 @@ import { $ } from '../utils/querySelector.js';
 
 export default class TodoCountView {
   constructor() {
-    // this._filterContainer = $('.filters');
     this.el = $('.filters');
     this._todoCount = 0;
     this._countView = $('.todo-count').children[0];

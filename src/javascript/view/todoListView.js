@@ -102,10 +102,6 @@ export default class TodoListView {
     li.style.display = 'none';
   }
 
-  _getTodoById(id) {
-    return $(`li[data-id='${id}']`, this.el);
-  }
-
   setRemoveEvent(callback) {
     this.el.addEventListener('click', (event) => {
       if (!event.target.closest('.destroy')) {
@@ -155,5 +151,9 @@ export default class TodoListView {
       const todo = input.closest('li');
       callback(+todo.dataset.id, input.value);
     });
+  }
+
+  _getTodoById(id) {
+    return $(`li[data-id='${id}']`, this.el);
   }
 }

@@ -2,7 +2,6 @@
   NOTE: 현재는 currentUser 를 default로 바로 등록하고 있지만,
         이후에는 DOM 요소로 user를 선택할 수 있게 수정해야한다.
 */
-import { $, $$ } from '../utils/querySelector.js';
 import TodoListView from './todoListView.js';
 import InputView from './inputView.js';
 import TodoCountView from './todoCountView.js';
@@ -36,14 +35,6 @@ export default class View {
     options[cmd]();
   }
 
-  setCurrentUser(name) {
-    this._currentUser = name;
-  }
-
-  getCurrentUser() {
-    return this._currentUser;
-  }
-
   setEventListener(eventName, callback) {
     const options = {
       // NOTE: callback == Controller.add
@@ -73,6 +64,14 @@ export default class View {
       },
     };
     options[eventName]();
+  }
+
+  setCurrentUser(name) {
+    this._currentUser = name;
+  }
+
+  getCurrentUser() {
+    return this._currentUser;
   }
 
   _add(todo) {
