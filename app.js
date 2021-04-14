@@ -76,7 +76,7 @@ const App = {
     }
   },
 
-  editTodos(event) {
+  handleDblclickTodoList(event) {
     const { target } = event;
     const li = target.closest('li');
     li.classList.add('editing');
@@ -93,7 +93,7 @@ const App = {
     count.innerText = todoList.querySelectorAll('li').length;
     const listItems = todoList.querySelectorAll('li');
     for (const listItem of listItems) {
-      listItem.addEventListener('dblclick', App.editTodos);
+      listItem.addEventListener('dblclick', App.handleDblclickTodoList);
     }
   },
 
@@ -185,7 +185,7 @@ const App = {
     filters.addEventListener('click', App.handleClickFilters);
     const listItems = todoList.querySelectorAll('li');
     for (const listItem of listItems) {
-      listItem.addEventListener('dblclick', App.editTodos);
+      listItem.addEventListener('dblclick', App.handleDblclickTodoList);
     }
   }
 };
