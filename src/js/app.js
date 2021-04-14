@@ -7,7 +7,7 @@ window.onload = () => {
         .getElementsByTagName('strong')[0];
     const filters = document.getElementsByClassName('filters')[0];
 
-    // 추가
+    // 추가 
     function addTodoList(event) {
         // 입력값이 엔터일 경우에만
         if(event.key !== 'Enter'){
