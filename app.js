@@ -82,14 +82,11 @@ const App = {
   },
 
   render() {
-    const todosArray = JSON.parse(localStorage.getItem('todos'));
-
     App.eraseTodo();
-    for (const todo in todosArray) {
-      if (todosArray[todo]) {
-        App.renderByFilter(todosArray[todo]);
-      }
-    }
+
+    const todosArray = JSON.parse(localStorage.getItem('todos'));
+    todosArray.forEach(todoItem => todoItem && App.renderByFilter(todoItem));
+
     count.innerText = todoList.querySelectorAll('li').length;
     const listItems = todoList.querySelectorAll('li');
     for (const listItem of listItems) {
