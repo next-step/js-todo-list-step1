@@ -2,7 +2,6 @@
   NOTE: 현재는 currentUser 를 default로 바로 등록하고 있지만,
         이후에는 DOM 요소로 user를 선택할 수 있게 수정해야한다.
 */
-import { EVENT_NAME, RENDER_COMMAND } from '../utils/constants.js';
 import { $, $$ } from '../utils/querySelector.js';
 
 export default class View {
