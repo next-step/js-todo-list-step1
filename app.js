@@ -27,7 +27,7 @@ const App = {
     return li;
   },
 
-  printTodo(todo) {
+  renderByFilter(todo) {
     let li;
     const selected = document.querySelector('.selected');
 
@@ -57,7 +57,7 @@ const App = {
 
     if (event.keyCode === ESC) {
       li.classList.remove('editing');
-      App.loadTodos();
+      App.render();
       return;
     }
     if (event.keyCode === ENTER) {
@@ -66,7 +66,7 @@ const App = {
           todosArray[i].value = li.querySelector('.edit').value;
           localStorage.setItem('todos', JSON.stringify(todosArray));
           li.classList.remove('editing');
-          App.loadTodos();
+          App.render();
           return;
         }
       }
@@ -81,13 +81,13 @@ const App = {
     input.addEventListener('keyup', App.handleInputEditing);
   },
 
-  loadTodos() {
+  render() {
     const todosArray = JSON.parse(localStorage.getItem('todos'));
 
     App.eraseTodo();
     for (const todo in todosArray) {
       if (todosArray[todo]) {
-        App.printTodo(todosArray[todo]);
+        App.renderByFilter(todosArray[todo]);
       }
     }
     count.innerText = todoList.querySelectorAll('li').length;
@@ -109,7 +109,7 @@ const App = {
       editing: ''
     });
     App.saveTodo(App.todos);
-    App.loadTodos();
+    App.render();
     event.target.value = '';
   },
 
@@ -139,7 +139,8 @@ const App = {
         }
       }
       localStorage.setItem('todos', JSON.stringify(todosArray));
-      App.loadTodos();
+      App.todos = todosArray;
+      App.render();
       return;
     }
     if (li.className === 'completed') {
@@ -151,7 +152,8 @@ const App = {
         }
       }
       localStorage.setItem('todos', JSON.stringify(todosArray));
-      App.loadTodos();
+      App.todos = todosArray;
+      App.render();
     }
   },
 
@@ -163,7 +165,7 @@ const App = {
     App.todos = deleteResult;
     localStorage.setItem('todos', JSON.stringify(App.todos));
     li.remove();
-    App.loadTodos();
+    App.render();
   },
 
   handleClickTodoList(event) {
@@ -184,7 +186,7 @@ const App = {
       condition.classList.remove('selected');
     }
     event.target.classList.add('selected');
-    App.loadTodos();
+    App.render();
   },
 
   init() {
@@ -192,7 +194,7 @@ const App = {
       localStorage.getItem('todos') === null
         ? []
         : JSON.parse(localStorage.getItem('todos'));
-    App.loadTodos();
+    App.render();
 
     newTodoTitle.addEventListener('keyup', App.handleKeyup);
     todoList.addEventListener('click', App.handleClickTodoList);
