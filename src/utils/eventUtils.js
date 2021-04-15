@@ -3,7 +3,7 @@
 */
 
 export function convertId(event) {
-    return findClosest(event).querySelector("#item-id").value;
+    return parseInt(findClosest(event).querySelector("#item-id").value);
 }
 
 export function getClassName(event) {

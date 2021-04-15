@@ -11,47 +11,42 @@ export default function TodoApp(div) {
 
   this.todoItems = JsonUtil.hasElement("items")? createItems(JsonUtil.getElement("items")) : [];
   this.todoList = new TodoList(this);
+  new TodoInput(this);
   this.idGenerator = JsonUtil.hasElement("idGenerator")? JsonUtil.getElement("idGenerator") : 0;
 
   this.render = () => {
-    this.setState(this.todoItems);
+    this.setState();
   }
 
-  this.setState = updatedItems => {
-    this.todoItems = updatedItems;
+  this.setState = () => {
     JsonUtil.setElement("items", this.todoItems);
     JsonUtil.setElement("idGenerator", this.idGenerator);
     this.todoList.setState(this.todoItems);
   };
 
-  const add = contents => {
+  this.add = contents => {
     const newTodoItem = new TodoItem(this.idGenerator++, contents);
     this.todoItems.push(newTodoItem);
-    this.setState(this.todoItems);
+    this.setState();
   }
-
-  this.todoInput = new TodoInput({onAdd : add}); 
   
   this.complete = targetId => {
-    this.todoItems.filter(item => item.match(targetId))
-        .forEach(item => item.complete());
-    this.setState(this.todoItems);
+    this.todoItems.find(item => item.match(targetId)).complete();
+    this.setState();
   }
 
   this.delete = targetId => {
     this.todoItems = this.todoItems.filter(item => !item.match(targetId));
-    this.setState(this.todoItems);
+    this.setState();
   }
 
-  this.editing = (targetId) => {
-    this.todoItems.filter(item => item.match(targetId))
-        .forEach(item => item.changeStatus());
-    this.setState(this.todoItems);
+  this.editing = targetId => {
+    this.todoItems.find(item => item.match(targetId)).changeStatus();
+    this.setState();
   }
 
   this.edit = (targetId, value) => {
-    this.todoItems.filter(item => item.match(targetId))
-        .forEach(item => item.edit(value));
-    this.setState(this.todoItems);
+    this.todoItems.find(item => item.match(targetId)).edit(value);
+    this.setState();
   }
 }

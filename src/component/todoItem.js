@@ -5,33 +5,18 @@ export function TodoItem(id, contents, status="view") {
     this.status = status;
 
     this.isCompleted = () => {
-      if (this.status === "completed") {
-        return true;
-      }
+      return this.status === "completed";
     }
 
     this.complete = () => {
-      if (this.status === "view") {
-        this.status = "completed";
-        return;
-      }
-      this.status = "view";
+      this.status = this.status === "view" ? "completed" : "view";
     }
 
     this.changeStatus = () => {
-      if (this.status === "view") {
-        this.status = "editing";
-        return;
-      }
-      if (this.status === "editing") {
-        this.status = "view";
-        return;
-      }
+      this.status = this.status === "view" ? "editing" : "view";
     }
 
-    this.match = matchId => {
-      return this.id == matchId;
-    }
+    this.match = matchId => this.id === matchId;
 
     this.edit = value => {
       this.text = value;
@@ -52,9 +37,11 @@ export function todoItemTemplate(item) {
 }
 
 export function createItems(items) {
-  return items.map(item => {
-    return new TodoItem(item.id, item.text, item.status);
-  });
+  return items.map(item => new TodoItem(item.id, item.text, item.status));
+}
+
+export const itemStatus = {
+
 }
 
 

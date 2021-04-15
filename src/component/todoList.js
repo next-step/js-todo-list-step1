@@ -34,7 +34,7 @@ export default function TodoList(app) {
     this.render(this.todoItems);
   }
 
-  const onClick = (event) => {
+  const onClick = event => {
     if (Util.checkClassName(event, "toggle")) {
       app.complete(Util.convertId(event));
     }
@@ -45,7 +45,7 @@ export default function TodoList(app) {
     }
   }
   
-  const onDClick = (event) => {
+  const onDClick = event => {
     if (Util.hasClosest(event) && Util.checkClosestClassName(event, "view")) {
       app.editing(Util.convertId(event));
     }

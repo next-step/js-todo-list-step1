@@ -4,7 +4,7 @@
 
 import { checkKey } from "../utils/eventUtils.js";
 
-export default function TodoInput({ onAdd }) {
+export default function TodoInput(app) {
   const $todoInput = document.querySelector("#new-todo-title");
 
   $todoInput.addEventListener("keydown", (event) => this.addTodoItem(event));
@@ -12,7 +12,7 @@ export default function TodoInput({ onAdd }) {
   this.addTodoItem = (event) => {
     const $newTodoTarget = event.target;
     if (checkKey(event, "Enter")) {
-      onAdd($newTodoTarget.value);
+      app.add($newTodoTarget.value);
       $newTodoTarget.value = "";
     }
   };
