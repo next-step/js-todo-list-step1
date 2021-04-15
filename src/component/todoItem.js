@@ -37,6 +37,9 @@ export function todoItemTemplate(item) {
 }
 
 export function createItems(items) {
+  if (items === null) {
+    return [];
+  }
   return items.map(item => new TodoItem(item.id, item.text, item.status));
 }
 

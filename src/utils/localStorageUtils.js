@@ -11,5 +11,5 @@ export function setElement(name, value) {
 }
 
 export function hasElement(name) {
-    return localStorage.getItem(name) != null || localStorage.getItem(name) == "[]";
+    return localStorage.getItem(name) !== null || localStorage.getItem(name) === "[]";
 }

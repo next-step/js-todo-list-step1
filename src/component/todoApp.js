@@ -9,12 +9,12 @@ import * as JsonUtil from "../utils/localStorageUtils.js";
 
 export default function TodoApp(div) {
 
-  this.todoItems = JsonUtil.hasElement("items")? createItems(JsonUtil.getElement("items")) : [];
+  this.todoItems = createItems(JsonUtil.getElement("items"));
+  this.idGenerator = JsonUtil.getElement("idGenerator") ?? 0;
   this.todoList = new TodoList(this);
-  new TodoInput(this);
-  this.idGenerator = JsonUtil.hasElement("idGenerator")? JsonUtil.getElement("idGenerator") : 0;
 
   this.render = () => {
+    new TodoInput(this);
     this.setState();
   }
 
