@@ -6,20 +6,8 @@ export default class TodoListView {
   }
 
   add(todo) {
-    const li = `
-                <li
-                data-id=${todo.id}
-                class=${todo.completed ? 'completed' : 'active'}>
-                  <div class="view">
-                    <input class="toggle"
-                            type="checkbox"
-                            ${todo.completed ? 'checked' : ''}/>
-                    <label class="label">${todo.content}</label>
-                    <button class="destroy"></button>
-                  </div>
-                  <input class="edit" value="" />
-                </li>`;
-    this.el.insertAdjacentHTML('beforeend', li);
+    const newTodo = this._createTodo(todo);
+    this.el.appendChild(newTodo);
   }
 
   remove(todo) {
@@ -44,19 +32,9 @@ export default class TodoListView {
   }
 
   update(todo) {
-    const li = this._getTodoById(todo.id);
-    if (!li) {
-      return;
-    }
-    li.className = todo.completed ? 'completed' : 'active';
-    li.innerHTML = `
-                    <div class="view">
-                      <input class="toggle" type="checkbox"
-                        ${todo.completed ? 'checked' : ''}/>
-                      <label class="label">${todo.content}</label>
-                      <button class="destroy"></button>
-                    </div>
-                    <input class="edit" value="" />`;
+    const oldTodo = this._getTodoById(todo.id);
+    const newTodo = this._createTodo(todo);
+    this.el.replaceChild(newTodo, oldTodo);
   }
 
   filterAll() {
@@ -156,5 +134,20 @@ export default class TodoListView {
 
   _getTodoById(id) {
     return $(`li[data-id='${id}']`, this.el);
+  }
+
+  _createTodo(todo) {
+    const li = document.createElement('li');
+    li.className = todo.completed ? 'completed' : 'active';
+    li.dataset.id = todo.id;
+    li.innerHTML = `
+                    <div class="view">
+                      <input class="toggle" type="checkbox"
+                        ${todo.completed ? 'checked' : ''}/>
+                      <label class="label">${todo.content}</label>
+                      <button class="destroy"></button>
+                    </div>
+                    <input class="edit" value="" />`;
+    return li;
   }
 }
