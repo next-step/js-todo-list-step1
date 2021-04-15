@@ -34,13 +34,13 @@ class TodoList extends Observer {
     });
 
     // 투두 수정 완료
-    this.container.addEventListener('keyup', ({ key }) => {
+    this.container.addEventListener('keydown', ({ key }) => {
       if (key === 'Escape' || key === 'Enter') {
         const $editList = this.container.querySelectorAll(SELECTOR.EDIT_INPUT);
         const $activeInput = Array.from($editList).find(
           (element) => element === document.activeElement,
         );
-        $activeInput && this.offEditMode($activeInput); // 현재 focused 상태의 input이 있을 경우
+        $activeInput && this.offEditMode($activeInput, key); // 현재 focused 상태의 input이 있을 경우
       }
     });
   }
@@ -63,13 +63,13 @@ class TodoList extends Observer {
    * Edit Mode 끝내주는 메서드
    * @param {EventTarget} target
    */
-  offEditMode(target) {
+  offEditMode(target, key) {
     const $li = target.closest(NODE_NAME.LIST);
     const $label = $li.querySelector(NODE_NAME.LABEL);
     const value = target.value;
 
     // 내용이 변경 되었을 경우
-    if (value !== $label.innerText && value.length > 0) {
+    if (key === 'Enter' && value !== $label.innerText && value.length > 0) {
       $label.innerText = value;
       this.onUpdateTodo(+$li.dataset.id, value);
     }
