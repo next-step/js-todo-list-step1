@@ -37,6 +37,7 @@ export default function TodoList(app) {
   const onClick = event => {
     if (Util.checkClassName(event, "toggle")) {
       app.complete(Util.convertId(event));
+      return;
     }
     if (Util.checkClassName(event, "destroy")) {
       if(confirm("정말로 삭제하시겠습니까?")){
@@ -58,6 +59,7 @@ export default function TodoList(app) {
     }
     if (Util.checkKey(event, "Enter")) {
       app.edit(Util.convertId(event), value);
+      return;
     }
     if (Util.checkKey(event, "Escape")) {
       app.editing(Util.convertId(event));
