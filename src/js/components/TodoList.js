@@ -62,6 +62,7 @@ class TodoList extends Observer {
   /**
    * Edit Mode 끝내주는 메서드
    * @param {EventTarget} target
+   * @param {'Enter' | 'Escape'} key
    */
   offEditMode(target, key) {
     const $li = target.closest(NODE_NAME.LIST);
