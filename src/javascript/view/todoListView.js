@@ -38,39 +38,15 @@ export default class TodoListView {
   }
 
   filterAll() {
-    const todos = $$('li', this._todoList);
-    todos.forEach((todo) => {
-      todo.style.display = 'block';
-    });
-    return todos.length;
+    return this._filter('all');
   }
 
   filterActive() {
-    let activeCount = 0;
-    const todos = $$('li', this._todoList);
-    todos.forEach((todo) => {
-      if (todo.classList.contains('completed')) {
-        todo.style.display = 'none';
-      } else {
-        activeCount++;
-        todo.style.display = 'block';
-      }
-    });
-    return activeCount;
+    return this._filter('active');
   }
 
   filterCompleted() {
-    let completedCount = 0;
-    const todos = $$('li', this._todoList);
-    todos.forEach((todo) => {
-      if (todo.classList.contains('completed')) {
-        todo.style.display = 'block';
-        completedCount++;
-      } else {
-        todo.style.display = 'none';
-      }
-    });
-    return completedCount;
+    return this._filter('completed');
   }
 
   hide(todo) {
@@ -149,5 +125,19 @@ export default class TodoListView {
                     </div>
                     <input class="edit" value="" />`;
     return li;
+  }
+
+  _filter(selected) {
+    const todos = $$('li', this._todoList);
+    let count = 0;
+    todos.forEach((todo) => {
+      if (selected == 'all' || todo.classList.contains(selected)) {
+        todo.style.display = 'block';
+        count++;
+      } else {
+        todo.style.display = 'none';
+      }
+    });
+    return count;
   }
 }
