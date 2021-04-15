@@ -43,7 +43,7 @@ export default class Controller {
       });
   }
 
-  toggleCheckBox(todoId) {
+  toggleComplete(todoId) {
     this.model
       .updateStatus(todoId, this.view.getCurrentUser())
       .then((todo) => {
@@ -121,7 +121,7 @@ export default class Controller {
       this.remove(todoId);
     });
     this.view.setEventListener(EVENT_NAME.TOGGLE, (todoId) => {
-      this.toggleCheckBox(todoId);
+      this.toggleComplete(todoId);
     });
     this.view.setEventListener(EVENT_NAME.SELECT_ALL, () => {
       this.showAll();
