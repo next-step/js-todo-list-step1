@@ -2,18 +2,18 @@ import { $ } from '../utils/querySelector.js';
 
 export default class InputView {
   constructor() {
-    this.el = $('#new-todo-title');
+    this._input = $('#new-todo-title');
   }
 
   setAddEvent(callback) {
-    this.el.addEventListener('keypress', (event) => {
+    this._input.addEventListener('keypress', (event) => {
       if (event.key === 'Enter') {
-        callback(this.el.value);
+        callback(this._input.value);
       }
     });
   }
 
   clear() {
-    this.el.value = '';
+    this._input.value = '';
   }
 }

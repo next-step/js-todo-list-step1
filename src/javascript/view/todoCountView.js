@@ -2,10 +2,10 @@ import { $ } from '../utils/querySelector.js';
 
 export default class TodoCountView {
   constructor() {
-    this.el = $('.filters');
+    this._filterContainer = $('.filters');
     this._todoCount = 0;
     this._countView = $('.todo-count').children[0];
-    this._currentFilterView = $('.all', this.el);
+    this._currentFilterView = $('.all', this._filterContainer);
     this._currentFilter = 'all';
   }
 
@@ -41,7 +41,7 @@ export default class TodoCountView {
   }
 
   setSelectAllEvent(callback) {
-    this.el.addEventListener('click', (event) => {
+    this._filterContainer.addEventListener('click', (event) => {
       const filter = event.target.closest('.all');
       if (!filter) {
         return;
@@ -52,7 +52,7 @@ export default class TodoCountView {
   }
 
   setSelectActiveEvent(callback) {
-    this.el.addEventListener('click', (event) => {
+    this._filterContainer.addEventListener('click', (event) => {
       const filter = event.target.closest('.active');
       if (!filter) {
         return;
@@ -63,7 +63,7 @@ export default class TodoCountView {
   }
 
   setSelectCompletedEvent(callback) {
-    this.el.addEventListener('click', (event) => {
+    this._filterContainer.addEventListener('click', (event) => {
       const filter = event.target.closest('.completed');
       if (!filter) {
         return;

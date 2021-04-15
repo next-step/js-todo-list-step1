@@ -2,12 +2,12 @@ import { $, $$ } from '../utils/querySelector.js';
 
 export default class TodoListView {
   constructor() {
-    this.el = $('#todo-list');
+    this._todoList = $('#todo-list');
   }
 
   add(todo) {
     const newTodo = this._createTodo(todo);
-    this.el.appendChild(newTodo);
+    this._todoList.appendChild(newTodo);
   }
 
   remove(todo) {
@@ -34,11 +34,11 @@ export default class TodoListView {
   update(todo) {
     const oldTodo = this._getTodoById(todo.id);
     const newTodo = this._createTodo(todo);
-    this.el.replaceChild(newTodo, oldTodo);
+    this._todoList.replaceChild(newTodo, oldTodo);
   }
 
   filterAll() {
-    const todos = $$('li', this.el);
+    const todos = $$('li', this._todoList);
     todos.forEach((todo) => {
       todo.style.display = 'block';
     });
@@ -47,7 +47,7 @@ export default class TodoListView {
 
   filterActive() {
     let activeCount = 0;
-    const todos = $$('li', this.el);
+    const todos = $$('li', this._todoList);
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'none';
@@ -61,7 +61,7 @@ export default class TodoListView {
 
   filterCompleted() {
     let completedCount = 0;
-    const todos = $$('li', this.el);
+    const todos = $$('li', this._todoList);
     todos.forEach((todo) => {
       if (todo.classList.contains('completed')) {
         todo.style.display = 'block';
@@ -82,7 +82,7 @@ export default class TodoListView {
   }
 
   setRemoveEvent(callback) {
-    this.el.addEventListener('click', (event) => {
+    this._todoList.addEventListener('click', (event) => {
       if (!event.target.closest('.destroy')) {
         return;
       }
@@ -92,7 +92,7 @@ export default class TodoListView {
   }
 
   setToggleEvent(callback) {
-    this.el.addEventListener('click', (event) => {
+    this._todoList.addEventListener('click', (event) => {
       if (!event.target.closest('.toggle')) {
         return;
       }
@@ -102,7 +102,7 @@ export default class TodoListView {
   }
 
   setEditStartEvent(callback) {
-    this.el.addEventListener('dblclick', (event) => {
+    this._todoList.addEventListener('dblclick', (event) => {
       const todo = event.target.closest('li');
       if (!todo) {
         return;
@@ -112,7 +112,7 @@ export default class TodoListView {
   }
 
   setEditEndEvent(callback) {
-    this.el.addEventListener('focusout', (event) => {
+    this._todoList.addEventListener('focusout', (event) => {
       const todo = event.target.closest('li');
       if (!todo) {
         return;
@@ -122,7 +122,7 @@ export default class TodoListView {
   }
 
   setEditApplyEvent(callback) {
-    this.el.addEventListener('keydown', (event) => {
+    this._todoList.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') {
         return;
       }
@@ -133,7 +133,7 @@ export default class TodoListView {
   }
 
   _getTodoById(id) {
-    return $(`li[data-id='${id}']`, this.el);
+    return $(`li[data-id='${id}']`, this._todoList);
   }
 
   _createTodo(todo) {
