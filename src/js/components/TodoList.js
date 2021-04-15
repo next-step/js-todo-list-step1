@@ -1,4 +1,9 @@
-import { SELECTOR, NODE_NAME, CLASS_NAME } from '../utils/constant.js';
+import {
+  SELECTOR,
+  NODE_NAME,
+  CLASS_NAME,
+  KEY_NAME,
+} from '../utils/constant.js';
 import { todoListTemplate } from '../utils/templates.js';
 import Observer from '../libs/Observer.js';
 
@@ -35,7 +40,7 @@ class TodoList extends Observer {
 
     // 투두 수정 완료
     this.container.addEventListener('keydown', ({ key }) => {
-      if (key === 'Escape' || key === 'Enter') {
+      if (key === KEY_NAME.ENTER || key === KEY_NAME.ESC) {
         const $editList = this.container.querySelectorAll(SELECTOR.EDIT_INPUT);
         const $activeInput = Array.from($editList).find(
           (element) => element === document.activeElement,
@@ -70,7 +75,11 @@ class TodoList extends Observer {
     const value = target.value;
 
     // 내용이 변경 되었을 경우
-    if (key === 'Enter' && value !== $label.innerText && value.length > 0) {
+    if (
+      key === KEY_NAME.ENTER &&
+      value !== $label.innerText &&
+      value.length > 0
+    ) {
       $label.innerText = value;
       this.onUpdateTodo(+$li.dataset.id, value);
     }

@@ -26,3 +26,8 @@ export const STATUS = {
   COMPLETED: 'completed',
   ACTIVE: 'active',
 };
+
+export const KEY_NAME = {
+  ENTER: 'Enter',
+  ESC: 'Escape',
+};
