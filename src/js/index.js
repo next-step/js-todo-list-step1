@@ -1,207 +1,188 @@
 const TODOITEMS = "todoItems";
+const PENDING = "pending";
+const COMPLETED = "completed";
 
 const todoInput = document.getElementById("new-todo-title");
 const todoList = document.getElementById("todo-list");
-const todoCount = document.querySelector(".todo-count");
-const countingNum = todoCount.querySelector("strong");
+const todoCount = document.querySelector(".todo-count strong");
 
-const completeBtn = document.querySelector(".completed");
+const showAllBtn = document.querySelector(".all");
+const completedBtn = document.querySelector(".completed");
 const pendingBtn = document.querySelector(".active");
 
-const todoItemList = [];
-let stateList = {};
+let todoItemList = [];
 
-let countItems = 0;
+const todoItemTemplate = (id, inputText, completed) =>
+	`<li id=${id} class=${completed === COMPLETED ? "completed" : "pending"}>
+	<div class="view">
+		<input class="toggle" type="checkbox" id=${id} ${
+		completed === COMPLETED ? "checked" : ""
+	}>
+		<label class="label">${inputText}</label>
+		<button class="destroy" id=${id}></button>
+	</div>
+	<input class="edit" value=${inputText}>
+</li>
+`;
 
-// 추가하는 리스트 구조
-function buildElement(inputText) {
-	countItems++;
-	countingNum.textContent = countItems;
+// 할 일들의 개수
+function setTodoNum() {
+	const todoNum = todoList.children.length;
+	todoCount.textContent = todoNum;
+}
 
-	const id = Date.now();
+// 완료 여부 확인
+function isCompleted(toggle) {
+	if (!toggle.checked) {
+		return false;
+	}
+	return true;
+}
 
-	const list = document.createElement("li");
-	const view = document.createElement("div");
-	const checkBox = document.createElement("input");
-	const label = document.createElement("label");
-	const finBtn = document.createElement("button");
-	const edit = document.createElement("input");
+function itemEventTrigger() {
+	todoList.addEventListener("click", setItemState);
+	todoList.addEventListener("click", removeItem);
+	todoList.addEventListener("dblclick", editItem);
+	todoList.addEventListener("keyup", finishEdit);
+}
 
-	todoList.appendChild(list);
-	list.appendChild(view);
-	list.appendChild(edit);
-	view.appendChild(checkBox);
-	view.appendChild(label);
-	view.appendChild(finBtn);
+// 리스트 랜더링
+function render(todoItems) {
+	const mergedTemplate = todoItems.map((item) =>
+		todoItemTemplate(item.id, item.inputText, item.completed)
+	);
+	todoList.innerHTML = mergedTemplate.join("");
+}
 
-	list.className = "false";
-	list.id = id;
-	view.className = "view";
-	edit.className = "edit";
-	checkBox.className = "toggle";
-	checkBox.id = id;
-	checkBox.type = "checkbox";
-	label.className = "label";
-	finBtn.className = "destroy";
-	finBtn.id = id;
+function updatedTodoItems(id, inputText, completed) {
+	const todoItemInfo = {
+		id,
+		inputText,
+		completed,
+	};
+	todoItemList.push(todoItemInfo);
+	return todoItemList;
+}
 
-	label.textContent = inputText;
-	edit.setAttribute("value", inputText);
-
-	checkBox.addEventListener("click", checkFin);
-	finBtn.addEventListener("click", removeItem);
-	label.addEventListener("dblclick", editItem);
-	edit.addEventListener("keydown", finEdit);
-
-	const item = document.querySelector(`[id="${id}"]`);
-	todoItemList.push(item);
-	stateList[id] = "Pending";
-	todoInput.value = "";
+// 할 일 추가
+function addItem(id, inputText, completed) {
+	todoItemList = updatedTodoItems(id, inputText, completed);
+	render(todoItemList);
+	itemEventTrigger();
+	setTodoNum();
 	saveData();
 }
 
-// 아이템 추가
-const addItem = (event) => {
-	if (!event.isComposing && event.key === "Enter") {
-		const inputText = todoInput.value;
-		if (inputText !== "") {
-			buildElement(inputText);
-		}
+// 할 일 상태 설정
+function setItemState(event) {
+	if (event.target.className === "toggle") {
+		//event.target.classList.contains("toggle")
+		const toggle = event.target;
+		toggle.toggleAttribute("checked");
+		const todoItem = toggle.closest("li");
+		todoItem.className = isCompleted(toggle) ? COMPLETED : PENDING;
+		const idx = todoItemList.findIndex((item) => item.id === todoItem.id);
+		todoItemList[idx].completed = isCompleted(toggle) ? COMPLETED : PENDING;
+		saveData();
 	}
-};
-
-// 체크 버튼
-function checkFin(event) {
-	const checkBox = event.target;
-	const list = checkBox.closest("li");
-	if (list.className === "false") {
-		list.className = "completed";
-		checkBox.setAttribute("checked", true);
-	} else {
-		list.className = "false";
-		checkBox.setAttribute("checked", false);
-	}
-	setState();
 }
 
-// 아이템 제거
+// 할 일 삭제
 function removeItem(event) {
-	const finBtn = event.target;
-	const list = finBtn.closest("li");
-	console.log(list);
-	todoList.removeChild(list);
-	countItems--;
-	countingNum.textContent = countItems;
-	const idx = todoItemList.indexOf(list);
-	todoItemList.splice(idx, 1);
-	delete stateList[list.id];
-	saveData();
+	if (event.target.className === "destroy") {
+		const destroy = event.target;
+		const todoItem = destroy.closest("li");
+		todoList.removeChild(todoItem);
+		todoItemList = todoItemList.filter((item) => item.id !== todoItem.id);
+		setTodoNum();
+		saveData();
+	}
 }
 
-// 아이템 수정
+// 할 일 수정
 function editItem(event) {
-	const label = event.target;
-	const list = label.closest("li");
-	list.classList.add("editing");
+	if (event.target.className === "label") {
+		const label = event.target;
+		const todoItem = label.closest("li");
+		todoItem.classList.add("editing");
+	}
 }
 
 // 수정 종료
-function finEdit(event) {
-	const edit = event.target;
-	const label = edit.previousSibling.querySelector("label");
-	const list = edit.closest("li");
+function finishEdit(event) {
+	const todoItem = event.target.closest("li");
+	if (todoItem.classList.contains("editing")) {
+		const edit = event.target;
+		const label = todoItem.querySelector("label");
+		const editText = edit.value;
 
-	const editText = edit.value;
-	if (event.key === "Escape") {
-		list.classList.remove("editing");
-		edit.setAttribute("value", editText);
-		edit.value = label.textContent;
-	}
-	if (!event.isComposing && event.key === "Enter") {
-		list.classList.remove("editing");
-		label.textContent = editText;
-	}
-}
-
-// State
-function setState() {
-	if (todoItemList) {
-		todoItemList.map((item) => {
-			if (item.className === "false") {
-				stateList[item.id] = "Pending";
-			} else {
-				stateList[item.id] = "Completed";
-			}
-		});
-	}
-	saveData();
-}
-
-function setComplete(event) {
-	todoList.innerHTML = "";
-	todoItemList.forEach((item) => {
-		if (stateList[item.id] === "Completed") {
-			todoList.appendChild(item);
+		if (event.key === "Escape") {
+			todoItem.classList.remove("editing");
+			edit.value = label.textContent;
 		}
-	});
-	const count = todoList.children.length;
-	countItems = count;
-	countingNum.textContent = countItems;
-	saveData();
+
+		if (event.key === "Enter") {
+			todoItem.classList.remove("editing");
+			edit.setAttribute("value", editText);
+			label.textContent = editText;
+		}
+	}
 }
 
-function setPending(event) {
-	todoList.innerHTML = "";
-	todoItemList.forEach((item) => {
-		if (stateList[item.id] === "Pending") {
-			todoList.appendChild(item);
+// 할 일 입력
+function enterItem(event) {
+	if (event.key === "Enter") {
+		const inputText = todoInput.value;
+		if (inputText !== "") {
+			const id = Date.now().toString();
+			addItem(id, inputText, PENDING);
+			todoInput.value = "";
 		}
-	});
-	const count = todoList.children.length;
-	countItems = count;
-	countingNum.textContent = countItems;
-	saveData();
+	}
+}
+
+// 상태별 보기 버튼 설정
+function showProgress(event) {
+	const completedList = todoItemList.filter(
+		(item) => item.completed === COMPLETED
+	);
+	const pendingList = todoItemList.filter(
+		(item) => item.completed === PENDING
+	);
+	if (event.target === showAllBtn) {
+		render(todoItemList);
+	}
+	if (event.target === completedBtn) {
+		render(completedList);
+	}
+	if (event.target === pendingBtn) {
+		render(pendingList);
+	}
+	setTodoNum();
 }
 
 // localStorage
 function saveData() {
-	const stringItems = todoItemList.map((item) => item.outerHTML);
-	localStorage.setItem(TODOITEMS, JSON.stringify({ stringItems, stateList }));
+	localStorage.setItem(TODOITEMS, JSON.stringify(todoItemList));
 }
 
 function loadData() {
 	const loadedItems = localStorage.getItem(TODOITEMS);
 	if (loadedItems !== null) {
 		const parsedItems = JSON.parse(loadedItems);
-		parsedItems.stringItems.forEach((item) => {
-			const htmlObj = new DOMParser().parseFromString(item, "text/html");
-			const list = htmlObj.querySelector("li");
-			todoList.appendChild(list);
-
-			const checkBox = list.querySelector(".toggle");
-			const finBtn = list.querySelector(".destroy");
-			const label = list.querySelector(".label");
-			const edit = list.querySelector(".edit");
-
-			const id = list.id;
-
-			checkBox.addEventListener("click", checkFin);
-			finBtn.addEventListener("click", removeItem);
-			label.addEventListener("dblclick", editItem);
-			edit.addEventListener("keydown", finEdit);
-			todoItemList.push(list);
+		parsedItems.map((item) => {
+			addItem(item.id, item.inputText, item.completed);
 		});
-		stateList = parsedItems.stateList;
-		console.log(stateList);
 	}
 }
 
 function init() {
 	loadData();
 
-	todoInput.addEventListener("keydown", addItem);
-	completeBtn.addEventListener("click", setComplete);
-	pendingBtn.addEventListener("click", setPending);
+	todoInput.addEventListener("keyup", enterItem);
+	showAllBtn.addEventListener("click", showProgress);
+	completedBtn.addEventListener("click", showProgress);
+	pendingBtn.addEventListener("click", showProgress);
 }
 
 init();
