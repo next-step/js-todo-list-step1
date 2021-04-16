@@ -1,28 +1,46 @@
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
+import TodoItem from './TodoItem.js';
 
 function TodoApp() {
-  // console.log(this); // * this는 TodoApp{}이다.
-
   this.todoItems = [];
-  // const todoItems = []; // * 이거와 무슨 차이? 그냥 const로 하면 지역변수라 날아가나?
 
-  const todoInput = new TodoInput({
+  const uniqueId = (function () {
+    let id = 0;
+    return function () {
+      return id++;
+    };
+  })();
+
+  new TodoInput({
     onAdd: (contents) => {
-      const newTodoItem = new this.todoItems(contents);
+      const newTodoItem = new TodoItem(contents, uniqueId());
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
     },
   });
 
-  const todoList = new TodoList({});
+  const todoList = new TodoList({
+    onCheck: (id) => {
+      this.todoItems.map((item) => {
+        if (item.id == id) {
+          item.completed = !item.completed;
+        }
+      });
+      this.setState(this.todoItems);
+    },
+    // onEdit:,
+    // onDelete:
+  });
 
   // const todoCount = new TodoCount({});
 
   this.setState = (updatedItems) => {
+    // console.log(this.todoItems);
+    // console.log(updatedItems);
     this.todoItems = updatedItems;
     todoList.setState(this.todoItems);
   };
 }
 
-export default TodoApp; // default의 의미는?
+export default TodoApp;

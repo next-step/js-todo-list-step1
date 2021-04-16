@@ -5,7 +5,7 @@ function TodoInput({ onAdd }) {
 
   this.addTodoItem = (event) => {
     const $newTodoTarget = event.target;
-    if (this.isValid(event, $newTodoTarget.value)) {
+    if (event.key === 'Enter') {
       onAdd($newTodoTarget.value);
       $newTodoTarget.value = '';
     }
