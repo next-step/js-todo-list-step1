@@ -10,39 +10,19 @@ window.onload = () => {
     // 추가 
     function addTodoList(event) {
         // 입력값이 엔터일 경우에만
-        if(event.key !== 'Enter'){
+        if(event.key !== 'Enter' || newTodoInput.value == ''){
             return;
         }
 
-        var li = document.createElement('li');
-
-        var viewDiv = document.createElement('div');
-        viewDiv.setAttribute('class', 'view');
-
-        var toggleInput = document.createElement('input');
-        toggleInput.setAttribute('class', 'toggle');
-        toggleInput.setAttribute('type', 'checkbox');
-
-        var label = document.createElement('label');
-        label.setAttribute('class', 'label');
-        label.innerHTML = newTodoInput.value;
-
-        var destroyButton = document.createElement('button');
-        destroyButton.setAttribute('class', 'destroy');
-
-        var editInput = document.createElement('input');
-        editInput.setAttribute('class', 'edit');
-        editInput.setAttribute('value', newTodoInput.value);
-
-        viewDiv.appendChild(toggleInput);
-        viewDiv.appendChild(label);
-        viewDiv.appendChild(destroyButton);
-
-        li.appendChild(viewDiv);
-        li.appendChild(editInput);
-
-        // todoList > item 추가
-        todoList.appendChild(li);
+        todoList.innerHTML += `
+        <li>
+            <div class="view">
+                <input class="toggle" type="checkbox">
+                <label class="label">${newTodoInput.value}</label>
+                <button class="destroy"></button>
+            </div>
+            <input class="edit" value="${newTodoInput.value}">
+        </li>`;
 
         // 입력 input 비우기
         newTodoInput.value = '';
@@ -80,11 +60,14 @@ window.onload = () => {
 
     // 체크
     function toggleTodoList(event) {
+        const toggle = event.target;
         const toggleParentNode = event.target.parentNode;
         const {parentNode} = toggleParentNode;
         if (event.target.checked) {
+            toggle.setAttribute('checked', true);
             parentNode.classList.add('completed');
         } else {
+            toggle.removeAttribute('checked');
             parentNode.classList.remove('completed');
         }
     }
@@ -105,7 +88,7 @@ window.onload = () => {
 
         switch (event.key) {
             case 'Escape':
-                event.target.value = '';
+                event.target.value = event.target.closest('li').querySelector('label').innerText;
                 parentNode.classList.remove('editing');
                 break;
             case 'Enter':
@@ -113,7 +96,6 @@ window.onload = () => {
                 parentNode.classList.remove('editing');
                 break;
           }
-
     }
 
     // 필터 클릭
@@ -125,6 +107,8 @@ window.onload = () => {
         }
         event.target.classList.add('selected');
 
+        let count = 0;
+
         // 선택한 filter에 따른 액션
         switch (true) {
             case event.target.classList.contains('all'):
@@ -132,6 +116,7 @@ window.onload = () => {
                 for (let i = 0; i < todoList.children.length; i++) {
                     todoList.children[i].classList.remove('hidden');
                 }
+                totalCounting();
                 break;
             case event.target.classList.contains('active'):
                 console.log('active');
@@ -140,18 +125,22 @@ window.onload = () => {
                         todoList.children[i].classList.add('hidden');
                     } else {
                         todoList.children[i].classList.remove('hidden');
+                        count++;
                     }
                 }
+                totalCount.innerHTML = count;
                 break;           
             case event.target.classList.contains('completed'):
                 console.log('completed');
                 for (let i = 0; i < todoList.children.length; i++) {
                     if (todoList.children[i].classList.contains('completed')) {
                         todoList.children[i].classList.remove('hidden');
+                        count++;
                     } else {
                         todoList.children[i].classList.add('hidden');
                     }
                 }
+                totalCount.innerHTML = count;
                 break;
           }
     }
