@@ -1,7 +1,8 @@
-const todoInput = document.querySelector('.new-todo');
-const todoCount = document.querySelector('.todo-count strong');
-const activeTodosBtn = document.querySelector('.active');
-const completedTodosBtn = document.querySelector('.completed');
+const $ = (selector) => document.querySelector(selector);
+const $todoInput = $('.new-todo');
+const $todoCount = $('.todo-count strong');
+const $activeTodosBtn = $('.active');
+const $completedTodosBtn = $('.completed');
 
 let todos = [];
 
@@ -43,9 +44,9 @@ const createTodo = (inputValue) => {
 }
 
 const handleSubmit = (e) => {
-  if (todoInput.value && e.keyCode === 13){
-    createTodo(todoInput.value)
-    todoInput.value = '';
+  if ($todoInput.value && e.key === 'Enter'){
+    createTodo($todoInput.value)
+    $todoInput.value = '';
   }
 }
 
@@ -81,11 +82,11 @@ const handleEditDoubleClick = (e) => {
   targetLi.classList.add('editing');
   // 수정하다가 esc와 enter 누르는 것에 따라 로직처리
   editInput.addEventListener('keyup', (e2) => {
-    if (e2.keyCode === 27) {//esc
+    if (e2.key === 'Escape') {
       targetLi.classList.remove('editing');
       editInput.value = targetLabel.innerHTML;
     }
-    if (e2.keyCode === 13){//enter
+    if (e2.key === 'Enter'){
       targetLi.classList.remove('editing');
       targetLabel.innerHTML = editInput.value;
       const theObj = todos.find(todo => todo.id === (targetLi.id));
@@ -96,7 +97,7 @@ const handleEditDoubleClick = (e) => {
 }
 
 const countTodos = () => {
-  todoCount.innerHTML = todos.length;
+  $todoCount.innerHTML = todos.length;
 }
 
 const saveTodos = () => {
@@ -115,8 +116,8 @@ const loadTodos = () => {
 
 const init = () => {
   loadTodos();
-  todoInput.addEventListener('keyup', handleSubmit); //인풋 입력하고 엔터 누를 시 submit
-  // activeTodosBtn.addEventListener('click', () => console.log('hey')); //마지막 요구사항 미완
+  $todoInput.addEventListener('keyup', handleSubmit); //인풋 입력하고 엔터 누를 시 submit
+  // $activeTodosBtn.addEventListener('click', () => console.log('hey')); //마지막 요구사항 미완
 }
 
 init();
