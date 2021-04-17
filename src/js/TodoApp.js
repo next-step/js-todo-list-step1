@@ -29,7 +29,14 @@ function TodoApp() {
       });
       this.setState(this.todoItems);
     },
-    // onEdit:,
+    onEdit: (id) => {
+      this.todoItems.map((item) => {
+        if (item.id == id) {
+          item.editing = !item.editing;
+        }
+      });
+      this.setState(this.todoItems);
+    },
     // onDelete:
   });
 

@@ -3,6 +3,7 @@ function TodoItem(contents, id) {
   this.id = id;
   // this.completed = 'false';
   this.completed = false;
+  this.editing = false;
 }
 
 export default TodoItem;
