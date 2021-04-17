@@ -148,40 +148,50 @@ class TodoList {
 class TodoStatusContainer {
   constructor() {
     const container = document.querySelector(".count-container");
-    container
-      .getElementsByClassName(TodoItem.ACTIVE)[0]
-      .addEventListener("click", (e) => {
-        e.preventDefault();
-        const list = document.getElementById("todo-list");
-        list.querySelectorAll("li").forEach((li) => {
-          if (!li.classList.contains(TodoItem.ACTIVE))
-            li.style.display = "none";
-          else li.style.display = "";
-        });
-        this.setState();
+    const activeFilter = container.getElementsByClassName(TodoItem.ACTIVE)[0];
+    const completedFilter = container.getElementsByClassName(
+      TodoItem.COMPLETED
+    )[0];
+    const allFilter = container.getElementsByClassName("all")[0];
+    activeFilter.addEventListener("click", (e) => {
+      e.preventDefault();
+      activeFilter.classList.add("selected");
+      completedFilter.classList.remove("selected");
+      allFilter.classList.remove("selected");
+
+      const list = document.getElementById("todo-list");
+      list.querySelectorAll("li").forEach((li) => {
+        if (!li.classList.contains(TodoItem.ACTIVE)) li.style.display = "none";
+        else li.style.display = "";
       });
-    container
-      .getElementsByClassName(TodoItem.COMPLETED)[0]
-      .addEventListener("click", (e) => {
-        e.preventDefault();
-        const list = document.getElementById("todo-list");
-        list.querySelectorAll("li").forEach((li) => {
-          if (!li.classList.contains(TodoItem.COMPLETED))
-            li.style.display = "none";
-          else li.style.display = "";
-        });
-        this.setState();
+      this.setState();
+    });
+    completedFilter.addEventListener("click", (e) => {
+      e.preventDefault();
+      activeFilter.classList.remove("selected");
+      completedFilter.classList.add("selected");
+      allFilter.classList.remove("selected");
+
+      const list = document.getElementById("todo-list");
+      list.querySelectorAll("li").forEach((li) => {
+        if (!li.classList.contains(TodoItem.COMPLETED))
+          li.style.display = "none";
+        else li.style.display = "";
       });
-    container
-      .getElementsByClassName("all")[0]
-      .addEventListener("click", (e) => {
-        e.preventDefault();
-        const list = document.getElementById("todo-list");
-        list.querySelectorAll("li").forEach((li) => {
-          li.style.display = "";
-        });
-        this.setState();
+      this.setState();
+    });
+    allFilter.addEventListener("click", (e) => {
+      e.preventDefault();
+      activeFilter.classList.remove("selected");
+      completedFilter.classList.remove("selected");
+      allFilter.classList.add("selected");
+
+      const list = document.getElementById("todo-list");
+      list.querySelectorAll("li").forEach((li) => {
+        li.style.display = "";
       });
+      this.setState();
+    });
   }
   setState() {
     const list = document.getElementById("todo-list");
