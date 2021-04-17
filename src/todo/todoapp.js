@@ -1,8 +1,10 @@
+import { $, $$ } from "../util/domSelection.js";
+import { DAO } from "../datastore/datastore.js";
 class TodoApp {
   constructor(todoItemArray) {
     this.todoItemArray = todoItemArray;
 
-    const newTodoInput = document.getElementById("new-todo-title");
+    const newTodoInput = $("#new-todo-title");
     newTodoInput.addEventListener("keydown", (e) => {
       if (e.key == "Enter") {
         this.addItem(newTodoInput.value);
@@ -10,10 +12,8 @@ class TodoApp {
       }
     });
   }
-  lordData() {
-    const localStoredArray = JSON.parse(
-      "[" + localStorage.getItem("my-todo-list") + "]"
-    );
+  loadData() {
+    const localStoredArray = DAO.loadData();
     localStoredArray.forEach((item) => {
       this.todoItemArray.push(new TodoItem(item.data, item.state));
     });
@@ -47,7 +47,7 @@ class TodoApp {
     if (this.todoStatusContainer) {
       this.todoStatusContainer.setState();
     }
-    localStorage.setItem("my-todo-list", this.todoItemArray);
+    DAO.saveData(this.todoItemArray);
   }
 }
 
@@ -72,10 +72,10 @@ class TodoList {
   constructor(todoApp) {
     this.todoApp = todoApp;
 
-    const list = document.getElementById("todo-list");
+    const list = $("#todo-list");
     list.addEventListener("click", function (e) {
       if (e.target && e.target.className == "toggle") {
-        const targetLi = e.target.parentNode.parentNode;
+        const targetLi = e.target.closest("li");
         todoApp.updateItemState(
           targetLi.dataset.index,
           targetLi.classList.toggle(TodoItem.COMPLETED)
@@ -85,24 +85,23 @@ class TodoList {
     });
     list.addEventListener("click", function (e) {
       if (e.target && e.target.className == "destroy") {
-        const targetLi = e.target.parentNode.parentNode;
+        const targetLi = e.target.closest("li");
         targetLi.outerHTML = "";
         todoApp.deleteItem(targetLi.dataset.index);
       }
     });
     list.addEventListener("dblclick", function (e) {
       if (e.target && e.target.nodeName == "LABEL") {
-        const targetLi = e.target.parentNode.parentNode;
+        const targetLi = e.target.closest("li");
         targetLi.classList.add("editing");
       }
     });
     list.addEventListener("keydown", function (e) {
       if (e.target && e.target.nodeName == "INPUT") {
+        const targetLi = e.target.closest("li");
         if (e.key == "Escape") {
-          const targetLi = e.target.parentNode;
           targetLi.classList.remove("editing");
         } else if (e.key == "Enter") {
-          const targetLi = e.target.parentNode;
           todoApp.updateItem(targetLi.dataset.index, e.target.value);
           targetLi.classList.remove("editing");
         }
@@ -110,7 +109,7 @@ class TodoList {
     });
   }
   setState(todoItemArray) {
-    const list = document.getElementById("todo-list");
+    const list = $("#todo-list");
     list.innerHTML = "";
     let li;
     let index = 0;
@@ -147,59 +146,51 @@ class TodoList {
 }
 class TodoStatusContainer {
   constructor() {
-    const container = document.querySelector(".count-container");
-    const activeFilter = container.getElementsByClassName(TodoItem.ACTIVE)[0];
-    const completedFilter = container.getElementsByClassName(
-      TodoItem.COMPLETED
-    )[0];
-    const allFilter = container.getElementsByClassName("all")[0];
-    activeFilter.addEventListener("click", (e) => {
-      e.preventDefault();
-      activeFilter.classList.add("selected");
-      completedFilter.classList.remove("selected");
-      allFilter.classList.remove("selected");
+    const filters = {
+      activeFilter: {
+        button: $(".count-container ." + TodoItem.ACTIVE),
+        name: TodoItem.ACTIVE,
+      },
+      completedFilter: {
+        button: $(".count-container ." + TodoItem.COMPLETED),
+        name: TodoItem.COMPLETED,
+      },
+      allFilter: { button: $(".count-container .all"), name: "all" },
+    };
 
-      const list = document.getElementById("todo-list");
-      list.querySelectorAll("li").forEach((li) => {
-        if (!li.classList.contains(TodoItem.ACTIVE)) li.style.display = "none";
-        else li.style.display = "";
-      });
-      this.setState();
-    });
-    completedFilter.addEventListener("click", (e) => {
-      e.preventDefault();
-      activeFilter.classList.remove("selected");
-      completedFilter.classList.add("selected");
-      allFilter.classList.remove("selected");
-
-      const list = document.getElementById("todo-list");
-      list.querySelectorAll("li").forEach((li) => {
-        if (!li.classList.contains(TodoItem.COMPLETED))
+    const hideSelectedFilter = () =>
+      $$(".count-container a").forEach((button) =>
+        button.classList.remove("selected")
+      );
+    const showSelectedFilter = (selectedFilter) => {
+      const todoListLi = $$("#todo-list li");
+      selectedFilter.button.classList.add("selected");
+      if (selectedFilter.name == "all") {
+        todoListLi.forEach((li) => (li.style.display = ""));
+        return;
+      }
+      todoListLi.forEach((li) => {
+        if (!li.classList.contains(selectedFilter.name))
           li.style.display = "none";
         else li.style.display = "";
       });
-      this.setState();
-    });
-    allFilter.addEventListener("click", (e) => {
-      e.preventDefault();
-      activeFilter.classList.remove("selected");
-      completedFilter.classList.remove("selected");
-      allFilter.classList.add("selected");
+    };
 
-      const list = document.getElementById("todo-list");
-      list.querySelectorAll("li").forEach((li) => {
-        li.style.display = "";
+    Object.entries(filters).forEach(([key, filter]) => {
+      filter.button.addEventListener("click", (e) => {
+        e.preventDefault();
+        hideSelectedFilter();
+        showSelectedFilter(filter);
+        this.setState();
       });
-      this.setState();
     });
   }
   setState() {
-    const list = document.getElementById("todo-list");
     let count = 0;
-    list.querySelectorAll("li").forEach((li) => {
+    $$("#todo-list li").forEach((li) => {
       if (li.style.display != "none") count = count + 1;
     });
-    document.querySelector(".todo-count strong").textContent = count;
+    $(".todo-count strong").textContent = count;
   }
 }
 
@@ -209,4 +200,4 @@ const todoStatusContainer = new TodoStatusContainer();
 
 todoApp.todoList = todoList;
 todoApp.todoStatusContainer = todoStatusContainer;
-todoApp.lordData();
+todoApp.loadData();
