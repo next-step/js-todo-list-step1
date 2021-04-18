@@ -1,1 +1,1 @@
-export function TodoCount() {}
+export default function TodoCount() {}
