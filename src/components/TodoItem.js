@@ -1,5 +1,7 @@
 import { generateUuid } from '../utils/Uuid.js';
 
+export const TodoItemClassName = 'todo-item';
+
 export const TodoItemStatus = Object.freeze({
   EDITING: 'editing',
   VIEW: 'view',
@@ -27,7 +29,9 @@ export default class TodoItem {
 
   render() {
     return `
-      <li class="${this.isCompleted ? TodoItemStatus.COMPLETED : TodoItemStatus.VIEW}" data-id=${this.id}>
+      <li class="${TodoItemClassName} ${this.isCompleted ? TodoItemStatus.COMPLETED : TodoItemStatus.VIEW}" data-id=${
+      this.id
+    }>
         <div class="view">
           <input 
             class="toggle" 

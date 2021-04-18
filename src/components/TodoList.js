@@ -1,7 +1,7 @@
 import { $ } from '../utils/QuerySelector.js';
+import { TodoItemClassName } from './TodoItem.js';
 import { EventType } from '../utils/EventType.js';
 import { KeyType } from '../utils/KeyType.js';
-import { TagName } from '../utils/TagName.js';
 import { TextType } from '../utils/TextType.js';
 
 const TodoItemStatus = Object.freeze({
@@ -40,8 +40,8 @@ export default class TodoList {
       return;
     }
 
-    const $todoItem = target.closest(TagName.LIST);
-    onToggleItem($todoItem.dataset.id);
+    const $itemView = target.closest(`.${TodoItemClassName}`);
+    onToggleItem($itemView.dataset.id);
   }
 
   editItem(event, onEditItem) {
@@ -52,7 +52,7 @@ export default class TodoList {
 
     this.disableEditItem();
 
-    const $itemView = target.closest(TagName.LIST);
+    const $itemView = target.closest(`.${TodoItemClassName}`);
     const $editItemField = $itemView.querySelector('.edit');
 
     const id = $itemView.dataset.id;
@@ -74,14 +74,14 @@ export default class TodoList {
       return;
     }
 
-    const $todoItem = target.closest(TagName.LIST);
-    const id = $todoItem.dataset.id;
+    const $itemView = target.closest(`.${TodoItemClassName}`);
+    const id = $itemView.dataset.id;
     onDeleteItem(id);
   }
 
   enableEditMode(event) {
     const { target } = event;
-    const $itemView = target.closest(TagName.LIST);
+    const $itemView = target.closest(`.${TodoItemClassName}`);
 
     if (this.isAlreadyEditMode($itemView)) {
       return;
@@ -134,7 +134,7 @@ export default class TodoList {
   }
 
   revertInputField(target) {
-    const $itemView = target.closest(TagName.LIST);
+    const $itemView = target.closest(`.${TodoItemClassName}`);
     const $itemLabel = $itemView.querySelector('.label');
     const $editItemField = $itemView.querySelector('.edit');
 

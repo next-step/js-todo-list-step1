@@ -1,7 +1,8 @@
 import { $ } from '../utils/QuerySelector.js';
 import { EventType } from '../utils/EventType.js';
-import { TagName } from '../utils/TagName.js';
 import { TextType } from '../utils/TextType.js';
+
+export const FilterClassName = 'filter';
 
 export const FilterType = Object.freeze({
   ALL: {
@@ -53,7 +54,7 @@ export default class TodoFilter {
   }
 
   canChange(target, filter) {
-    return target.tagName === TagName.A && filter;
+    return target.classList.contains(FilterClassName) && filter;
   }
 
   setState(filter) {
@@ -67,9 +68,9 @@ export default class TodoFilter {
       .map(
         (filterType) => `
         <li>
-          <a class="${filterType.name} ${filterType.name === filter.name ? 'selected' : ''}" href="#/${
-          filterType.name
-        }">${filterType.alias}</a>
+          <a class="${FilterClassName} ${filterType.name} ${
+          filterType.name === filter.name ? 'selected' : ''
+        }" href="#/${filterType.name}">${filterType.alias}</a>
         </li>
       `
       )
