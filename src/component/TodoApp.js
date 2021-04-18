@@ -117,6 +117,7 @@ export default function TodoApp() {
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
     this.todoList.setState(this.todoItems);
+    this.todoCount.setState(this.todoItems.length);
   };
 
   this.deleteItemById = (id) => {
