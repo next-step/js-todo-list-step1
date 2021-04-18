@@ -5,8 +5,8 @@ import { TextType } from '../utils/TextType.js';
 
 export default class TodoInput {
   constructor({ onAddItem }) {
-    this.$input = $('.new-todo');
-    this.initializeEventListener(this.$input, { onAddItem });
+    this.$inputField = $('.new-todo');
+    this.initializeEventListener(this.$inputField, { onAddItem });
   }
 
   initializeEventListener($input, { onAddItem }) {

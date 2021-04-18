@@ -11,9 +11,9 @@ export default class TodoApplication {
 
     this.todoInput = new TodoInput({ onAddItem: this.onAddItem.bind(this) });
     this.todoList = new TodoList(this.todoItems, {
-      onToggleTodoItem: this.onToggleTodoItem.bind(this),
-      onEditTodoItem: this.onEditTodoItem.bind(this),
-      onDeleteTodoItem: this.onDeleteTodoItem.bind(this),
+      onToggleItem: this.onToggleItem.bind(this),
+      onEditItem: this.onEditItem.bind(this),
+      onDeleteItem: this.onDeleteItem.bind(this),
     });
     this.todoCount = new TodoCount(this.todoItems.length);
     this.todoFilter = new TodoFilter(this.filterType, { onChange: this.onChangeFilter.bind(this) });
@@ -26,7 +26,7 @@ export default class TodoApplication {
     this.setState(this.todoItems, this.filterType);
   }
 
-  onToggleTodoItem(id) {
+  onToggleItem(id) {
     const updatedTodoItems = this.todoItems.map((todoItem) => {
       if (todoItem.equalsId(id)) {
         todoItem.toggleCompleted();
@@ -38,7 +38,7 @@ export default class TodoApplication {
     this.setState(this.todoItems, this.filterType);
   }
 
-  onEditTodoItem(id, content) {
+  onEditItem(id, content) {
     const updatedTodoItems = this.todoItems.map((todoItem) => {
       if (todoItem.equalsId(id)) {
         todoItem.updateContent(content);
@@ -50,7 +50,7 @@ export default class TodoApplication {
     this.setState(this.todoItems, this.filterType);
   }
 
-  onDeleteTodoItem(id) {
+  onDeleteItem(id) {
     const updatedTodoItems = this.todoItems.filter((todoItem) => !todoItem.equalsId(id));
     this.todoItems = updatedTodoItems;
 

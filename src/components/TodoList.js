@@ -11,61 +11,64 @@ const TodoItemStatus = Object.freeze({
 });
 
 export default class TodoList {
-  constructor(todoItems, { onToggleTodoItem, onEditTodoItem, onDeleteTodoItem }) {
-    this.todoItems = todoItems;
+  constructor(items, { onToggleItem, onEditItem, onDeleteItem }) {
+    this.items = items;
 
-    this.$todoList = $('.todo-list');
-    this.$todoList.addEventListener(EventType.CLICK, (event) => {
-      this.toggleTodoItem(event, onToggleTodoItem);
-      this.deleteTodoItem(event, onDeleteTodoItem);
-    });
-    this.$todoList.addEventListener(EventType.DOUBLE_CLICK, (event) => {
-      this.enableEditMode(event);
-    });
-    this.$todoList.addEventListener(EventType.KEY_DOWN, (event) => {
-      this.disableEditMode(event);
-      this.editTodoItem(event, onEditTodoItem);
-    });
+    this.$todoListView = $('.todo-list');
+    this.initializeEventListener(this.$todoListView, { onToggleItem, onEditItem, onDeleteItem });
 
-    this.render(todoItems);
+    this.render(items);
   }
 
-  toggleTodoItem(event, onToggleTodoItem) {
+  initializeEventListener($todoListView, { onToggleItem, onEditItem, onDeleteItem }) {
+    $todoListView.addEventListener(EventType.CLICK, (event) => {
+      this.toggleItem(event, onToggleItem);
+      this.deleteItem(event, onDeleteItem);
+    });
+    $todoListView.addEventListener(EventType.DOUBLE_CLICK, (event) => {
+      this.enableEditMode(event);
+    });
+    $todoListView.addEventListener(EventType.KEY_DOWN, (event) => {
+      this.disableEditMode(event);
+      this.editItem(event, onEditItem);
+    });
+  }
+
+  toggleItem(event, onToggleItem) {
     const { target } = event;
     if (!target.classList.contains(TodoItemStatus.TOGGLE)) {
       return;
     }
 
     const $todoItem = target.closest(TagName.LIST);
-    onToggleTodoItem($todoItem.dataset.id);
+    onToggleItem($todoItem.dataset.id);
   }
 
-  editTodoItem(event, onEditTodoItem) {
+  editItem(event, onEditItem) {
     const { target, key } = event;
-    if (key !== KeyType.ENTER) {
+    if (!this.isEditKeyType(key)) {
       return;
     }
 
-    const $enabledTodoItem = this.$todoList.querySelector(`.${TodoItemStatus.EDITING}`);
-    if (!$enabledTodoItem) {
-      return;
-    }
+    this.disableEditItem();
 
-    $enabledTodoItem.classList.remove(TodoItemStatus.EDITING);
+    const $itemView = target.closest(TagName.LIST);
+    const $editItemField = $itemView.querySelector('.edit');
 
-    const $todoItem = target.closest(TagName.LIST);
-    const $inputField = $todoItem.querySelector('.edit');
-
-    const id = $todoItem.dataset.id;
-    const content = $inputField.value.trim();
+    const id = $itemView.dataset.id;
+    const content = $editItemField.value.trim();
     if (content.length === 0) {
       return;
     }
 
-    onEditTodoItem(id, content);
+    onEditItem(id, content);
   }
 
-  deleteTodoItem(event, onDeleteTodoItem) {
+  isEditKeyType(key) {
+    return key === KeyType.ENTER;
+  }
+
+  deleteItem(event, onDeleteItem) {
     const { target } = event;
     if (!target.classList.contains(TodoItemStatus.DESTROY)) {
       return;
@@ -73,46 +76,77 @@ export default class TodoList {
 
     const $todoItem = target.closest(TagName.LIST);
     const id = $todoItem.dataset.id;
-    onDeleteTodoItem(id);
+    onDeleteItem(id);
   }
 
   enableEditMode(event) {
     const { target } = event;
-    const $todoItem = target.closest(TagName.LIST);
+    const $itemView = target.closest(TagName.LIST);
 
-    if ($todoItem.classList.contains(TodoItemStatus.EDITING)) {
+    if (this.isAlreadyEditMode($itemView)) {
       return;
     }
 
+    this.enableEditItem($itemView);
+    this.initializeInputField($itemView);
+  }
+
+  isAlreadyEditMode($todoItem) {
+    return $todoItem.classList.contains(TodoItemStatus.EDITING);
+  }
+
+  enableEditItem($todoItem) {
     $todoItem.classList.add(TodoItemStatus.EDITING);
+  }
 
-    const $inputField = $todoItem.querySelector('.edit');
-    $inputField.focus();
+  initializeInputField($todoItem) {
+    const $editItemField = $todoItem.querySelector('.edit');
+    $editItemField.focus();
 
-    const contentLength = $inputField.value.length;
-    $inputField.setSelectionRange(contentLength, contentLength);
+    const $label = $todoItem.querySelector('.label');
+    $editItemField.value = $label.textContent;
+
+    const contentLength = $editItemField.value.length;
+    $editItemField.setSelectionRange(contentLength, contentLength);
   }
 
   disableEditMode(event) {
-    const { key } = event;
-    if (key !== KeyType.ESC) {
+    const { target, key } = event;
+    if (!this.isDisableEditModeKeyType(key)) {
       return;
     }
 
-    const $enabledTodoItem = this.$todoList.querySelector(`.${TodoItemStatus.EDITING}`);
-    if (!$enabledTodoItem) {
-      return;
+    this.disableEditItem();
+    this.revertInputField(target);
+  }
+
+  isDisableEditModeKeyType(key) {
+    return key === KeyType.ESC;
+  }
+
+  disableEditItem() {
+    const $editEnabledItem = this.$todoListView.querySelector(`.${TodoItemStatus.EDITING}`);
+    if (!$editEnabledItem) {
+      throw new Error('Editable todoItem is not exists.');
     }
 
-    $enabledTodoItem.classList.remove(TodoItemStatus.EDITING);
+    $editEnabledItem.classList.remove(TodoItemStatus.EDITING);
+  }
+
+  revertInputField(target) {
+    const $itemView = target.closest(TagName.LIST);
+    const $itemLabel = $itemView.querySelector('.label');
+    const $editItemField = $itemView.querySelector('.edit');
+
+    $editItemField.value = $itemLabel.textContent;
   }
 
   setState(updateTodoItems) {
-    this.todoItems = updateTodoItems;
-    this.render(this.todoItems);
+    this.items = updateTodoItems;
+    this.render(this.items);
   }
 
   render(todoItems) {
-    this.$todoList.innerHTML = todoItems.map((todoItem) => todoItem.render()).join(TextType.EMPTY);
+    this.$todoListView.innerHTML = todoItems.map((todoItem) => todoItem.render()).join(TextType.EMPTY);
   }
 }

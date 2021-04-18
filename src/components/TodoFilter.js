@@ -24,23 +24,24 @@ export const FilterType = Object.freeze({
 export default class TodoFilter {
   constructor(filter = FilterType.ALL, { onChange }) {
     this.filter = filter;
-    this.$filters = $('.filters');
-    this.initializeEventListener(this.$filters, { onChange });
+
+    this.$filterButtons = $('.filters');
+    this.initializeEventListener(this.$filterButtons, { onChange });
 
     this.render(filter);
   }
 
   initializeEventListener($filters, { onChange }) {
     $filters.addEventListener(EventType.CLICK, (event) => {
-      this.changeFilter(event, onChange);
+      this.change(event, onChange);
     });
   }
 
-  changeFilter(event, onChange) {
+  change(event, onChange) {
     const { target } = event;
     const filter = this.findFilter(target);
 
-    if (!this.canChangeFilter(target, filter)) {
+    if (!this.canChange(target, filter)) {
       return;
     }
 
@@ -51,7 +52,7 @@ export default class TodoFilter {
     return Object.values(FilterType).find((filterType) => target.classList.contains(filterType.name));
   }
 
-  canChangeFilter(target, filter) {
+  canChange(target, filter) {
     return target.tagName === TagName.A && filter;
   }
 
@@ -62,7 +63,7 @@ export default class TodoFilter {
   }
 
   render(filter) {
-    this.$filters.innerHTML = Object.values(FilterType)
+    this.$filterButtons.innerHTML = Object.values(FilterType)
       .map(
         (filterType) => `
         <li>
