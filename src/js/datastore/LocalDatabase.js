@@ -11,7 +11,7 @@ export class LocalDataBase {
     });
     return resultArray;
   }
-  static addItem(todoListArray) {
+  static addItem(todoListArray, data) {
     todoListArray.push(new TodoItem(data, TodoItem.ACTIVE));
   }
   static deleteItem(index, todoListArray) {

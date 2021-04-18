@@ -1,6 +1,10 @@
 import { $, $$ } from "./util/domSelection.js";
 import { DAO } from "./datastore/datastore.js";
-import { TodoList, TodoStatusContainer } from "./component/todo/Todo.js";
+import {
+  TodoList,
+  TodoStatusContainer,
+  TodoItem,
+} from "./component/todo/Todo.js";
 
 class TodoApp {
   constructor(todoItemArray) {
@@ -20,7 +24,7 @@ class TodoApp {
   }
   addItem(data) {
     if (!data || data.trim() == "") return;
-    DAO.addItem(this.todoItemArray);
+    DAO.addItem(this.todoItemArray, data);
     this.setState();
   }
   deleteItem(index) {
