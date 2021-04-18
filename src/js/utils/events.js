@@ -1,5 +1,6 @@
 import { setStorage, getStorage as items } from './storage.js';
 import TodoList from '../components/TodoList.js';
+import { todoItemTemplate } from '../components/Template.js';
 
 export const todoItems = [...items()];
 
@@ -31,6 +32,9 @@ const checkedTodo = (event) => {
     ? targetTodo.classList.add('completed') 
     : targetTodo.classList.remove('completed');
 
+  const updateTodoList = new TodoList();
+  updateTodoList.setState(todoItems);
+  
   setStorage('items', todoItems);
 }
 
