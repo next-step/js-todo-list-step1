@@ -1,7 +1,8 @@
+import { $ } from '../utils/QuerySelector.js';
 export default class TodoCount {
   constructor(todoCount) {
     this.todoCount = todoCount;
-    this.$todoCount = document.querySelector('.todo-count');
+    this.$todoCount = $('.todo-count');
 
     this.render(todoCount);
   }

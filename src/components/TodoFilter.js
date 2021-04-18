@@ -1,3 +1,4 @@
+import { $ } from '../utils/QuerySelector.js';
 import { EventType } from '../utils/EventType.js';
 import { TagName } from '../utils/TagName.js';
 import { TextType } from '../utils/TextType.js';
@@ -23,7 +24,7 @@ export const FilterType = Object.freeze({
 export default class TodoFilter {
   constructor(filter = FilterType.ALL, { onChange }) {
     this.filter = filter;
-    this.$filters = document.querySelector('.filters');
+    this.$filters = $('.filters');
 
     this.$filters.addEventListener(EventType.CLICK, (event) => {
       this.changeFilter(event, onChange);

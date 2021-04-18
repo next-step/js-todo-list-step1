@@ -1,3 +1,4 @@
+import { $ } from '../utils/QuerySelector.js';
 import { EventType } from '../utils/EventType.js';
 import { KeyType } from '../utils/KeyType.js';
 import { TagName } from '../utils/TagName.js';
@@ -13,7 +14,7 @@ export default class TodoList {
   constructor(todoItems, { onToggleTodoItem, onEditTodoItem, onDeleteTodoItem }) {
     this.todoItems = todoItems;
 
-    this.$todoList = document.querySelector('.todo-list');
+    this.$todoList = $('.todo-list');
     this.$todoList.addEventListener(EventType.CLICK, (event) => {
       this.toggleTodoItem(event, onToggleTodoItem);
       this.deleteTodoItem(event, onDeleteTodoItem);

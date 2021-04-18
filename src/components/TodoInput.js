@@ -1,10 +1,11 @@
+import { $ } from '../utils/QuerySelector.js';
 import { EventType } from '../utils/EventType.js';
 import { KeyType } from '../utils/KeyType.js';
 import { TextType } from '../utils/TextType.js';
 
 export default class TodoInput {
   constructor({ onAddTodoItem }) {
-    this.$input = document.querySelector('.new-todo');
+    this.$input = $('.new-todo');
 
     this.$input.addEventListener(EventType.KEY_DOWN, (event) => this.addTodoItem(event, onAddTodoItem));
   }
