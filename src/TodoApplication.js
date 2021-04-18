@@ -9,7 +9,7 @@ export default class TodoApplication {
     this.todoItems = [];
     this.filterType = FilterType.ALL;
 
-    this.todoInput = new TodoInput({ onAddTodoItem: this.onAddItem.bind(this) });
+    this.todoInput = new TodoInput({ onAddItem: this.onAddItem.bind(this) });
     this.todoList = new TodoList(this.todoItems, {
       onToggleTodoItem: this.onToggleTodoItem.bind(this),
       onEditTodoItem: this.onEditTodoItem.bind(this),

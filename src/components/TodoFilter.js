@@ -25,27 +25,34 @@ export default class TodoFilter {
   constructor(filter = FilterType.ALL, { onChange }) {
     this.filter = filter;
     this.$filters = $('.filters');
-
-    this.$filters.addEventListener(EventType.CLICK, (event) => {
-      this.changeFilter(event, onChange);
-    });
+    this.initializeEventListener(this.$filters, { onChange });
 
     this.render(filter);
   }
 
+  initializeEventListener($filters, { onChange }) {
+    $filters.addEventListener(EventType.CLICK, (event) => {
+      this.changeFilter(event, onChange);
+    });
+  }
+
   changeFilter(event, onChange) {
     const { target } = event;
-    const filter = Object.values(FilterType).find((filterType) => target.classList.contains(filterType.name));
+    const filter = this.findFilter(target);
 
-    if (target.tagName !== TagName.A) {
-      return;
-    }
-
-    if (!filter) {
+    if (!this.canChangeFilter(target, filter)) {
       return;
     }
 
     onChange(filter);
+  }
+
+  findFilter(target) {
+    return Object.values(FilterType).find((filterType) => target.classList.contains(filterType.name));
+  }
+
+  canChangeFilter(target, filter) {
+    return target.tagName === TagName.A && filter;
   }
 
   setState(filter) {
