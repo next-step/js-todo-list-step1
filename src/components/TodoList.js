@@ -1,4 +1,7 @@
-import { EventType, KeyType, TagName, TextType } from '../utils/constants.js';
+import { EventType } from '../utils/EventType.js';
+import { KeyType } from '../utils/KeyType.js';
+import { TagName } from '../utils/TagName.js';
+import { TextType } from '../utils/TextType.js';
 
 const TodoItemStatus = Object.freeze({
   TOGGLE: 'toggle',
@@ -9,8 +12,8 @@ const TodoItemStatus = Object.freeze({
 export default class TodoList {
   constructor(todoItems, { onToggleTodoItem, onEditTodoItem, onDeleteTodoItem }) {
     this.todoItems = todoItems;
-    this.$todoList = document.querySelector('.todo-list');
 
+    this.$todoList = document.querySelector('.todo-list');
     this.$todoList.addEventListener(EventType.CLICK, (event) => {
       this.toggleTodoItem(event, onToggleTodoItem);
       this.deleteTodoItem(event, onDeleteTodoItem);

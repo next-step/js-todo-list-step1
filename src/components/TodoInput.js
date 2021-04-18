@@ -1,4 +1,6 @@
-import { EventType, KeyType, TextType } from '../utils/constants.js';
+import { EventType } from '../utils/EventType.js';
+import { KeyType } from '../utils/KeyType.js';
+import { TextType } from '../utils/TextType.js';
 
 export default class TodoInput {
   constructor({ onAddTodoItem }) {
@@ -9,11 +11,12 @@ export default class TodoInput {
 
   addTodoItem(event, onAddTodoItem) {
     const { target, key } = event;
+    const content = target.value.trim();
+
     if (key !== KeyType.ENTER) {
       return;
     }
 
-    const content = target.value.trim();
     if (content === TextType.EMPTY) {
       return;
     }

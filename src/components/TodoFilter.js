@@ -1,4 +1,6 @@
-import { EventType, TagName, TextType } from '../utils/constants.js';
+import { EventType } from '../utils/EventType.js';
+import { TagName } from '../utils/TagName.js';
+import { TextType } from '../utils/TextType.js';
 
 export const FilterType = Object.freeze({
   ALL: {
@@ -32,11 +34,12 @@ export default class TodoFilter {
 
   changeFilter(event, onChange) {
     const { target } = event;
+    const filter = Object.values(FilterType).find((filterType) => target.classList.contains(filterType.name));
+
     if (target.tagName !== TagName.A) {
       return;
     }
 
-    const filter = Object.values(FilterType).find((filterType) => target.classList.contains(filterType.name));
     if (!filter) {
       return;
     }
