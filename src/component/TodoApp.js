@@ -2,10 +2,12 @@ import TodoList from "./TodoList.js";
 import TodoInput from "./TodoInput.js";
 import { TodoItem } from "./TodoItem.js";
 import TodoCount from "./TodoCount.js";
+import { $ } from "../util/util.js";
 
 export default function TodoApp() {
   this.itemId = 1;
   this.todoItems = [];
+  this.filter = "all";
   this.todoInput = new TodoInput({
     onAdd: (event) => {
       if (event === undefined || event.target === undefined) {
@@ -112,11 +114,34 @@ export default function TodoApp() {
       }
     },
   });
-  this.todoCount = new TodoCount();
+  this.todoCount = new TodoCount({
+    onClick: (event) => {
+      if (event === undefined || event.target === undefined) {
+        console.log("event가 존재 하지 않습니다.");
+        return;
+      }
+      const $filterLi = event.target;
+
+      if ($filterLi.nodeName === "A") {
+        // 기존에 선택된 filter는 해제
+        $(".selected").classList.remove("selected");
+
+        if ($filterLi.classList.contains("all")) {
+          this.filter = "all";
+        } else if ($filterLi.classList.contains("active")) {
+          this.filter = "active";
+        } else if ($filterLi.classList.contains("completed")) {
+          this.filter = "completed";
+        }
+        $filterLi.classList.add("selected");
+        this.setState(this.todoItems);
+      }
+    },
+  });
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
-    this.todoList.setState(this.todoItems);
+    this.todoList.setState(this.todoItems, this.filter);
     this.todoCount.setState(this.todoItems.length);
   };
 
