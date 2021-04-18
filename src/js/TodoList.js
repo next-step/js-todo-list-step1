@@ -1,5 +1,11 @@
-function TodoList({ onCheck, onEdit }) {
+function TodoList({ onClick, onDblClick, onKeyUp }) {
   const $todoList = document.querySelector('.todo-list');
+
+  $todoList.addEventListener('click', (event) => this.clickTodoList(event));
+  $todoList.addEventListener('dblclick', (event) =>
+    this.dblclickTodoList(event)
+  );
+  $todoList.addEventListener('keyup', (event) => this.keyupTodoList(event));
 
   this.setState = (updatedTodoItems) => {
     this.todoItems = updatedTodoItems;
@@ -15,19 +21,23 @@ function TodoList({ onCheck, onEdit }) {
     });
   };
 
-  $todoList.addEventListener('click', (event) => this.checkTodoList(event));
-  $todoList.addEventListener('dblclick', (event) => this.editTodoList(event));
-
-  this.checkTodoList = (event) => {
-    if (event.target.classList[0] === 'toggle') {
-      onCheck(event.target.getAttribute('id'));
-    }
+  this.clickTodoList = (event) => {
+    if (event.target.classList[0] === 'toggle')
+      onClick(event.target.getAttribute('id'));
   };
 
-  this.editTodoList = (event) => {
-    if (event.target.classList[0] == 'label') {
-      onEdit(event.target.previousElementSibling.getAttribute('id'));
-    }
+  this.dblclickTodoList = (event) => {
+    if (event.target.classList[0] === 'label')
+      onDblClick(event.target.previousElementSibling.getAttribute('id'));
+  };
+
+  this.keyupTodoList = (event) => {
+    if (event.target.classList[0] === 'edit')
+      onKeyUp(
+        event.target.parentNode.getAttribute('id'),
+        event.key,
+        event.target.value
+      );
   };
 
   const makeDOM = (tag, attributes) => {
@@ -39,23 +49,8 @@ function TodoList({ onCheck, onEdit }) {
   };
 
   const todoItemTemplate = (item) => {
-    // return `
-    // <li id=${item.id} class=
-    // ${item.completed ? 'completed' : 'false'} checked=''
-    // >
-    //   <div class="view">
-    //       <input class="toggle" type="checkbox" id=${item.id} ${
-    //   item.completed ? 'checked' : false
-    // }>
-    //       <label class="label">${item.contents}</label>
-    //       <button class="destroy" id=${item.id}></button>
-    //   </div>
-    //   <input class="edit" value=${item.contents}>
-    // </li>
-    // `;
-
     const li = makeDOM('li', {
-      id: item.id, // number인데 괜찮나?
+      id: item.id,
       class: `${item.completed ? 'completed' : false} ${
         item.editing ? 'editing' : ''
       }`,
@@ -80,6 +75,7 @@ function TodoList({ onCheck, onEdit }) {
             id: item.id,
             false: '',
           }
+      // 다른 방법 없나?
       // {
       //   class: 'toggle',
       //   type: 'checkbox',
@@ -91,7 +87,7 @@ function TodoList({ onCheck, onEdit }) {
     const label = makeDOM('label', {
       class: 'label',
     });
-    label.innerText = item.contents; // 맞나?
+    label.innerText = item.contents;
 
     const button = makeDOM('button', {
       class: 'destroy',
