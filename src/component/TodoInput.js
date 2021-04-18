@@ -1,5 +1,3 @@
-import { checkKey } from "../util/util.js";
-
 export default function TodoInput({ onAdd }) {
   const $todoInput = document.querySelector("#new-todo-title");
 
@@ -7,7 +5,7 @@ export default function TodoInput({ onAdd }) {
 
   this.addTodoItem = (event) => {
     const $newTodoTarget = event.target;
-    if (checkKey(event.key, "Enter")) {
+    if (event.key === "Enter") {
       onAdd($newTodoTarget.value);
       $newTodoTarget.value = "";
     }
