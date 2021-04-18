@@ -9,7 +9,7 @@ export default class TodoApplication {
     this.todoItems = [];
     this.filterType = FilterType.ALL;
 
-    this.todoInput = new TodoInput({ onAddTodoItem: this.onAddTodoItem.bind(this) });
+    this.todoInput = new TodoInput({ onAddTodoItem: this.onAddItem.bind(this) });
     this.todoList = new TodoList(this.todoItems, {
       onToggleTodoItem: this.onToggleTodoItem.bind(this),
       onEditTodoItem: this.onEditTodoItem.bind(this),
@@ -19,7 +19,7 @@ export default class TodoApplication {
     this.todoFilter = new TodoFilter(this.filterType, { onChange: this.onChangeFilter.bind(this) });
   }
 
-  onAddTodoItem(content) {
+  onAddItem(content) {
     const todoItem = new TodoItem({ content });
     this.todoItems.push(todoItem);
 

@@ -4,26 +4,41 @@ import { KeyType } from '../utils/KeyType.js';
 import { TextType } from '../utils/TextType.js';
 
 export default class TodoInput {
-  constructor({ onAddTodoItem }) {
+  constructor({ onAddItem }) {
     this.$input = $('.new-todo');
-
-    this.$input.addEventListener(EventType.KEY_DOWN, (event) => this.addTodoItem(event, onAddTodoItem));
+    this.initializeEventListener(this.$input, { onAddItem });
   }
 
-  addTodoItem(event, onAddTodoItem) {
+  initializeEventListener($input, { onAddItem }) {
+    $input.addEventListener(EventType.KEY_DOWN, (event) => this.addItem(event, onAddItem));
+  }
+
+  addItem(event, onAddItem) {
     const { target, key } = event;
     const content = target.value.trim();
 
-    if (key !== KeyType.ENTER) {
+    if (!this.canAddItem(key, content)) {
       return;
     }
 
-    if (content === TextType.EMPTY) {
-      return;
-    }
+    onAddItem(content);
 
-    onAddTodoItem(content);
+    this.clearContent(target);
+  }
 
+  canAddItem(key, content) {
+    return this.isAddKeyType(key) && !this.isContentEmpty(content);
+  }
+
+  isAddKeyType(key) {
+    return key === KeyType.ENTER;
+  }
+
+  isContentEmpty(content) {
+    return content === TextType.EMPTY;
+  }
+
+  clearContent(target) {
     target.value = TextType.EMPTY;
   }
 }
