@@ -1,4 +1,4 @@
-class Todo {
+export default class Todo {
     constructor() {
         this._todoListKey = "todo";
         this._todoItems = [];
@@ -11,6 +11,9 @@ class Todo {
     }
 
     add(todo) {
+        if (this.checkNull(todo)) {
+            return alert('빈 값을 입력할 수 없습니다.');
+        };
         const todoObj = {
             text : todo,
             id : this._id,
@@ -29,53 +32,54 @@ class Todo {
     }
 
     edit({target, key},labelArea, originalValue) {
-        switch(key) {
-            case 'Enter' :
+        const todoApp = this;
+        const editType = {
+            Enter () {
                 labelArea.innerText = target.value;
-                target.closest('li').removeAttribute('class');
-                return;
-            case 'Escape' :
+                target.closest('li').classList.remove('editing');
+                todoApp._todoItems.filter(todo => todo.id == target.closest('li').id)
+                                  .map(todo => todo.text = target.value);
+                todoApp.saveLocalStorage();
+            },
+
+            Escape () {
                 target.value = originalValue;
-                target.closest('li').removeAttribute('class');
-                return;
+                target.closest('li').classList.remove('editing');
+            }
         }
+        if (!editType[key]) {
+            return;
+        }
+        editType[key]();
     }
 
     printTodos(todoObj) {
-        this._isDone = false;
+        const checked = todoObj.checked == 'true' ? 'checked' : '';
+        const completed = todoObj.class == 'completed' ? 'completed' : ''; 
         this._todoLi = document.createElement('li');
-        this._view = document.createElement('div');
-        this._toggle = document.createElement('input');
-        this._label = document.createElement('label');
-        this._labelTest = document.createTextNode(todoObj.text);
-        this._destroy = document.createElement('button');
-        this._edit = document.createElement('input');
-        this._view.className = 'view';
-        this._toggle.className = 'toggle';
-        this._label.className = 'label';
-        this._destroy.className = 'destroy';
-        this._edit.className = 'edit';
-        this._toggle.setAttribute("type", "checkbox");
-        if (todoObj.checked == 'true') {
-            this._toggle.setAttribute('checked', '');
-        }
-        this._label.append(this._labelTest);
-        this._edit.setAttribute("value", todoObj.text);
-        this._view.append(this._toggle, this._label, this._destroy);
-        this._todoLi.append(this._view, this._edit);
         this._todoLi.id = todoObj.id;
-        this._todoLi.className = todoObj.class;
+        this._todoLi.className = completed;
+        this._todoLi.innerHTML = `
+                <div class='view'>
+                    <input class="toggle" type="checkbox" ${checked}>
+                    <label class="label">${todoObj.text}</label>
+                    <button class="destroy"></button>
+                </div>
+                <input class="edit" value=${todoObj.text}> 
+        `;
         this._todoList.append(this._todoLi);
     }
 
     loadTodos() {
         this.initTodoList();
-        const that = this;
+        const todoApp = this;
         this._todoItems = this.getLocalStorage();
-        this._id = this._todoItems.length > 0 ? this._todoItems[this._todoItems.length - 1].id + 1 : 1;
-        this._todoItems.forEach(function(todo) {
-            that.printTodos(todo);
-        });
+        if (Object.keys(this._todoItems).length == 0) {
+            this._id = 1;
+            return;
+        }
+        this._id = parseInt(this._todoItems[this._todoItems.length - 1].id) + 1;
+        this._todoItems.map((value, index) => todoApp.printTodos(value));
         this._todoCount.innerText = this.todoCount;
     }
 
@@ -83,20 +87,20 @@ class Todo {
         if (li.className == '') {
             li.classList.add('completed');
             toggleCheck.setAttribute('checked', '');
-        } else {
-            li.removeAttribute('class');
-            toggleCheck.removeAttribute('checked');
-        }
+            this.updateItems(li);
+            return;
+        } 
+        li.removeAttribute('class');
+        toggleCheck.removeAttribute('checked');
         this.updateItems(li);
     }
     
     updateItems(li) {
-        this._todoItems.forEach(function(todo) {
-            if (todo.id == parseInt(li.id)) {
-                todo.class = li.className;
-                todo.checked = li.classList.contains('completed')? 'true' : 'false';
-            }
-        })
+        this._todoItems.filter(todo => todo.id == parseInt(li.id))
+                       .map(todo => {
+            todo.class = li.className;
+            todo.checked = li.classList.contains('completed')? 'true' : 'false';
+        });
         this.saveLocalStorage();
     }
 
@@ -106,14 +110,6 @@ class Todo {
         });
         this._todoItems = filterdItems;
         this.saveLocalStorage();
-    }
-
-    renumberedItems(todoItems) {
-        let newId = 1;
-        todoItems.forEach(function(todo){
-            todo.id = newId;
-            newId++;
-        });
     }
 
     initTodoList() {
@@ -130,11 +126,8 @@ class Todo {
         this.initTodoList();
         const todoApp = this;
         const parsedTodos = this.getLocalStorage();
-        parsedTodos.forEach(function(todo) {
-            if (todo.class != 'completed') {
-                todoApp.printTodos(todo);
-            }
-        });  
+        parsedTodos.filter(todo => todo.class != 'completed')
+                   .map(todo => todoApp.printTodos(todo));
         this._todoCount.innerText = this.todoCount;
     }
 
@@ -142,11 +135,8 @@ class Todo {
         this.initTodoList();
         const todoApp = this;
         const parsedTodos = this.getLocalStorage();
-        parsedTodos.forEach(function(todo) {
-            if (todo.class == 'completed') {
-                todoApp.printTodos(todo);
-            }
-        });  
+        parsedTodos.filter(todo => todo.class == 'completed')
+                   .map(todo => todoApp.printTodos(todo));
         this._todoCount.innerText = this.todoCount;
     }
     
@@ -159,6 +149,13 @@ class Todo {
 
     saveLocalStorage() {
         localStorage.setItem(this._todoListKey, JSON.stringify(this._todoItems))
+    }
+
+    checkNull(todo) {
+        if (todo.trim() == '') {
+            return true;
+        }
+        return false;
     }
 
     get todoCount() {
@@ -176,58 +173,4 @@ class Todo {
     get todoFilter() {
         return this._todoFilter;
     }
-}
-const todoApp = new Todo();
-
-todoApp.todoInput.addEventListener('keydown', function() {
-    if (window.event.keyCode == 13) {
-        todoApp.add(this.value);
-        this.value = '';
-    }
-});
-
-todoApp.todoList.addEventListener('click', function(event) {
-    const toggleCheck = event.target.closest('.toggle');
-    const destroyButton = event.target.closest('.destroy');
-    const li = event.target.closest('li');
-    if (toggleCheck) {
-        todoApp.changeTodoState(li, toggleCheck);
-    }
-    if (destroyButton) {
-        todoApp.destroy(this, li);
-    }
-});
-
-todoApp.todoList.addEventListener('dblclick', function(event) {
-    const labelArea = event.target.closest('.label');
-    const li = event.target.closest('li');
-    if (!labelArea) return;
-
-    const originalValue = labelArea.innerText;
-    li.classList.add('editing');
-    li.addEventListener('keyup', ({target, key}) => todoApp.edit({target, key},labelArea, originalValue))
-});
-
-todoApp.todoFilter.addEventListener('click', function(event) {
-    switch(event.target.id) {
-        case 'all' :
-            todoApp.allList();
-            initClassList(event, this);
-            return;
-        case 'active' :
-            todoApp.activeList();
-            initClassList(event, this);
-            return;
-        case 'completed' :
-            todoApp.completedList();
-            initClassList(event, this);
-            return;
-    }
-})
-
-const initClassList = (event, target) => {
-    for (let item of target.children) {
-        item.children[0].classList.remove('selected');
-    }
-    event.target.classList.add('selected');
 }
