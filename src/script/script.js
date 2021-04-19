@@ -4,9 +4,12 @@ const allBtn = document.querySelector('a.all');
 const activeBtn = document.querySelector('a.active');
 const completeBtn = document.querySelector('a.completed');
 
+const ENTER = 'Enter';
+const ESC = 'Escape';
+
 //1. todo list에 todoItem을 키보드로 입력하여 추가하기
 addItem.addEventListener('keyup', function(e) {
-    if(e.key === 'Enter' && '' != addItem.value) {
+    if(e.key === ENTER && '' != addItem.value) {
         todoList.innerHTML += '<li ondblclick="onEditItemHandler(this);">'
                             + '<div class="view">'
                             + '<input class="toggle" type="checkbox" onclick="onCheckItemHandler(this);"/>'
@@ -16,7 +19,7 @@ addItem.addEventListener('keyup', function(e) {
                             + '<input class="edit" value="' + addItem.value + '" onkeyup="onSaveEditHandler(this);"/>'
                             + '</li>';
         addItem.value = '';
-        onChangeCountHandler();
+        changeCount();
     }
 });
 
@@ -37,31 +40,35 @@ function onCheckItemHandler(doneChk) {
 function onDelItemHandler(delBtn) {
     const delItem = delBtn.parentNode.parentNode;
     delItem.parentNode.removeChild(delItem);
-    onChangeCountHandler();
+    changeCount();
 }
 
 //4. todo list를 더블클릭했을 때 input 모드로 변경 
 // (li tag 에 editing class 추가) 
 // 단, 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
 function onEditItemHandler(editItem) {
-    editItem.className += "editing";
+    if(editItem.classList.contains('editing')) {
+        editItem.className = "";
+    } else {
+        editItem.className += "editing";
+    }
 }
 
 function onSaveEditHandler(editTxt) {
     const liTag = editTxt.parentNode;
 
-    if(this.event.key === 'Enter') {
+    if(this.event.key === ENTER) {
         liTag.querySelector(".label").innerHTML = editTxt.value;
         liTag.className = "";
 
-    } else if(this.event.keyCode == 27) {
+    } else if(this.event.key == ESC) {
         editTxt.value = liTag.querySelector(".label").innerHTML;
         liTag.className = "";
     }
 }
 
 //5. todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
-function onChangeCountHandler() {
+function changeCount() {
     const count = document.querySelectorAll(".toggle").length;
     document.querySelector("strong").innerHTML = count;    
 }
@@ -77,7 +84,7 @@ allBtn.addEventListener('click', function() {
         liTag.style.display = "block";
     }
 
-    onChangeCountHandler()
+    changeCount();
 });
 
 activeBtn.addEventListener('click', function() {
@@ -116,6 +123,5 @@ completeBtn.addEventListener('click', function() {
         }
     }
 
-    const count = document.querySelectorAll(".toggle").length;
     document.querySelector("strong").innerHTML = completeCount;  
 });
