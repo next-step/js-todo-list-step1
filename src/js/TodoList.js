@@ -1,4 +1,4 @@
-function TodoList({ onClick, onDblClick, onKeyUp }) {
+function TodoList({ onCheck, onEditing, onEdit }) {
   const $todoList = document.querySelector('.todo-list');
 
   $todoList.addEventListener('click', (event) => this.clickTodoList(event));
@@ -13,8 +13,6 @@ function TodoList({ onClick, onDblClick, onKeyUp }) {
   };
 
   this.render = (items) => {
-    // const template = items.map(todoItemTemplate);
-    // $todoList.innerHTML = template.join('');
     $todoList.innerHTML = '';
     items.map(todoItemTemplate).map((value) => {
       $todoList.append(value);
@@ -23,21 +21,20 @@ function TodoList({ onClick, onDblClick, onKeyUp }) {
 
   this.clickTodoList = (event) => {
     if (event.target.classList[0] === 'toggle')
-      onClick(event.target.getAttribute('id'));
+      onCheck(event.target.getAttribute('id'));
   };
 
   this.dblclickTodoList = (event) => {
     if (event.target.classList[0] === 'label')
-      onDblClick(event.target.previousElementSibling.getAttribute('id'));
+      onEditing(event.target.previousElementSibling.getAttribute('id'));
   };
 
   this.keyupTodoList = (event) => {
-    if (event.target.classList[0] === 'edit')
-      onKeyUp(
-        event.target.parentNode.getAttribute('id'),
-        event.key,
-        event.target.value
-      );
+    if (event.target.classList[0] != 'edit') return;
+    if (event.key === 'Escape')
+      onEditing(event.target.parentNode.getAttribute('id'));
+    else if (event.key === 'Enter')
+      onEdit(event.target.parentNode.getAttribute('id'), event.target.value);
   };
 
   const makeDOM = (tag, attributes) => {
@@ -87,7 +84,8 @@ function TodoList({ onClick, onDblClick, onKeyUp }) {
     const label = makeDOM('label', {
       class: 'label',
     });
-    label.innerText = item.contents;
+    // label.innerText = item.contents;
+    label.append(document.createTextNode(item.contents));
 
     const button = makeDOM('button', {
       class: 'destroy',
