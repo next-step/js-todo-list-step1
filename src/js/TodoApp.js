@@ -30,15 +30,15 @@ function TodoApp() {
     },
     onEditing: (id) => {
       this.todoItems.forEach((item) => {
-        if (item.getId() == id) item.editing = !item.editing;
+        if (item.getId() == id) item.switchEditing();
       });
       this.setState(this.todoItems);
     },
     onEdit: (id, contents) => {
       this.todoItems.forEach((item) => {
         if (item.getId() == id) {
-          item.editing = !item.editing;
-          item.contents = contents;
+          item.switchEditing();
+          item.setContents(contents);
         }
       });
       this.setState(this.todoItems);
@@ -55,8 +55,8 @@ function TodoApp() {
     onFilter: (filter) => {
       const updatedItems = this.todoItems.filter((item) => {
         if (filter === 'all') return true;
-        else if (filter === 'active') return item.completed == false;
-        else if (filter === 'completed') return item.completed == true;
+        else if (filter === 'active') return item.getCompleted() == false;
+        else if (filter === 'completed') return item.getCompleted() == true;
       });
       todoList.setState(updatedItems);
       todoCount.setState(updatedItems);

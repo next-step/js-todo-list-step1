@@ -48,9 +48,9 @@ function TodoList({ onCheck, onEditing, onEdit, onDelete }) {
     };
 
     const li = makeDOM('li', {
-      id: item.id,
-      class: `${item.completed ? 'completed' : false} ${
-        item.editing ? 'editing' : ''
+      id: item.getId(),
+      class: `${item.getCompleted() ? 'completed' : false} ${
+        item.getEditing() ? 'editing' : ''
       }`,
     });
 
@@ -60,17 +60,17 @@ function TodoList({ onCheck, onEditing, onEdit, onDelete }) {
 
     const input = makeDOM(
       'input',
-      item.completed
+      item.getCompleted()
         ? {
             class: 'toggle',
             type: 'checkbox',
-            id: item.id,
+            id: item.getId(),
             checked: '',
           }
         : {
             class: 'toggle',
             type: 'checkbox',
-            id: item.id,
+            id: item.getId(),
             false: '',
           }
     );
@@ -79,16 +79,16 @@ function TodoList({ onCheck, onEditing, onEdit, onDelete }) {
       class: 'label',
     });
     // label.innerText = item.contents;
-    label.append(document.createTextNode(item.contents));
+    label.append(document.createTextNode(item.getContents()));
 
     const button = makeDOM('button', {
       class: 'destroy',
-      id: item.id,
+      id: item.getId(),
     });
 
     const inputEdit = makeDOM('input', {
       class: 'edit',
-      value: item.contents,
+      value: item.getContents(),
     });
 
     li.append(div, inputEdit);
