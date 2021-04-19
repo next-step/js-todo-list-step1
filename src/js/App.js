@@ -1,11 +1,11 @@
 import TodoApp from './TodoApp.js';
 
-// window.addEventListener('load', () => TodoApp());
-
 const init = () => {
   new TodoApp();
 };
 
-// document.addEventListener('DOMContentLoaded', init);
 window.addEventListener('load', init);
-// ❓ new todoApp(); 이랑 무슨 차이?
+// document.addEventListener('DOMContentLoaded', init); // ❓ 차이?
+
+// window.addEventListener('load', () => TodoApp()); // ❓ 차이?
+// new todoApp(); // ❓ 차이?

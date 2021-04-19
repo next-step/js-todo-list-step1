@@ -1,11 +1,5 @@
-function TodoList({ onCheck, onEditing, onEdit }) {
+function TodoList({ onCheck, onEditing, onEdit, onDelete }) {
   const $todoList = document.querySelector('.todo-list');
-
-  $todoList.addEventListener('click', (event) => this.clickTodoList(event));
-  $todoList.addEventListener('dblclick', (event) =>
-    this.dblclickTodoList(event)
-  );
-  $todoList.addEventListener('keyup', (event) => this.keyupTodoList(event));
 
   this.setState = (updatedTodoItems) => {
     this.todoItems = updatedTodoItems;
@@ -19,17 +13,23 @@ function TodoList({ onCheck, onEditing, onEdit }) {
     });
   };
 
-  this.clickTodoList = (event) => {
+  $todoList.addEventListener('click', (e) => clickTodoList(e));
+  $todoList.addEventListener('dblclick', (e) => dblclickTodoList(e));
+  $todoList.addEventListener('keyup', (e) => keyupTodoList(e));
+
+  const clickTodoList = (event) => {
     if (event.target.classList[0] === 'toggle')
       onCheck(event.target.getAttribute('id'));
+    else if (event.target.classList[0] === 'destroy')
+      onDelete(event.target.getAttribute('id'));
   };
 
-  this.dblclickTodoList = (event) => {
+  const dblclickTodoList = (event) => {
     if (event.target.classList[0] === 'label')
       onEditing(event.target.previousElementSibling.getAttribute('id'));
   };
 
-  this.keyupTodoList = (event) => {
+  const keyupTodoList = (event) => {
     if (event.target.classList[0] != 'edit') return;
     if (event.key === 'Escape')
       onEditing(event.target.parentNode.getAttribute('id'));
@@ -37,15 +37,16 @@ function TodoList({ onCheck, onEditing, onEdit }) {
       onEdit(event.target.parentNode.getAttribute('id'), event.target.value);
   };
 
-  const makeDOM = (tag, attributes) => {
-    const dom = document.createElement(tag);
-    for (const key in attributes) {
-      dom.setAttribute(key, attributes[key]);
-    }
-    return dom;
-  };
-
   const todoItemTemplate = (item) => {
+    const makeDOM = (tag, attributes) => {
+      const dom = document.createElement(tag);
+      for (const key in attributes) {
+        // for of 불가
+        dom.setAttribute(key, attributes[key]);
+      }
+      return dom;
+    };
+
     const li = makeDOM('li', {
       id: item.id,
       class: `${item.completed ? 'completed' : false} ${
@@ -72,13 +73,6 @@ function TodoList({ onCheck, onEditing, onEdit }) {
             id: item.id,
             false: '',
           }
-      // 다른 방법 없나?
-      // {
-      //   class: 'toggle',
-      //   type: 'checkbox',
-      //   id: item.id,
-      //   (item.completed ? checked : false): '',
-      // }
     );
 
     const label = makeDOM('label', {

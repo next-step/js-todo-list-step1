@@ -23,46 +23,50 @@ function TodoApp() {
 
   const todoList = new TodoList({
     onCheck: (id) => {
-      this.todoItems.map((item) => {
-        if (item.id == id) item.completed = !item.completed;
+      this.todoItems.forEach((item) => {
+        if (item.getId() == id) item.switchCompleted();
       });
       this.setState(this.todoItems);
     },
     onEditing: (id) => {
-      this.todoItems.map((item) => {
-        if (item.id == id) item.editing = !item.editing;
+      this.todoItems.forEach((item) => {
+        if (item.getId() == id) item.editing = !item.editing;
       });
       this.setState(this.todoItems);
     },
     onEdit: (id, contents) => {
-      this.todoItems.map((item) => {
-        if (item.id == id) {
+      this.todoItems.forEach((item) => {
+        if (item.getId() == id) {
           item.editing = !item.editing;
           item.contents = contents;
         }
       });
       this.setState(this.todoItems);
     },
+    onDelete: (id) => {
+      const updatedItems = this.todoItems.filter((item) => {
+        return item.getId() != id;
+      });
+      this.setState(updatedItems);
+    },
   });
 
   const todoCount = new TodoCount({
     onFilter: (filter) => {
-      this.setState(
-        this.todoItems.filter((item) => {
-          if (filter === 'all') return true;
-          else if (filter === 'active') return item.completed == false;
-          else if (filter === 'completed') return item.completed == true;
-        })
-      );
+      const updatedItems = this.todoItems.filter((item) => {
+        if (filter === 'all') return true;
+        else if (filter === 'active') return item.completed == false;
+        else if (filter === 'completed') return item.completed == true;
+      });
+      todoList.setState(updatedItems);
+      todoCount.setState(updatedItems);
     },
   });
 
   this.setState = (updatedItems) => {
-    // this.todoItems = updatedItems; // 이게 필요한가? 왜?
-    // todoList.setState(this.todoItems);
-    // todoCount.setState(this.todoItems);
-    todoList.setState(updatedItems);
-    todoCount.setState(updatedItems);
+    this.todoItems = updatedItems;
+    todoList.setState(this.todoItems);
+    todoCount.setState(this.todoItems);
   };
 }
 

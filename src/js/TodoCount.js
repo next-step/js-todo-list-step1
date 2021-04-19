@@ -1,13 +1,10 @@
 function TodoCount({ onFilter }) {
   const $todoCount = document.querySelector('.todo-count strong');
   const $todoFilter = document.querySelector('.filters');
-  // 선택자 위임 이런거... 어떻게 해야 좋을까? 이렇게 하위로 하나씩 하는게 나은가?
-  // 아니면 TodoList처럼?
-
-  $todoFilter.addEventListener('click', (event) => this.clickTodoFilter(event));
+  // ❓ 선택자위임. 어떻게? 이렇게 하위로 하나씩 하는게 나은지, 아니면 TodoList처럼 하는게 나은지.
 
   this.setState = (updatedTodoItems) => {
-    this.todoItems = updatedTodoItems; // 이건 왜?
+    this.todoItems = updatedTodoItems;
     this.render(this.todoItems);
   };
 
@@ -15,11 +12,13 @@ function TodoCount({ onFilter }) {
     $todoCount.innerHTML = items.length;
   };
 
-  this.clickTodoFilter = (event) => {
+  $todoFilter.addEventListener('click', (event) => clickTodoFilter(event));
+
+  const clickTodoFilter = (event) => {
     onFilter(event.target.classList[0]);
 
-    // toggle 내용. 근데 여기서 하는게 맞는지를 모르겠음.
-    for (let elem of $todoFilter.children) {
+    for (const elem of $todoFilter.children) {
+      // for in 불가
       if (
         elem.firstElementChild.classList.contains('selected') ||
         elem.firstElementChild.classList.contains(event.target.classList[0])
@@ -27,6 +26,8 @@ function TodoCount({ onFilter }) {
         elem.firstElementChild.classList.toggle('selected');
       }
     }
+    // toggle 내용. 근데 여기서 하는게 맞는지를 모르겠음.
+    // 더 좋은 방법 있나? 함수를 선언해서 어떻게 한다던지...
   };
 }
 
