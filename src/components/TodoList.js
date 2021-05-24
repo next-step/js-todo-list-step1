@@ -16,6 +16,8 @@ export default class TodoList {
     this.$todoItems = $todoItems;
     this.$todoList.addEventListener("click", this.toggleTodoEvent.bind(this));
     this.$todoList.addEventListener("click", this.destroyTodo.bind(this));
+    this.$todoList.addEventListener("dblclick", this.changeTodo.bind(this));
+    this.$todoList.addEventListener("keydown", this.editTodo.bind(this));
 
     this.$target.appendChild(this.$todoList);
     this.render();
@@ -53,22 +55,67 @@ export default class TodoList {
     this.render();
   }
 
+  changeTodo(event) {
+    if (!event.target.classList.contains("label")) {
+      return;
+    }
+    const id = event.target.id;
+    const item = findTodoItem(this.$todoItems, +id);
+
+    item.editing = true;
+    this.render();
+  }
+
+  editTodo(event) {
+    const target = document.activeElement;
+    if (!target.classList.contains("edit")) {
+      return;
+    }
+
+    const item = findTodoItem(this.$todoItems, +target.id);
+    let edited = false;
+
+    if (!item.editing) {
+      return;
+    }
+
+    if (event.keyCode === 13) {
+      item.content = target.value;
+      item.editing = false;
+      edited = true;
+    }
+
+    if (event.keyCode === 27) {
+      console.log("hi");
+      item.editing = false;
+      edited = true;
+    }
+
+    if (edited) {
+      this.render();
+    }
+  }
+
   render() {
     this.$todoList.innerHTML = `
         ${this.$todoItems
           .map((todoItem) => {
             return `
-            <li id="${todoItem.id}" class=${
-              todoItem.achieved ? "false" : "completed"
-            }>
+            <li id="${todoItem.id}" class="${
+              todoItem.achieved ? "completed" : "false"
+            } ${todoItem.editing ? "editing" : ""}">
                 <div class="view">
                     <input class="toggle" type="checkbox" id="${todoItem.id}" ${
-              todoItem.achieved ? "" : "checked"
+              todoItem.achieved ? "checked" : ""
             }>
-                    <label class="label">${todoItem.content}</label>
+                    <label class="label" id=${todoItem.id}>${
+              todoItem.content
+            }</label>
                     <button class="destroy" id="${todoItem.id}"></button>
                 </div>
-                <input class="edit" value="${todoItem.content}">
+                <input class="edit" id=${todoItem.id} value="${
+              todoItem.content
+            }">
             </li>
             `;
           })
