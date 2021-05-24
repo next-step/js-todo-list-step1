@@ -39,17 +39,20 @@ export default class App {
 
   addTodoItemHandler(event) {
     const items = this.$todoItems;
-    if (event.keyCode === 13) {
-      const value = event.target.value;
-
-      items.push({
-        id: getNextId(items),
-        content: value,
-        achieved: false,
-        addTodo: false,
-      });
+    if (!event.keyCode === 13) {
+      return;
     }
 
+    const value = event.target.value;
+
+    items.push({
+      id: getNextId(items),
+      content: value,
+      achieved: false,
+      addTodo: false,
+    });
+
+    event.target.value = "";
     setTodoItems(items);
     this.$todoList.setState(items);
   }
