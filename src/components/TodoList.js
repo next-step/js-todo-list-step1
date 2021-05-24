@@ -5,7 +5,7 @@ export default class TodoList {
   $todoList = null;
   $todoItems = null;
 
-  constructor($target, $todoItems) {
+  constructor($target, $todoItems, destoryTodoHandler) {
     this.$target = $target;
     const TodoList = document.createElement("ul");
     this.$todoList = TodoList;
@@ -15,7 +15,7 @@ export default class TodoList {
 
     this.$todoItems = $todoItems;
     this.$todoList.addEventListener("click", this.toggleTodoEvent.bind(this));
-    this.$todoList.addEventListener("click", this.destroyTodo.bind(this));
+    this.$todoList.addEventListener("click", destoryTodoHandler);
     this.$todoList.addEventListener("dblclick", this.changeTodo.bind(this));
     this.$todoList.addEventListener("keydown", this.editTodo.bind(this));
 
@@ -38,19 +38,6 @@ export default class TodoList {
     const item = findTodoItem(this.$todoItems, +id);
 
     item.achieved = !item.achieved;
-
-    this.render();
-  }
-
-  destroyTodo(event) {
-    if (!event.target.classList.contains("destroy")) {
-      return;
-    }
-    event.preventDefault();
-    const id = event.target.dataset.id;
-    const index = findTodoItemIndex(this.$todoItems, +id);
-
-    this.$todoItems.splice(index, 1);
 
     this.render();
   }

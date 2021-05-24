@@ -4,7 +4,7 @@ import MainContainer from "./components/MainContainer.js";
 import TodoList from "./components/TodoList.js";
 import TodoCount from "./components/TodoCount.js";
 import { getTodoItems, setTodoItems } from "./utils/localstorage.js";
-import { getNextId } from "./utils/todoItem.js";
+import { findTodoItemIndex, getNextId } from "./utils/todoItem.js";
 
 export default class App {
   $app = null;
@@ -30,7 +30,11 @@ export default class App {
     const $mainContainer = new MainContainer($app).$mainContainer;
     this.$main = $mainContainer;
 
-    const $todoList = new TodoList(this.$main, this.$todoItems);
+    const $todoList = new TodoList(
+      this.$main,
+      this.$todoItems,
+      this.destroyTodoHandler.bind(this)
+    );
     this.$todoList = $todoList;
 
     const $todoCount = new TodoCount(this.$main, todoItems.length);
@@ -39,21 +43,38 @@ export default class App {
 
   addTodoItemHandler(event) {
     const items = this.$todoItems;
-    if (!event.keyCode === 13) {
+    if (event.keyCode === 13) {
+      const value = event.target.value;
+
+      if (value === "") {
+        return;
+      }
+
+      items.push({
+        id: getNextId(items),
+        content: value,
+        achieved: false,
+        addTodo: false,
+      });
+
+      event.target.value = "";
+      setTodoItems(items);
+      this.$todoList.setState(items);
+      this.$todoCount.setState(items.length);
+    }
+  }
+
+  destroyTodoHandler(event) {
+    if (!event.target.classList.contains("destroy")) {
       return;
     }
+    event.preventDefault();
+    const id = event.target.dataset.id;
+    console.log(this.$todoItems);
+    const index = findTodoItemIndex(this.$todoItems, +id);
 
-    const value = event.target.value;
-
-    items.push({
-      id: getNextId(items),
-      content: value,
-      achieved: false,
-      addTodo: false,
-    });
-
-    event.target.value = "";
-    setTodoItems(items);
-    this.$todoList.setState(items);
+    this.$todoItems.splice(index, 1);
+    this.$todoList.render();
+    this.$todoCount.setState(this.$todoItems.length);
   }
 }

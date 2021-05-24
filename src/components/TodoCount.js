@@ -14,6 +14,11 @@ export default class TodoCount {
     this.render();
   }
 
+  setState($count) {
+    this.$count = $count;
+    this.render();
+  }
+
   render() {
     this.$todoCount.innerHTML = `
         <span class="todo-count">총 <strong>${this.$count}</strong> 개</span>
