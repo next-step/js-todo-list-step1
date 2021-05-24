@@ -45,7 +45,7 @@ export default class App {
       items.push({
         id: getNextId(items),
         content: value,
-        achieved: false,
+        achieved: true,
       });
     }
 
