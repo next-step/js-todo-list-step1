@@ -1,0 +1,3 @@
+const TODO_LISTS = "TODOLIST_BLACKCOFFEE";
+
+export { TODO_LISTS };
