@@ -1,20 +1,28 @@
-import { findTodoItem, findTodoItemIndex } from "../utils/todoItem.js";
+import { findTodoItem } from "../utils/todoItem.js";
 
 export default class TodoList {
   $target = null;
   $todoList = null;
   $todoItems = null;
+  $viewMode = null;
 
-  constructor($target, $todoItems, destoryTodoHandler) {
+  constructor(
+    $target,
+    $todoItems,
+    destoryTodoHandler,
+    toggleTodoHanlder,
+    $viewMode
+  ) {
     this.$target = $target;
     const TodoList = document.createElement("ul");
     this.$todoList = TodoList;
+    this.$viewMode = $viewMode;
 
     this.$todoList.id = "todo-list";
     this.$todoList.classList.add("todo-list");
 
     this.$todoItems = $todoItems;
-    this.$todoList.addEventListener("click", this.toggleTodoEvent.bind(this));
+    this.$todoList.addEventListener("click", toggleTodoHanlder);
     this.$todoList.addEventListener("click", destoryTodoHandler);
     this.$todoList.addEventListener("dblclick", this.changeTodo.bind(this));
     this.$todoList.addEventListener("keydown", this.editTodo.bind(this));
@@ -23,8 +31,14 @@ export default class TodoList {
     this.render();
   }
 
-  setState(nextState) {
+  setState(nextState, $viewMode) {
     this.$todoItems = nextState;
+    this.$viewMode = $viewMode;
+    this.render();
+  }
+
+  setViewMode($viewMode) {
+    this.$viewMode = $viewMode;
     this.render();
   }
 

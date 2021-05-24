@@ -4,7 +4,17 @@ import MainContainer from "./components/MainContainer.js";
 import TodoList from "./components/TodoList.js";
 import TodoCount from "./components/TodoCount.js";
 import { getTodoItems, setTodoItems } from "./utils/localstorage.js";
-import { findTodoItemIndex, getNextId } from "./utils/todoItem.js";
+import {
+  findTodoItem,
+  findTodoItemIndex,
+  getNextId,
+} from "./utils/todoItem.js";
+import {
+  SELETED,
+  VIEW_ALL,
+  VIEW_COMPLETED,
+  VIEW_REMAIN,
+} from "./utils/constants.js";
 
 export default class App {
   $app = null;
@@ -13,6 +23,7 @@ export default class App {
   $todoInput = null;
   $todoList = null;
   $todoItems = null;
+  $filterItems = null;
 
   constructor($app, $main) {
     this.$app = $app;
@@ -33,11 +44,17 @@ export default class App {
     const $todoList = new TodoList(
       this.$main,
       this.$todoItems,
-      this.destroyTodoHandler.bind(this)
+      this.destroyTodoHandler.bind(this),
+      this.toggleTodoEvent.bind(this),
+      VIEW_ALL
     );
     this.$todoList = $todoList;
 
-    const $todoCount = new TodoCount(this.$main, todoItems.length);
+    const $todoCount = new TodoCount(
+      this.$main,
+      todoItems.length,
+      this.changeViewMode.bind(this)
+    );
     this.$todoCount = $todoCount;
   }
 
@@ -50,17 +67,35 @@ export default class App {
         return;
       }
 
-      items.push({
+      const newItem = {
         id: getNextId(items),
         content: value,
         achieved: false,
         addTodo: false,
-      });
+      };
+      items.push(newItem);
 
       event.target.value = "";
       setTodoItems(items);
-      this.$todoList.setState(items);
-      this.$todoCount.setState(items.length);
+
+      if (this.$todoCount.$viewMode === VIEW_ALL) {
+        this.$todoList.setState(items, VIEW_ALL);
+        this.$todoCount.setState(items.length, VIEW_ALL);
+        return;
+      }
+
+      if (this.$todoCount.$viewMode === VIEW_COMPLETED) {
+        this.$todoList.setState(this.$filterItems, VIEW_COMPLETED);
+        this.$todoCount.setState(this.$filterItems.length, VIEW_COMPLETED);
+        return;
+      }
+
+      if (this.$todoCount.$viewMode === VIEW_REMAIN) {
+        this.$filterItems.push(newItem);
+        this.$todoList.setState(this.$filterItems, VIEW_REMAIN);
+        this.$todoCount.setState(this.$filterItems.length, VIEW_REMAIN);
+        return;
+      }
     }
   }
 
@@ -70,11 +105,102 @@ export default class App {
     }
     event.preventDefault();
     const id = event.target.dataset.id;
-    console.log(this.$todoItems);
     const index = findTodoItemIndex(this.$todoItems, +id);
 
     this.$todoItems.splice(index, 1);
-    this.$todoList.render();
-    this.$todoCount.setState(this.$todoItems.length);
+    setTodoItems(this.$todoItems);
+
+    if (this.$todoCount.$viewMode === VIEW_ALL) {
+      this.$todoList.setState(this.$todoItems, VIEW_ALL);
+      this.$todoCount.setState(this.$todoItems.length, VIEW_ALL);
+      return;
+    }
+
+    if (this.$todoCount.$viewMode === VIEW_COMPLETED) {
+      this.$filterItems = this.$todoItems.filter(
+        (todoItem) => todoItem.achieved === true
+      );
+      this.$todoList.setState(this.$filterItems, VIEW_COMPLETED);
+      this.$todoCount.setState(this.$filterItems.length, VIEW_COMPLETED);
+      return;
+    }
+
+    if (this.$todoCount.$viewMode === VIEW_REMAIN) {
+      this.$filterItems = this.$todoItems.filter(
+        (todoItem) => todoItem.achieved === false
+      );
+      this.$todoList.setState(this.$filterItems, VIEW_REMAIN);
+      this.$todoCount.setState(this.$filterItems.length, VIEW_REMAIN);
+      return;
+    }
+  }
+
+  changeViewMode(event) {
+    const target = event.target;
+    if (
+      !(
+        target.classList.contains(VIEW_ALL) ||
+        target.classList.contains(VIEW_COMPLETED) ||
+        target.classList.contains(VIEW_REMAIN)
+      )
+    ) {
+      return;
+    }
+
+    if (target.classList.contains(VIEW_COMPLETED)) {
+      this.$filterItems = this.$todoItems.filter(
+        (todoItem) => todoItem.achieved === true
+      );
+      this.$todoList.setState(this.$filterItems, VIEW_COMPLETED);
+      this.$todoCount.setState(this.$filterItems.length, VIEW_COMPLETED);
+      return;
+    }
+
+    if (target.classList.contains(VIEW_REMAIN)) {
+      this.$filterItems = this.$todoItems.filter(
+        (todoItem) => todoItem.achieved === false
+      );
+      this.$todoList.setState(this.$filterItems, VIEW_REMAIN);
+      this.$todoCount.setState(this.$filterItems.length, VIEW_REMAIN);
+      return;
+    }
+
+    this.$todoList.setState(this.$todoItems, VIEW_ALL);
+    this.$todoCount.setState(this.$todoItems.length, VIEW_ALL);
+  }
+
+  toggleTodoEvent(event) {
+    if (!event.target.classList.contains("toggle")) {
+      return;
+    }
+    event.preventDefault();
+
+    const id = event.target.dataset.id;
+    const item = findTodoItem(this.$todoItems, +id);
+
+    item.achieved = !item.achieved;
+
+    setTodoItems(this.$todoItems);
+
+    if (this.$todoCount.$viewMode === VIEW_COMPLETED) {
+      this.$filterItems = this.$todoItems.filter(
+        (todoItem) => todoItem.achieved === true
+      );
+      this.$todoList.setState(this.$filterItems, VIEW_COMPLETED);
+      this.$todoCount.setState(this.$filterItems.length, VIEW_COMPLETED);
+      return;
+    }
+
+    if (this.$todoCount.$viewMode === VIEW_REMAIN) {
+      this.$filterItems = this.$todoItems.filter(
+        (todoItem) => todoItem.achieved === false
+      );
+      this.$todoList.setState(this.$filterItems, VIEW_REMAIN);
+      this.$todoCount.setState(this.$filterItems.length, VIEW_REMAIN);
+      return;
+    }
+
+    this.$todoList.setState(this.$todoItems, VIEW_ALL);
+    this.$todoCount.setState(this.$todoItems.length, VIEW_ALL);
   }
 }
