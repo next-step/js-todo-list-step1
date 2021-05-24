@@ -34,7 +34,7 @@ export default class TodoList {
     }
     event.preventDefault();
 
-    const id = event.target.id;
+    const id = event.target.dataset.id;
     const item = findTodoItem(this.$todoItems, +id);
 
     item.achieved = !item.achieved;
@@ -47,7 +47,7 @@ export default class TodoList {
       return;
     }
     event.preventDefault();
-    const id = event.target.id;
+    const id = event.target.dataset.id;
     const index = findTodoItemIndex(this.$todoItems, +id);
 
     this.$todoItems.splice(index, 1);
@@ -59,7 +59,7 @@ export default class TodoList {
     if (!event.target.classList.contains("label")) {
       return;
     }
-    const id = event.target.id;
+    const id = event.target.dataset.id;
     const item = findTodoItem(this.$todoItems, +id);
 
     item.editing = true;
@@ -72,7 +72,7 @@ export default class TodoList {
       return;
     }
 
-    const item = findTodoItem(this.$todoItems, +target.id);
+    const item = findTodoItem(this.$todoItems, +target.dataset.id);
     let edited = false;
 
     if (!item.editing) {
@@ -105,15 +105,15 @@ export default class TodoList {
               todoItem.achieved ? "completed" : "false"
             } ${todoItem.editing ? "editing" : ""}">
                 <div class="view">
-                    <input class="toggle" type="checkbox" id="${todoItem.id}" ${
-              todoItem.achieved ? "checked" : ""
-            }>
-                    <label class="label" id=${todoItem.id}>${
+                    <input class="toggle" type="checkbox" data-id="${
+                      todoItem.id
+                    }" ${todoItem.achieved ? "checked" : ""}>
+                    <label class="label" data-id=${todoItem.id}>${
               todoItem.content
             }</label>
-                    <button class="destroy" id="${todoItem.id}"></button>
+                    <button class="destroy" data-id="${todoItem.id}"></button>
                 </div>
-                <input class="edit" id=${todoItem.id} value="${
+                <input class="edit" data-id=${todoItem.id} value="${
               todoItem.content
             }">
             </li>
