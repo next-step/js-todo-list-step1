@@ -87,7 +87,6 @@ export default class TodoList {
     }
 
     if (event.keyCode === 27) {
-      console.log("hi");
       item.editing = false;
       edited = true;
     }

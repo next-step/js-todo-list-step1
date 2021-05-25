@@ -10,7 +10,6 @@ export default class MainContainer {
     this.$mainContainer.id = "Main";
 
     this.$target.appendChild(this.$mainContainer);
-    console.log(this.$mainContainer);
     this.render();
   }
 

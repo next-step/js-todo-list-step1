@@ -9,7 +9,6 @@ function getNextId(todoItems) {
 }
 
 function getLastTodoIndex(todoItems) {
-  console.log(todoItems);
   return todoItems.length - 1;
 }
 
@@ -19,8 +18,6 @@ function findTodoItem(todoItems, id) {
 
 function findTodoItemIndex(todoItems, id) {
   let targetIndex = -1;
-
-  console.log(todoItems);
 
   todoItems.forEach((todoItem, index) => {
     if (todoItem.id === id) {
