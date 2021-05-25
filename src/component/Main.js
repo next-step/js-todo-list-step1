@@ -1,5 +1,7 @@
 import { changeTodo } from "../util/ChangeTodo.js";
+import { editTodo } from "../util/editTodo.js";
 import { getTodos, setTodo } from "../util/localStorage.js";
+import TodoCount from "./TodoCount.js";
 import TodoList from "./TodoList.js";
 
 function Main({$app, initalState}) {
@@ -11,18 +13,24 @@ function Main({$app, initalState}) {
         $main,
         initalState: this.state.toDos,
         onClick: (idx, name) => {
-            changeTodo(idx, name);
+            if(changeTodo(idx, name) === null) return;
             const toDos = getTodos();
-            this.setState({...this.state, toDos})
+            this.setState({toDos})
         },
-        onDbClick: (idx,name) => {
-            console.log(idx,name);
+        onDbClick: (target) => {
+            if(editTodo(target, this.setState) === null) return;
         }
     })
+    const todoCount = new TodoCount({
+        $main,
+        initalState: this.state.count,
+    })
     this.setState = (nextState) => {
-        this.state = nextState;
-        setTodo(this.state.toDos)
-        todoList.setState(this.state.toDos)
+        this.state = {...this.state, ...nextState};
+        setTodo(this.state.toDos);
+        console.log(this.state.toDos);
+        todoList.setState(this.state.toDos);
+        todoCount.setState(this.state.toDos);
     }
 }
 

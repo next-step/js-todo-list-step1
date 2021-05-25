@@ -14,13 +14,13 @@ function TodoList({$main, initalState, onClick, onDbClick}) {
     }
     this.template = () => {
         return this.state ? this.state.map(({idx, value, completed}) => `
-        <li class="${completed ? "completed" : "incomplete"}">
-            <div data-idx = ${idx} class="view">
+        <li class="${completed ? "completed" : "incomplete"}" data-idx = ${idx}>
+            <div class="view">
                 <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>
                 <label class="label">${value}</label>
                 <button class="destroy"></button>
             </div>
-            <input class="edit" value="새로운 타이틀" />
+            <input class="edit" value="${value}" />
         </li>
         `).join("") : ""
     }
@@ -32,15 +32,13 @@ function TodoList({$main, initalState, onClick, onDbClick}) {
     this.mounted = () => {
         this.$target.querySelectorAll("li").forEach($li => {
            $li.addEventListener("click", (e) => {
-               const { idx } = e.target.parentNode.dataset;
+               const { idx } = e.target.closest("li").dataset;
                const name = e.target.className;
                this.onClick(idx, name);
            })
            $li.addEventListener("dblclick", (e) => {
-            const { idx } = e.target.parentNode.dataset;
-            const name = e.target.className;
-            this.onDbClick(idx, name);
-           })
+                this.onDbClick(e.target)
+            })
         })
     }
 }
