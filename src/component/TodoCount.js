@@ -1,25 +1,35 @@
-function TodoCount({$main, onClick}) {
+import { filterTodo } from "../util/filterTodo.js";
+
+function TodoCount({$main, onChange}) {
+    this.onChange = onChange;
+
     this.$target = document.createElement("div");
     this.$target.className = "count-container"
     $main.appendChild(this.$target);
+
+    window.addEventListener("hashchange", () => {
+      this.onChange();
+    })
 
     this.setState = (nextState) => {
         this.state = nextState;
         this.render();
     }
     this.template = () => {
-        const count = this.state.length
+      const hash = location.hash;
+      const filteredTodos = filterTodo(this.state, hash);
+      const count = filteredTodos.length;
         return `
         <span class="todo-count">총 <strong>${count}</strong> 개</span>
           <ul class="filters">
             <li>
-              <a class="all selected" href="#">전체보기</a>
+              <a class="all ${hash === "" ? "selected" : ""}" href="#">전체보기</a>
             </li>
             <li>
-              <a class="active" href="#active">해야할 일</a>
+              <a class="active ${hash === "#active" ? "selected" : ""}" href="#active">해야할 일</a>
             </li>
             <li>
-              <a class="completed" href="#completed">완료한 일</a>
+              <a class="completed ${hash === "#completed" ? "selected" : ""}" href="#completed">완료한 일</a>
             </li>
           </ul>
           `

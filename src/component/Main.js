@@ -18,17 +18,19 @@ function Main({$app, initalState}) {
             this.setState({toDos})
         },
         onDbClick: (target) => {
-            if(editTodo(target, this.setState) === null) return;
+            editTodo(target, this.setState)
         }
     })
     const todoCount = new TodoCount({
         $main,
         initalState: this.state.count,
+        onChange: () => {
+            this.setState();
+        }
     })
     this.setState = (nextState) => {
         this.state = {...this.state, ...nextState};
         setTodo(this.state.toDos);
-        console.log(this.state.toDos);
         todoList.setState(this.state.toDos);
         todoCount.setState(this.state.toDos);
     }

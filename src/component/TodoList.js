@@ -1,3 +1,5 @@
+import { filterTodo } from "../util/filterTodo.js";
+
 function TodoList({$main, initalState, onClick, onDbClick}) {
     this.state = initalState;
     this.onClick = onClick;
@@ -13,7 +15,10 @@ function TodoList({$main, initalState, onClick, onDbClick}) {
         this.render();
     }
     this.template = () => {
-        return this.state ? this.state.map(({idx, value, completed}) => `
+        const hash = location.hash;
+        const filteredTodos = filterTodo(this.state, hash);
+        
+        return filteredTodos ? filteredTodos.map(({idx, value, completed}) => `
         <li class="${completed ? "completed" : "incomplete"}" data-idx = ${idx}>
             <div class="view">
                 <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>

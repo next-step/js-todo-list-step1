@@ -30,7 +30,6 @@ const editTodo = (target, setState) => {
         editTodoText(e, originValue, setState, toDos);
     })
 
-    return null;
 }
 
 export {editTodo}

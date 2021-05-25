@@ -6,7 +6,7 @@ function App($app) {
     this.state = {
         toDos: []
     }
-    const todoInput = new TodoInput({
+    new TodoInput({
         $app,
         onKeyup: ({target, key}) => {
            if(key === "Enter" && target.value){

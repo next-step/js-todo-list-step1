@@ -12,7 +12,6 @@ const toggleTodo = (toDos,idx) => {
 
 const removeTodo = (toDos,idx) => {
     const newTodos = toDos.filter((todo)=> todo.idx !== idx);
-    console.log(newTodos);
     setTodo(newTodos)
 }
 
