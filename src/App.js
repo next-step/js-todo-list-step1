@@ -10,6 +10,7 @@ import {
   getNextId,
 } from "./utils/todoItem.js";
 import {
+  ENTER,
   SELETED,
   VIEW_ALL,
   VIEW_COMPLETED,
@@ -60,7 +61,7 @@ export default class App {
 
   addTodoItemHandler(event) {
     const items = this.$todoItems;
-    if (event.keyCode === 13) {
+    if (event.key === ENTER) {
       const value = event.target.value;
 
       if (value === "") {

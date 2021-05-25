@@ -1,3 +1,4 @@
+import { ENTER, ESC, ESCAPE } from "../utils/constants.js";
 import { findTodoItem } from "../utils/todoItem.js";
 
 export default class TodoList {
@@ -80,13 +81,13 @@ export default class TodoList {
       return;
     }
 
-    if (event.keyCode === 13) {
+    if (event.key === ENTER) {
       item.content = target.value;
       item.editing = false;
       edited = true;
     }
 
-    if (event.keyCode === 27) {
+    if (event.key === ESC || event.key === ESCAPE) {
       item.editing = false;
       edited = true;
     }
