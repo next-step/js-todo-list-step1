@@ -1,4 +1,5 @@
-import { setTodo } from "../util/localStorage.js";
+import { changeTodo } from "../util/ChangeTodo.js";
+import { getTodos, setTodo } from "../util/localStorage.js";
 import TodoList from "./TodoList.js";
 
 function Main({$app, initalState}) {
@@ -10,7 +11,12 @@ function Main({$app, initalState}) {
         $main,
         initalState: this.state.toDos,
         onClick: (idx, name) => {
-            console.log(idx, name);
+            changeTodo(idx, name);
+            const toDos = getTodos();
+            this.setState({...this.state, toDos})
+        },
+        onDbClick: (idx,name) => {
+            console.log(idx,name);
         }
     })
     this.setState = (nextState) => {

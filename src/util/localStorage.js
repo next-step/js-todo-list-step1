@@ -15,4 +15,4 @@ const setTodo = (value) => {
 }
 
 
-export { getTodos, setTodo, deleteTodo }
+export { getTodos, setTodo }

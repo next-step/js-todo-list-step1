@@ -1,6 +1,8 @@
-function TodoList({$main, initalState, onClick}) {
+function TodoList({$main, initalState, onClick, onDbClick}) {
     this.state = initalState;
     this.onClick = onClick;
+    this.onDbClick = onDbClick;
+
     this.$target = document.createElement("ul");
     this.$target.id = "todo-list"
     this.$target.className = "todo-list"
@@ -33,6 +35,11 @@ function TodoList({$main, initalState, onClick}) {
                const { idx } = e.target.parentNode.dataset;
                const name = e.target.className;
                this.onClick(idx, name);
+           })
+           $li.addEventListener("dblclick", (e) => {
+            const { idx } = e.target.parentNode.dataset;
+            const name = e.target.className;
+            this.onDbClick(idx, name);
            })
         })
     }
