@@ -1,51 +1,48 @@
-// 부모 컴포넌트
-function TodoApp() {
-  this.todoItems = [];
+import { $ } from "./utils/utils.js";
 
-  this.setState = updatedItems => {
-    this.todoItems = updatedItems;
-    todoList.setState(this.todoItems);
-  };
+const $todoInput = $(".new-todo");
+const $todoList = $("#todo-list");
 
-  new TodoInput({
-    onAdd: contents => {
-      const newTodoItem = new TodoItem(contents);
-      this.todoItems.push(newTodoItem);
-      this.setState(this.todoItems);
-    }
+let todoList = [];
+let viewList = [];
+let listStatus = "all";
+const is_complete = true;
+
+function drawList() {
+  viewList = todoList.filter((s) => {
+    return listStatus == "all" || is_complete == s.complete;
+  });
+  $todoList.innerHTML = "";
+  viewList.forEach((input) => {
+    $todoList.innerHTML += `
+    <li>
+    <div class="view">
+      <input class="toggle" type="checkbox"/>
+      <label class="label">${input.title}</label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value=${input.title} />
+  </li>
+`;
   });
 }
-TodoApp();
-alert();
-// 입력 받는 컴포넌트
-function TodoInput({ onAdd }) {
-  const $todoInput = document.querySelector("#new-todo-title");
 
-  $todoInput.addEventListener("keydown", event => this.addTodoItem(event));
-
-  this.addTodoItem = event => {
-    const $newTodoTarget = event.target;
-    if (this.isValid(event, $newTodoTarget.value)) {
-      onAdd($newTodoTarget.value);
-      $newTodoTarget.value = "";
-    }
-  };
-
-  this.isValid = (event, value) => {
-	  if(value == "") return false;
-	  return true;
+function addList(value) {
+  if (todoList.length == 0) {
+    todoList.push({ id: 0, title: value, complete: false });
+    return;
   }
+  const id = todoList[todoList.length - 1].id + 1;
+  todoList.push({ id: id, title: value, complete: false });
+  console.log(todoList);
 }
 
-// todoList 보여주는 컴포넌트
-function TodoList() {
-  this.setState = updatedTodoItems => {
-	this.todoItems = updatedTodoItems;
-    this.render(this.todoItems);
-  };
-
-  this.render = items => {
-    const template = items.map(todoItemTemplate);
-    this.$todoList.innerHTML = template.join("");
-  };
-}
+const addTodo = ({ target, key }) => {
+  const value = target.value;
+  if (key != "Enter") return;
+  addList(value);
+  $todoInput.value = "";
+  drawList();
+};
+console.log($todoInput);
+$todoInput.addEventListener("keyup", addTodo);
