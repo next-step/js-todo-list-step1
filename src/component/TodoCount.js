@@ -1,14 +1,14 @@
 import { filterTodo } from "../util/filterTodo.js";
 
-function TodoCount({$main, onChange}) {
-    this.onChange = onChange;
+function TodoCount({$main, onHashChange}) {
+    this.onHashChange = onHashChange;
 
     this.$target = document.createElement("div");
     this.$target.className = "count-container"
     $main.appendChild(this.$target);
 
     window.addEventListener("hashchange", () => {
-      this.onChange();
+      this.onHashChange();
     })
 
     this.setState = (nextState) => {

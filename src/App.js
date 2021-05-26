@@ -23,8 +23,7 @@ function App($app) {
         }
     })
     const main = new Main({
-        $app,
-        initalState : this.state.toDos
+        $app
     })
 
     this.setState = (nextState) => {
