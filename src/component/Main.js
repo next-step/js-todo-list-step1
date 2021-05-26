@@ -1,7 +1,7 @@
 import { changeTodo } from "../util/ChangeTodo.js";
 import { editTodo } from "../util/editTodo.js";
 import { filterTodo } from "../util/filterTodo.js";
-import { getTodos, setTodo } from "../util/localStorage.js";
+import { setTodo } from "../util/localStorage.js";
 import TodoCount from "./TodoCount.js";
 import TodoList from "./TodoList.js";
 

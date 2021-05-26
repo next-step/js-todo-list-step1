@@ -1,4 +1,4 @@
-import { getTodos, setTodo } from "./localStorage.js"
+import { getTodos } from "./localStorage.js"
 
 const toggleTodo = (toDos,idx, setState) => {
     const newTodos = toDos.map((todo) => {

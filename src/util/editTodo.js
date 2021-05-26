@@ -1,4 +1,5 @@
 import { getTodos, setTodo } from "./localStorage.js";
+
 const editTodoText = ({key, target}, originValue, setState, toDos) => {
     switch (key) {
         case "Escape":

@@ -1,5 +1,3 @@
-import { filterTodo } from "../util/filterTodo.js";
-
 function TodoList({$main, onClick, onDbClick}) {
     this.onClick = onClick;
     this.onDbClick = onDbClick;
