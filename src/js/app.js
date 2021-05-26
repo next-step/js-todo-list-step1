@@ -7,10 +7,6 @@ class App {
     this.state = [];
     this.$target = $target;
     // header
-<<<<<<< HEAD
-    console.log("?");
-=======
->>>>>>> 5720d995a6715a5c4a823642f8428535bdcbc625
     this.header = new TodoHeader(this.$target, "TODOS");
     this.header.render();
 
@@ -23,7 +19,8 @@ class App {
     // todolist
     this.todoList = new TodoList(
       document.querySelector(".todo-list"),
-      this.state
+      this.state,
+      this.onDeleteItem
     );
     // this.todoCount = new TodoCount();
   }
@@ -33,6 +30,11 @@ class App {
     const newTodoItems = [...this.state, value];
     this.setState(newTodoItems);
   };
+  onDeleteItem = (index) => {
+    const newTodoItems = this.state;
+    newTodoItems.splice(index, 1);
+    this.setState(newTodoItems);
+  }
   setState = (nextState) => {
     this.state = nextState;
     this.todoList.setState(this.state);

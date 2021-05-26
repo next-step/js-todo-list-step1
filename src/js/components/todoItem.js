@@ -1,15 +1,16 @@
 import { VIEW, EDIT, COMPLETE } from "../constant/constant.js";
 
 export class TodoItem {
-  constructor(state, title) {
+  constructor(state, title, index) {
     this.state = state;
     this.title = title;
+    this.index = index;
   }
   template() {
-    let template = '<ul id="todo-list" class="todo-list">';
+    let template = '';
     switch (this.state) {
       case VIEW:
-        template += `<li>
+        template += `<li data-index=${this.index}>
     <div class="view">
       <input class="toggle" type="checkbox"/>
       <label class="label">${this.title}</label>
@@ -39,7 +40,6 @@ export class TodoItem {
   </li>`;
         break;
     }
-    template += "</ul>";
     return template;
   }
 }
