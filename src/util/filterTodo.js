@@ -19,7 +19,7 @@ const getAll = (toDos) => {
 
 const filterTodo = (toDos, hash) => {
     const callback = {"#active" : getActiveTodos, "#completed" : getCompletedTodos, "" : getAll}[hash];
-    if(!callback) return;
+    if(!callback) return getAll(toDos);
     return callback(toDos);
 }
 
