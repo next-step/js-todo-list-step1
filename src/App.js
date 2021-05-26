@@ -6,6 +6,9 @@ function App($app) {
     this.state = {
         toDos: []
     }
+    this.$target = document.createElement("h1");
+    $app.appendChild(this.$target);
+
     new TodoInput({
         $app,
         onKeyup: ({target, key}) => {
@@ -34,6 +37,10 @@ function App($app) {
     const init = () => {
         const toDos = getTodos();
         this.setState({toDos})
+        this.render();
+    }
+    this.render =() => {
+        this.$target.innerText = "TODOS" 
     }
 
     init();
