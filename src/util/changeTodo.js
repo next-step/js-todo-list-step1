@@ -1,26 +1,26 @@
 import { getTodos, setTodo } from "./localStorage.js"
 
-const toggleTodo = (toDos,idx) => {
+const toggleTodo = (toDos,idx, setState) => {
     const newTodos = toDos.map((todo) => {
         if(todo.idx === idx){
             todo.completed = !todo.completed
         }
         return todo
     })
-    setTodo(newTodos)
+    setState({toDos: newTodos});
 }
 
-const removeTodo = (toDos,idx) => {
+const removeTodo = (toDos,idx, setState) => {
     const newTodos = toDos.filter((todo)=> todo.idx !== idx);
-    setTodo(newTodos)
+    setState({toDos: newTodos});
 }
 
-const changeTodo = (idx, name) => {
+const changeTodo = (idx, name, setState) => {
     const toDos = getTodos();
     const callback = {"toggle": toggleTodo, "destroy": removeTodo}[name];
     if(!callback) return false;
     
-    callback(toDos,idx);
+    callback(toDos,idx, setState);
 
     return true;
 }

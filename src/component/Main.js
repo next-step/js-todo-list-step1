@@ -12,9 +12,7 @@ function Main({$app}) {
     const todoList = new TodoList({
         $main,
         onClick: (idx, name) => {
-            if(!changeTodo(idx, name)) return;
-            const toDos = getTodos();
-            this.setState({toDos})
+            changeTodo(idx, name, this.setState)
         },
         onDbClick: (target) => {
             editTodo(target, this.setState)
