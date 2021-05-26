@@ -4,7 +4,8 @@ import { getTodos } from "./util/localStorage.js";
 
 function App($app) {
     this.state = {
-        toDos: []
+        toDos: [],
+        count: 0
     }
     new TodoInput({
         $app,

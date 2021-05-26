@@ -14,10 +14,7 @@ function TodoList({$main, onClick, onDbClick}) {
         this.render();
     }
     this.template = () => {
-        const hash = location.hash;
-        const filteredTodos = filterTodo(this.state, hash);
-        
-        return filteredTodos ? filteredTodos.map(({idx, value, completed}) => `
+        return this.state ? this.state.toDos.map(({idx, value, completed}) => `
         <li class="${completed ? "completed" : "incomplete"}" data-idx = ${idx}>
             <div class="view">
                 <input class="toggle" type="checkbox" ${completed ? "checked" : ""}/>

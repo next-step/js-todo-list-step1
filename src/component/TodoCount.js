@@ -1,5 +1,3 @@
-import { filterTodo } from "../util/filterTodo.js";
-
 function TodoCount({$main, onHashChange}) {
     this.onHashChange = onHashChange;
 
@@ -17,10 +15,8 @@ function TodoCount({$main, onHashChange}) {
     }
     this.template = () => {
       const hash = location.hash;
-      const filteredTodos = filterTodo(this.state, hash);
-      const count = filteredTodos.length;
         return `
-        <span class="todo-count">총 <strong>${count}</strong> 개</span>
+        <span class="todo-count">총 <strong>${this.state.count}</strong> 개</span>
           <ul class="filters">
             <li>
               <a class="all ${hash === "" ? "selected" : ""}" href="#">전체보기</a>
