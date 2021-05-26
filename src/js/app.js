@@ -7,7 +7,10 @@ class App {
     this.state = [];
     this.$target = $target;
     // header
+<<<<<<< HEAD
     console.log("?");
+=======
+>>>>>>> 5720d995a6715a5c4a823642f8428535bdcbc625
     this.header = new TodoHeader(this.$target, "TODOS");
     this.header.render();
 
