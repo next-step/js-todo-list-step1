@@ -21,7 +21,7 @@ const editTodo = (target, setState) => {
     const name = target.className;
     const callback = {"label": editTodoText}[name];
 
-    if(!callback) return null;
+    if(!callback) return false;
     const toDos = getTodos();
     const originValue = target.innerText;
     const $li = target.closest("li");
@@ -29,6 +29,8 @@ const editTodo = (target, setState) => {
     $li.addEventListener("keyup",(e) => {
         editTodoText(e, originValue, setState, toDos);
     })
+
+    return true;
 
 }
 

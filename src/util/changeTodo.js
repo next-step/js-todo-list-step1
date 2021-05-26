@@ -18,8 +18,10 @@ const removeTodo = (toDos,idx) => {
 const changeTodo = (idx, name) => {
     const toDos = getTodos();
     const callback = {"toggle": toggleTodo, "destroy": removeTodo}[name];
-    if(!callback) return null;
+    if(!callback) return false;
     
     callback(toDos,idx);
+
+    return true;
 }
 export {changeTodo}
