@@ -3,6 +3,20 @@ const $ = (selector = '') => document.querySelector(selector);
 const $newTodoInput = $('#new-todo-title');
 const $todoList = $('#todo-list');
 
+function toggleItem(target) {
+  const item = target.closest('li');
+  item.classList.toggle('completed');
+  target.toggleAttribute('checked');
+}
+
+function itemClickEventListener(event) {
+  const { target } = event;
+  if (target.classList.contains('toggle')) {
+    toggleItem(target);
+    return;
+  }
+}
+
 function addItem() {
   const { value } = $newTodoInput;
   if (value === '') return;
@@ -16,6 +30,7 @@ function addItem() {
     </div>
     <input class="edit" value=${value} />
   `;
+  item.addEventListener('click', itemClickEventListener);
 
   $todoList.appendChild(item);
   $newTodoInput.value = '';
