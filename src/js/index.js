@@ -2,6 +2,7 @@ const $ = (selector = '') => document.querySelector(selector);
 
 const $newTodoInput = $('#new-todo-title');
 const $todoList = $('#todo-list');
+const $todoCount = $('.todo-count');
 
 function toggleItem(event) {
   const { target } = event;
@@ -18,6 +19,9 @@ function removeItem(event) {
 
   const item = target.closest('li');
   item.remove();
+
+  const count = $todoCount.querySelector('strong');
+  count.innerText--;
 }
 
 function editItem(event) {
@@ -77,6 +81,9 @@ function addItem(event) {
 
   $todoList.appendChild(item);
   $newTodoInput.value = '';
+
+  const count = $todoCount.querySelector('strong');
+  count.innerText++;
 }
 
 $newTodoInput.addEventListener('keydown', addItem);
