@@ -26,6 +26,11 @@ function editItem(event) {
 
   const item = target.closest('li');
   item.classList.toggle('editing');
+
+  const editingInput = item.querySelector('.edit');
+  editingInput.focus();
+  const { length } = editingInput.value;
+  editingInput.setSelectionRange(length, length);
 }
 
 function updateItem(event) {
