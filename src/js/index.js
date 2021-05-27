@@ -3,27 +3,54 @@ const $ = (selector = '') => document.querySelector(selector);
 const $newTodoInput = $('#new-todo-title');
 const $todoList = $('#todo-list');
 
-function toggleItem(item, toggleButton) {
+function toggleItem(event) {
+  const { target } = event;
+  if (!target.classList.contains('toggle')) return;
+
+  const item = target.closest('li');
   item.classList.toggle('completed');
-  toggleButton.toggleAttribute('checked');
+  target.toggleAttribute('checked');
 }
 
-function itemClickEventListener(event) {
+function removeItem(event) {
   const { target } = event;
+  if (!target.classList.contains('destroy')) return;
+
+  const item = target.closest('li');
+  item.remove();
+}
+
+function editItem(event) {
+  const { target } = event;
+  if (!target.classList.contains('label')) return;
+
+  const item = target.closest('li');
+  item.classList.toggle('editing');
+}
+
+function updateItem(event) {
+  const { key, target } = event;
   const item = target.closest('li');
 
-  if (target.classList.contains('toggle')) {
-    toggleItem(item, target);
+  if (key === 'Escape') {
+    item.classList.remove('editing');
     return;
   }
 
-  if (target.classList.contains('destroy')) {
-    item.remove();
-    return;
-  }
+  if (key !== 'Enter') return;
+
+  const { value } = target;
+  if (value === '') return;
+
+  const label = item.querySelector('.label');
+  item.classList.remove('editing');
+  label.innerText = value;
+  target.defaultValue = value;
 }
 
-function addItem() {
+function addItem(event) {
+  if (event.key !== 'Enter') return;
+
   const { value } = $newTodoInput;
   if (value === '') return;
 
@@ -36,16 +63,15 @@ function addItem() {
     </div>
     <input class="edit" value=${value} />
   `;
-  item.addEventListener('click', itemClickEventListener);
+  item.addEventListener('click', toggleItem);
+  item.addEventListener('click', removeItem);
+  item.addEventListener('dblclick', editItem);
+
+  const editingInput = item.querySelector('.edit');
+  editingInput.addEventListener('keydown', updateItem);
 
   $todoList.appendChild(item);
   $newTodoInput.value = '';
 }
 
-function newTodoInputKeydownEventListener(event) {
-  if (event.key !== 'Enter') return;
-
-  addItem();
-}
-
-$newTodoInput.addEventListener('keydown', newTodoInputKeydownEventListener);
+$newTodoInput.addEventListener('keydown', addItem);
