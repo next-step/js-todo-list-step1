@@ -11,7 +11,7 @@ function TodoApp() {
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
-    todoList.render(this.todoItems);
+    todoList.setState(this.todoItems);
   };
 
   new TodoInput({
@@ -30,7 +30,7 @@ function TodoInput({ onAdd }) {
   const addTodoItem = (event) => {
     if (event.key === 'Enter') {
       const $newTodoTarget = event.target;
-      onAdd($newTodoTarget.value);
+      onAdd($newTodoTarget.value.trim());
       $newTodoTarget.value = '';
     }
   };
@@ -40,6 +40,11 @@ function TodoInput({ onAdd }) {
 
 
 function TodoList() {
+  this.setState = (updatedTodoItems) => {
+    this.todoItems = updatedTodoItems;
+    this.render(this.todoItems);
+  }
+
   this.render = (items) => {
     const $todoList = document.querySelector("#todo-list");
     const htmlItems = items.map(todoItemTemplate)
