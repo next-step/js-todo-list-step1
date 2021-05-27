@@ -30,10 +30,10 @@ export class TodoItem {
   </li>`;
         break;
       case COMPLETE:
-        template += `<li class="completed">
+        template += `<li class="completed" data-index=${this.index}>
     <div class="view">
       <input class="toggle" type="checkbox" checked/>
-      <label class="label">완료된 타이틀</label>
+      <label class="label">${this.title}</label>
       <button class="destroy"></button>
     </div>
     <input class="edit" value="완료된 타이틀" />
