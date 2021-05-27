@@ -3,16 +3,22 @@ const $ = (selector = '') => document.querySelector(selector);
 const $newTodoInput = $('#new-todo-title');
 const $todoList = $('#todo-list');
 
-function toggleItem(target) {
-  const item = target.closest('li');
+function toggleItem(item, toggleButton) {
   item.classList.toggle('completed');
-  target.toggleAttribute('checked');
+  toggleButton.toggleAttribute('checked');
 }
 
 function itemClickEventListener(event) {
   const { target } = event;
+  const item = target.closest('li');
+
   if (target.classList.contains('toggle')) {
-    toggleItem(target);
+    toggleItem(item, target);
+    return;
+  }
+
+  if (target.classList.contains('destroy')) {
+    item.remove();
     return;
   }
 }
