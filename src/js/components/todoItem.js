@@ -1,4 +1,4 @@
-import { VIEW, EDIT, COMPLETE } from "../constant/constant.js";
+import { VIEW, EDIT, COMPLETE } from '../constant/constant.js';
 
 export class TodoItem {
   constructor(state, title, index) {

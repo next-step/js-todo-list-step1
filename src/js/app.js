@@ -1,24 +1,24 @@
-import { TodoHeader } from "./components/todoHeader.js";
-import { TodoInput } from "./components/todoInput.js";
-import { TodoList } from "./components/todoList.js";
+import { TodoHeader } from './components/todoHeader.js';
+import { TodoInput } from './components/todoInput.js';
+import { TodoList } from './components/todoList.js';
 
 class App {
   constructor($target) {
     this.state = [];
     this.$target = $target;
     // header
-    this.header = new TodoHeader(this.$target, "TODOS");
+    this.header = new TodoHeader(this.$target, 'TODOS');
     this.header.render();
 
     // todoinput
     this.todoInput = new TodoInput(
-      document.querySelector(".new-todo"),
+      document.querySelector('.new-todo'),
       this.onKeyPress
     );
 
     // todolist
     this.todoList = new TodoList(
-      document.querySelector(".todo-list"),
+      document.querySelector('.todo-list'),
       this.state,
       this.onDeleteItem
     );
@@ -34,7 +34,7 @@ class App {
     const newTodoItems = this.state;
     newTodoItems.splice(index, 1);
     this.setState(newTodoItems);
-  }
+  };
   setState = (nextState) => {
     this.state = nextState;
     this.todoList.setState(this.state);
@@ -42,4 +42,4 @@ class App {
   };
 }
 
-new App(document.querySelector(".todoapp"));
+new App(document.querySelector('.todoapp'));
