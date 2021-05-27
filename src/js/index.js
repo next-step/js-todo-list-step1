@@ -39,6 +39,8 @@ function editItem(event) {
 
 function updateItem(event) {
   const { key, target } = event;
+  if (!target.classList.contains('edit')) return;
+
   const item = target.closest('li');
 
   if (key === 'Escape') {
@@ -75,9 +77,7 @@ function addItem(event) {
   item.addEventListener('click', toggleItem);
   item.addEventListener('click', removeItem);
   item.addEventListener('dblclick', editItem);
-
-  const editingInput = item.querySelector('.edit');
-  editingInput.addEventListener('keydown', updateItem);
+  item.addEventListener('keydown', updateItem);
 
   $todoList.appendChild(item);
   $newTodoInput.value = '';
