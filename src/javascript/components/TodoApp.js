@@ -78,6 +78,32 @@ function TodoApp() {
       todoCount.setState(this.todoItems);
     },
   });
+
+  new TodoFilter({
+    filtering: (clickedButton) => {
+      if (clickedButton == "active") {
+        const activeItems = this.todoItems.filter((item) => {
+          return !item.completed;
+        });
+        todoList.setState(activeItems);
+        todoCount.setState(activeItems);
+        return;
+      }
+      if (clickedButton == "completed") {
+        const completedItems = this.todoItems.filter((item) => {
+          return item.completed;
+        });
+        todoList.setState(completedItems);
+        todoCount.setState(completedItems);
+        return;
+      }
+      if (clickedButton == "all") {
+        todoList.setState(this.todoItems);
+        todoCount.setState(this.todoItems);
+        return;
+      }
+    },
+  });
 }
 
 export default TodoApp;
