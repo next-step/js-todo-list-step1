@@ -15,6 +15,15 @@ function TodoApp() {
       });
       todoList.setState(this.todoItems);
     },
+    onComplete: (id) => {
+      this.todoItems = this.todoItems.map((item) => {
+        if (item.id == id) {
+          item.completed = !item.completed;
+        }
+        return item;
+      });
+      todoList.setState(this.todoItems);
+    },
   });
 
   this.setState = (updatedItems) => {
