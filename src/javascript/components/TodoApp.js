@@ -8,12 +8,16 @@ function TodoApp() {
   let id = 0;
   this.todoItems = [];
 
+  const countTarget = document.querySelector(".todo-count strong");
+  const todoCount = new TodoCount(countTarget);
+
   const todoList = new TodoList({
     onDelete: (id) => {
       this.todoItems = this.todoItems.filter((item) => {
         return item.id != id;
       });
       todoList.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
     onComplete: (id) => {
       this.todoItems = this.todoItems.map((item) => {
@@ -23,6 +27,7 @@ function TodoApp() {
         return item;
       });
       todoList.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
     onEditing: (id) => {
       this.todoItems = this.todoItems.map((item) => {
@@ -32,6 +37,7 @@ function TodoApp() {
         return item;
       });
       todoList.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
     onEdit: (e, id) => {
       if (e.key === "Escape") {
@@ -42,6 +48,7 @@ function TodoApp() {
           return item;
         });
         todoList.setState(this.todoItems);
+        todoCount.setState(this.todoItems);
       }
       if (e.key === "Enter") {
         this.todoItems = this.todoItems.map((item) => {
@@ -52,6 +59,7 @@ function TodoApp() {
           return item;
         });
         todoList.setState(this.todoItems);
+        todoCount.setState(this.todoItems);
       }
     },
   });
@@ -67,6 +75,7 @@ function TodoApp() {
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
       todoList.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
   });
 }
