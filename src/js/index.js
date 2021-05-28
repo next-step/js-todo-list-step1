@@ -1,50 +1,49 @@
 const $ = (selector = '') => document.querySelector(selector);
 
-const $newTodoInput = $('#new-todo-title');
+const $todoInput = $('#new-todo-title');
 const $todoList = $('#todo-list');
-const $todoCount = $('.todo-count');
+const $todoCount = $('.todo-count strong');
 
-function toggleItem(event) {
+function toggleTodoItem(event) {
   const { target } = event;
   if (!target.classList.contains('toggle')) return;
 
-  const item = target.closest('li');
-  item.classList.toggle('completed');
+  const todoItem = target.closest('li');
+  todoItem.classList.toggle('completed');
   target.toggleAttribute('checked');
 }
 
-function removeItem(event) {
+function removeTodoItem(event) {
   const { target } = event;
   if (!target.classList.contains('destroy')) return;
 
-  const item = target.closest('li');
-  item.remove();
+  const todoItem = target.closest('li');
+  todoItem.remove();
 
-  const count = $todoCount.querySelector('strong');
-  count.innerText--;
+  $todoCount.innerText--;
 }
 
-function editItem(event) {
+function editTodoItem(event) {
   const { target } = event;
   if (!target.classList.contains('label')) return;
 
-  const item = target.closest('li');
-  item.classList.toggle('editing');
+  const todoItem = target.closest('li');
+  todoItem.classList.toggle('editing');
 
-  const editingInput = item.querySelector('.edit');
+  const editingInput = todoItem.querySelector('.edit');
   editingInput.focus();
   const { length } = editingInput.value;
   editingInput.setSelectionRange(length, length);
 }
 
-function updateItem(event) {
+function updateTodoItem(event) {
   const { key, target } = event;
   if (!target.classList.contains('edit')) return;
 
-  const item = target.closest('li');
+  const todoItem = target.closest('li');
 
   if (key === 'Escape') {
-    item.classList.remove('editing');
+    todoItem.classList.remove('editing');
     return;
   }
 
@@ -53,20 +52,20 @@ function updateItem(event) {
   const { value } = target;
   if (value === '') return;
 
-  const label = item.querySelector('.label');
-  item.classList.remove('editing');
+  const label = todoItem.querySelector('.label');
+  todoItem.classList.remove('editing');
   label.innerText = value;
   target.defaultValue = value;
 }
 
-function addItem(event) {
+function addTodoItem(event) {
   if (event.key !== 'Enter') return;
 
-  const { value } = $newTodoInput;
+  const { value } = $todoInput;
   if (value === '') return;
 
-  const item = document.createElement('li');
-  item.innerHTML = `
+  const todoItem = document.createElement('li');
+  todoItem.innerHTML = `
     <div class="view">
       <input class="toggle" type="checkbox"/>
       <label class="label">${value}</label>
@@ -74,16 +73,15 @@ function addItem(event) {
     </div>
     <input class="edit" value=${value} />
   `;
-  item.addEventListener('click', toggleItem);
-  item.addEventListener('click', removeItem);
-  item.addEventListener('dblclick', editItem);
-  item.addEventListener('keydown', updateItem);
+  todoItem.addEventListener('click', toggleTodoItem);
+  todoItem.addEventListener('click', removeTodoItem);
+  todoItem.addEventListener('dblclick', editTodoItem);
+  todoItem.addEventListener('keydown', updateTodoItem);
 
-  $todoList.appendChild(item);
-  $newTodoInput.value = '';
+  $todoList.appendChild(todoItem);
 
-  const count = $todoCount.querySelector('strong');
-  count.innerText++;
+  $todoInput.value = '';
+  $todoCount.innerText++;
 }
 
-$newTodoInput.addEventListener('keydown', addItem);
+$todoInput.addEventListener('keydown', addTodoItem);
