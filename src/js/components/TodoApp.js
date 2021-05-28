@@ -1,5 +1,8 @@
+import TodoInput from "./TodoInput.js";
+import TodoList from "./TodoList.js";
+
 function TodoItem(todoText) {
-  this.id = Date.now();
+  this.id = Date.now().toString();
   this.todo = todoText;
   this.completed = false;
 }
@@ -7,14 +10,26 @@ function TodoItem(todoText) {
 
 function TodoApp() {
   this.todoItems= [];
-  const todoList = new TodoList();
+
+  const todoList = new TodoList({
+    onToggle: (id) => {
+      const toggleItem = this.todoItems.find((item) => item.id === id);
+      toggleItem.completed = !toggleItem.completed;
+      this.setState(this.todoItems);
+    },
+    onDelete: (id) => {
+      const deletedItemIndex = this.todoItems.findIndex((item) => item.id === id);
+      this.todoItems.splice(deletedItemIndex, 1);
+      this.setState(this.todoItems);
+    }
+  });
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
     todoList.setState(this.todoItems);
   };
 
-  new TodoInput({
+  TodoInput({
     onAdd: (contents) => {
       const newTodoItem = new TodoItem(contents);
       this.todoItems.push(newTodoItem);
@@ -22,49 +37,5 @@ function TodoApp() {
     }
   });
 }
-
-
-function TodoInput({ onAdd }) {
-  const $todoInput = document.querySelector('#new-todo-title');
-
-  const addTodoItem = (event) => {
-    if (event.key === 'Enter') {
-      const $newTodoTarget = event.target;
-      onAdd($newTodoTarget.value.trim());
-      $newTodoTarget.value = '';
-    }
-  };
-
-  $todoInput.addEventListener("keydown", addTodoItem);
-}
-
-
-function TodoList() {
-  this.setState = (updatedTodoItems) => {
-    this.todoItems = updatedTodoItems;
-    this.render(this.todoItems);
-  }
-
-  this.render = (items) => {
-    const $todoList = document.querySelector("#todo-list");
-    const htmlItems = items.map(todoItemTemplate)
-    
-    $todoList.innerHTML = htmlItems.join("");
-  };
-}
-
-const todoItemTemplate = (item) => {
-  if (item.todo === "") return null;
-  return `
-  <li ${item.completed && `class="completed"`}>
-    <div class="view">
-      <input class="toggle" type="checkbox" ${item.completed && `checked`}/>
-      <label class="label">${item.todo}</label>
-      <button class="destroy"></button>
-    </div>
-    <input class="edit" value="${item.todo}" />
-  </li>
-  `;
-};
 
 new TodoApp();
