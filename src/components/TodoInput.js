@@ -12,4 +12,6 @@ export default function TodoInput({ onAdd }) {
     onAdd(todoInputTarget.value);
     todoInputTarget.value = '';
   };
+
+  $todoInput.focus();
 }

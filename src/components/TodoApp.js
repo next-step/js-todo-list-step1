@@ -22,6 +22,14 @@ export default function TodoApp() {
     }
   };
 
+  this.loadTodoItems = () => {
+    const prevTodoItems = JSON.parse(localStorage.getItem('todos'));
+    this.todoItems = prevTodoItems;
+    const prevFilterStatus = window.location.hash.replace(/#/, '');
+    if (prevFilterStatus === '') return;
+    this.filterStatus = prevFilterStatus;
+  };
+
   this.render = () => {
     const filteredTodoItems = this.getFilteredTodoItems();
     todoList.render(filteredTodoItems);
@@ -40,14 +48,17 @@ export default function TodoApp() {
       const todoItem = this.todoItems.find((item) => item.id === id);
       todoItem.isCompleted = !todoItem.isCompleted;
       this.render();
+      localStorage.setItem('todos', JSON.stringify(this.todoItems));
     },
     onRemove: (id) => {
       this.todoItems = this.todoItems.filter((item) => item.id !== id);
       todoCount.render(this.todoItems.length);
+      localStorage.setItem('todos', JSON.stringify(this.todoItems));
     },
     onUpdate: (id, value) => {
       const todoItem = this.todoItems.find((item) => item.id === id);
       todoItem.value = value;
+      localStorage.setItem('todos', JSON.stringify(this.todoItems));
     },
   });
 
@@ -56,6 +67,11 @@ export default function TodoApp() {
       const newTodoItem = new TodoItem(value);
       this.todoItems.push(newTodoItem);
       this.render();
+      localStorage.setItem('todos', JSON.stringify(this.todoItems));
     },
   });
+
+  this.loadTodoItems();
+  this.render();
+  todoCount.initFilterButtonStatus();
 }
