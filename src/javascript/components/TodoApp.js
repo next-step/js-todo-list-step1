@@ -8,7 +8,14 @@ function TodoApp() {
   let id = 0;
   this.todoItems = [];
 
-  const todoList = new TodoList({});
+  const todoList = new TodoList({
+    onDelete: (id) => {
+      this.todoItems = this.todoItems.filter((item) => {
+        return item.id != id;
+      });
+      todoList.setState(this.todoItems);
+    },
+  });
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
