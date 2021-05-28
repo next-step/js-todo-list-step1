@@ -5,8 +5,14 @@ import TodoCount from "./TodoCount.js";
 import TodoFilter from "./TodoFilter.js";
 
 function TodoApp() {
-  let id = 0;
-  this.todoItems = [];
+  const initialData = JSON.parse(localStorage.getItem("listData"));
+
+  let id = initialData ? initialData.length : 0;
+  this.todoItems = initialData ? initialData : [];
+
+  const saveData = () => {
+    localStorage.setItem("listData", JSON.stringify(this.todoItems));
+  };
 
   const countTarget = document.querySelector(".todo-count strong");
   const todoCount = new TodoCount(countTarget);
@@ -18,6 +24,7 @@ function TodoApp() {
       });
       todoList.setState(this.todoItems);
       todoCount.setState(this.todoItems);
+      saveData();
     },
     onComplete: (id) => {
       this.todoItems = this.todoItems.map((item) => {
@@ -28,6 +35,7 @@ function TodoApp() {
       });
       todoList.setState(this.todoItems);
       todoCount.setState(this.todoItems);
+      saveData();
     },
     onEditing: (id) => {
       this.todoItems = this.todoItems.map((item) => {
@@ -38,6 +46,7 @@ function TodoApp() {
       });
       todoList.setState(this.todoItems);
       todoCount.setState(this.todoItems);
+      saveData();
     },
     onEdit: (e, id) => {
       if (e.key === "Escape") {
@@ -49,6 +58,7 @@ function TodoApp() {
         });
         todoList.setState(this.todoItems);
         todoCount.setState(this.todoItems);
+        saveData();
       }
       if (e.key === "Enter") {
         this.todoItems = this.todoItems.map((item) => {
@@ -60,13 +70,19 @@ function TodoApp() {
         });
         todoList.setState(this.todoItems);
         todoCount.setState(this.todoItems);
+        saveData();
       }
     },
   });
 
+  this.init = () => {
+    todoList.setState(JSON.parse(localStorage.getItem("listData")));
+  };
+
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
     todoList.setState(this.todoItems);
+    todoCount.setState(this.todoItems);
   };
 
   new TodoInput({
@@ -75,7 +91,7 @@ function TodoApp() {
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
       todoList.setState(this.todoItems);
-      todoCount.setState(this.todoItems);
+      saveData();
     },
   });
 
