@@ -1,4 +1,4 @@
-function TodoList({ onDelete, onComplete }) {
+function TodoList({ onDelete, onComplete, onEditing, onEdit }) {
   this.$todoList = document.getElementById("todo-list");
 
   this.setState = (updatedTodoItems) => {
@@ -18,7 +18,7 @@ function TodoList({ onDelete, onComplete }) {
         <label class="label" data-id=${item.id}>${item.contents}</label>
         <button data-id=${item.id} class="destroy"></button>
       </div>
-      <input  class="edit" value="${item.contents}" />
+      <input  data-id=${item.id} class="edit" value="${item.contents}" />
     </li>`;
     });
 
@@ -28,6 +28,8 @@ function TodoList({ onDelete, onComplete }) {
   this.registerEventHandler = () => {
     const deleteButtons = document.querySelectorAll(".destroy");
     const completeButtons = document.querySelectorAll(".toggle");
+    const itemTitles = document.querySelectorAll(".label");
+    const editInputs = document.querySelectorAll(".edit");
 
     deleteButtons.forEach((button) => {
       button.addEventListener("click", (e) => onDelete(e.target.dataset.id));
@@ -35,6 +37,14 @@ function TodoList({ onDelete, onComplete }) {
 
     completeButtons.forEach((button) => {
       button.addEventListener("click", (e) => onComplete(e.target.dataset.id));
+    });
+
+    itemTitles.forEach((title) => {
+      title.addEventListener("dblclick", (e) => onEditing(e.target.dataset.id));
+    });
+
+    editInputs.forEach((input) => {
+      input.addEventListener("keydown", (e) => onEdit(e, e.target.dataset.id));
     });
   };
 }

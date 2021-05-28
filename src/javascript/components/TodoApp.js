@@ -24,6 +24,36 @@ function TodoApp() {
       });
       todoList.setState(this.todoItems);
     },
+    onEditing: (id) => {
+      this.todoItems = this.todoItems.map((item) => {
+        if (item.id == id) {
+          item.editing = !item.editing;
+        }
+        return item;
+      });
+      todoList.setState(this.todoItems);
+    },
+    onEdit: (e, id) => {
+      if (e.key === "Escape") {
+        this.todoItems = this.todoItems.map((item) => {
+          if (item.id == id) {
+            item.editing = !item.editing;
+          }
+          return item;
+        });
+        todoList.setState(this.todoItems);
+      }
+      if (e.key === "Enter") {
+        this.todoItems = this.todoItems.map((item) => {
+          if (item.id == id) {
+            item.contents = e.target.value;
+            item.editing = false;
+          }
+          return item;
+        });
+        todoList.setState(this.todoItems);
+      }
+    },
   });
 
   this.setState = (updatedItems) => {
