@@ -1,8 +1,8 @@
-const todoItem = (content, index) => {
+const todoItem = (content, index, completed) => {
   return `
-    <li data-index=${index}>
+    <li class=${completed && 'completed'} data-index=${index}>
         <div class="view">
-            <input class="toggle" type="checkbox"/>
+            <input class="toggle" type="checkbox" ${completed && 'checked'}/>
             <label class="label">${content}</label>
             <button class="destroy"></button>
         </div>

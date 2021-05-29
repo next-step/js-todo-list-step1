@@ -1,7 +1,10 @@
 import todoItem from './todoItem.js';
 
 const todoList = (todoItems, option) => {
-  return todoItems?.map((item, index) => todoItem(item.contents, index));
+  console.log(todoItems);
+  return todoItems?.map((item, index) =>
+    todoItem(item.contents, index, item.completed)
+  );
 };
 
 export default todoList;

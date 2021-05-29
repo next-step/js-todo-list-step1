@@ -14,9 +14,24 @@ export const getTodoItem = () => {
   });
 };
 
+export const toggleCheckItem = (event) => {
+  const { todoItem, option } = store;
+  if (event.target.tagName === 'INPUT') {
+    const parentNode = event.target.closest('li');
+    const index = parentNode.getAttribute('data-index');
+    const newTodoItem = [...todoItem];
+    console.log(event.target.tagName);
+    newTodoItem[index] = {
+      ...newTodoItem[index],
+      completed: !newTodoItem[index].completed,
+    };
+    setStore({ todoItem: newTodoItem });
+  }
+};
+
 export const addTodoItem = (contents) => {
   const { todoItem, option } = store;
-  const newTodoItem = [...todoItem, { contents }];
+  const newTodoItem = [...todoItem, { contents, completed: false }];
   setStore({ todoItem: newTodoItem });
 };
 
@@ -25,7 +40,6 @@ export const deleteItem = (event) => {
   const parentNode = event.target.closest('li');
   const index = parentNode.getAttribute('data-index');
   const newTodoItem = [...todoItem];
-  console.log(event.target.tagName);
   if (event.target.tagName === 'BUTTON') {
     newTodoItem.splice(index, 1);
     setStore({ todoItem: newTodoItem });
