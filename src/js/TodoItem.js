@@ -19,3 +19,6 @@ export const changeComplete = (id) => {
     }
   });
 };
+export const deleteItem = (id) => {
+  todoList = todoList.filter((td) => td.id != id);
+};

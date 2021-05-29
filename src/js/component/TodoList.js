@@ -5,7 +5,7 @@ const is_complete = true;
 export function TodoList() {
   drawList();
 
-  $todoList.addEventListener("click", setComplete);
+  $todoList.addEventListener("click", listClick);
 }
 
 export const drawList = () => {
@@ -16,8 +16,8 @@ export const drawList = () => {
   $todoList.innerHTML = "";
   viewList.forEach((input) => {
     $todoList.innerHTML += `
-    <li class=${input.complete ? "completed" : ""}>
-    <div class="view" data-id=${input.id}>
+    <li ${input.complete ? "class=completed" : ""} data-id=${input.id}>
+    <div class="view">
       <input class="toggle" ${
         input.complete ? "checked" : ""
       }  type="checkbox"/>
@@ -30,10 +30,18 @@ export const drawList = () => {
   });
 };
 
-const setComplete = ({ target }) => {
-  if (target.className != "toggle") return;
-  const $div = target.closest("div");
-  const id = target.closest("div").dataset["id"];
+const listClick = ({ target }) => {
+  const id = target.closest("div").closest("li").dataset["id"];
+  if (target.className == "toggle") return setComplete(id);
+  if (target.className == "destroy") return deleteTodo(id);
+};
+const deleteTodo = (id) => {
+  TodoItem.deleteItem(id);
+  drawList();
+};
+
+const setComplete = (id) => {
+  console.log("col", id);
   TodoItem.changeComplete(id);
   drawList();
   //   drawList();
