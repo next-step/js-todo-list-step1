@@ -1,6 +1,8 @@
 import TodoCount from './TodoCount.js';
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
+import TodoFilter from "./TodoFilters.js"
+import { setStorage, getStorage } from '../utils/storage.js';
 
 function TodoItem(todoText) {
   this.id = Date.now().toString();
@@ -9,20 +11,21 @@ function TodoItem(todoText) {
   this.editing = false;
 }
 
-
 function TodoApp() {
-  this.todoItems= [];
+  this.todoItems = [];
 
   const todoList = new TodoList({
     onToggle: (id) => {
       const toggleItem = this.todoItems.find((item) => item.id === id);
       toggleItem.completed = !toggleItem.completed;
       this.setState(this.todoItems);
+      setStorage('items', this.todoItems);
     },
     onDelete: (id) => {
       const deletedItemIndex = this.todoItems.findIndex((item) => item.id === id);
       this.todoItems.splice(deletedItemIndex, 1);
       this.setState(this.todoItems);
+      setStorage('items', this.todoItems);
     },
     onEdit: (id) => {
       const editItem = this.todoItems.find((item) => item.id === id);
@@ -34,6 +37,7 @@ function TodoApp() {
       editItem.todo = contents;
       editItem.editing = !editItem.editing;
       this.setState(this.todoItems);
+      setStorage('items', this.todoItems);
     }
   });
 
@@ -49,6 +53,7 @@ function TodoApp() {
       const newTodoItem = new TodoItem(contents);
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
+      setStorage('items', this.todoItems);
     }  
   });
 
@@ -57,7 +62,7 @@ function TodoApp() {
     todoCount.showCount(countTodoItem)
   };  
 
-  const todoFilter = new TodoFilter({
+  new TodoFilter({
     onAllSelected: () => {
       const allTodoItems = this.todoItems;
       this.setState(allTodoItems);
@@ -76,27 +81,4 @@ function TodoApp() {
 
 }
 
-function TodoFilter({onAllSelected, onCompleted, onActive}) {
-  const $todoFilter = document.querySelector('.filters');
-
-  const showAll = (event) => {
-    if (!event.target.classList.contains('all')) return;
-    onAllSelected();
-  }
-  const showCompleted = (event) => {
-    if (!event.target.matches('.completed')) return;
-    onCompleted();
-  }
-  
-  const showActive =(event) => {
-    if (!event.target.matches('.active')) return;
-    onActive();
-  }
-
-  $todoFilter.addEventListener('click', event => showCompleted(event));
-  $todoFilter.addEventListener('click', event => showActive(event));
-  $todoFilter.addEventListener('click', event => showAll(event));
-  
-}
-
-new TodoApp();
+new TodoApp().setState(getStorage());

@@ -1,4 +1,4 @@
-import {todoItemTemplate} from "./templates.js";
+import {todoItemTemplate} from "../utils/templates.js";
 
 export default function TodoList({ onToggle, onDelete, onEdit, onEndEdit }) {
   const $todoList = document.querySelector("#todo-list");
