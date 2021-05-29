@@ -6,10 +6,15 @@ import { ALL, VIEW } from './constant/constant.js';
 
 class App {
   constructor($target) {
-    this.state = {
-      todos: [],
-      selected: ALL
-    };
+    const defaultState = localStorage.getItem('myState');
+    if (defaultState) {
+      this.state = JSON.parse(defaultState);
+    } else {
+      this.state = {
+        todos: [],
+        selected: ALL
+      };
+    }
     this.$target = $target;
     // header
     this.header = new TodoHeader(this.$target, 'TODOS');
@@ -71,6 +76,7 @@ class App {
   };
   setState = (nextState) => {
     this.state = nextState;
+    localStorage.setItem('myState', JSON.stringify(this.state));
     this.todoList.setState(this.state);
     this.todoCount.setState(this.state);
   };
