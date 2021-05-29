@@ -4,7 +4,7 @@ import {
   $todoCount,
   $filters,
 } from '../components/dom.js';
-import { addTodoItem } from '../store/store.js';
+import { addTodoItem, deleteItem } from '../store/store.js';
 const addItems = (event) => {
   let contents = event.target.value;
   if (contents !== '' && event.key === 'Enter') {
@@ -14,3 +14,4 @@ const addItems = (event) => {
 };
 
 $newTodoTitle.addEventListener('keypress', addItems);
+$todoList.addEventListener('click', deleteItem);

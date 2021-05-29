@@ -20,6 +20,11 @@ export const addTodoItem = (contents) => {
   setStore({ todoItem: newTodoItem });
 };
 
+export const deleteItem = (event) => {
+  const index = event.target.index;
+  console.log(index);
+};
+
 const setStore = (todoItem) => {
   for (let key in todoItem) {
     store[key] = todoItem[key];
