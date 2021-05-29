@@ -26,7 +26,8 @@ class App {
       document.querySelector('.todo-list'),
       this.state,
       this.onDeleteItem,
-      this.changeItemState
+      this.changeItemState,
+      this.changeItemValue
     );
 
     // todoCount
@@ -41,6 +42,13 @@ class App {
   changeItemState = (index, state) => {
     const newTodos = [...this.state.todos];
     newTodos[index].state = state;
+    const newState = {...this.state, todos: newTodos};
+    this.setState(newState);
+  }
+
+  changeItemValue = (index, value) => {
+    const newTodos = [...this.state.todos];
+    newTodos[index].value = value;
     const newState = {...this.state, todos: newTodos};
     this.setState(newState);
   }

@@ -2,18 +2,18 @@ import { TodoItem } from './todoItem.js';
 import { ALL, VIEW, EDIT, COMPLETE } from '../constant/constant.js';
 
 export class TodoList {
-  constructor($target, state, onDeleteItem, changeItemState) {
+  constructor($target, state, onDeleteItem, changeItemState, changeItemValue) {
     this.$target = $target;
     this.state = state;
     this.render();
-    this.addEvent(onDeleteItem, changeItemState);
+    this.addEvent(onDeleteItem, changeItemState, changeItemValue);
   }
   setState = (nextState) => {
     this.state = nextState;
     this.render();
   };
 
-  addEvent = (onDeleteItem, changeItemState) => {
+  addEvent = (onDeleteItem, changeItemState, changeItemValue) => {
     this.$target.addEventListener('click', (e) => {
       const { target } = e;
       const { className } = target;
@@ -76,13 +76,13 @@ export class TodoList {
       const { target } = e;
       const { key } = e;
       const closestLi = target.closest('li');
-      const targetLabel = closestLi.querySelector('.label');
+      const index = closestLi.dataset['index'];
       if (key !== 'Enter' && key !== 'Escape') return
-      if (key === 'Enter') {
-        targetLabel.innerHTML = e.target.value;
-      }
       closestLi.classList.remove("editing");
       closestLi.classList.add("view");
+      if (key === 'Enter') {
+        changeItemValue(+index, e.target.value);
+      }
     });
   }
 

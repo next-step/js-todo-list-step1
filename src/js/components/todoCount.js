@@ -28,9 +28,20 @@ export class TodoCount {
   }
 
   render() {
-    const numElement = this.$target.querySelector('.todo-count').children[0];
-    numElement.innerHTML = this.state.todos.length;
     this.$target.querySelector('.selected').classList.remove('selected');
     this.$target.querySelector(`.${converter[this.state.selected]}`).classList.add('selected');
+    const numElement = this.$target.querySelector('.todo-count').children[0];
+
+    // TODO : 아래 부분 더 좋게 바꿔보기...
+
+    if (this.state.selected === ALL) {
+      numElement.innerHTML = this.state.todos.length;
+    } else if (this.state.selected === VIEW) {
+      const filteredItems = this.state.todos.filter((item) => item.state === VIEW);
+      numElement.innerHTML = filteredItems.length;
+    } else {
+      const filteredItems = this.state.todos.filter((item) => item.state === COMPLETE);
+      numElement.innerHTML = filteredItems.length;
+    }
   }
 }
