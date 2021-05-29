@@ -1,9 +1,9 @@
 export class TodoInput {
-  constructor($target, onKeyPress) {
+  constructor($target, onKeyDown) {
     this.$target = $target;
     this.$target.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && e.target.value !== "") {
-        onKeyPress(e.target.value);
+        onKeyDown(e.target.value);
         e.target.value = "";
       }
     });

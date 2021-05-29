@@ -1,21 +1,19 @@
 import { TodoItem } from './todoItem.js';
-import { VIEW, EDIT, COMPLETE } from '../constant/constant.js';
+import { ALL, VIEW, EDIT, COMPLETE } from '../constant/constant.js';
 
 export class TodoList {
-  constructor($target, props, onDeleteItem) {
+  constructor($target, state, onDeleteItem, changeItemState) {
     this.$target = $target;
-    this.state = props;
+    this.state = state;
     this.render();
-    this.addEvent(onDeleteItem);
+    this.addEvent(onDeleteItem, changeItemState);
   }
   setState = (nextState) => {
     this.state = nextState;
     this.render();
   };
 
-  // NOTE: 돔의 일부분을 찾아서 바꾸는 것이 좋은가
-  //       아니면 돔 자체를 새롭게 생성해주는 것이 좋은가?
-  addEvent = (onDeleteItem) => {
+  addEvent = (onDeleteItem, changeItemState) => {
     this.$target.addEventListener('click', (e) => {
       const { target } = e;
       const { className } = target;
@@ -34,23 +32,31 @@ export class TodoList {
 
         // 2번 방법 --> 돔을 찾아서 완전히 갈아끼운다.
 
-        if (closestLi.classList.contains('completed')) {
-          const value = closestLi.querySelector('.label').innerHTML;
-          this.$target.removeChild(this.$target.children.item(index));
-          if (index === '0') {
-            this.$target.insertAdjacentHTML('afterbegin', new TodoItem(VIEW, value, index).template());
-          } else {
-            this.$target.children.item(index-1).insertAdjacentHTML('afterend', new TodoItem(VIEW, value, index).template());
-          }
-        } else {
-          const value = closestLi.querySelector('.label').innerHTML;
-          this.$target.removeChild(this.$target.children.item(index));
-          if (index === '0') {
-            this.$target.insertAdjacentHTML('afterbegin', new TodoItem(COMPLETE, value, index).template());
-          } else {
-            this.$target.children.item(index-1).insertAdjacentHTML('afterend', new TodoItem(COMPLETE, value, index).template());
-          }
-        }
+        // const value = closestLi.querySelector('.label').innerHTML;
+        // this.$target.removeChild(this.$target.children.item(index));
+        // if (closestLi.classList.contains('completed')) {
+        //   if (index === '0') {
+        //     this.$target.insertAdjacentHTML('afterbegin', new TodoItem(VIEW, value, index).template());
+        //   } else {
+        //     this.$target.children.item(index-1).insertAdjacentHTML('afterend', new TodoItem(VIEW, value, index).template());
+        //   }
+        // } else {
+        //   if (index === '0') {
+        //     this.$target.insertAdjacentHTML('afterbegin', new TodoItem(COMPLETE, value, index).template());
+        //   } else {
+        //     this.$target.children.item(index-1).insertAdjacentHTML('afterend', new TodoItem(COMPLETE, value, index).template());
+        //   }
+        // }
+
+
+        // NOTE : 현재 컴포넌트에서 상태를 바꾸는 짓을 하지 말자 -> 확장이 어렵다
+        //      : 즉 1, 2번을 쓰지 말자는 이야기이다.
+        //      : 따라서 현재 컴포넌트는 부모 컴포넌트에게 상태를 바꿔야 함을 알려주고
+        //      : 부모 컴포넌트는 새로운 상태로 컴포넌트를 새로 그리자
+
+        // 3번 방법 --> 부모 컴포넌트에게 상태를 바꾸라고 알려준다.
+        closestLi.classList.contains('completed') ?
+        changeItemState(+index, VIEW) : changeItemState(+index, COMPLETE);
       } 
     });
 
@@ -82,11 +88,26 @@ export class TodoList {
 
   render = () => {
     this.$target.innerHTML = '';
-    this.state.map((v, index) => {
-      this.$target.insertAdjacentHTML(
-        'beforeend',
-        new TodoItem(VIEW, v, index).template()
-      );
+    this.state.todos.map((item, index) => {
+      if (this.state.selected !== ALL && item.state !== this.state.selected) {
+        return;
+      }
+      switch (item.state) {
+        case VIEW:
+          this.$target.insertAdjacentHTML(
+            'beforeend',
+            new TodoItem(VIEW, item.value, index).template()
+          );
+          break;
+        case COMPLETE:
+          this.$target.insertAdjacentHTML(
+            'beforeend',
+            new TodoItem(COMPLETE, item.value, index).template()
+          );
+          break;
+        default:
+          break;
+      }
     });
   };
 }

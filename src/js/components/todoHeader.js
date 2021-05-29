@@ -2,7 +2,6 @@ export class TodoHeader {
   constructor($target, props) {
     this.$target = $target;
     this.state = props;
-    this.render();
   }
   setState(nextState) {
     this.state = nextState;
