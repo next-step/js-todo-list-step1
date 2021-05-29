@@ -1,3 +1,4 @@
+import { todoItemTemplate } from './templates.js';
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
 
@@ -5,6 +6,7 @@ function TodoItem(todoText) {
   this.id = Date.now().toString();
   this.todo = todoText;
   this.completed = false;
+  this.editing = false;
 }
 
 
@@ -21,6 +23,17 @@ function TodoApp() {
       const deletedItemIndex = this.todoItems.findIndex((item) => item.id === id);
       this.todoItems.splice(deletedItemIndex, 1);
       this.setState(this.todoItems);
+    },
+    onEdit: (id) => {
+      const editItem = this.todoItems.find((item) => item.id === id);
+      editItem.editing = !editItem.editing;
+      this.setState(this.todoItems);
+    },
+    onEndEdit: (contents, id) => {
+      const editItem = this.todoItems.find((item) => item.id === id);
+      editItem.todo = contents;
+      editItem.editing = !editItem.editing;
+      this.setState(this.todoItems);
     }
   });
 
@@ -29,7 +42,7 @@ function TodoApp() {
     todoList.setState(this.todoItems);
   };
 
-  TodoInput({
+  new TodoInput({
     onAdd: (contents) => {
       const newTodoItem = new TodoItem(contents);
       this.todoItems.push(newTodoItem);

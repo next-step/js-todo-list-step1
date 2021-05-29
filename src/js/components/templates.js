@@ -1,8 +1,9 @@
 
 export const todoItemTemplate = (item) => {
   if (item.todo === "") return null;
+  
   return `
-  <li class=${item.completed ? "completed" : "view"} id="${item.id}"}>
+  <li class=${item.editing ? "editing" : item.completed ? "complted" : null } id="${item.id}"}>
     <div class="view">
       <input class="toggle" type="checkbox" ${item.completed ? "checked": null}/>
       <label class="label">${item.todo}</label>

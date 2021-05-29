@@ -1,6 +1,6 @@
 import {todoItemTemplate} from "./templates.js";
 
-export default function TodoList({ onToggle, onDelete }) {
+export default function TodoList({ onToggle, onDelete, onEdit, onEndEdit }) {
   const $todoList = document.querySelector("#todo-list");
   
   this.setState = (updatedTodoItems) => {
@@ -13,21 +13,45 @@ export default function TodoList({ onToggle, onDelete }) {
     $todoList.innerHTML = htmlItems;
   };
 
-  this.toggleTodo = (event) => {
+  this.toggleTodoItem = (event) => {
     if (!event.target.matches('.toggle')) return;
-    let $li = event.target.closest('li');
-    let id = $li.getAttribute('id');
+    const $li = event.target.closest('li');
+    const id = $li.getAttribute('id');
     onToggle(id);
   }
 
   this.deleteTodoItem = (event) => {
     if (!event.target.matches('.destroy')) return;
-    let $li = event.target.closest('li');
-    let id = $li.getAttribute('id');
+    const $li = event.target.closest('li');
+    const id = $li.getAttribute('id');
     onDelete(id);
   }
 
-  $todoList.addEventListener('click', event => this.toggleTodo(event));
-  $todoList.addEventListener('click', event => this.deleteTodoItem(event));
+  this.editTodoItem = (event) => {
+    if (!event.target.matches('label')) return;
+    const $li = event.target.closest('li');
+    const id = $li.getAttribute('id');
+    onEdit(id);
+  }
 
+  this.endEdit = (event) => {
+    if (!event.target.matches('.edit')) return;
+    const $li = event.target.closest('li');
+    const id = $li.getAttribute('id');
+    const label = $li.childNodes[1].childNodes[3];
+    
+    if (event.key === 'Escape') {
+      onEndEdit(label.textContent, id);
+    }
+      
+    if (event.key === 'Enter') {
+      onEndEdit(event.target.value.trim(), id);
+    }
+  }
+
+  $todoList.addEventListener('click', event => this.toggleTodoItem(event));
+  $todoList.addEventListener('click', event => this.deleteTodoItem(event));
+  $todoList.addEventListener('dblclick', event => this.editTodoItem(event));
+  $todoList.addEventListener('keyup', event => this.endEdit(event));
+  
 }
