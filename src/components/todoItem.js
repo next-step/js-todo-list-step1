@@ -1,6 +1,6 @@
-const todoItem = (content) => {
+const todoItem = (content, index) => {
   return `
-    <li>
+    <li data-index=${index}>
         <div class="view">
             <input class="toggle" type="checkbox"/>
             <label class="label">${content}</label>

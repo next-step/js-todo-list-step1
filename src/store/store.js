@@ -21,8 +21,14 @@ export const addTodoItem = (contents) => {
 };
 
 export const deleteItem = (event) => {
-  const index = event.target.index;
-  console.log(index);
+  const { todoItem, option } = store;
+  const parentNode = event.target.closest('li');
+  const index = parentNode.getAttribute('data-index');
+  const newTodoItem = [...todoItem];
+  if (!event.target.classList.contains('destory')) {
+    newTodoItem.splice(index, 1);
+    setStore({ todoItem: newTodoItem });
+  }
 };
 
 const setStore = (todoItem) => {
