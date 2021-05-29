@@ -2,8 +2,11 @@ export class TodoInput {
   constructor($target, onKeyDown) {
     this.$target = $target;
     this.$target.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && e.target.value !== "") {
-        onKeyDown(e.target.value);
+      const value = e.target.value.trim();
+      if (e.key === "Enter") {
+        if (value) {
+          onKeyDown(value);
+        }
         e.target.value = "";
       }
     });

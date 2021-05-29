@@ -13,3 +13,4 @@ export class TodoHeader {
     this.$target.insertAdjacentHTML('beforeend', template);
   }
 }
+
