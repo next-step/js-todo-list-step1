@@ -9,7 +9,7 @@ const addItems = (event) => {
   let contents = event.target.value;
   if (contents !== '' && event.key === 'Enter') {
     addTodoItem(contents);
-    contents = '';
+    event.target.value = '';
   }
 };
 
