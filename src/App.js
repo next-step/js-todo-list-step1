@@ -1,17 +1,8 @@
-import { $ } from "./utils/utils.js";
-
 // components
-import TodoInput from "./components/TodoInput.js";
-
-class App {
-  constructor(todoInput) {
-    this.todoListState = [];
-    this.todoInput = new TodoInput(this.todoListState, todoInput);
-  }
-}
+import TodoApp from './components/TodoApp.js';
 
 function handleLoadAfter() {
-  new App($("#new-todo-title"));
+  new TodoApp();
 }
 
-window.addEventListener("load", handleLoadAfter);
+window.addEventListener('load', handleLoadAfter);
