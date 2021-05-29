@@ -11,3 +11,11 @@ export const addList = (value) => {
   });
   drawList();
 };
+export const changeComplete = (id) => {
+  todoList.forEach((l) => {
+    if (l.id == id) {
+      l.complete = !l.complete;
+      return;
+    }
+  });
+};
