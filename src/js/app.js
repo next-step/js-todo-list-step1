@@ -7,18 +7,11 @@ import { ALL, VIEW } from './constant/constant.js';
 class App {
   constructor($target) {
     const defaultState = localStorage.getItem('myState');
-    if (defaultState) {
-      this.state = JSON.parse(defaultState);
-    } else {
-      this.state = {
-        todos: [],
-        selected: ALL
-      };
-    }
+    // Nullish coalescing operator
+    this.state = JSON.parse(defaultState) ?? {todos: [], selected: ALL};
     this.$target = $target;
     // header
     this.header = new TodoHeader(this.$target, 'TODOS');
-    this.header.render();
 
     // todoinput
     this.todoInput = new TodoInput(
@@ -29,10 +22,12 @@ class App {
     // todolist
     this.todoList = new TodoList(
       document.querySelector('.todo-list'),
-      this.state,
-      this.onDeleteItem,
-      this.changeItemState,
-      this.changeItemValue
+      {
+        state: this.state,
+        onDeleteItem: this.onDeleteItem,
+        changeItemState: this.changeItemState,
+        chagneItemValue: this.changeItemValue
+      }
     );
 
     // todoCount

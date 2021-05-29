@@ -1,10 +1,10 @@
 import { ALL, VIEW, COMPLETE, converter } from "../constant/constant.js";
 
 export class TodoCount {
-  constructor($target, props) {
+  constructor($target, {state, changeSelected}) {
     this.$target = $target;
-    this.state = props.state;
-    this.changeSelected = props.changeSelected;
+    this.state = state;
+    this.changeSelected = changeSelected;
     this.render();
     this.addEvent();
   }
@@ -35,13 +35,13 @@ export class TodoCount {
     // TODO : 아래 부분 더 좋게 바꿔보기...
 
     if (this.state.selected === ALL) {
-      numElement.innerHTML = this.state.todos.length;
+      numElement.textContent = this.state.todos.length;
     } else if (this.state.selected === VIEW) {
       const filteredItems = this.state.todos.filter((item) => item.state === VIEW);
-      numElement.innerHTML = filteredItems.length;
+      numElement.textContent = filteredItems.length;
     } else {
       const filteredItems = this.state.todos.filter((item) => item.state === COMPLETE);
-      numElement.innerHTML = filteredItems.length;
+      numElement.textContent = filteredItems.length;
     }
   }
 }

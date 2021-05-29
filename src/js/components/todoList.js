@@ -2,7 +2,7 @@ import { TodoItem } from './todoItem.js';
 import { ALL, VIEW, EDIT, COMPLETE } from '../constant/constant.js';
 
 export class TodoList {
-  constructor($target, state, onDeleteItem, changeItemState, changeItemValue) {
+  constructor($target, { state, onDeleteItem, changeItemState, changeItemValue }) {
     this.$target = $target;
     this.state = state;
     this.render();
