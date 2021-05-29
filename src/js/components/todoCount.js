@@ -1,4 +1,4 @@
-import { ALL, VIEW, COMPLETE, converter } from "../constant/constant.js";
+import { ALL, VIEW, COMPLETE, selectedToClass } from "../constant/constant.js";
 
 export class TodoCount {
   constructor($target, {state, changeSelected}) {
@@ -29,19 +29,18 @@ export class TodoCount {
 
   render() {
     this.$target.querySelector('.selected').classList.remove('selected');
-    this.$target.querySelector(`.${converter[this.state.selected]}`).classList.add('selected');
-    const numElement = this.$target.querySelector('.todo-count').children[0];
+    this.$target.querySelector(`.${selectedToClass[this.state.selected]}`).classList.add('selected');
+    const numberElement = this.$target.querySelector('strong');
+    const { selected } = this.state;
+    const totalLength = this.state.todos.length;
 
-    // TODO : 아래 부분 더 좋게 바꿔보기...
+    if (selected === ALL) {
+      numberElement.textContent = totalLength
+      return;
+    } 
+    const completedItems = this.state.todos.filter((item) => item.state === COMPLETE);
 
-    if (this.state.selected === ALL) {
-      numElement.textContent = this.state.todos.length;
-    } else if (this.state.selected === VIEW) {
-      const filteredItems = this.state.todos.filter((item) => item.state === VIEW);
-      numElement.textContent = filteredItems.length;
-    } else {
-      const filteredItems = this.state.todos.filter((item) => item.state === COMPLETE);
-      numElement.textContent = filteredItems.length;
-    }
+    numberElement.textContent = selected === COMPLETE ?
+    completedItems.length : totalLength - completedItems.length
   }
 }

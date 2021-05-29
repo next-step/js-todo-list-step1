@@ -25,8 +25,8 @@ class App {
       {
         state: this.state,
         onDeleteItem: this.onDeleteItem,
-        changeItemState: this.changeItemState,
-        chagneItemValue: this.changeItemValue
+        changeTodoState: this.changeTodoState,
+        changeTodoValue: this.changeTodoValue
       }
     );
 
@@ -38,15 +38,26 @@ class App {
       }
     );
   }
+  
+  onKeyDown = (value) => {
+    const newTodoItems = {...this.state, todos: [...this.state.todos, {value, state: VIEW}]}
+    this.setState(newTodoItems);
+  };
+  onDeleteItem = (index) => {
+    const newTodoItems = this.state.todos;
+    newTodoItems.splice(index, 1);
+    const newState = {...this.state, todos: newTodoItems};
+    this.setState(newState);
+  };
 
-  changeItemState = (index, state) => {
+  changeTodoState = (index, state) => {
     const newTodos = [...this.state.todos];
     newTodos[index].state = state;
     const newState = {...this.state, todos: newTodos};
     this.setState(newState);
   }
 
-  changeItemValue = (index, value) => {
+  changeTodoValue = (index, value) => {
     const newTodos = [...this.state.todos];
     newTodos[index].value = value;
     const newState = {...this.state, todos: newTodos};
@@ -59,16 +70,6 @@ class App {
   }
   // NOTE onKeyPress(value) {}는 동작하지 않습니다.
   // 왜 안되는지 this에 대해서 다시 공부해봅시다.
-  onKeyDown = (value) => {
-    const newTodoItems = {...this.state, todos: [...this.state.todos, {value, state: VIEW}]}
-    this.setState(newTodoItems);
-  };
-  onDeleteItem = (index) => {
-    const newTodoItems = this.state.todos;
-    newTodoItems.splice(index, 1);
-    const newState = {...this.state, todos: newTodoItems};
-    this.setState(newState);
-  };
   setState = (nextState) => {
     this.state = nextState;
     localStorage.setItem('myState', JSON.stringify(this.state));

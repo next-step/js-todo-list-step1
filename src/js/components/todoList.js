@@ -2,18 +2,18 @@ import { TodoItem } from './todoItem.js';
 import { ALL, VIEW, EDIT, COMPLETE } from '../constant/constant.js';
 
 export class TodoList {
-  constructor($target, { state, onDeleteItem, changeItemState, changeItemValue }) {
+  constructor($target, { state, onDeleteItem, changeTodoState, changeTodoValue }) {
     this.$target = $target;
     this.state = state;
     this.render();
-    this.addEvent(onDeleteItem, changeItemState, changeItemValue);
+    this.addEvent(onDeleteItem, changeTodoState, changeTodoValue);
   }
   setState = (nextState) => {
     this.state = nextState;
     this.render();
   };
 
-  addEvent = (onDeleteItem, changeItemState, changeItemValue) => {
+  addEvent = (onDeleteItem, changeTodoState, changeTodoValue) => {
     this.$target.addEventListener('click', (e) => {
       const { target } = e;
       const { className } = target;
@@ -56,7 +56,7 @@ export class TodoList {
 
         // 3번 방법 --> 부모 컴포넌트에게 상태를 바꾸라고 알려준다.
         closestLi.classList.contains('completed') ?
-        changeItemState(+index, VIEW) : changeItemState(+index, COMPLETE);
+        changeTodoState(+index, VIEW) : changeTodoState(+index, COMPLETE);
       } 
     });
 
@@ -68,7 +68,7 @@ export class TodoList {
       if (className === 'label') {
         closestLi.classList.add("editing");
         inputElem.focus();
-        inputElem.value = '새로운 타이틀...';
+        inputElem.value = '';
       }
     });
 
@@ -81,7 +81,10 @@ export class TodoList {
       closestLi.classList.remove("editing");
       closestLi.classList.add("view");
       if (key === 'Enter') {
-        changeItemValue(+index, e.target.value);
+        const value = e.target.value.trim();
+        if (value) {
+          changeTodoValue(+index, value);
+        }
       }
     });
   }
@@ -91,23 +94,11 @@ export class TodoList {
     this.state.todos.map((item, index) => {
       if (this.state.selected !== ALL && item.state !== this.state.selected) {
         return;
-      }
-      switch (item.state) {
-        case VIEW:
-          this.$target.insertAdjacentHTML(
-            'beforeend',
-            new TodoItem(VIEW, item.value, index).template()
-          );
-          break;
-        case COMPLETE:
-          this.$target.insertAdjacentHTML(
-            'beforeend',
-            new TodoItem(COMPLETE, item.value, index).template()
-          );
-          break;
-        default:
-          break;
-      }
+      }  
+      this.$target.insertAdjacentHTML(
+        'beforeend',
+        new TodoItem(item.state ===  VIEW ? VIEW : COMPLETE, item.value, index).template()
+      );
     });
   };
 }
