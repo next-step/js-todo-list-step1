@@ -6,6 +6,8 @@ export function TodoList() {
   drawList();
 
   $todoList.addEventListener("click", listClick);
+  $todoList.addEventListener("dblclick", listDbClick);
+  $todoList.addEventListener("keyup", listKeyUp);
 }
 
 export const drawList = () => {
@@ -31,10 +33,24 @@ export const drawList = () => {
 };
 
 const listClick = ({ target }) => {
-  const id = target.closest("div").closest("li").dataset["id"];
+  const id = target.closest("li").dataset["id"];
   if (target.className == "toggle") return setComplete(id);
   if (target.className == "destroy") return deleteTodo(id);
 };
+
+const listDbClick = ({ target }) => {
+  const id = target.closest("li").dataset["id"];
+  if (target.className != "label") return;
+  target.closest("li").className = "editing";
+};
+
+const listKeyUp = ({ target, key }) => {
+  if (key == "Enter") return modifyTodo(target);
+  if (key == "Escape") return drawList();
+
+  console.log(key);
+};
+
 const deleteTodo = (id) => {
   TodoItem.deleteItem(id);
   drawList();
@@ -45,4 +61,12 @@ const setComplete = (id) => {
   TodoItem.changeComplete(id);
   drawList();
   //   drawList();
+};
+
+const modifyTodo = (target) => {
+  const id = target.closest("li").dataset["id"];
+  const title = target.value;
+  console.log(title);
+  TodoItem.modifyItem(id, title);
+  drawList();
 };

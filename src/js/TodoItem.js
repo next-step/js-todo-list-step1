@@ -1,4 +1,3 @@
-import { drawList } from "./component/TodoList.js";
 export let todoList = [];
 export let listStatus = "all";
 
@@ -9,7 +8,6 @@ export const addList = (value) => {
     title: value,
     complete: false,
   });
-  drawList();
 };
 export const changeComplete = (id) => {
   todoList.forEach((l) => {
@@ -21,4 +19,10 @@ export const changeComplete = (id) => {
 };
 export const deleteItem = (id) => {
   todoList = todoList.filter((td) => td.id != id);
+};
+
+export const modifyItem = (id, title) => {
+  todoList.map((td) => {
+    if (td.id == id) td.title = title;
+  });
 };
