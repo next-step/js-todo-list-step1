@@ -2,7 +2,7 @@ import { $ } from "../utils/utils.js";
 import * as TodoItem from "../TodoItem.js";
 import { drawTodoCount } from "./TodoCount.js";
 const $todoList = $("#todo-list");
-const is_complete = true;
+
 export function TodoList() {
   drawList();
 
@@ -13,7 +13,7 @@ export function TodoList() {
 
 export const drawList = () => {
   let viewList = TodoItem.todoList.filter((s) => {
-    return TodoItem.listStatus == "all" || is_complete == s.complete;
+    return TodoItem.listStatus == "all" || TodoItem.is_complete == s.complete;
   });
   drawTodoCount(viewList);
 
@@ -49,8 +49,6 @@ const listDbClick = ({ target }) => {
 const listKeyUp = ({ target, key }) => {
   if (key == "Enter") return modifyTodo(target);
   if (key == "Escape") return drawList();
-
-  console.log(key);
 };
 
 const deleteTodo = (id) => {
@@ -59,7 +57,6 @@ const deleteTodo = (id) => {
 };
 
 const setComplete = (id) => {
-  console.log("col", id);
   TodoItem.changeComplete(id);
   drawList();
   //   drawList();
@@ -68,7 +65,6 @@ const setComplete = (id) => {
 const modifyTodo = (target) => {
   const id = target.closest("li").dataset["id"];
   const title = target.value;
-  console.log(title);
   TodoItem.modifyItem(id, title);
   drawList();
 };
