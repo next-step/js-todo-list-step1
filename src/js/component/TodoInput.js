@@ -1,15 +1,13 @@
 import { $ } from "../utils/utils.js";
-
+import * as TodoItem from "../TodoItem.js";
 const $todoInput = $(".new-todo");
 
-export function TodoInput(addList) {
+export function TodoInput() {
   const addTodo = ({ target, key }) => {
     const value = target.value;
     if (key != "Enter") return;
-    addList(value);
+    TodoItem.addList(value);
     $todoInput.value = "";
-    //drawList();
-    console.log("todoinput");
   };
 
   $todoInput.addEventListener("keyup", addTodo);

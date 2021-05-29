@@ -1,16 +1,16 @@
 import { $ } from "../utils/utils.js";
+import * as TodoItem from "../TodoItem.js";
 const $todoList = $("#todo-list");
 const is_complete = true;
-export function TodoList(todoList, listStatus) {
-  drawList(todoList, listStatus);
-  return drawList;
+export function TodoList() {
+  drawList();
 }
 
-const drawList = (todoList, listStatus) => {
-  let viewList = todoList.filter((s) => {
-    return listStatus == "all" || is_complete == s.complete;
+export const drawList = () => {
+  let viewList = TodoItem.todoList.filter((s) => {
+    return TodoItem.listStatus == "all" || is_complete == s.complete;
   });
-  console.log("drawList", todoList, viewList, listStatus);
+
   $todoList.innerHTML = "";
   viewList.forEach((input) => {
     $todoList.innerHTML += `
@@ -24,5 +24,4 @@ const drawList = (todoList, listStatus) => {
   </li>
 `;
   });
-  console.log($todoList);
 };
