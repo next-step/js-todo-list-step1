@@ -1,5 +1,6 @@
 import { $ } from "../utils/utils.js";
 import * as TodoItem from "../TodoItem.js";
+import { drawTodoCount } from "./TodoCount.js";
 const $todoList = $("#todo-list");
 const is_complete = true;
 export function TodoList() {
@@ -14,6 +15,7 @@ export const drawList = () => {
   let viewList = TodoItem.todoList.filter((s) => {
     return TodoItem.listStatus == "all" || is_complete == s.complete;
   });
+  drawTodoCount(viewList);
 
   $todoList.innerHTML = "";
   viewList.forEach((input) => {
