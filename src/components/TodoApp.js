@@ -19,11 +19,12 @@ export default class TodoApp {
     new TodoInput({ target: $(DOM_ID.TODO_INPUT), addTodo: this.addTodo.bind(this) });
     this.todoList = new TodoList({
       target: $(DOM_ID.TODO_LIST),
+      removeTodo: this.removeTodo.bind(this),
       toggleTodoItemIsDone: this.toggleTodoItemIsDone.bind(this),
       updateTodoItemValue: this.updateTodoItemValue.bind(this),
     });
 
-    this._redner();
+    this._render();
   }
 
   addTodo(todoValue) {
@@ -36,7 +37,7 @@ export default class TodoApp {
     this.todoListState = this.todoListState.concat(todoItem);
 
     // 상태 변경 후 렌더링
-    this._redner();
+    this._render();
   }
 
   toggleTodoItemIsDone(todoId) {
@@ -44,7 +45,7 @@ export default class TodoApp {
       return todoItem.id == todoId ? { ...todoItem, isDone: !todoItem.isDone } : todoItem;
     });
 
-    this._redner();
+    this._render();
   }
 
   updateTodoItemValue(todoId, value) {
@@ -52,11 +53,16 @@ export default class TodoApp {
       return todoItem.id == todoId ? { ...todoItem, value } : todoItem;
     });
 
-    this._redner();
+    this._render();
   }
 
-  _redner() {
-    console.log('render');
+  removeTodo(todoId) {
+    this.todoListState = this.todoListState.filter((todoItem) => todoItem.id !== todoId);
+    this._render();
+  }
+
+  _render() {
+    // console.log('render');
     this.todoList.render(this.todoListState);
   }
 }

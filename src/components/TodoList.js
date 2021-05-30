@@ -1,8 +1,9 @@
 import { KEY } from '../constants/constatns.js';
 
 export default class TodoList {
-  constructor({ target, toggleTodoItemIsDone, updateTodoItemValue }) {
+  constructor({ target, removeTodo, toggleTodoItemIsDone, updateTodoItemValue }) {
     this.$target = target;
+    this.removeTodo = removeTodo;
     this.toggleTodoItemIsDone = toggleTodoItemIsDone;
     this.updateTodoItemValue = updateTodoItemValue;
 
@@ -17,7 +18,15 @@ export default class TodoList {
   _addEvent() {
     this.$target.addEventListener('click', this._updateItemIsDone.bind(this));
     this.$target.addEventListener('dblclick', this._changeInputMode.bind(this));
+    this.$target.addEventListener('click', this._deleteTodo.bind(this));
     this.$target.addEventListener('keyup', this._closeEditMode.bind(this));
+  }
+
+  _deleteTodo({ target }) {
+    if (target.classList.value !== 'destroy') return;
+
+    const todoId = target.id;
+    this.removeTodo(parseInt(todoId));
   }
 
   _updateItemIsDone({ target }) {
