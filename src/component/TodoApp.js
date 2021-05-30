@@ -141,8 +141,9 @@ export default function TodoApp() {
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
-    this.todoList.setState(this.todoItems, this.filter);
-    this.todoCount.setState(this.todoItems.length);
+    this.filteredItems = this.todoItems.filter(this.itemFiltered);
+    this.todoList.setState(this.filteredItems);
+    this.todoCount.setState(this.filteredItems.length);
   };
 
   this.deleteItemById = (id) => {
@@ -153,5 +154,17 @@ export default function TodoApp() {
     }
 
     this.todoItems.splice(deleteIndex, 1);
+  };
+
+  this.itemFiltered = (item) => {
+    if (this.filter === "all") {
+      return true;
+    } else if (this.filter === "active" && item.status === "view") {
+      return true;
+    } else if (this.filter === "completed" && item.status === "completed") {
+      return true;
+    }
+
+    return false;
   };
 }
