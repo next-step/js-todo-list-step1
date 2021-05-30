@@ -6,6 +6,7 @@ import { TodoInput } from "../js/components/TodoInput.js";
 import { TodoList } from "../js/components/TodoList.js";
 import { TodoCheckBox } from "./components/TodoCheckBox.js";
 import { TodoDelete } from "../js/components/TodoDelete.js";
+import { TodoCount } from "../js/components/TodoCount.js";
 
 function TodoApp() {
   this.todoItems = [];
@@ -60,12 +61,21 @@ function TodoApp() {
     },
   });
 
+  const todoCount = new TodoCount({
+    onSelectedGroup: (selectedItems) => {
+      todoList.setState(selectedItems);
+    },
+  });
+
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
+    todoCount.setState(this.todoItems);
     todoList.setState(this.todoItems);
   };
 
   this.init = () => {
+    todoCount.init();
+    todoCount.setState(this.todoItems);
     todoList.setState(this.todoItems);
   };
 }
