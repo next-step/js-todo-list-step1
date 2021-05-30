@@ -9,8 +9,7 @@ import { TodoDelete } from "../js/components/TodoDelete.js";
 import { TodoCount } from "../js/components/TodoCount.js";
 
 function TodoApp() {
-  this.todoItems = [];
-
+  this.todoItems = JSON.parse(localStorage.getItem("todos")) ?? [];
   let id = 0;
 
   new TodoInput({
@@ -27,13 +26,14 @@ function TodoApp() {
       const updatedItems = this.todoItems.map((item) =>
         item.swapCheckStatus(listId)
       );
-      this.setState(updatedItems); // 전체를 한번에 업데이트
+      this.setState(updatedItems);
     },
   });
 
   new TodoDelete({
     onDelete: (deleteTargetId) => {
       const targetId = parseInt(deleteTargetId);
+
       this.setState(
         this.todoItems.filter((todoItem) => todoItem.id !== targetId)
       );
@@ -70,8 +70,25 @@ function TodoApp() {
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
+    localStorage.setItem("todo-items", JSON.stringify(this.todoItems));
     todoCount.setState(this.todoItems);
     todoList.setState(this.todoItems);
+  };
+
+  this.getLocalTodo = () => {
+    let local_todo = localStorage.getItem("todo-items");
+
+    if (local_todo === null || JSON.parse(local_todo).length === 0) {
+      this.todoItems = [];
+    } else {
+      local_todo = JSON.parse(local_todo);
+
+      Object.values(local_todo).forEach((each) => {
+        this.todoItems.push(
+          new TodoItem(id++, each.content, STATUS_TYPE.ACTIVE)
+        );
+      });
+    }
   };
 
   this.init = () => {
@@ -82,4 +99,5 @@ function TodoApp() {
 }
 
 const app = new TodoApp();
+app.getLocalTodo();
 app.init();
