@@ -16,6 +16,14 @@ export class TodoItem {
     return this;
   }
 
+  isActive() {
+    return this.status === STATUS_TYPE.ACTIVE;
+  }
+
+  isEditing() {
+    return this.status === STATUS_TYPE.EDITING;
+  }
+
   isCompleted() {
     return this.status === STATUS_TYPE.COMPLETED;
   }

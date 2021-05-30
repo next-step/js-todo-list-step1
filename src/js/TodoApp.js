@@ -5,9 +5,11 @@ import { TodoItem } from "../js/components/TodoItem.js";
 import { TodoInput } from "../js/components/TodoInput.js";
 import { TodoList } from "../js/components/TodoList.js";
 import { TodoCheckBox } from "./components/TodoCheckBox.js";
+import { TodoDelete } from "../js/components/TodoDelete.js";
 
 function TodoApp() {
   this.todoItems = [];
+
   let id = 0;
 
   new TodoInput({
@@ -28,7 +30,35 @@ function TodoApp() {
     },
   });
 
-  const todoList = new TodoList({});
+  new TodoDelete({
+    onDelete: (deleteTargetId) => {
+      const targetId = parseInt(deleteTargetId);
+      this.setState(
+        this.todoItems.filter((todoItem) => todoItem.id !== targetId)
+      );
+    },
+  });
+
+  const todoList = new TodoList({
+    onEditMode: (id) => {
+      const updateItems = this.todoItems.map((item) => {
+        if (item.id === parseInt(id) && item.isActive()) {
+          return new TodoItem(item.id, item.content, "editing");
+        }
+        return item;
+      });
+      this.setState(updateItems);
+    },
+    onUpdate: (id, value) => {
+      const updateItems = this.todoItems.map((item) => {
+        if (item.id === parseInt(id) && item.isEditing()) {
+          return new TodoItem(item.id, value, "active");
+        }
+        return item;
+      });
+      this.setState(updateItems);
+    },
+  });
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
