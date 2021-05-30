@@ -4,6 +4,7 @@ import { DOM_ID } from '../constants/constatns.js';
 // components
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
+import TodoCount from './TodoCount.js';
 
 // const init = [];
 const init = [
@@ -23,6 +24,7 @@ export default class TodoApp {
       toggleTodoItemIsDone: this.toggleTodoItemIsDone.bind(this),
       updateTodoItemValue: this.updateTodoItemValue.bind(this),
     });
+    this.todoCount = new TodoCount({ target: $(DOM_ID.TODO_COUNT) });
 
     this._render();
   }
@@ -62,7 +64,7 @@ export default class TodoApp {
   }
 
   _render() {
-    // console.log('render');
     this.todoList.render(this.todoListState);
+    this.todoCount.updateCount(this.todoListState.length);
   }
 }
