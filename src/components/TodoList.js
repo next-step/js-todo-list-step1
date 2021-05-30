@@ -1,43 +1,54 @@
-import { KEY } from '../constants/constatns.js';
+import { KEY, DOM_ID } from '../constants/constatns.js';
+import { $ } from '../utils/utils.js';
+import TodoState from '../store/todoState.js';
 
 export default class TodoList {
-  constructor({ target, removeTodo, toggleTodoItemIsDone, updateTodoItemValue }) {
-    this.$target = target;
-    this.removeTodo = removeTodo;
-    this.toggleTodoItemIsDone = toggleTodoItemIsDone;
-    this.updateTodoItemValue = updateTodoItemValue;
+  constructor({ setTodoList }) {
+    this.$target = $(DOM_ID.TODO_LIST);
+
+    this.todoState = TodoState;
+    this.setTodoList = setTodoList;
 
     this._addEvent();
   }
 
-  render(todoListState) {
-    const todoItemTemplate = todoListState.map(this._getTodoItemTemplate);
-    this.$target.innerHTML = todoItemTemplate.join('');
-  }
-
   _addEvent() {
-    this.$target.addEventListener('click', this._updateItemIsDone.bind(this));
-    this.$target.addEventListener('dblclick', this._changeInputMode.bind(this));
+    this.$target.addEventListener('click', this._toggleTodoDone.bind(this));
     this.$target.addEventListener('click', this._deleteTodo.bind(this));
+    this.$target.addEventListener('dblclick', this._openEditMode.bind(this));
     this.$target.addEventListener('keyup', this._closeEditMode.bind(this));
   }
 
   _deleteTodo({ target }) {
     if (target.classList.value !== 'destroy') return;
 
-    const todoId = target.id;
-    this.removeTodo(parseInt(todoId));
+    const todoId = parseInt(target.id);
+    const deletedTodoList = TodoState.get().filter((todoItem) => todoItem.id !== todoId);
+    this.setTodoList(deletedTodoList);
   }
 
-  _updateItemIsDone({ target }) {
+  _toggleTodoDone({ target }) {
     if (target.classList.value !== 'toggle') return;
-    const todoId = target.id;
 
-    this.toggleTodoItemIsDone(todoId);
+    const todoId = parseInt(target.id);
+    const updatedTodoList = TodoState.get().map((todoItem) =>
+      todoItem.id == todoId ? { ...todoItem, isDone: !todoItem.isDone } : todoItem,
+    );
+
+    this.setTodoList(updatedTodoList);
   }
 
-  _changeInputMode({ target }) {
+  _updateTodoValue(todoId, updatedValue) {
+    const updatedItem = TodoState.get().map((todoItem) => {
+      return todoItem.id === todoId ? { ...todoItem, value: updatedValue } : todoItem;
+    });
+
+    this.setTodoList(updatedItem);
+  }
+
+  _openEditMode({ target }) {
     if (target.classList.value !== 'label') return;
+
     const todoItem = target.closest('li');
     todoItem.classList.add('editing');
   }
@@ -47,7 +58,7 @@ export default class TodoList {
 
     const todoItem = target.closest('li');
 
-    const todoId = todoItem.id;
+    const todoId = parseInt(todoItem.id);
     const updatedValue = todoItem.querySelector('.edit').value;
 
     if (key === KEY.ESC) {
@@ -55,7 +66,7 @@ export default class TodoList {
       return;
     }
 
-    this.updateTodoItemValue(todoId, updatedValue);
+    this._updateTodoValue(todoId, updatedValue);
   }
 
   _getTodoItemTemplate({ id, value, isDone }) {
@@ -69,5 +80,10 @@ export default class TodoList {
       <input class="edit" value=${value} />
     </li>
   `;
+  }
+
+  render(todoListState) {
+    const todoItemTemplate = todoListState.map(this._getTodoItemTemplate);
+    this.$target.innerHTML = todoItemTemplate.join('');
   }
 }

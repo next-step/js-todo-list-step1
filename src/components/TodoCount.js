@@ -1,8 +1,9 @@
-import { FILTER } from '../constants/constatns.js';
+import { $ } from '../utils/utils.js';
+import { DOM_ID, FILTER } from '../constants/constatns.js';
 
 export default class TodoCount {
-  constructor({ target, setFilter }) {
-    this.$target = target;
+  constructor({ setFilter }) {
+    this.$target = $(DOM_ID.TODO_COUNT);
 
     this.$filterMenu = {
       [FILTER.ALL]: this.$target.querySelector(`.${FILTER.ALL}`),
@@ -19,21 +20,19 @@ export default class TodoCount {
     this.$target.addEventListener('click', this._changeFilter.bind(this));
   }
 
-  updateCount(count) {
-    const $count = this.$target.querySelector('span > strong');
-    $count.innerHTML = count;
-  }
-
   _changeFilter(event) {
     event.stopPropagation();
+
     const filter = event.target.classList[0];
-
     if (!(filter === FILTER.ALL || filter === FILTER.ACTIVE || filter === FILTER.COMPLETED)) return;
-
     Object.keys(this.$filterMenu).map((key) => this.$filterMenu[key].classList.remove('selected'));
-
     event.target.classList.add('selected');
 
     this.setFilter(filter);
+  }
+
+  renderCount(count) {
+    const $count = this.$target.querySelector('span > strong');
+    $count.innerHTML = count;
   }
 }
