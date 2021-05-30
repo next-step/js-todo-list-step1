@@ -8,3 +8,9 @@ export const DOM_ID = {
   TODO_LIST: '#todo-list',
   TODO_COUNT: '.count-container',
 };
+
+export const FILTER = {
+  ALL: 'all',
+  ACTIVE: 'active',
+  COMPLETED: 'completed',
+};

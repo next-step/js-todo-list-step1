@@ -21,6 +21,8 @@ export default class TodoInput {
 
   _todoAdd() {
     const todoItemValue = this.$target.value;
+    if (todoItemValue === '') return null;
+
     this.addTodo(todoItemValue);
   }
 
