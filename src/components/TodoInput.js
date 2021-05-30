@@ -1,9 +1,9 @@
 import { KEY } from '../constants/constatns.js';
 
 export default class TodoInput {
-  constructor(target, addTodoList) {
+  constructor({ target, addTodo }) {
     this.$target = target;
-    this.addTodoList = addTodoList; // todoList 추가 함수
+    this.addTodo = addTodo; // todoList 추가 함수
     this._addEvent();
   }
 
@@ -21,7 +21,7 @@ export default class TodoInput {
 
   _todoAdd() {
     const todoItemValue = this.$target.value;
-    this.addTodoList(todoItemValue);
+    this.addTodo(todoItemValue);
   }
 
   _initInput() {
