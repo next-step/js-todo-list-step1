@@ -140,7 +140,8 @@ main {
 .todo-list li {
     position: relative;
     font-size: 24px;
-    border-bottom: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;;
+    padding: 12px 16px;
 }
 
 .todo-list li:last-child {
