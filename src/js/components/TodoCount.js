@@ -34,7 +34,6 @@ export function TodoCount({ onSelectedGroup }) {
   };
 
   this.init = () => {
-    console.log("hello");
     $all.addEventListener(EVENT_TYPE.CLICK, (event) =>
       this.onShowSelectedItems(event, $all, "")
     );

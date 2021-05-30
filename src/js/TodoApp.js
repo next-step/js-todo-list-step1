@@ -50,6 +50,7 @@ function TodoApp() {
       });
       this.setState(updateItems);
     },
+
     onUpdate: (id, value) => {
       const updateItems = this.todoItems.map((item) => {
         if (item.id === parseInt(id) && item.isEditing()) {
