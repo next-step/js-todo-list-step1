@@ -13,7 +13,7 @@ export default class TodoInput {
                 event.target.value = "";
             } else {
                 alert("할일을 입력해주세요.");
-            }
+            }            
         }
     }
 }
