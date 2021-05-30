@@ -1,4 +1,5 @@
-import { FILTER } from '../constants/constatns.js';
+import { FILTER, LOCAL_DB_KEY } from '../constants/constatns.js';
+import localDB from '../utils/localStorage.js';
 
 // state
 import TodoState from '../store/todoState.js';
@@ -22,6 +23,14 @@ export default class TodoApp {
       setFilter: this.setFilter.bind(this),
     });
 
+    const emptyLocalDB = !localDB.getData(LOCAL_DB_KEY);
+    if (emptyLocalDB) {
+      localDB.setData(LOCAL_DB_KEY, []);
+    }
+
+    const DBData = localDB.getData(LOCAL_DB_KEY);
+    this.todoState.setTodoList(JSON.parse(DBData));
+
     this._render();
   }
 
@@ -32,6 +41,7 @@ export default class TodoApp {
 
   setTodoList(updatedTodoList) {
     this.todoState.setTodoList(updatedTodoList);
+    localDB.setData(LOCAL_DB_KEY, updatedTodoList);
     this._render();
   }
 

@@ -14,3 +14,5 @@ export const FILTER = {
   ACTIVE: 'active',
   COMPLETED: 'completed',
 };
+
+export const LOCAL_DB_KEY = 'todos';
