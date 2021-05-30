@@ -139,13 +139,22 @@ function changeMode(){
     let liNodes = this.parentNode.parentNode.childNodes;
     liNodes.forEach(li =>{
         li.classList.remove('editing');
-    })
+    });
     this.parentNode.classList.add('editing'); 
 }
 
 function deleteItem(){
+    console.log("djflskdjflsdkj");
     let id = this.getAttribute("id");
-    todoList.splice(id-1,1);
+    //console.log(typeof(id));xa
+    let num =0;
+    todoList.forEach( i =>{
+        if(i.id == id){
+            todoList.splice(num,1);
+        } 
+        num++;
+    });
+    console.log(todoList);
     storage.setItem("list", JSON.stringify(todoList));
     showItem();
 }
