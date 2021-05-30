@@ -2,6 +2,7 @@ import { FILTER } from '../constants/constatns.js';
 
 // state
 import TodoState from '../store/todoState.js';
+import FilterState from '../store/filterState.js';
 
 // components
 import TodoInput from './TodoInput.js';
@@ -11,8 +12,8 @@ import TodoCount from './TodoCount.js';
 export default class TodoApp {
   constructor() {
     // state
-    this.filterState = FILTER.ALL;
     this.todoState = TodoState;
+    this.filterState = FilterState;
 
     // components
     new TodoInput({ setTodoList: this.setTodoList.bind(this) });
@@ -24,8 +25,8 @@ export default class TodoApp {
     this._render();
   }
 
-  setFilter(changeFilter) {
-    this.filterState = changeFilter;
+  setFilter(updatedFilter) {
+    this.filterState.setFilter(updatedFilter);
     this._render();
   }
 
@@ -36,7 +37,9 @@ export default class TodoApp {
 
   _render() {
     let todoList = [];
-    switch (this.filterState) {
+    const filter = this.filterState.get();
+
+    switch (filter) {
       case FILTER.ALL:
         todoList = this.todoState.get();
         break;
