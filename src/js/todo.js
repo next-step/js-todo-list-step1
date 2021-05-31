@@ -57,6 +57,34 @@ const RemoveItem = e => {
   toDoItems = rmToDoItem;
 }
 
+const EditMode = e => {
+  const $li = e.target.closest('li');
+  $li.classList.add('editing');
+  $li.addEventListener('keydown', e => {
+    const $input = e.target;
+    const $label = e.target.previousElementSibling.children[1];
+
+    if (e.key == 'Enter') {
+      $label.innerText = $input.value;
+      $input.setAttribute('value', $label.innerText);
+      $li.classList.remove('editing');
+
+      toDoItems.forEach(item => {
+        if (item.id === parseInt($li.id)) {
+          item.data = $label.innerText;
+        }
+      })
+
+    } else if (e.key == 'Escape') {
+      $li.classList.remove('editing');
+    }
+  });
+}
+
+$todoList.addEventListener('dblclick', e => {
+  EditMode(e);
+});
+
 $todoList.addEventListener('click', e => {
   if (e.target.classList.contains('toggle')) {
     ToggleItem(e);
