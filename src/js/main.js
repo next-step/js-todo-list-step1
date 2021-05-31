@@ -26,7 +26,7 @@ window.onload= function(){
 let inputElement = document.getElementById("new-todo-title");
 
 function enterkey(){
-  if(window.event.keyCode == 13){
+  if(window.event.key == 'Enter'){
     if(inputElement.value.trim()==""||null||undefined||NaN){
       alert("빈 값입니다."+inputElement.value.trim());
       return ; 
@@ -78,7 +78,7 @@ function showItem(){
 }
 function editKey(event){
     /*enter key*/
-    if(window.event.keyCode == 13)
+    if(window.event.key === 'Enter')
     { 
         this.setAttribute("value", this.value);
         let toggleInput = this.parentNode.firstChild.childNodes[1];
@@ -89,7 +89,7 @@ function editKey(event){
         return;
     }
     /*ESC key*/
-    if(event.keyCode == 27){
+    if(event.key == 'Escape'){
         let boforeValue = this.previousSibling.childNodes[1].outerText;
         this.value = boforeValue;
         this.parentNode.classList.remove('editing');
