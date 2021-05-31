@@ -3,7 +3,8 @@ let storage = localStorage;
 let count=0;
 
 class Todo{
-  constructor(id, name, completed){
+  constructor(id, name, completed)
+  {
     this.id = id+"";
     this.name = name;
     this.completed = completed;
@@ -17,7 +18,8 @@ window.onload= function(){
     let list = JSON.parse(storageTodo);
     count = Number.parseInt(storage.getItem("size"));
     
-    list.forEach(todo =>{
+    list.forEach(todo =>
+        {
         todoList.push(new Todo(todo.id, todo.name, todo.completed));
     });
     showItem();
@@ -27,7 +29,8 @@ let inputElement = document.getElementById("new-todo-title");
 
 function enterkey(){
   if(window.event.key == 'Enter'){
-    if(inputElement.value.trim()==""||null||undefined||NaN){
+    if(inputElement.value.trim()==""||null||undefined||NaN)
+    {
       alert("빈 값입니다."+inputElement.value.trim());
       return ; 
     }
@@ -89,7 +92,8 @@ function editKey(event){
         return;
     }
     /*ESC key*/
-    if(event.key == 'Escape'){
+    if(event.key == 'Escape')
+    {
         let boforeValue = this.previousSibling.childNodes[1].outerText;
         this.value = boforeValue;
         this.parentNode.classList.remove('editing');
@@ -115,7 +119,8 @@ function updateName(id, name){
     let realID = id.replace("li","");
     
     todoList.forEach( todo =>{
-        if(todo.id === realID){
+        if(todo.id === realID)
+        {
             todo.name = name;  
         }    
     });
@@ -127,7 +132,8 @@ function updateCompleted(id, completed){
     let realID = id.replace("li","");
     
     todoList.forEach( todo =>{
-        if(todo.id === realID){
+        if(todo.id === realID)
+        {
             todo.completed = completed;  
         }    
     });
@@ -137,7 +143,8 @@ function updateCompleted(id, completed){
 
 function changeMode(){
     let liNodes = this.parentNode.parentNode.childNodes;
-    liNodes.forEach(li =>{
+    liNodes.forEach(li =>
+    {
         li.classList.remove('editing');
     });
     this.parentNode.classList.add('editing'); 
@@ -147,8 +154,10 @@ function deleteItem(){
     let id = this.getAttribute("id");
     //console.log(typeof(id));xa
     let num =0;
-    todoList.forEach( i =>{
-        if(i.id == id){
+    todoList.forEach( i =>
+        {
+        if(i.id == id)
+        {
             todoList.splice(num,1);
         } 
         num++;
@@ -172,7 +181,8 @@ function showActive(){
     activeButton.style.removeProperty('border');
     activeButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
     
-    list.forEach(i =>{
+    list.forEach(i =>
+        {
         if(i.classList.value){
             i.style.display = 'none';
         }else{
@@ -190,10 +200,12 @@ function showCompleted(){
     completedButton.style.removeProperty('border');
     completedButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
 
-    list.forEach( i => {
+    list.forEach( i => 
+        {
         if(!i.classList.value){
             i.style.display = 'none';
-        }else{
+        }else
+        {
             i.style.display = '';
         }
     });
