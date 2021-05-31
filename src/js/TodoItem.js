@@ -1,6 +1,6 @@
 export let todoList = [];
 export let listStatus = "all";
-export let is_complete = true;
+export let isComplete = true;
 
 export function TodoItem() {
   todoList = JSON.parse(localStorage.getItem("todoList"));
@@ -39,8 +39,8 @@ export const modifyItem = (id, title) => {
 
 export const setStatus = (status) => {
   listStatus = status;
-  if (listStatus == "active") is_complete = false;
-  if (listStatus == "completed") is_complete = true;
+  if (listStatus == "active") isComplete = false;
+  if (listStatus == "completed") isComplete = true;
 };
 
 export const saveLocalStroge = () => {
