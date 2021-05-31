@@ -26,11 +26,10 @@ export default function TodoCount({ onFilter }) {
   };
 
   this.changeFilterButtonStatus = (event) => {
-    const { target } = event;
+    const filterButtonTarget = event.target;
+    if (filterButtonTarget.tagName !== 'A') return;
 
-    if (target.tagName !== 'A') return;
-
-    const filterName = target.classList[0];
+    const [filterName] = filterButtonTarget.classList;
     this.changeSelection(filterName);
     onFilter(filterName);
   };
