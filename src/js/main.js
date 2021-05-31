@@ -144,7 +144,6 @@ function changeMode(){
 }
 
 function deleteItem(){
-    console.log("djflskdjflsdkj");
     let id = this.getAttribute("id");
     //console.log(typeof(id));xa
     let num =0;
