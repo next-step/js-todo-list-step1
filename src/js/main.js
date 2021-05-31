@@ -55,7 +55,7 @@ function showItem(){
     let list ="";
     for(let todo of todoList){
         let com = todo.completed ? "completed" : "";
-        let check = todo.completed == true ? "checked" :"";
+        let check = todo.completed ? "checked" :"";
         list +="<li id=li"+todo.id+" class="+com+">"
                     +"<div class=\"view\">"
                         +"<input class=\"toggle\" id=\""+todo.id+"\" type=\"checkbox\""+check+">"
