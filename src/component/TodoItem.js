@@ -4,6 +4,8 @@ export function TodoItem(contents, id, status) {
   this.status = status;
 }
 
+TodoItem.prototype.toString = () => {};
+
 export function todoItemRender(todoItem) {
   let html = "";
   html += `

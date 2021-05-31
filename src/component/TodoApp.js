@@ -5,9 +5,10 @@ import TodoCount from "./TodoCount.js";
 import { $ } from "../util/util.js";
 
 export default function TodoApp() {
-  this.itemId = 1;
-  this.todoItems = [];
-  this.filter = "all";
+  this.itemId;
+  this.todoItems;
+  this.filter;
+
   this.todoInput = new TodoInput({
     onAdd: (event) => {
       if (event === undefined || event.target === undefined) {
@@ -23,11 +24,11 @@ export default function TodoApp() {
         }
         const newTodoItem = new TodoItem(
           $newTodoInput.value,
-          this.itemId++,
+          this.itemId,
           "view"
         );
         this.todoItems.push(newTodoItem);
-        this.setState(this.todoItems);
+        this.setState(this.itemId + 1, this.todoItems, this.filter);
         $newTodoInput.value = "";
       }
     },
@@ -52,7 +53,7 @@ export default function TodoApp() {
         } else {
           item.status = "completed";
         }
-        this.setState(this.todoItems);
+        this.setState(this.itemId, this.todoItems, this.filter);
       } else if (
         // 제거
         $target.nodeName === "BUTTON" &&
@@ -60,7 +61,7 @@ export default function TodoApp() {
         confirm("정말 삭제 하시겠습니까?")
       ) {
         this.deleteItemById($itemLi.id);
-        this.setState(this.todoItems);
+        this.setState(this.itemId, this.todoItems, this.filter);
       }
     },
     onDblClick: (event) => {
@@ -106,10 +107,10 @@ export default function TodoApp() {
             item.status = "view";
             item.contents = $editInput.value;
           }
-          this.setState(this.todoItems);
+          this.setState(this.itemId, this.todoItems, this.filter);
         } else if (event.key === "Escape") {
           // 수정 취소(기존 상태로 랜더링)
-          this.setState(this.todoItems);
+          this.setState(this.itemId, this.todoItems, this.filter);
         }
       }
     },
@@ -134,13 +135,36 @@ export default function TodoApp() {
           this.filter = "completed";
         }
         $filterLi.classList.add("selected");
-        this.setState(this.todoItems);
+        this.setState(this.itemId, this.todoItems, this.filter);
       }
     },
   });
 
-  this.setState = (updatedItems) => {
+  this.init = () => {
+    let itemId = localStorage.getItem("itemId")
+      ? parseInt(localStorage.getItem("itemId"))
+      : 1;
+    let todoItems = localStorage.getItem("todoItems")
+      ? JSON.parse(localStorage.getItem("todoItems"))
+      : [];
+    console.log();
+    "test", JSON.parse(localStorage.getItem("todoItems"));
+    let filter = localStorage.getItem("filter")
+      ? localStorage.getItem("filter")
+      : "all";
+
+    this.setState(itemId, todoItems, filter);
+  };
+
+  this.setState = (itemId, updatedItems, filter) => {
+    this.itemId = itemId;
     this.todoItems = updatedItems;
+    this.filter = filter;
+
+    localStorage.setItem("itemId", itemId);
+    localStorage.setItem("todoItems", JSON.stringify(updatedItems));
+    localStorage.setItem("filter", filter);
+
     this.filteredItems = this.todoItems.filter(this.itemFiltered);
     this.todoList.setState(this.filteredItems);
     this.todoCount.setState(this.filteredItems.length);
@@ -167,4 +191,6 @@ export default function TodoApp() {
 
     return false;
   };
+
+  window.onload = this.init;
 }
