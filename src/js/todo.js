@@ -34,6 +34,7 @@ function addToDo(text) {
     const delBtn = document.createElement("button");
     delBtn.className = "destroy";
     delBtn.id = idValue;
+    delBtn.addEventListener("click", deleteToDo);
 
     const inputEdit = document.createElement("input");
     inputEdit.className = "edit";
@@ -62,6 +63,18 @@ function checkToDo(event) {
         li.className = "false";
     } else {
         li.className = "completed";
+    }
+}
+
+function deleteToDo(event) {
+    const deleteBtn = event.target;
+    const idValue = deleteBtn.id;
+    const ul = document.querySelector("#todo-list");
+    const liSize = ul.childNodes.length;
+    for(let i = 0; i < liSize; i++) {
+        if(ul.childNodes[i].id == idValue) {
+            ul.removeChild(ul.childNodes[i]);
+        }
     }
 }
 
