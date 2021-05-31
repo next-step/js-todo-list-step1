@@ -14,8 +14,8 @@ class Todo{
 window.onload= function(){
     if(storage.getItem("list")===null) return;
 
-    let storageTodo = storage.getItem("list");
-    let list = JSON.parse(storageTodo);
+    const storageTodo = storage.getItem("list");
+    const list = JSON.parse(storageTodo);
     count = Number.parseInt(storage.getItem("size"));
     
     list.forEach(todo =>
@@ -42,7 +42,7 @@ function enterkey(){
 function addItem(value)
 {
   count++;
-  let todo =  new Todo(count, value, false);
+  const todo =  new Todo(count, value, false);
   todoList.push(todo);
   storage.setItem("list", JSON.stringify(todoList));
   storage.setItem("size", count+"");
@@ -65,16 +65,16 @@ function showItem(){
     }
     document.getElementById("todo-list").innerHTML =list;
     
-    let deleteButtons = document.querySelectorAll(".destroy");
+    const deleteButtons = document.querySelectorAll(".destroy");
     deleteButtons.forEach(deleteButton => deleteButton.addEventListener("click",deleteItem));
 
-    let viewDivs = document.querySelectorAll(".view")
+    const viewDivs = document.querySelectorAll(".view")
     viewDivs.forEach(viewDiv => viewDiv.addEventListener("dblclick",changeMode));
  
-    let checkboxs = document.querySelectorAll(".toggle");
+    const checkboxs = document.querySelectorAll(".toggle");
     checkboxs.forEach(checkbox => checkbox.addEventListener("click",changeChecked));
     
-    let editInputs = document.querySelectorAll(".edit");
+    const editInputs = document.querySelectorAll(".edit");
     editInputs.forEach(editInput => editInput.addEventListener("keydown",editKey));
   
     showListCount();
@@ -84,7 +84,7 @@ function editKey(event){
     if(window.event.key === 'Enter')
     { 
         this.setAttribute("value", this.value);
-        let toggleInput = this.parentNode.firstChild.childNodes[1];
+        const toggleInput = this.parentNode.firstChild.childNodes[1];
         toggleInput.innerText = this.value;
         this.parentNode.classList.remove("editing");
         updateName(this.parentNode.id, toggleInput.innerText)
@@ -94,7 +94,7 @@ function editKey(event){
     /*ESC key*/
     if(event.key == 'Escape')
     {
-        let boforeValue = this.previousSibling.childNodes[1].outerText;
+        const boforeValue = this.previousSibling.childNodes[1].outerText;
         this.value = boforeValue;
         this.parentNode.classList.remove('editing');
     }
@@ -102,8 +102,8 @@ function editKey(event){
 }
 
 function changeChecked(){
-    let checkedInput = this.parentNode.parentNode.classList;
-    let updateId = this.parentNode.parentNode.id;
+    const checkedInput = this.parentNode.parentNode.classList;
+    const updateId = this.parentNode.parentNode.id;
     if(checkedInput.contains("completed"))
     {
         checkedInput.remove("completed");
@@ -116,7 +116,7 @@ function changeChecked(){
 }
 
 function updateName(id, name){
-    let realID = id.replace("li","");
+    const realID = id.replace("li","");
     
     todoList.forEach( todo =>{
         if(todo.id === realID)
@@ -129,7 +129,7 @@ function updateName(id, name){
 }
 
 function updateCompleted(id, completed){
-    let realID = id.replace("li","");
+    const realID = id.replace("li","");
     
     todoList.forEach( todo =>{
         if(todo.id === realID)
@@ -142,7 +142,7 @@ function updateCompleted(id, completed){
 }
 
 function changeMode(){
-    let liNodes = this.parentNode.parentNode.childNodes;
+    const liNodes = this.parentNode.parentNode.childNodes;
     liNodes.forEach(li =>
     {
         li.classList.remove('editing');
@@ -151,7 +151,7 @@ function changeMode(){
 }
 
 function deleteItem(){
-    let id = this.getAttribute("id");
+    const id = this.getAttribute("id");
     //console.log(typeof(id));xa
     let num =0;
     todoList.forEach( i =>
@@ -168,16 +168,16 @@ function deleteItem(){
 }
 
 function showListCount(){
-    let str = document.getElementById("strong");
+    const str = document.getElementById("strong");
     str.innerHTML = todoList.length;
 }
 
 function showActive(){
-    let list = document.getElementById("todo-list").childNodes;
-    let buttons = document.querySelectorAll('a');
+    const list = document.getElementById("todo-list").childNodes;
+    const buttons = document.querySelectorAll('a');
     buttons.forEach(b =>b.style.border ="none");
     
-    let activeButton = document.querySelector('a.active');
+    const activeButton = document.querySelector('a.active');
     activeButton.style.removeProperty('border');
     activeButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
     
@@ -192,11 +192,11 @@ function showActive(){
 }
 
 function showCompleted(){
-    let list = document.getElementById("todo-list").childNodes;
-    let buttons = document.querySelectorAll('a');
+    const list = document.getElementById("todo-list").childNodes;
+    const buttons = document.querySelectorAll('a');
     buttons.forEach(b =>b.style.border ="none");
     
-    let completedButton = document.querySelector('a.completed');
+    const completedButton = document.querySelector('a.completed');
     completedButton.style.removeProperty('border');
     completedButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
 
@@ -212,14 +212,14 @@ function showCompleted(){
 }
 
 function showAll(){
-    let buttons = document.querySelectorAll('a');
+    const buttons = document.querySelectorAll('a');
     buttons.forEach(b =>b.style.border ="none");
     
-    let allButton = document.querySelector('a.selected');
+    const allButton = document.querySelector('a.selected');
     allButton.style.removeProperty('border');
     allButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
 
 
-    let list = document.getElementById("todo-list").childNodes;
+    const list = document.getElementById("todo-list").childNodes;
     list.forEach( i => i.style.display='');
 }
