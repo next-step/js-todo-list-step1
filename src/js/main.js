@@ -14,7 +14,8 @@ class Todo{
 window.onload= function(){
     if(storage.getItem("list")===null) return;
 
-    const storageTodo = storage.getItem("list");
+    const STORAGE_KEY_TODO_LIST = "list";
+    const storageTodo = storage.getItem(STORAGE_KEY_TODO_LIST);
     const list = JSON.parse(storageTodo);
     count = Number.parseInt(storage.getItem("size"));
     
