@@ -53,7 +53,7 @@ function addItem(value)
 function showItem(){
     let list ="";
     for(let i of todoList){
-        let com = i.completed == true ? "completed" :"";
+        let com = i.completed ? "completed" : "";
         let check = i.completed == true ? "checked" :"";
         list +="<li id=li"+i.id+" class="+com+">"
                     +"<div class=\"view\">"
