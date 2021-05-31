@@ -10,6 +10,12 @@ const $allSelectedBtn = $('.all');
 const $activeBtn = $('.active');
 const $completedBtn = $('.completed');
 
+const ToDoList = 'todoList';
+
+const saveToDosToLS = () => {
+  localStorage.setItem(ToDoList, JSON.stringify(toDoItems));
+}
+
 const CountToDo = (items) => {
   let count = items.length
   const $toDoCount = $('.todo-count');
@@ -25,6 +31,7 @@ const AddToDo = (contents) => {
   };
   toDoItems.push(newToDoItem);
   CountToDo(toDoItems);
+  saveToDosToLS();
 }
 
 const toDoItemTemplate = (item) => {
@@ -81,6 +88,8 @@ const RemoveItem = e => {
   } else if ($completedBtn.classList.contains('selected')) {
     CountToDo(filterCompleted);
   }
+
+  saveToDosToLS();
 }
 
 const EditMode = e => {
@@ -158,8 +167,16 @@ $todoInput.addEventListener('keydown', e => {
   render(toDoItems);
 });
 
+function loadToDosInLS() {
+  const loadedToDos = localStorage.getItem(ToDoList);
+  if (loadedToDos !== null) {
+    const parsedToDos = JSON.parse(loadedToDos);
+    parsedToDos.map(item => toDoItems.push(item));
+  }
+}
+
 function init() {
-  render(toDoItems);
+  loadToDosInLS();
 }
 
 
