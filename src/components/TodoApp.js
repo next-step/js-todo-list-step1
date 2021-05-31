@@ -24,7 +24,7 @@ export default function TodoApp() {
 
   this.loadTodoItems = () => {
     const prevTodoItems = JSON.parse(localStorage.getItem('todos'));
-    this.todoItems = prevTodoItems;
+    this.todoItems = prevTodoItems ? prevTodoItems : [];
     const prevFilterStatus = window.location.hash.replace(/#/, '');
     if (prevFilterStatus === '') return;
     this.filterStatus = prevFilterStatus;
