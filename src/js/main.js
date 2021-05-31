@@ -11,6 +11,7 @@ function createLi(labelText) {
     newDIV.setAttribute("class", "view");
     newINPUT.setAttribute("class", "toggle");
     newINPUT.setAttribute("type", "checkbox");
+    newINPUT.setAttribute("onclick","changeStatus()");
     newLABEL.setAttribute("class", "label");
     newLABEL.innerHTML = labelText;
     newBUTTON.setAttribute("class", "destroy");
@@ -36,9 +37,11 @@ function addTodo() {
     }
 }
 
-//일정 수정하기
-function updateTodo() {
-
+//일정 상태변경
+function changeStatus(e) {
+  let event = e || window.event;
+  let li = event.target.parentElement.parentElement;
+  li.classList.toggle('completed')
 }
 //일정 삭제하기
 function deleteTodo(e) {
@@ -47,12 +50,12 @@ function deleteTodo(e) {
 }
 //일정수 계산하기
 function calTodoCount() {
-    document.getElementById("todo-count-text").innerText = ul.childElementCount;
+    document.getElementById("todo-count-text").innerText =  ul.childElementCount;
 
 }
 //일정 상태별 확인
 function filterTodoByStatus() {
-
+  
 }
 
 ul.addEventListener("change", calTodoCount());
