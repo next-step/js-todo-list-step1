@@ -1,6 +1,7 @@
 const inputToDo = document.querySelector("#new-todo-title");
 const toDoList = document.querySelector(".todo-list");
 
+let uniqueNumber = 0;
 const TODO_LS = "todos";
 
 function handleEnter(event) {
@@ -12,7 +13,10 @@ function handleEnter(event) {
 }
 
 function addToDo(text) {
+    const idValue = ++uniqueNumber;
+
     const li = document.createElement("li");
+    li.id = idValue;
     
     const div = document.createElement("div");
     div.className = "view";
@@ -20,13 +24,16 @@ function addToDo(text) {
     const inputToogle = document.createElement("input");
     inputToogle.className = "toggle";
     inputToogle.type = "checkbox";
+    inputToogle.id = idValue;
+    inputToogle.addEventListener("click", checkToDo);
 
     const label = document.createElement("label");
     label.className = "label";
     label.innerHTML = text;
 
-    const button = document.createElement("button");
-    button.className = "destory";
+    const delBtn = document.createElement("button");
+    delBtn.className = "destroy";
+    delBtn.id = idValue;
 
     const inputEdit = document.createElement("input");
     inputEdit.className = "edit";
@@ -35,10 +42,27 @@ function addToDo(text) {
     li.appendChild(div);
     div.appendChild(inputToogle);
     div.appendChild(label);
-    div.appendChild(button);
+    div.appendChild(delBtn);
     li.appendChild(inputEdit);
 
     toDoList.appendChild(li);
+}
+
+function checkToDo(event) {
+    const inputToogle = event.target;
+    const checkedState = inputToogle.getAttribute("checked");
+    if(checkedState == null) {
+    } else {
+        inputToogle.checked = false;
+    }
+
+    const li = inputToogle.parentNode.parentNode;
+    const completedState = li.className;
+    if(completedState == "completed") {
+        li.className = "false";
+    } else {
+        li.className = "completed";
+    }
 }
 
 inputToDo.addEventListener("keypress", handleEnter);
