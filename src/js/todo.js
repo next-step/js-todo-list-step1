@@ -17,6 +17,7 @@ function addToDo(text) {
 
     const li = document.createElement("li");
     li.id = idValue;
+    li.addEventListener("dblclick", editToDo);
     
     const div = document.createElement("div");
     div.className = "view";
@@ -75,6 +76,31 @@ function deleteToDo(event) {
         if(ul.childNodes[i].id == idValue) {
             ul.removeChild(ul.childNodes[i]);
         }
+    }
+}
+
+function editToDo(event) {
+    const label = event.target;
+    const li = label.parentNode.parentNode;
+    li.className = "editing";
+    li.addEventListener("keydown", finishEditToDo);
+}
+
+function finishEditToDo(event) { 
+    if(event.key === 'Enter') {
+        const inputEdit = event.target;
+        const editText = inputEdit.value;
+
+        const label = inputEdit.previousSibling.childNodes[1];
+        label.innerHTML = editText;
+        const li = inputEdit.parentNode;
+        li.className = "false";
+    }
+
+    if(event.key === 'Escape') {
+        const inputEdit = event.target;
+        const li = inputEdit.parentNode;
+        li.className = "false";
     }
 }
 
