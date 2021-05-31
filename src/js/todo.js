@@ -2,6 +2,7 @@ const inputToDo = document.querySelector("#new-todo-title");
 const toDoList = document.querySelector(".todo-list");
 
 let uniqueNumber = 0;
+let todoNumber = 0;
 const TODO_LS = "todos";
 
 function handleEnter(event) {
@@ -48,6 +49,8 @@ function addToDo(text) {
     li.appendChild(inputEdit);
 
     toDoList.appendChild(li);
+    todoNumber++;
+    showListNumber();
 }
 
 function checkToDo(event) {
@@ -77,6 +80,8 @@ function deleteToDo(event) {
             ul.removeChild(ul.childNodes[i]);
         }
     }
+    todoNumber--;
+    showListNumber();
 }
 
 function editToDo(event) {
@@ -102,6 +107,11 @@ function finishEditToDo(event) {
         const li = inputEdit.parentNode;
         li.className = "false";
     }
+}
+
+function showListNumber() {
+    const ul = document.querySelector(".todo-count");
+    ul.innerHTML = todoNumber;
 }
 
 inputToDo.addEventListener("keypress", handleEnter);
