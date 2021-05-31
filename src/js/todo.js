@@ -5,6 +5,14 @@ const $todoList = $('.todo-list');
 let toDoItems = [];
 let id = 1;
 
+
+const CountToDo = () => {
+  let count = toDoItems.length
+  const $toDoCount = $('.todo-count');
+
+  $toDoCount.children[0].innerText = count; //strong tag
+};
+
 const AddToDo = (contents) => {
   const newToDoItem = {
     id: id++,
@@ -12,6 +20,7 @@ const AddToDo = (contents) => {
     completed: false
   };
   toDoItems.push(newToDoItem);
+  CountToDo();
 }
 
 const toDoItemTemplate = (item) => {
@@ -32,6 +41,7 @@ const toDoItemTemplate = (item) => {
 const render = items => {
   const template = items.map(item => toDoItemTemplate(item));
   $todoList.innerHTML = template.join("");
+  CountToDo();
 }
 
 const ToggleItem = e => {
@@ -55,6 +65,7 @@ const RemoveItem = e => {
   $todoList.removeChild($li);
   const rmToDoItem = toDoItems.filter(item => item.id !== parseInt($li.id));
   toDoItems = rmToDoItem;
+  CountToDo();
 }
 
 const EditMode = e => {
@@ -80,6 +91,8 @@ const EditMode = e => {
     }
   });
 }
+
+
 
 $todoList.addEventListener('dblclick', e => {
   EditMode(e);
