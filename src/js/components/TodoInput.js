@@ -1,7 +1,5 @@
-function TodoInput({ onAdd }) 
-{
+export default function TodoInput({ onAdd }) {
   const $todoInput = document.querySelector('#new-todo-title');
-  const $editInput = document.querySelector('.edit');
   
   const addTodoItem = (event) => {
     if (event.target !== $todoInput) return;
@@ -13,5 +11,3 @@ function TodoInput({ onAdd })
 
   $todoInput.addEventListener("keyup", addTodoItem);
 }
-
-export default TodoInput;

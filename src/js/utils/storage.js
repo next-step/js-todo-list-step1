@@ -1,9 +1,7 @@
-const storage = window.localStorage;
-
 export const getTodoData = () => {
-  return JSON.parse(storage.getItem('items')) || [];
+  return JSON.parse(localStorage.getItem('items'));
 }
 
 export const setTodoData = (key, value) => {
-  storage.setItem(key, JSON.stringify(value));
+  localStorage.setItem(key, JSON.stringify(value));
 }
