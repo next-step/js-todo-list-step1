@@ -147,7 +147,6 @@ export default function TodoApp() {
     let todoItems = localStorage.getItem("todoItems")
       ? JSON.parse(localStorage.getItem("todoItems"))
       : [];
-    console.log();
     "test", JSON.parse(localStorage.getItem("todoItems"));
     let filter = localStorage.getItem("filter")
       ? localStorage.getItem("filter")
