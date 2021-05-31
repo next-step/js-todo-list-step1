@@ -12,7 +12,7 @@ function TodoInput({ onAdd }) {
   };
 
   this.isValid = (event, value) => {
-    return !!(event.code === 'Enter' && value);
+    return (event.code === 'Enter') && value;
 
   };
 }
