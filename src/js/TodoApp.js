@@ -9,7 +9,7 @@ import { TodoDelete } from "../js/components/TodoDelete.js";
 import { TodoCount } from "../js/components/TodoCount.js";
 
 function TodoApp() {
-  this.todoItems = JSON.parse(localStorage.getItem("todos")) ?? [];
+  this.todoItems = [];
   let id = 0;
 
   new TodoInput({
