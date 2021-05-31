@@ -30,7 +30,7 @@ let inputElement = document.getElementById("new-todo-title");
 
 function enterkey(){
   if(window.event.key == 'Enter'){
-    if(inputElement.value.trim()==""||null||undefined||NaN)
+    if(!inputElement.value ||!inputElement.value.trim())
     {
       alert("빈 값입니다."+inputElement.value.trim());
       return ; 
