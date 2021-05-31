@@ -80,7 +80,6 @@ function showItem(){
     showListCount();
 }
 function editKey(event){
-    /*enter key*/
     if(window.event.key === 'Enter')
     { 
         this.setAttribute("value", this.value);
@@ -91,7 +90,6 @@ function editKey(event){
         
         return;
     }
-    /*ESC key*/
     if(event.key == 'Escape')
     {
         const boforeValue = this.previousSibling.childNodes[1].outerText;
@@ -152,7 +150,6 @@ function changeMode(){
 
 function deleteItem(){
     const id = this.getAttribute("id");
-    //console.log(typeof(id));xa
     let num =0;
     todoList.forEach( i =>
         {
