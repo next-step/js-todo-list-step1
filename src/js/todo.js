@@ -2,12 +2,16 @@
 const $ = (selector) => document.querySelector(selector);
 const $todoInput = $('.new-todo');
 const $todoList = $('.todo-list');
+const $filters = $('.filters');
 let toDoItems = [];
 let id = 1;
 
+const $allSelectedBtn = $('.all');
+const $activeBtn = $('.active');
+const $completedBtn = $('.completed');
 
-const CountToDo = () => {
-  let count = toDoItems.length
+const CountToDo = (items) => {
+  let count = items.length
   const $toDoCount = $('.todo-count');
 
   $toDoCount.children[0].innerText = count; //strong tag
@@ -20,7 +24,7 @@ const AddToDo = (contents) => {
     completed: false
   };
   toDoItems.push(newToDoItem);
-  CountToDo();
+  CountToDo(toDoItems);
 }
 
 const toDoItemTemplate = (item) => {
@@ -41,7 +45,9 @@ const toDoItemTemplate = (item) => {
 const render = items => {
   const template = items.map(item => toDoItemTemplate(item));
   $todoList.innerHTML = template.join("");
-  CountToDo();
+  if (items.length > 0) {
+    CountToDo(items);
+  }
 }
 
 const ToggleItem = e => {
@@ -63,9 +69,18 @@ const ToggleItem = e => {
 const RemoveItem = e => {
   const $li = e.target.closest('li');
   $todoList.removeChild($li);
-  const rmToDoItem = toDoItems.filter(item => item.id !== parseInt($li.id));
-  toDoItems = rmToDoItem;
-  CountToDo();
+  toDoItems = toDoItems.filter(item => item.id !== parseInt($li.id));
+
+  const filterActive = toDoItems.filter(item => item.completed === false);
+  const filterCompleted = toDoItems.filter(item => item.completed === true);
+
+  if ($allSelectedBtn.classList.contains('selected')) {
+    CountToDo(toDoItems);
+  } else if ($activeBtn.classList.contains('selected')) {
+    CountToDo(filterActive);
+  } else if ($completedBtn.classList.contains('selected')) {
+    CountToDo(filterCompleted);
+  }
 }
 
 const EditMode = e => {
@@ -92,7 +107,36 @@ const EditMode = e => {
   });
 }
 
+const filter = e => {
+  const filterActive = toDoItems.filter(item => item.completed === false);
+  const filterCompleted = toDoItems.filter(item => item.completed === true);
 
+  if (e.target.className === 'active') {
+    e.target.classList.add('selected');
+    $allSelectedBtn.classList.remove('selected');
+    $completedBtn.classList.remove('selected');
+
+    render(filterActive);
+  } else if (e.target.className === 'completed') {
+    e.target.classList.add('selected');
+    $allSelectedBtn.classList.remove('selected');
+    $activeBtn.classList.remove('selected');
+
+    render(filterCompleted);
+  }
+};
+
+$filters.addEventListener('click', e => {
+  if (e.target.className === 'all') {
+    e.target.classList.add('selected');
+    $activeBtn.classList.remove('selected');
+    $completedBtn.classList.remove('selected');
+
+    render(toDoItems);
+  } else {
+    filter(e);
+  }
+});
 
 $todoList.addEventListener('dblclick', e => {
   EditMode(e);
