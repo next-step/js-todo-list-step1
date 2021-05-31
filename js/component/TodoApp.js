@@ -1,7 +1,7 @@
 import TodoInput from "./TodoInput.js";
 import TodoList from "./TodoList.js";
-import TodoCountContainer from "./TodoCountContainer.js"
-import Util from "./common/Util.js"
+import TodoCountContainer from "./TodoCountContainer.js";
+import { $, getUUID } from "./common/Util.js";
 
 export default class TodoApp {
   $target = null;
@@ -17,15 +17,14 @@ export default class TodoApp {
   showTodoItems = [];
 
   constructor() {
-    this.$todoInput = document.querySelector("#new-todo-title");
-    this.$todoList = document.querySelector("#todo-list");
-    this.$todoCountContainer = document.querySelector(".count-container");
-    this.util = new Util();
+    this.$todoInput = $("#new-todo-title");
+    this.$todoList = $("#todo-list");
+    this.$todoCountContainer = $(".count-container");
     this.todoInput = new TodoInput({
       target: this.$todoInput,
       onAdd: (value => {
         let data = {
-          code: this.util.getUUID(),
+          code: getUUID(),
           title: value,
           isComplete: false
         }
@@ -36,15 +35,9 @@ export default class TodoApp {
 
     this.todoList = new TodoList({
       todoList: this.$todoList,
-      itemClick: (event => {
-        this.onItemClick(event);
-      }),
-      itemCheck: (event => {
-        this.onItemCheck(event);
-      }),
-      itemDelete: (event => {
-        this.onItemDelete(event);
-      }), 
+      itemClick: (event => this.onItemClick(event)),
+      itemCheck: (event => this.onItemCheck(event)),
+      itemDelete: (event => this.onItemDelete(event)), 
     })   
 
     this.todoCountContainer = new TodoCountContainer({
@@ -52,7 +45,7 @@ export default class TodoApp {
         this.onFilter(event)
       })
     });
-    //localStorage.setItem("todoItem", null);
+
     this.loadLocalStorage();
   }
 
@@ -82,19 +75,19 @@ export default class TodoApp {
     const data = [];
 
     if(event === "all") {
-      Object.keys(this.dataIdx).forEach((key) => {
-        data.push(this.dataIdx[key]);
+      Object.values(this.dataIdx).forEach((value) => {
+        data.push(value);
       })
     } else if(event === "active") {
-      Object.keys(this.dataIdx).forEach((key) => {
-        if(!this.dataIdx[key].isComplete) {
-          data.push(this.dataIdx[key]);
+      Object.values(this.dataIdx).forEach((value) => {
+        if(!value.isComplete) {
+          data.push(value);
         }
       })
     } else {
-      Object.keys(this.dataIdx).forEach((key) => {
-        if(this.dataIdx[key].isComplete) {
-          data.push(this.dataIdx[key]);
+      Object.values(this.dataIdx).forEach((value) => {
+        if(value.isComplete) {
+          data.push(value);
         }
       })
     }
@@ -114,17 +107,18 @@ export default class TodoApp {
   loadLocalStorage() {
     const dataIdx = JSON.parse(localStorage.getItem("todoItem"));
     const items = [];
+
     this.dataIdx = dataIdx;
     
-    Object.keys(this.dataIdx).forEach(data => {
-      items.push(this.dataIdx[data]);
+    Object.values(this.dataIdx).forEach(value => {
+      items.push(value);
     })
 
     this.setShowItems(items);
+    this.todoCountContainer.setCount(items.length);
   }
 
   setLocalStorage() {
-
     localStorage.setItem("todoItem", JSON.stringify(this.dataIdx));
   }
 }

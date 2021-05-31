@@ -22,16 +22,16 @@ export default class TodoItem {
         toggleElement.setAttribute("class", "toggle");
         toggleElement.setAttribute("type", "checkbox");
         isComplete ? toggleElement.setAttribute("checked", isComplete) : '';
-        toggleElement.addEventListener("click", event => this.onChecked(event));
+        toggleElement.addEventListener("click", event => this.onItemChecked(event));
 
         labelElement.setAttribute("id", id);
         labelElement.setAttribute("class", "label");
         labelElement.innerHTML = title;
-        labelElement.addEventListener("dblclick", event => this.onClick(event));
+        labelElement.addEventListener("dblclick", event => this.onItemClick(event));
 
         destroyElement.setAttribute("id", id);
         destroyElement.setAttribute("class", "destroy");
-        destroyElement.addEventListener("click", event => this.onDelete(event));
+        destroyElement.addEventListener("click", event => this.onItemDelete(event));
 
         viewElement.setAttribute("class", "view");
         viewElement.append(toggleElement);
@@ -51,7 +51,7 @@ export default class TodoItem {
         return liElement;
     }
 
-    onChecked(event) {
+    onItemChecked(event) {
         const value = event.target.checked;
 
         event.target.closest("li").setAttribute("class", value ? "completed": "");
@@ -60,11 +60,11 @@ export default class TodoItem {
         this.itemCheck(event.target.closest("li").getAttribute("id"));
     }
 
-    onClick(event) {
+    onItemClick(event) {
         event.target.closest("li").setAttribute("class", "editing");
     }
 
-    onDelete(event) {
+    onItemDelete(event) {
         const value = event.target.getAttribute("id");
 
         event.target.closest("#todo-list").childNodes.forEach((data, i) => {

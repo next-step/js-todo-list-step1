@@ -8,7 +8,7 @@ export default class TodoInput {
 
     onKeyup(event) {
         if(event.key === "Enter") {
-            if(event.target.value.length > 0) {
+            if(event.target.value.length !== "") {
                 this.onAdd(event.target.value);
                 event.target.value = "";
             } else {

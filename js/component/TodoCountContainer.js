@@ -6,11 +6,12 @@ export default class TodoCountContainer {
     
     constructor({onFilter}) {
         this.$count = document.querySelector(".todo-count");
-        this.$filters = document.querySelectorAll(".filters a");
-
-        this.$filters.forEach(filter => {
-            filter.addEventListener("click", (event) => this.onFilterClick(event));
-        })
+        this.$filters = document.querySelector(".filters");
+        this.$filters.addEventListener("click", (event => {
+            if (event.target && event.target.nodeName == "A") {                
+                this.onFilterClick(event);
+            }            
+        }))
 
         this.onFilter = onFilter;
     }
