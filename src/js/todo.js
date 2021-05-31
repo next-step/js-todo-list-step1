@@ -47,11 +47,22 @@ const ToggleItem = e => {
     if (item.id === parseInt($li.id)) {
       item.completed = !item.completed;
     }
-  });
+  })
+}
+
+const RemoveItem = e => {
+  const $li = e.target.closest('li');
+  $todoList.removeChild($li);
+  const rmToDoItem = toDoItems.filter(item => item.id !== parseInt($li.id));
+  toDoItems = rmToDoItem;
 }
 
 $todoList.addEventListener('click', e => {
-  ToggleItem(e);
+  if (e.target.classList.contains('toggle')) {
+    ToggleItem(e);
+  } else if (e.target.classList.contains('destroy')) {
+    RemoveItem(e);
+  }
 });
 
 $todoInput.addEventListener('keydown', e => {
