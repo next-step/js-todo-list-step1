@@ -1,12 +1,10 @@
-const todoItem = (content, index, completed) => {
+import todoEditItem from './todoEditItem.js';
+import todoViewItem from './todoViewItem.js';
+const todoItem = (content, index, completed, editing) => {
   return `
-    <li class=${completed && 'completed'} data-index=${index}>
-        <div class="view">
-            <input class="toggle" type="checkbox" ${completed && 'checked'}/>
-            <label class="label">${content}</label>
-            <button class="destroy"></button>
-        </div>
-        <input class="edit" value="${content}" />
+    <li class=${(completed && 'completed') || (editing && 'editing')} 
+  } data-index=${index}>
+    ${editing ? todoEditItem(content) : todoViewItem(content, completed)}
     </li>
     `;
 };
