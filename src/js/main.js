@@ -80,7 +80,7 @@ function showItem(){
     showListCount();
 }
 function editKey(event){
-    if(window.event.key === 'Enter')
+    if(event.key === 'Enter')
     { 
         this.setAttribute("value", this.value);
         const toggleInput = this.parentNode.firstChild.childNodes[1];
