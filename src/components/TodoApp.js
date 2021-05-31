@@ -15,10 +15,10 @@ export default function TodoApp() {
   this.getFilteredTodoItems = () => {
     if (this.filterStatus === 'all') return this.todoItems;
     if (this.filterStatus === 'active') {
-      return this.todoItems.filter((item) => item.isCompleted === false);
+      return this.todoItems.filter((item) => !item.isCompleted);
     }
     if (this.filterStatus === 'completed') {
-      return this.todoItems.filter((item) => item.isCompleted === true);
+      return this.todoItems.filter((item) => item.isCompleted);
     }
   };
 
