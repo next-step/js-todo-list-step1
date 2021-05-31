@@ -9,6 +9,7 @@ const AddToDo = (contents) => {
   const newToDoItem = {
     id: id++,
     data: contents,
+    completed: false
   };
   toDoItems.push(newToDoItem);
 }
@@ -16,9 +17,9 @@ const AddToDo = (contents) => {
 const toDoItemTemplate = (item) => {
   return (
     `
-      <li id="${item.id}">
+      <li id="${item.id}" class="${item.completed ? 'completed' : ''}">
         <div class="view">
-          <input class="toggle" type="checkbox"/>
+          <input class="toggle" type="checkbox" ${item.completed ? 'checked' : ''}/>
           <label class="label">${item.data}</label>
           <button class="destroy"></button>
         </div>
@@ -32,6 +33,26 @@ const render = items => {
   const template = items.map(item => toDoItemTemplate(item));
   $todoList.innerHTML = template.join("");
 }
+
+const ToggleItem = e => {
+  const $li = e.target.closest('li');
+  if ($li.classList.contains('completed')) {
+    $li.classList.remove('completed');
+    e.target.removeAttribute('checked');
+  } else {
+    $li.classList.add('completed');
+    e.target.setAttribute('checked', '');
+  }
+  toDoItems.forEach(item => {
+    if (item.id === parseInt($li.id)) {
+      item.completed = !item.completed;
+    }
+  });
+}
+
+$todoList.addEventListener('click', e => {
+  ToggleItem(e);
+});
 
 $todoInput.addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.target.value !== '') {
