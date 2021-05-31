@@ -53,16 +53,16 @@ function addItem(value)
 
 function showItem(){
     let list ="";
-    for(let i of todoList){
-        let com = i.completed ? "completed" : "";
-        let check = i.completed == true ? "checked" :"";
-        list +="<li id=li"+i.id+" class="+com+">"
+    for(let todo of todoList){
+        let com = todo.completed ? "completed" : "";
+        let check = todo.completed == true ? "checked" :"";
+        list +="<li id=li"+todo.id+" class="+com+">"
                     +"<div class=\"view\">"
-                        +"<input class=\"toggle\" id=\""+i.id+"\" type=\"checkbox\""+check+">"
-                        +"<label class=\"label\">"+i.name+"</label>"
-                        +"<button class=\"destroy\" id="+i.id+"></button>"
+                        +"<input class=\"toggle\" id=\""+todo.id+"\" type=\"checkbox\""+check+">"
+                        +"<label class=\"label\">"+todo.name+"</label>"
+                        +"<button class=\"destroy\" id="+todo.id+"></button>"
                     +"</div>"
-                    +"<input class=\"edit\" value="+i.name+"></li>";
+                    +"<input class=\"edit\" value="+todo.name+"></li>";
     }
     document.getElementById("todo-list").innerHTML =list;
     
