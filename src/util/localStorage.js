@@ -3,7 +3,7 @@ const TODOS = "todos"
 const getTodos = () => {
     const value = localStorage.getItem(TODOS);
 
-    return value === null ? [] : JSON.parse(value);
+    return JSON.parse(value) ?? [];
 }
 
 const setTodo = (value) => {
