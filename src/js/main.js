@@ -56,13 +56,14 @@ function showItem(){
     for(let todo of todoList){
         let com = todo.completed ? "completed" : "";
         let check = todo.completed ? "checked" :"";
-        list +="<li id=li"+todo.id+" class="+com+">"
-                    +"<div class=\"view\">"
-                        +"<input class=\"toggle\" id=\""+todo.id+"\" type=\"checkbox\""+check+">"
-                        +"<label class=\"label\">"+todo.name+"</label>"
-                        +"<button class=\"destroy\" id="+todo.id+"></button>"
-                    +"</div>"
-                    +"<input class=\"edit\" value="+todo.name+"></li>";
+        console.log(`${com},  ${todo.id}`)
+        list +=`<li id=li${todo.id} class=${com}>
+                    <div class=\"view\">
+                        <input class=\"toggle\" id=\"${todo.id}\" type=\"checkbox\"${check}>
+                        <label class=\"label\">${todo.name}</label>
+                        <button class=\"destroy\" id=${todo.id}></button>
+                    </div>
+                    <input class=\"edit\" value=${todo.name}></li>`;
     }
     document.getElementById("todo-list").innerHTML =list;
     
