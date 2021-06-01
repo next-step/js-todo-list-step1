@@ -26,10 +26,14 @@ export default function TodoList(app) {
 
 	const onClick = event => {
 		if (event.target.className === "destroy") {
-			// 여기선 id만 추출하고 todoApp의 delete 함수에 인자로 넘기면서 호출
+			// 여기선 id만 추출해서 todoApp의 delete 함수 호출시 인자로 넘김
 			const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
 			app.delete(itemId);
     }
+		else if (event.target.className === "toggle") {
+			const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
+			app.complete(itemId);
+		}
 	}
 
 	this.$todoList.addEventListener("click", onClick);

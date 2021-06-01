@@ -10,7 +10,6 @@ export default function TodoApp() {
 	this.todoItems = generateTodos(JSON.parse(localStorage.getItem("items")));
 	this.todoId = JSON.parse(localStorage.getItem("id")) ?? 0;
 
-	// todoList 컴포넌트 생성
 	this.todoList = new TodoList(this);
 
 	this.setState = () => {
@@ -26,10 +25,15 @@ export default function TodoApp() {
 	}
 	
 	// 학습 자료에 있는 코드는 add 함수를 TodoInput 컴포넌트에 넘겨줘서 TodoInput 인스턴스 안에서 실행하는데
-	// TodoInput 인스턴스 내에서 더 많은 함수를 실행해야할 수 도 있는 상황을 대비해 (확장성 고려) this 를 넘겨준다. 
+	// TodoInput 인스턴스 내에서 더 많은 함수를 실행해야할 수 도 있는 상황을 대비해 this 를 넘겨준다. (확장성 고려) 
 	this.add = contents => {
 		const newTodoItem = new TodoItem(this.todoId++, contents);
 		this.todoItems.push(newTodoItem);
+		this.setState();
+	}
+	
+	this.complete = targetId => {
+		this.todoItems.find(item => targetId === item.id).complete();
 		this.setState();
 	}
 
