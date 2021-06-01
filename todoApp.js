@@ -37,6 +37,18 @@ export default function TodoApp() {
 		this.setState();
 	}
 
+	// 재사용
+	this.changeStatus = (targetId) => {
+		this.todoItems.find(item => targetId === item.id).editing();
+		this.setState();
+	}
+
+	this.editItem = (targetId, contents) => {
+		this.todoItems.find(item => targetId === item.id).edit(contents);
+		this.changeStatus(targetId);
+		this.setState();
+	}
+
 	// filter 함수는 새로운 배열을 반환
 	this.delete = targetId => {
     this.todoItems = this.todoItems.filter(item => targetId !== item.id);
@@ -47,5 +59,3 @@ export default function TodoApp() {
 
 const todoApp = new TodoApp();
 todoApp.render();
-
-

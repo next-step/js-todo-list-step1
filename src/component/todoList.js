@@ -36,5 +36,23 @@ export default function TodoList(app) {
 		}
 	}
 
+	// 더블클릭시 TodoItem 을 수정할 수 있게 input 태그로 바뀌고, status가 editing 으로 변경
+	const onDblClick = event => {
+		const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
+		app.changeStatus(itemId);
+	}
+
+	const onKeydown = event => {
+		const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
+		if (event.key === "Enter") {
+			app.editItem(itemId, event.target.value);
+		}
+		else if (event.key === "Escape") {
+			app.changeStatus(itemId);
+		}
+	}
+
 	this.$todoList.addEventListener("click", onClick);
+	this.$todoList.addEventListener("dblclick", onDblClick);
+	this.$todoList.addEventListener("keydown", onKeydown);
 }
