@@ -6,7 +6,7 @@ export default function TodoInput(app) {
   this.addTodoItem = (event) => {
     const $newTodoTarget = event.target;
 
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && $newTodoTarget.value != "") {
       app.add($newTodoTarget.value);
       $newTodoTarget.value = "";
     }
