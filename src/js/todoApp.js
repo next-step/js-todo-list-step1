@@ -24,23 +24,36 @@ export default function TodoApp() {
 
   this.completeTodoItem = (id) => {
     const index = this.todoItems.findIndex((item) => item.id == id);
-    console.log(index);
+
     this.todoItems[index].complete();
     this.setState(this.todoItems);
+  };
+
+  this.modifyTodoItem = (id, newTitle) => {
+    const newTodoItems = this.todoItems.map((item) => {
+      if (item.id == id) {
+        return new TodoItem({ ...item, title: newTitle });
+      } else return item;
+    });
+
+    this.setState(newTodoItems);
   };
 
   this.todoList = new TodoList({
     todoItems: this.todoItems,
     onComplete: this.completeTodoItem,
     onRemove: this.removeTodoItem,
+    onModify: this.modifyTodoItem,
   });
 
+  this.todoInput = new TodoInput({ onAdd: this.addTodoItem });
+
   this.setState = (updatedItems) => {
+    this.todoInput.render();
     this.todoList.render(updatedItems);
   };
 
   this.render = () => {
-    new TodoInput({ onAdd: this.addTodoItem });
-    this.todoList.render();
+    this.setState(this.todoItems);
   };
 }

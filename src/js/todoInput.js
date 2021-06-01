@@ -1,8 +1,11 @@
 export default function TodoInput({ onAdd }) {
-  this.$todoInput = document.querySelector("#new-todo-title");
+  this.$todoInput;
+  this.render = () => {
+    this.$todoInput = document.querySelector("#new-todo-title");
+  };
 
-  window.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && this.$todoInput.value.length > 0) {
+  window.addEventListener("keydown", ({ key }) => {
+    if (key === "Enter" && this.$todoInput.value.length > 0) {
       this.addTodoItem(this.$todoInput.value);
     }
   });
@@ -13,7 +16,7 @@ export default function TodoInput({ onAdd }) {
     this.$todoInput.value = "";
   };
 
-  this.isValid = (event, value) => {
+  this.isValidInput = (event, value) => {
     if (event.key === "Enter" && value !== "") {
       return true;
     }
