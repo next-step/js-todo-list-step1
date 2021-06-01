@@ -171,16 +171,29 @@ function showListCount(){
     str.innerHTML = todoList.length;
 }
 
-function showActive(){
+
+const filters = document.querySelector('.filters');
+function select(ulEl,aEl){
+    Array.from(ulEl.children).forEach(
+        v => v.childNodes[1].classList.remove('selected')
+    )
+    if(aEl) aEl.classList.add('selected');
+}
+
+filters.addEventListener('click', e =>{
+    const selected = e.target;
+    showFiltered(selected.className);
+    select(filters,selected);
+})
+
+function showFiltered(type){
+    console.log("dfs");
+    console.log(type);
     const list = document.getElementById("todo-list").childNodes;
-    const buttons = document.querySelectorAll('a');
-    buttons.forEach(b =>b.style.border ="none");
-    
-    const activeButton = document.querySelector('a.active');
-    activeButton.style.removeProperty('border');
-    activeButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
-    
-    list.forEach(i =>
+    if(type=='all'){
+        list.forEach( i => i.style.display='');
+    } else if(type =='active'){
+        list.forEach(i =>
         {
         if(i.classList.value){
             i.style.display = 'none';
@@ -188,18 +201,8 @@ function showActive(){
             i.style.display = '';
         }
     });
-}
-
-function showCompleted(){
-    const list = document.getElementById("todo-list").childNodes;
-    const buttons = document.querySelectorAll('a');
-    buttons.forEach(b =>b.style.border ="none");
-    
-    const completedButton = document.querySelector('a.completed');
-    completedButton.style.removeProperty('border');
-    completedButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
-
-    list.forEach( i => 
+    } else if(type =='completed'){
+        list.forEach( i => 
         {
         if(!i.classList.value){
             i.style.display = 'none';
@@ -208,17 +211,6 @@ function showCompleted(){
             i.style.display = '';
         }
     });
+    }
 }
 
-function showAll(){
-    const buttons = document.querySelectorAll('a');
-    buttons.forEach(b =>b.style.border ="none");
-    
-    const allButton = document.querySelector('a.selected');
-    allButton.style.removeProperty('border');
-    allButton.style.borderColor = "rgba(175, 47, 47, 0.2)";
-
-
-    const list = document.getElementById("todo-list").childNodes;
-    list.forEach( i => i.style.display='');
-}
