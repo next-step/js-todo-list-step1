@@ -8,11 +8,11 @@ export default function TodoList(app) {
   };
 
   this.render = items => {
-    const template = items.map(this.todoItemTemplate);
+    const template = items.map(todoItemTemplate);
     this.$todoList.innerHTML = template.join("");
   };
 
-	this.todoItemTemplate = (item) => {
+	const todoItemTemplate = (item) => {
     return `<li class=${item.status}>
     <div class="view">
       <input class="toggle" type="checkbox" ${item.status === "completed" ? "checked": ""}/>
@@ -23,4 +23,14 @@ export default function TodoList(app) {
     <input class="edit" value="${item.text}" />
   </li>`;
 	};
+
+	const onClick = event => {
+		if (event.target.className === "destroy") {
+			// 여기선 id만 추출하고 todoApp의 delete 함수에 인자로 넘기면서 호출
+			const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
+			app.delete(itemId);
+    }
+	}
+
+	this.$todoList.addEventListener("click", onClick);
 }

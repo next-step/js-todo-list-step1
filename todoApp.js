@@ -9,13 +9,13 @@ export default function TodoApp() {
 
 	this.todoItems = generateTodos(JSON.parse(localStorage.getItem("items")));
 	this.todoId = JSON.parse(localStorage.getItem("id")) ?? 0;
-	console.log(this.todoId);
 
 	// todoList 컴포넌트 생성
 	this.todoList = new TodoList(this);
 
 	this.setState = () => {
 		localStorage.setItem("items", JSON.stringify(this.todoItems));
+		localStorage.setItem("id", this.todoId);
     this.todoList.setState(this.todoItems);
   };
 
@@ -32,6 +32,12 @@ export default function TodoApp() {
 		this.todoItems.push(newTodoItem);
 		this.setState();
 	}
+
+	// filter 함수는 새로운 배열을 반환
+	this.delete = targetId => {
+    this.todoItems = this.todoItems.filter(item => targetId !== item.id);
+    this.setState();
+  }
 	
 }
 
