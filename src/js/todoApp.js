@@ -1,3 +1,4 @@
+import TodoCount from "./todoCount.js";
 import TodoInput from "./todoInput.js";
 import TodoItem from "./todoItem.js";
 import TodoList from "./todoList.js";
@@ -47,10 +48,12 @@ export default function TodoApp() {
   });
 
   this.todoInput = new TodoInput({ onAdd: this.addTodoItem });
+  this.todoCount = new TodoCount();
 
   this.setState = (updatedItems) => {
     this.todoInput.render();
     this.todoList.render(updatedItems);
+    this.todoCount.render(updatedItems);
   };
 
   this.render = () => {

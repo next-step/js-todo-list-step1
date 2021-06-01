@@ -11,7 +11,6 @@ export default function TodoInput({ onAdd }) {
   });
 
   this.addTodoItem = (value) => {
-    console.log(value);
     onAdd(value);
     this.$todoInput.value = "";
   };
