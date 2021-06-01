@@ -51,6 +51,7 @@ export default function TodoApp() {
   this.todoCount = new TodoCount();
 
   this.setState = (updatedItems) => {
+    this.todoItems = updatedItems;
     this.todoInput.render();
     this.todoList.render(updatedItems);
     this.todoCount.render(updatedItems);

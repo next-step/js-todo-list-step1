@@ -6,13 +6,19 @@ export default function TodoList({
 }) {
   this.$todoList = document.querySelector(".todo-list");
 
-  this.render = (todoItems) => {
-    this.$todoList.innerHTML = todoItems
+  this.render = (newTodoItems) => {
+    this.$todoList.innerHTML = newTodoItems
       .map((todo) => todo.getTemplate())
       .join("");
 
-    document.querySelector(".toggle")?.addEventListener("change", (e) => {
+    const toggleHandler = (e) => {
       onComplete(e.target.parentElement.id);
+    };
+
+    newTodoItems.map((item) => {
+      document
+        .getElementById(item.id)
+        .children[0].addEventListener("change", toggleHandler);
     });
 
     document.querySelector(".destroy")?.addEventListener("click", (e) => {
@@ -26,14 +32,13 @@ export default function TodoList({
         document.querySelector(".editing")?.classList.remove("editing");
       }
       if (key === "Enter") {
-        const i = document.querySelector(".editing").children[0].id;
+        const i = document.querySelector(".editing")?.children[0].id;
         console.dir(document.querySelector(".edit"));
         onModify(i, document.querySelector(".edit").value);
       }
     };
 
     document.querySelector(".view")?.addEventListener("dblclick", (e) => {
-      console.dir(e.target);
       e.target.parentElement.parentElement.classList.add("editing");
       window.addEventListener("keydown", escapeHandler);
     });

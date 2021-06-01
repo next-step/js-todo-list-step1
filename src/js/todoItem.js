@@ -17,7 +17,9 @@ export default function TodoItem({ id, title, status }) {
 
   this.getTemplate = () => `<li ${this.isCompleted() && "class='completed'"}>
   <div class="view" id=${this.id}>
-    <input class="toggle" type="checkbox" ${this.isCompleted() && "checked"} />
+    <input class="toggle" type="checkbox" ${
+      this.isCompleted() ? "checked" : ""
+    } />
     <label class="label">${this.title}</label>
     <button class="destroy"></button>
   </div>
