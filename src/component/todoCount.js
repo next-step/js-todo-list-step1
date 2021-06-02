@@ -6,15 +6,13 @@ export default function TodoCount(todoList) {
 	}
 	
 	const onClick = event => {
-		if (event.target.className === "active") {
-			todoList.filterItems("view");
-    }
-		else if (event.target.className === "completed") {
-			todoList.filterItems("completed");
+		const statusList = {
+			'all selected' : 'all',
+			'active' : 'view',
+			'completed' : 'completed',
 		}
-		else if (event.target.className === "all selected") {
-			todoList.filterItems("all");
-		}
+		
+		todoList.filterItems(statusList[event.target.className]);
 	}
 
 	this.$todoCount.addEventListener("click", onClick);
