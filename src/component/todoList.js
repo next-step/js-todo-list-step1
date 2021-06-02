@@ -24,6 +24,16 @@ export default function TodoList(app) {
   </li>`;
 	};
 
+	this.filterItems = status => {
+		if (status !== "all") {
+			this.todoItems = app.todoItems.filter(item => item.status === status);
+			this.render(this.todoItems);
+		}
+		else {
+			this.render(app.todoItems);
+		}
+	}
+
 	const onClick = event => {
 		if (event.target.className === "destroy") {
 			// 여기선 id만 추출해서 todoApp의 delete 함수 호출시 인자로 넘김
