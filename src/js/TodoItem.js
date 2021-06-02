@@ -10,7 +10,7 @@ export function TodoItem() {
 export const addList = (value) => {
   const id = todoList.length == 0 ? 0 : todoList[todoList.length - 1].id + 1;
   todoList.push({
-    id: id,
+    id,
     title: value,
     complete: false,
   });
