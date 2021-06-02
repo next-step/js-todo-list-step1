@@ -3,8 +3,7 @@ export let listStatus = "all";
 export let isComplete = true;
 
 export function TodoItem() {
-  todoList = JSON.parse(localStorage.getItem("todoList"));
-  if (todoList == undefined) todoList = [];
+  todoList = JSON.parse(localStorage.getItem("todoList")) ?? [];
 }
 
 export const addList = (value) => {
