@@ -8,7 +8,7 @@ export function TodoItem() {
 }
 
 export const addList = (value) => {
-  const id = todoList.length == 0 ? 0 : todoList[todoList.length - 1].id + 1;
+  const id = todoList.length === 0 ? 0 : todoList[todoList.length - 1].id + 1;
   todoList.push({
     id,
     title: value,
@@ -18,7 +18,7 @@ export const addList = (value) => {
 };
 export const changeComplete = (id) => {
   todoList.forEach((l) => {
-    if (l.id == id) {
+    if (l.id === id) {
       l.complete = !l.complete;
       saveLocalStroge();
       return;
@@ -32,7 +32,7 @@ export const deleteItem = (id) => {
 
 export const modifyItem = (id, title) => {
   todoList.map((td) => {
-    if (td.id == id) td.title = title;
+    if (td.id === id) td.title = title;
   });
   saveLocalStroge();
 };

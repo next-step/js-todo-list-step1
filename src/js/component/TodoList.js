@@ -13,7 +13,7 @@ export function TodoList() {
 
 export const drawList = () => {
   let viewList = TodoItem.todoList.filter((s) => {
-    return TodoItem.listStatus == "all" || TodoItem.is_complete == s.complete;
+    return TodoItem.listStatus === "all" || TodoItem.is_complete == s.complete;
   });
   drawTodoCount(viewList);
 
@@ -36,8 +36,8 @@ export const drawList = () => {
 
 const listClick = ({ target }) => {
   const id = target.closest("li").dataset["id"];
-  if (target.className == "toggle") return setComplete(id);
-  if (target.className == "destroy") return deleteTodo(id);
+  if (target.className === "toggle") return setComplete(id);
+  if (target.className === "destroy") return deleteTodo(id);
 };
 
 const listDbClick = ({ target }) => {
