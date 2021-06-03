@@ -1,3 +1,4 @@
+import { TRIGGER } from "../const/CONST.js";
 import { getTriggerEventName } from "../utils/element.js";
 import { renderView } from "../views/todoList.js";
 
@@ -23,13 +24,13 @@ export const upsertItem = (event) => {
   const { target } = event;
   const trigger = getTriggerEventName(event);
 
-  if (trigger === 'update:text') {
+  if (trigger === TRIGGER.UPDATE_TEXT) {
     putItem(target.id, { key: 'text', value: target.value });
     stopEditing(target);
     return
   }
 
-  if (trigger === 'update:completed') {
+  if (trigger === TRIGGER.UPDATE_COMPLETED) {
     putItem(target.id, { key: 'completed', value: target.checked });
     return
   }
@@ -65,7 +66,9 @@ export const getTotalCount = () => {
   return todoList.length;
 }
 
+const mapTodoItem = (item, id) => ({ ...item, id })
+
 export const getTodoList = () => {
-  if (filteredList.length > 0) return filteredList.map((item, id) => ({ ...item, id }));
-  return todoList.map((item, id) => ({ ...item, id }))
+  if (filteredList.length > 0) return filteredList.map((item, id) => mapTodoItem(item, id));
+  return todoList.map((item, id) => mapTodoItem(item, id))
 }
