@@ -1,4 +1,4 @@
-import { TRIGGER } from "../const/CONST.js";
+import { FILTER, TRIGGER } from "../const/CONST.js";
 import { getTriggerEventName } from "../utils/element.js";
 import { renderView } from "../views/todoList.js";
 
@@ -46,9 +46,9 @@ export const deleteItem = (id) => {
 
 let filteredList = [];
 const filter = {
-  active: () => filteredList = todoList.filter(item => !item.completed),
-  completed: () => filteredList = todoList.filter(item => item.completed),
-  all: () => filteredList = [],
+  [FILTER.ACTIVE]: () => filteredList = todoList.filter(item => !item.completed),
+  [FILTER.COMPLETED]: () => filteredList = todoList.filter(item => item.completed),
+  [FILTER.ALL]: () => filteredList = [],
 }
 
 export const filterBy = (type) => {
