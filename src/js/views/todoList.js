@@ -1,5 +1,6 @@
-import { getTotalCount, getTodoList } from "../todoList.js";
-import { getEletemt } from "../todoListRenderer.js"
+import { getTodoList, getTotalCount } from "../store/todoList.js";
+import { getEletemt } from "../utils/element.js";
+
 
 const todoItemHtml = ({id, text, completed}) => {
   return `<li id="${id}" class="todo-item ${completed ? 'completed' : ''}">
