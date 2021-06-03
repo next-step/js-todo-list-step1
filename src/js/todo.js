@@ -78,6 +78,7 @@ function deleteToDo(event) {
     for(let i = 0; i < liSize; i++) {
         if(ul.childNodes[i].id == idValue) {
             ul.removeChild(ul.childNodes[i]);
+            break;
         }
     }
     todoNumber--;
@@ -111,7 +112,8 @@ function finishEditToDo(event) {
 
 function showListNumber() {
     const ul = document.querySelector(".todo-count");
-    ul.innerHTML = todoNumber;
+    const strong = ul.firstChild.nextSibling;
+    strong.innerHTML = todoNumber;
 }
 
 inputToDo.addEventListener("keypress", handleEnter);
