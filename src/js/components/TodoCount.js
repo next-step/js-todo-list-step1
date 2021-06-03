@@ -3,10 +3,10 @@ import { TodoCountTemplate } from "./Template.js";
 import { EVENT_TYPE, STATUS_TYPE } from "../utils/Constants.js";
 
 export function TodoCount({ onSelectedGroup }) {
-  const $count = document.querySelector(".todo-count");
-  const $all = document.querySelector(".all");
-  const $active = document.querySelector(".active");
-  const $completed = document.querySelector(".completed");
+  const $count = $(".todo-count");
+  const $all = $(".all");
+  const $active = $(".active");
+  const $completed = $(".completed");
 
   this.todoItems = [];
 
