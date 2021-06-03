@@ -25,7 +25,6 @@ export function TodoList({ onEditMode, onUpdate }) {
   };
 
   this.onFinishEditMode = (event) => {
-    event.preventDefault();
     const $target = event.target;
 
     if ($target && event.key === KEY_TYPE.ESCAPE) {
@@ -39,6 +38,7 @@ export function TodoList({ onEditMode, onUpdate }) {
   $todoList.addEventListener(EVENT_TYPE.DOUBLE_CLICK, (event) =>
     this.onChangeEditMode(event)
   );
+
   $todoList.addEventListener(EVENT_TYPE.KEYUP, (event) =>
     this.onFinishEditMode(event)
   );

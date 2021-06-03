@@ -37,9 +37,11 @@ export function TodoCount({ onSelectedGroup }) {
     $all.addEventListener(EVENT_TYPE.CLICK, (event) =>
       this.onShowSelectedItems(event, $all, "")
     );
+
     $active.addEventListener(EVENT_TYPE.CLICK, (event) =>
       this.onShowSelectedItems(event, $active, STATUS_TYPE.ACTIVE)
     );
+
     $completed.addEventListener(EVENT_TYPE.CLICK, (event) =>
       this.onShowSelectedItems(event, $completed, STATUS_TYPE.COMPLETED)
     );

@@ -12,8 +12,6 @@ export function TodoDelete({ onDelete }) {
     const $target = event.target;
 
     if ($target.classList.contains("destroy")) {
-      event.preventDefault();
-
       if (confirm("삭제하시겠습니까?")) {
         onDelete($target.closest("li").id);
       }

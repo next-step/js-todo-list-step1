@@ -14,7 +14,7 @@ export function TodoCheckBox({ onCheck }) {
     if ($target.type !== "checkbox") {
       return;
     }
-    console.log($target.closest("li").id);
+
     onCheck($target.closest("li").id);
   };
 }

@@ -10,7 +10,6 @@ export function TodoInput({ onAdd }) {
     if (event.key === "Enter") {
       let current_input = $todoInput.value;
       if (this.isValid(event, current_input)) {
-        event.preventDefault();
         onAdd(current_input);
         $todoInput.value = "";
       }
