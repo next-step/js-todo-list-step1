@@ -1,8 +1,7 @@
-import { renderView } from "../views/todoList";
+import { getTriggerEventName } from "../utils/element.js";
+import { renderView } from "../views/todoList.js";
 
 const todoList = [];
-
-let filteredList = [];
 
 const addItem = (text) => {
   
@@ -41,6 +40,21 @@ export const upsertItem = (event) => {
 
 export const deleteItem = (id) => {
   todoList.splice(id, 1);
+  renderView();
+}
+
+let filteredList = [];
+const filter = {
+  active: () => filteredList = todoList.filter(item => !item.completed),
+  completed: () => filteredList = todoList.filter(item => item.completed),
+  all: () => filteredList = [],
+}
+
+export const filterBy = (type) => {
+  const filterType = filter[type];
+  if (!filterType) return;
+
+  filterType();
   renderView();
 }
 

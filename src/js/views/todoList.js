@@ -1,5 +1,6 @@
-import { getTotalCount, getTodoList } from "../todoList.js";
-import { getEletemt } from "../todoListRenderer.js"
+import { getTodoList, getTotalCount } from "../store/todoList.js";
+import { getElement } from "../utils/element.js";
+
 
 const todoItemHtml = ({id, text, completed}) => {
   return `<li id="${id}" class="todo-item ${completed ? 'completed' : ''}">
@@ -13,12 +14,12 @@ const todoItemHtml = ({id, text, completed}) => {
 }
 
 const renderTodoList = () => {
-  const $todoList = getEletemt('.todo-list');
+  const $todoList = getElement('.todo-list');
   $todoList.innerHTML = getTodoList().map(todoItemHtml).join('');
 }
 
 const renderCount = () => {
-  const $count = getEletemt('.todo-count strong');
+  const $count = getElement('.todo-counter');
   $count.textContent = getTotalCount();
 
 }
