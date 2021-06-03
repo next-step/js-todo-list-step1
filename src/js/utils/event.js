@@ -1,25 +1,14 @@
-<<<<<<< HEAD
-import { EVENT, KEYS, TRIGGER } from "../const/CONST.js";
+import { CLASS_NAME, EVENT, KEYS, TRIGGER } from "../const/CONST.js";
 import { upsertItem, deleteItem } from "../store/todoList.js";
 import { getEletemt, getTriggerEventName } from "./element.js";
 import { startEditing, stopEditing } from "./helper.js";
-=======
-import { upsertItem, deleteItem } from "../store/todoList.js";
-import { getEletemt, getTriggerEventName } from "./element.js";
-import { stopEditing } from "./helper.js";
->>>>>>> d6b99b4c9772ac0892fd1faa79029bc450296dc5
 
-const $todoapp = getEletemt('.todoapp');
-const $todoList = getEletemt('.todo-list');
+const $todoapp = getEletemt(CLASS_NAME.$APP);
+const $todoList = getEletemt(CLASS_NAME.$LIST);
 
-<<<<<<< HEAD
 const eventTypes = Object.values(EVENT);
 
 export const eventKeys = Object.values(KEYS);
-=======
-const eventTypes = ['keyup', 'click', 'change', 'dblclick'];
-export const eventKeys = ['Enter', 'Escape'];
->>>>>>> d6b99b4c9772ac0892fd1faa79029bc450296dc5
 
 const event = {
   [EVENT.KEYUP]: {
@@ -56,11 +45,7 @@ export const setEvent = () => {
 
 export const removeEvent = () => {
   eventTypes.forEach(type => {
-<<<<<<< HEAD
     const $element = type === EVENT.KEYUP ? $todoapp : $todoList;
-=======
-    const $element = type === 'keyup' ? $todoapp : $todoList;
->>>>>>> d6b99b4c9772ac0892fd1faa79029bc450296dc5
     $element.removeEventListener(type, eventHandler)
   });
 }

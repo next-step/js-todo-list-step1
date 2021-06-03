@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 import { CLASS_NAME, TRIGGER } from "../const/CONST.js";
 import { getTodoList, getTotalCount } from "../store/todoList.js";
 import { getElement } from "../utils/element.js";
-=======
-import { getTodoList, getTotalCount } from "../store/todoList.js";
-import { getEletemt } from "../utils/element.js";
->>>>>>> d6b99b4c9772ac0892fd1faa79029bc450296dc5
 
 
 const todoItemHtml = ({id, text, completed}) => {

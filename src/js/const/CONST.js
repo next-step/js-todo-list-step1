@@ -24,6 +24,7 @@ export const FILTER = {
 }
 
 export const CLASS_NAME = {
+  $APP: '.todoapp',
   $LIST: '.todo-list',
   $COUNTER: '.todo-counter',
 

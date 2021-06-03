@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 import { TRIGGER } from "../const/CONST.js";
-=======
->>>>>>> d6b99b4c9772ac0892fd1faa79029bc450296dc5
 import { getTriggerEventName } from "../utils/element.js";
 import { renderView } from "../views/todoList.js";
 
