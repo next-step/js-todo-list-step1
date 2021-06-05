@@ -22,7 +22,8 @@ class App {
   }
 
   init() {
-    this.setState([]);
+    this.setState([{ completed: true, text: '1 할일' }]);
+    
     this.setEvent();
   }
 
