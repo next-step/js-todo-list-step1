@@ -23,6 +23,10 @@ export default function TodoApp() {
     }
   };
 
+  this.setTodoItemsToLocalStorage = () => {
+    localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
+  };
+
   this.loadTodoItems = () => {
     const prevTodoItems = JSON.parse(localStorage.getItem(TODOS));
     this.todoItems = prevTodoItems ? prevTodoItems : [];
@@ -49,17 +53,17 @@ export default function TodoApp() {
       const todoItem = this.todoItems.find((item) => item.id === id);
       todoItem.isCompleted = !todoItem.isCompleted;
       this.render();
-      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
+      this.setTodoItemsToLocalStorage();
     },
     onRemove: (id) => {
       this.todoItems = this.todoItems.filter((item) => item.id !== id);
       todoCount.render(this.todoItems.length);
-      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
+      this.setTodoItemsToLocalStorage();
     },
     onUpdate: (id, value) => {
       const todoItem = this.todoItems.find((item) => item.id === id);
       todoItem.value = value;
-      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
+      this.setTodoItemsToLocalStorage();
     },
   });
 
@@ -68,7 +72,7 @@ export default function TodoApp() {
       const newTodoItem = new TodoItem(value);
       this.todoItems.push(newTodoItem);
       this.render();
-      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
+      this.setTodoItemsToLocalStorage();
     },
   });
 
