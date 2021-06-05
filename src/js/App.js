@@ -1,5 +1,6 @@
 import TodoInput from "./components/TodoInput.js";
 import TodoList from './components/TodoList.js';
+import TodoCount from './components/TodoCount.js';
 
 class NewTodoItem {
   constructor(text) {
@@ -32,7 +33,7 @@ class App {
   setState(updatedItems) {
     this.items = updatedItems.map((item, id) => ({ ...item, id }));
     this.TodoList.setState(this.items);
-    // this.TodoCount.setState(this.count);
+    this.TodoCount.setState(this.count);
   }
 
   setEvent() {
@@ -51,5 +52,5 @@ class App {
 }
 
 export default function() {
-  return new App(new TodoList());
+  return new App(new TodoList(), new TodoCount());
 }
