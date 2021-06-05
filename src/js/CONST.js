@@ -31,3 +31,8 @@ export const FILTER = {
   ACTIVE: 'active',
   COMPLETED: 'completed',
 }
+
+export const ITEM_KEY = {
+  COMPLETED: 'completed',
+  TEXT: 'text',
+}

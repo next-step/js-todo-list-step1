@@ -22,8 +22,7 @@ class App {
   }
 
   init() {
-    this.setState([{ completed: true, text: '1 할일' }]);
-    
+    this.setState([]);
     this.setEvent();
   }
 
@@ -39,6 +38,7 @@ class App {
 
   setEvent() {
     this.addTodo();
+    this.updateTodo();
   }
 
   addTodo() {
@@ -50,8 +50,21 @@ class App {
       }
     })
   }
-}
+
+  updateTodo() {
+    this.TodoList.setEvent({
+      update: (id, { key, value }) => {
+        this.items[id][key] = value;
+        this.setState(this.items);
+      },
+      delete: (id) => {
+        this.items.splice(id, 1);
+        this.setState(this.items);
+      }
+    })
+  }
+};
 
 export default function() {
   return new App(new TodoList(), new TodoCount());
-}
+};
