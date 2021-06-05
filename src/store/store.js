@@ -96,7 +96,6 @@ const setStore = (todoItem) => {
   for (let key in todoItem) {
     store[key] = todoItem[key];
   }
-  console.log(todoItem);
   localStorage.setItem('item', JSON.stringify(store));
   render({ todoItem: getTodoItem(), option: getItemFilter() });
 };
