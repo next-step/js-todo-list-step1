@@ -5,6 +5,11 @@ export const EVENT = {
   DBL_CLICK: 'dblclick',
 }
 
+export const KEY_UP_EVENT = {
+  ENTER: 'Enter',
+  ESCAPE: 'Escape',
+}
+
 export const CUSTOM_EVENT = {
   DELETE: 'delete',
   UPDATE_TEXT: 'update:text',
