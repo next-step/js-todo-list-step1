@@ -1,6 +1,8 @@
 import TodoInput from "./components/TodoInput.js";
 import TodoList from './components/TodoList.js';
 import TodoCount from './components/TodoCount.js';
+import FilterTodo from './components/FilterTodo.js';
+import { FILTER } from "./CONST.js";
 
 class NewTodoItem {
   constructor(text) {
@@ -17,6 +19,7 @@ class App {
     this.TodoCount = TodoCount;
 
     this.items = [];
+    this.filteredItems = [];
 
     this.init();
   }
@@ -30,8 +33,24 @@ class App {
     return this.items.length
   }
 
-  setState(updatedItems) {
-    this.items = updatedItems.map((item, id) => ({ ...item, id }));
+  get filteredCount() {
+    return this.filteredItems.length;
+  }
+
+  setFilteredState(updatedItems) {
+    this.filteredItems = updatedItems;
+    this.TodoList.setState(this.filteredItems);
+    this.TodoCount.setState(this.filteredCount);
+  }
+
+  setState(updatedItems, isFiltered) {
+    const mapItems = updatedItems.map((item, id) => ({ ...item, id }));
+    if (isFiltered) {
+      this.setFilteredState(mapItems);
+      return;
+    }
+
+    this.items = mapItems;
     this.TodoList.setState(this.items);
     this.TodoCount.setState(this.count);
   }
@@ -39,6 +58,7 @@ class App {
   setEvent() {
     this.addTodo();
     this.updateTodo();
+    this.filterTodo();
   }
 
   addTodo() {
@@ -61,6 +81,18 @@ class App {
         this.items.splice(id, 1);
         this.setState(this.items);
       }
+    })
+  }
+
+  filter = {
+    [FILTER.ACTIVE]: () => this.setState(this.items.filter(item => !item.completed), true),
+    [FILTER.COMPLETED]: () => this.setState(this.items.filter(item => item.completed), true),
+    [FILTER.ALL]: () => this.setState(this.items, false),
+  }
+
+  filterTodo() {
+    new FilterTodo({
+      filterBy: (type) => this.filter[type] && this.filter[type]()
     })
   }
 };

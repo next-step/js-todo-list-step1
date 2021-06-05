@@ -1,4 +1,5 @@
 export const EVENT = {
+  HASH_CHANGE: 'hashchange',
   KEY_UP: 'keyup',
   CLICK: 'click',
   CHANGE: 'change',
