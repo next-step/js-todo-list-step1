@@ -1,3 +1,5 @@
+import { SELECTED } from '../constants.js';
+
 export default function TodoCount({ onFilter }) {
   const $todoCountContainer = document.querySelector('.count-container');
 
@@ -15,8 +17,8 @@ export default function TodoCount({ onFilter }) {
   };
 
   this.changeSelection = (filterName) => {
-    Object.keys($filterButtons).map((key) => $filterButtons[key].classList.remove('selected'));
-    $filterButtons[filterName].classList.add('selected');
+    Object.keys($filterButtons).map((key) => $filterButtons[key].classList.remove(SELECTED));
+    $filterButtons[filterName].classList.add(SELECTED);
   };
 
   this.initFilterButtonStatus = () => {

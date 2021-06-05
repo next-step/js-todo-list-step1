@@ -1,3 +1,4 @@
+import { ACTIVE, ALL, COMPLETED, TODOS } from '../constants.js';
 import TodoCount from './TodoCount.js';
 import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
@@ -10,20 +11,20 @@ function TodoItem(value) {
 
 export default function TodoApp() {
   this.todoItems = [];
-  this.filterStatus = 'all';
+  this.filterStatus = ALL;
 
   this.getFilteredTodoItems = () => {
-    if (this.filterStatus === 'all') return this.todoItems;
-    if (this.filterStatus === 'active') {
+    if (this.filterStatus === ALL) return this.todoItems;
+    if (this.filterStatus === ACTIVE) {
       return this.todoItems.filter((item) => !item.isCompleted);
     }
-    if (this.filterStatus === 'completed') {
+    if (this.filterStatus === COMPLETED) {
       return this.todoItems.filter((item) => item.isCompleted);
     }
   };
 
   this.loadTodoItems = () => {
-    const prevTodoItems = JSON.parse(localStorage.getItem('todos'));
+    const prevTodoItems = JSON.parse(localStorage.getItem(TODOS));
     this.todoItems = prevTodoItems ? prevTodoItems : [];
     const prevFilterStatus = window.location.hash.replace(/#/, '');
     if (prevFilterStatus === '') return;
@@ -48,17 +49,17 @@ export default function TodoApp() {
       const todoItem = this.todoItems.find((item) => item.id === id);
       todoItem.isCompleted = !todoItem.isCompleted;
       this.render();
-      localStorage.setItem('todos', JSON.stringify(this.todoItems));
+      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
     },
     onRemove: (id) => {
       this.todoItems = this.todoItems.filter((item) => item.id !== id);
       todoCount.render(this.todoItems.length);
-      localStorage.setItem('todos', JSON.stringify(this.todoItems));
+      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
     },
     onUpdate: (id, value) => {
       const todoItem = this.todoItems.find((item) => item.id === id);
       todoItem.value = value;
-      localStorage.setItem('todos', JSON.stringify(this.todoItems));
+      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
     },
   });
 
@@ -67,7 +68,7 @@ export default function TodoApp() {
       const newTodoItem = new TodoItem(value);
       this.todoItems.push(newTodoItem);
       this.render();
-      localStorage.setItem('todos', JSON.stringify(this.todoItems));
+      localStorage.setItem(TODOS, JSON.stringify(this.todoItems));
     },
   });
 

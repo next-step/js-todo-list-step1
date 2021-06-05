@@ -1,3 +1,5 @@
+import { ENTER, ESCAPE } from '../constants.js';
+
 const todoItemTemplate = ({ id, value, isCompleted }) => `
   <li id="${id}" class="${isCompleted && 'completed'}">
     <div class="view">
@@ -60,12 +62,12 @@ export default function TodoList({ onToggle, onRemove, onUpdate }) {
 
     const todoItem = editingInputTarget.closest('li');
 
-    if (key === 'Escape') {
+    if (key === ESCAPE) {
       todoItem.classList.remove('editing');
       return;
     }
 
-    if (key !== 'Enter') return;
+    if (key !== ENTER) return;
 
     const { value } = editingInputTarget;
     if (value === '') return;
