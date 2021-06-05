@@ -1,5 +1,5 @@
 import { CLASS_NAME, CUSTOM_EVENT, EVENT, ITEM_KEY, KEY_UP_EVENT } from "../CONST.js";
-import { $ } from "../utils/element.js";
+import { $, addClass, closest, removeClass } from "../utils/element.js";
 import TodoItemTemplate from "../views/TodoItemTemplate.js";
 
 export default class TodoList {
@@ -13,34 +13,37 @@ export default class TodoList {
     this.render();
   }
 
-  onClick(target, deleteItem) {
-    target.dataset.event === CUSTOM_EVENT.DELETE && deleteItem(Number(target.id)); 
+  stopEditing(target) {
+    removeClass(closest(CLASS_NAME.TODO_ITEM, target), CLASS_NAME.EDITING)
   }
 
-  onChange(target, update) {
-    if (target.dataset.event === CUSTOM_EVENT.UPDATE_COMPLETED) {
-      update(Number(target.id), { key: ITEM_KEY.COMPLETED, value: target.checked });
-      return;
-    }
+  startEditing(target) {
+    addClass(closest(CLASS_NAME.TODO_ITEM, target), CLASS_NAME.EDITING);
+  }
 
-    if (target.dataset.event === CUSTOM_EVENT.UPDATE_TEXT) {
-      update(Number(target.id), { key: ITEM_KEY.TEXT, value: target.value });
-      return;
-    }
+  event = {
+    [KEY_UP_EVENT.ENTER]: ({ id, value }, update) => update(Number(id), { key: ITEM_KEY.TEXT, value }),
+    [KEY_UP_EVENT.ESCAPE]: target => this.stopEditing(target),
+    [CUSTOM_EVENT.UPDATE_COMPLETED]: ({ id, checked }, update) => update(Number(id), { key: ITEM_KEY.COMPLETED, value: checked }),
+    [CUSTOM_EVENT.UPDATE_TEXT]: ({ id, value }, update) => update(Number(id), { key: ITEM_KEY.TEXT, value })
+  }
+
+  onClick(target, deleteItem) {
+    const {event} = target.dataset;
+    event === CUSTOM_EVENT.DELETE && deleteItem(Number(target.id)); 
   }
 
   onDblclick(target) {
-    target.closest(`.${CLASS_NAME.TODO_ITEM}`).classList.add(CLASS_NAME.EDITING);
+    this.startEditing(target)
+  }
+
+  onChange(target, update) {
+    const { event } = target.dataset;
+    this.event[event] && this.event[event](target, update);
   }
 
   onKeyUp(key, target, update) {
-    if (key === KEY_UP_EVENT.ENTER) {
-      update(Number(target.id), { key: ITEM_KEY.TEXT, value: target.value });
-      return;
-    }
-    if (key === KEY_UP_EVENT.ESCAPE) {
-      target.closest(`.${CLASS_NAME.TODO_ITEM}`).classList.remove(CLASS_NAME.EDITING);
-    }
+    this.event[key] && this.event[key](target, update);
   }
 
   setEvent({ update, delete: deleteItem }) {
