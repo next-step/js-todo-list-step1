@@ -6,8 +6,9 @@ const getFilter = (option) => {
       ({ type, value }) =>
         `<li>
       <a
-        class=${type} ${option === type && 'selected'}
+        class="${type} ${option === type && 'selected'}"
         href="#"
+        data-type="${type}"
       >
         ${value}
       </a>
