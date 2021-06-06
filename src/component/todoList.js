@@ -1,5 +1,7 @@
+import { getItemId, $ } from "../utils/util.js";
+
 export default function TodoList(app) {
-	this.$todoList = document.querySelector("#todo-list");
+	this.$todoList = $("#todo-list");
 	this.todoItems = [];
 
   this.setState = updatedTodoItems => {
@@ -25,38 +27,37 @@ export default function TodoList(app) {
 	};
 
 	this.filterItems = status => {
-		if (status !== "all") {
-			this.render(this.todoItems.filter(item => item.status === status));
+		if (status === "all") {
+			return this.render(app.todoItems);
 		}
-		else {
-			this.render(this.todoItems);
-		}
+		this.todoItems = app.todoItems.filter(item => item.status === status);
+		this.render(this.todoItems);
 	}
 
-	const onClick = event => {
-		if (event.target.className === "destroy") {
+	const onClick = ({ target }) => {
+		if (target.className === "destroy") {
 			// 여기선 id만 추출해서 todoApp의 delete 함수 호출시 인자로 넘김
-			const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
+			const itemId = getItemId(target);
 			app.delete(itemId);
     }
-		else if (event.target.className === "toggle") {
-			const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
+		else if (target.className === "toggle") {
+			const itemId = getItemId(target);
 			app.complete(itemId);
 		}
 	}
 
 	// 더블클릭시 TodoItem 을 수정할 수 있게 input 태그로 바뀌고, status가 editing 으로 변경
-	const onDblClick = event => {
-		const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
+	const onDblClick = ({ target }) => {
+		const itemId = getItemId(target);
 		app.changeStatus(itemId);
 	}
 
-	const onKeydown = event => {
-		const itemId = parseInt(event.target.closest("li").querySelector("#item-id").value);
-		if (event.key === "Enter") {
-			app.editItem(itemId, event.target.value);
+	const onKeydown = ({ target, key }) => {
+		const itemId = getItemId(target);
+		if (key === "Enter") {
+			app.editItem(itemId, target.value);
 		}
-		else if (event.key === "Escape") {
+		else if (key === "Escape") {
 			app.changeStatus(itemId);
 		}
 	}

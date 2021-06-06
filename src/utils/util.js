@@ -4,8 +4,9 @@ export function generateTodos(todos) {
 	if (todos === null) {
 		return [];
 	}
-	else {
-		// map 은 새로운 배열을 반환함.
-		return todos.map(todo => new TodoItem(todo.id, todo.text, todo.status));
-	}
+	return todos.map(todo => new TodoItem(todo.id, todo.text, todo.status));
 }
+
+export const $ = (selector) => document.querySelector(selector);
+
+export const getItemId = ( target ) => +target.closest("li").querySelector("#item-id").value;

@@ -1,5 +1,7 @@
+import { $ } from "../utils/util.js";
+
 export default function TodoCount(todoList) {
-	this.$todoCount = document.querySelector(".count-container");
+	this.$todoCount = $(".count-container");
 
 	this.count = todoItems => {
 		this.$todoCount.querySelector("strong").innerHTML = todoItems.length;
@@ -16,7 +18,7 @@ export default function TodoCount(todoList) {
 		const $filterLi = event.target;
 
 		if ($filterLi.nodeName === 'A') {
-			document.querySelector('.selected').classList.remove('selected');
+			$('.selected').classList.remove('selected');
 
 			if ($filterLi.classList.contains('all')) {
 				this.filter = 'all';
