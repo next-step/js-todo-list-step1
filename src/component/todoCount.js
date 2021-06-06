@@ -6,13 +6,28 @@ export default function TodoCount(todoList) {
 	}
 	
 	const onClick = event => {
+		
 		const statusList = {
-			'all selected' : 'all',
+			'all' : 'all',
 			'active' : 'view',
 			'completed' : 'completed',
 		}
-		
-		todoList.filterItems(statusList[event.target.className]);
+
+		const $filterLi = event.target;
+
+		if ($filterLi.nodeName === 'A') {
+			document.querySelector('.selected').classList.remove('selected');
+
+			if ($filterLi.classList.contains('all')) {
+				this.filter = 'all';
+			} else if ($filterLi.classList.contains('active')) {
+				this.filter = 'active';
+			} else if ($filterLi.classList.contains('completed')) {
+				this.filter = 'completed';
+			}
+			$filterLi.classList.add('selected');
+			todoList.filterItems(statusList[this.filter]);
+		}		
 	}
 
 	this.$todoCount.addEventListener("click", onClick);

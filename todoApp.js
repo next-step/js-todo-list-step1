@@ -8,6 +8,7 @@ export default function TodoApp() {
 	this.todoItems = generateTodos(JSON.parse(localStorage.getItem("items")));
 	this.todoId = JSON.parse(localStorage.getItem("id")) ?? 0;
 
+	this.todoInput = new TodoInput(this);
 	this.todoList = new TodoList(this);
 	this.todoCount = new TodoCount(this.todoList);
 
@@ -20,7 +21,6 @@ export default function TodoApp() {
 
 	// 화면 렌더링
 	this.render = () => {
-		this.todoInput = new TodoInput(this);
 		this.setState();
 	}
 	

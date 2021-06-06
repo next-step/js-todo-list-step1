@@ -26,11 +26,10 @@ export default function TodoList(app) {
 
 	this.filterItems = status => {
 		if (status !== "all") {
-			this.todoItems = app.todoItems.filter(item => item.status === status);
-			this.render(this.todoItems);
+			this.render(this.todoItems.filter(item => item.status === status));
 		}
 		else {
-			this.render(app.todoItems);
+			this.render(this.todoItems);
 		}
 	}
 
