@@ -6,12 +6,17 @@ export default function TodoList(app) {
 
   this.setState = updatedTodoItems => {
     this.todoItems = updatedTodoItems;
+		// 해야할일 화면에서 item 을 추가할 시 전체보기로 넘어가지 않게
     this.render(this.todoItems);
+		if (document.location.hash === "#active") {
+			this.filterItems("view");
+		}
   };
 
   this.render = items => {
     const template = items.map(todoItemTemplate);
     this.$todoList.innerHTML = template.join("");
+		app.todoCount.count(this.todoItems);
   };
 
 	const todoItemTemplate = (item) => {
@@ -28,7 +33,8 @@ export default function TodoList(app) {
 
 	this.filterItems = status => {
 		if (status === "all") {
-			return this.render(app.todoItems);
+			this.todoItems = app.todoItems;
+			return this.render(this.todoItems);
 		}
 		this.todoItems = app.todoItems.filter(item => item.status === status);
 		this.render(this.todoItems);

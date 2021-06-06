@@ -16,7 +16,6 @@ export default function TodoApp() {
 		localStorage.setItem("items", JSON.stringify(this.todoItems));
 		localStorage.setItem("id", this.todoId);
     this.todoList.setState(this.todoItems);
-		this.todoCount.count(this.todoItems);
   };
 
 	// 화면 렌더링
