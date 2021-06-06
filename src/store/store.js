@@ -36,7 +36,6 @@ export const addTodoItem = (contents) => {
     ...todoItem,
     { contents, completed: false, editing: false },
   ];
-  console.log(newTodoItem);
   setStore({ todoItem: newTodoItem });
 };
 
@@ -88,7 +87,7 @@ export const modifyItem = (event) => {
 
 export const filterItem = (event) => {
   event.preventDefault();
-  const option = event.target.className.replace(' selected', '');
+  const option = event.target.dataset.type;
   setStore({ option });
 };
 
