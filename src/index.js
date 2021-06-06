@@ -4,6 +4,7 @@ import { render } from './lib/ReactDOM.js';
 import App from './App.js';
 import { createStore } from './lib/Redux.js';
 import { todoReducer } from './modules/todos/index.js';
+import Style from './index.css';
 
 // 스토어 생성
 export const store = createStore(todoReducer);
