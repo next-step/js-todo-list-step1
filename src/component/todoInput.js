@@ -5,12 +5,11 @@ export default function TodoInput(app) {
 	
 	const addTodoItem = ({ target, key }) => {
     const $newTodoTarget = target;
-
-    if (key === "Enter" && $newTodoTarget.value != "") {
+    if (key === "Enter" && $newTodoTarget.value) {
       app.add($newTodoTarget.value);
       $newTodoTarget.value = "";
     }
   };
 
-	$todoInput.addEventListener("keydown", addTodoItem);
+	$todoInput.addEventListener("keyup", addTodoItem);
 }
