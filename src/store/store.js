@@ -74,16 +74,10 @@ export const modifyItem = (event) => {
     newTodoItem[index] = {
       ...newTodoItem[index],
       editing: !newTodoItem[index].editing,
-    };
-  }
-  if (newTodoItem[index].editing) {
-    newTodoItem[index] = {
-      ...newTodoItem[index],
       contents: event.target.value,
     };
+    setStore({ todoItem: newTodoItem });
   }
-
-  setStore({ todoItem: newTodoItem });
 };
 
 export const filterItem = (event) => {
