@@ -115,6 +115,7 @@ live-server 폴더명
 - [1주차 미션후기](https://www.notion.so/1-2-8b624729fbce4174b8b583efb10c3200)
 - [블랙커피 프론트엔드 스터디 레벨1 후기](https://yujo11.github.io/%EB%B8%94%EB%9E%99%EC%BB%A4%ED%94%BC/%EB%B8%94%EB%9E%99%EC%BB%A4%ED%94%BC-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A0%88%EB%B2%A81-%ED%9B%84%EA%B8%B0/)
 - [블랙커피 프론트엔드 스터디 회고](https://www.notion.so/bffb14daea984293a954ac7cdb4f7c1e)
+- [블랙커피 스터디 레벨1 리뷰](https://velog.io/@jereint20/review-black-coffee-study-lv1)
 
 <br/>
 
