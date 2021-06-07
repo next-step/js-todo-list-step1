@@ -1,1 +1,3 @@
-console.log('hi');
+import TodoApp from './components/TodoApp.js'
+
+TodoApp();
