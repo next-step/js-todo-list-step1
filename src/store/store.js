@@ -16,12 +16,16 @@ export const getTodoItem = () => {
   });
 };
 
+const getIndex = (event) => {
+  const parentNode = event.target.closest('li');
+  const index = parentNode.getAttribute('data-index');
+  return index;
+};
 export const toggleCheckItem = (event) => {
   const { todoItem, option } = store;
   if (event.target.className === 'toggle') {
-    const parentNode = event.target.closest('li');
-    const index = parentNode.getAttribute('data-index');
     const newTodoItem = [...todoItem];
+    const index = getIndex(event);
     newTodoItem[index] = {
       ...newTodoItem[index],
       completed: !newTodoItem[index].completed,
@@ -41,9 +45,8 @@ export const addTodoItem = (contents) => {
 
 export const deleteItem = (event) => {
   const { todoItem, option } = store;
-  const parentNode = event.target.closest('li');
-  const index = parentNode.getAttribute('data-index');
   const newTodoItem = [...todoItem];
+  const index = getIndex(event);
   if (event.target.tagName === 'BUTTON') {
     newTodoItem.splice(index, 1);
     setStore({ todoItem: newTodoItem });
@@ -53,9 +56,8 @@ export const deleteItem = (event) => {
 export const doubleClickItem = (event) => {
   const { todoItem, option } = store;
   if (event.target.className === 'label') {
-    const parentNode = event.target.closest('li');
-    const index = parentNode.getAttribute('data-index');
     const newTodoItem = [...todoItem];
+    const index = getIndex(event);
     newTodoItem[index] = {
       ...newTodoItem[index],
       editing: !newTodoItem[index].editing,
@@ -66,9 +68,8 @@ export const doubleClickItem = (event) => {
 
 export const modifyItem = (event) => {
   const { todoItem, option } = store;
-  const parentNode = event.target.closest('li');
-  const index = parentNode.getAttribute('data-index');
   const newTodoItem = [...todoItem];
+  const index = getIndex(event);
   if (event.key === 'Escape' || event.key === 'Enter') {
     newTodoItem[index] = {
       ...newTodoItem[index],
