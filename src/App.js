@@ -37,8 +37,24 @@ export default class App {
     });
   };
 
+  viewActive = () => {
+    const uncompletedTodos = this.todos.filter((todo) => !todo.completed);
+
+    uncompletedTodos.map((todo) =>
+      this.$todoList.insertAdjacentHTML("beforeend", this.todoTemplate(todo))
+    );
+  };
+
+  viewCompleted = () => {
+    const completedTodos = this.todos.filter((todo) => todo.completed);
+
+    completedTodos.map((todo) =>
+      this.$todoList.insertAdjacentHTML("beforeend", this.todoTemplate(todo))
+    );
+  };
+
   loadTodo = (option = ALL) => {
-    //여기서 객체를 만들어준다.
+    //여기서 배열을 만들어준다. 근데 이건 App 클래스 안에서만의 배열일 뿐이다.
     //처음에 laod되면 바로 loadTodo() 를 통해서 localStorage에 있는 정보를 가져온다.
     this.todos = JSON.parse(localStorage.getItem("todos")) ?? [];
     this.$todoList.innerHTML = "";
@@ -47,12 +63,12 @@ export default class App {
       case ALL:
         this.viewAll();
         break;
-      // case ACTIVE:
-      //   this.viewActive();
-      //   break;
-      // case COMPLETED:
-      //   this.viewCompleted();
-      //   break;
+      case ACTIVE:
+        this.viewActive();
+        break;
+      case COMPLETED:
+        this.viewCompleted();
+        break;
     }
     //updateTodoCount 생략
   };
