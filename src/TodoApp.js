@@ -7,10 +7,9 @@ import TodoList from "./components/TodoList.js";
 export default class TodoApp {
   constructor() {
     this.todoItems = []; //한 곳에서만 todoItems 데이터를 관리한다.
-  }
 
-  render = () => {};
+    this.todoInput = new TodoInput();
+  }
 }
 
 const todoApp = new TodoApp();
-todoApp.render();
