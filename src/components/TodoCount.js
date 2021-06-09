@@ -1,1 +1,1 @@
-export default class TodoCount {}
+export default function TodoCount() {}
