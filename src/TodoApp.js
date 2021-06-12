@@ -18,8 +18,7 @@ export default function TodoApp() {
     onAdd: (contents) => {
       const newTodoItem = new TodoItem(contents);
       this.todoItems.push(newTodoItem);
-      console.log("test ", this.todoItems);
-      // this.setState(this.todoItems);
+      this.setState(this.todoItems);
     },
   });
 }
