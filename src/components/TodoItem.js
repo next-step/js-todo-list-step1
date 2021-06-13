@@ -1,4 +1,8 @@
+const DONE = "checked";
+const NOTDONE = "false";
+
 export default function TodoItem(value) {
   this.content = value;
-  //id 가 필요하다. 어떤 식으로 구현을 할까?
+  this.id = Date.now();
+  this.status = NOTDONE;
 }
