@@ -14,15 +14,14 @@ export default function TodoList() {
     this.$todoList.insertAdjacentHTML("beforeend", template);
   };
 
-  //좀 더 손 봐야 할 것이다.
   this.todoItemTemplate = (item) => {
-    return `<li id="${item.id}">
+    return `<li id="${item.id}" class="${item.completed && "completed"}">
     					<div class="view">
-      					<input class="toggle" type="checkbox" ${item.status}/>
+      					<input class="toggle" type="checkbox" ${item.completed === true ? "checked" : ""}/>
       					<label class="label">${item.content}</label>
       					<button class="destroy"></button>
     					</div>
-    					<input class="edit" value="새로운 타이틀" />
+    					<input class="edit" value="" />
   					</li>`;
   };
 }
