@@ -17,11 +17,13 @@ export default function TodoList() {
   this.todoItemTemplate = (item) => {
     return `<li id="${item.id}" class="${item.completed && "completed"}">
     					<div class="view">
-      					<input class="toggle" type="checkbox" ${item.completed === true ? "checked" : ""}/>
+      					<input class="toggle" type="checkbox" ${
+                  item.completed === true ? "checked" : ""
+                }/>
       					<label class="label">${item.content}</label>
       					<button class="destroy"></button>
     					</div>
-    					<input class="edit" value="" />
+    					<input class="edit" value=""/>
   					</li>`;
   };
 }
