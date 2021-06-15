@@ -16,7 +16,6 @@ export default function TodoApp() {
     this.todoItems = JSON.parse(localStorage.getItem("todoItems"));
     this.todoList.setState();
     this.todoCount.setCount(this.todoItems);
-    /* 이 부분부터 다시 어떤 식으로 구현하면 좋을지 생각해보자 html을 건드려야 할 것 */
   };
 
   //troubleShooting: 이 선언이 setState 함수 선언 위에 있으면 undefined로 넘어간다.

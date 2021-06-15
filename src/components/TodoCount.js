@@ -1,5 +1,7 @@
 export default function TodoCount() {
+  this.$todoCount = document.querySelector(".todo-count");
+
   this.setCount = (todoItems) => {
-    console.log(todoItems.length);
+    this.$todoCount.childNodes[1].textContent = todoItems.length;
   };
 }

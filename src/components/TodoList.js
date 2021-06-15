@@ -10,8 +10,15 @@ export default function TodoList() {
 
   this.render = (items) => {
     this.$todoList.innerHTML = ""; //원래 있었던 html을 전부 없앤 후에 다시 갱신한다
-    const template = items.map(this.todoItemTemplate);
-    this.$todoList.insertAdjacentHTML("beforeend", template);
+    items.map((todo) => {
+      this.$todoList.insertAdjacentHTML(
+        "beforeend",
+        this.todoItemTemplate(todo)
+      );
+    });
+    // const template = items.map(this.todoItemTemplate);
+    // this.$todoList.insertAdjacentHTML("beforeend", template);
+    // troubleShooting: 위 두 줄과 같이 코딩을 했을 때는 item 사이에 ',' 가 포함되는 문제가 있었다.
   };
 
   this.todoItemTemplate = (item) => {
