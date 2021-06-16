@@ -1,10 +1,12 @@
+import { TODOITEMS, KEY_ENTER, KEY_ESC } from "./../constants/constants.js";
+
 export default function ChangeTodos(setState) {
   this.setState = setState;
   this.$todoList = document.querySelector("#todo-list");
   this.todoItems = [];
 
   this.changeStatus = ({ target }) => {
-    this.todoItems = JSON.parse(localStorage.getItem("todoItems"));
+    this.todoItems = JSON.parse(localStorage.getItem(TODOITEMS));
 
     if (target.classList.contains("toggle")) {
       this.toggleTodo(target);
@@ -35,7 +37,7 @@ export default function ChangeTodos(setState) {
 
   //더블 클릭했을 때 li 태그에 editing 클래스 추가
   this.editTodo = ({ target }) => {
-    this.todoItems = JSON.parse(localStorage.getItem("todoItems"));
+    this.todoItems = JSON.parse(localStorage.getItem(TODOITEMS));
 
     if (target.classList.contains("label")) {
       target.closest("li").classList.add("editing");
@@ -46,7 +48,7 @@ export default function ChangeTodos(setState) {
 
   //편집을 완료한 후 데이터 최신화 및 취소
   this.finishEdit = ({ target, key }) => {
-    if (key === "Enter") {
+    if (key === KEY_ENTER && target.value.trim()) {
       this.todoItems.map((todo) => {
         if (target.closest("li").id === todo.id) {
           todo.content = target.value;
@@ -54,7 +56,7 @@ export default function ChangeTodos(setState) {
       });
       target.closest("li").classList.remove("editing");
       this.setState(this.todoItems);
-    } else if (key === "Escape") {
+    } else if (key === KEY_ESC) {
       target.closest("li").classList.remove("editing");
     }
   };
