@@ -3,95 +3,56 @@ import TodoInput from './component/todoInput.js';
 import TodoList from './component/todoList.js';
 import TodoFilter from './component/todoFilter.js';
 
-class Todo {
-    constructor(id, content, completed) {
-        this.id = id + '';
-        this.content = content;
-        this.completed = completed;
-    }
-}
-
 export default class App {
     list;
     count;
-    //filter;
+    storage;
     constructor($target) {
-        const storage = window.localStorage;
-        if (storage.getItem('list') === null) {
-            this.list = JSON.parse(storage.getItem(list));
+        this.storage = window.localStorage;
+        this.$target = $target;
+        console.log(this.$target);
+        this.setup();
+    }
+
+    setup() {
+        if (this.storage.getItem('list') !== null) {
+            this.list = JSON.parse(this.storage.getItem('list'));
         } else {
             this.list = [];
         }
-        this.count = Number.parseInt(storage.getItem('size') ? storage.getItem('size') : 0);
-        this.setup();
+        console.log(this.list);
+        if (this.storage.getItem('size') == null) {
+            this.storage.setItem('size', 0);
+        }
+        this.count = Number.parseInt(this.storage.getItem('size'));
+        this.mounted();
     }
-    setup() {
-        new TodoInput(document.querySelector('.new-todo'), '');
+    template() {
+        return ``;
+    }
+
+    mounted() {
+        const { onkeydown } = this;
+        new TodoInput(document.querySelector('.new-todo'), {
+            onkeydown: onkeydown.bind(this),
+        });
         new TodoList(document.querySelector('#todo-list'), '');
         new TodoCount(document.querySelector('.todo-count'), '');
         new TodoFilter(document.querySelector('.filters'), '');
     }
-    // onkeydown(event) {}
-    // addItem(content) {
-    //     //localStorage.setItem(new Todo(storage.getItem('size'),content,false));
-    // }
-    // deleteItem() {}
+
+    onkeydown(content) {
+        const id = this.count + 1;
+        const complete = false;
+        this.list = [...this.list, { id, content, complete }];
+        console.log(this.list);
+        this.count++;
+        this.storage.setItem('list', JSON.stringify(this.list));
+        this.storage.setItem('size', id);
+    }
 }
 
 new App(document.querySelector('.todoapp'));
-
-// let todoList= [];
-// let storage = localStorage;
-// let count=0;
-
-// class Todo{
-//   constructor(id, name, completed)
-//   {
-//     this.id = id+"";
-//     this.name = name;
-//     this.completed = completed;
-//   }
-// }
-
-// window.onload= function(){
-//     if(storage.getItem("list")===null) return;
-
-//     const STORAGE_KEY_TODO_LIST = "list";
-//     const storageTodo = storage.getItem(STORAGE_KEY_TODO_LIST);
-//     const list = JSON.parse(storageTodo);
-//     count = Number.parseInt(storage.getItem("size"));
-
-//     list.forEach(todo =>
-//         {
-//         todoList.push(new Todo(todo.id, todo.name, todo.completed));
-//     });
-//     showItem();
-// }
-
-// let inputElement = document.getElementById("new-todo-title");
-
-// function enterkey(){
-//   if(window.event.key == 'Enter'){
-//     if(!inputElement.value ||!inputElement.value.trim())
-//     {
-//       alert("빈 값입니다."+inputElement.value.trim());
-//       return ;
-//     }
-//     addItem(inputElement.value);
-//   }
-//   inputElement.innerHTML.value ="";
-// }
-
-// function addItem(value)
-// {
-//   count++;
-//   const todo =  new Todo(count, value, false);
-//   todoList.push(todo);
-//   storage.setItem("list", JSON.stringify(todoList));
-//   storage.setItem("size", count+"");
-//   showItem();
-//   inputElement.value="";
-// }
 
 // function showItem(){
 //     let list ="";
