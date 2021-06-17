@@ -7,9 +7,11 @@ export default class App {
     list;
     count;
     storage;
+    filter;
     constructor($target) {
         this.storage = window.localStorage;
         this.$target = $target;
+        this.filter ='all';
         console.log(this.$target);
         this.setup();
     }
@@ -32,7 +34,7 @@ export default class App {
     }
 
     mounted() {
-        const { onkeydown, onupdateItem, list, ondeleteItem } = this;
+        const { onkeydown, onupdateItem, list, ondeleteItem, ontoggleItem, onfilterItem } = this;
         new TodoInput(document.querySelector('.new-todo'), {
             onkeydown: onkeydown.bind(this),
         });
@@ -40,17 +42,28 @@ export default class App {
             onupdateItem : onupdateItem.bind(this),
             list,
             ondeleteItem : ondeleteItem.bind(this),
+            ontoggleItem : ontoggleItem.bind(this),
         });
-        new TodoCount(document.querySelector('.todo-count'), '');
-        new TodoFilter(document.querySelector('.filters'), '');
+        new TodoCount(document.querySelector('.todo-count'), list.length);
+        new TodoFilter(document.querySelector('.filters'), {
+            onfilterItem : onfilterItem.bind(this),
+            filterMode : this.filter,
+        });
     }
+
     setState(newState) {
-        const {onupdateItem,ondeleteItem } = this;
+        const {onupdateItem,ondeleteItem, ontoggleItem, onfilterItem } = this;
         const list = [...newState];
         new TodoList(document.querySelector('#todo-list'), {
             onupdateItem : onupdateItem.bind(this),
             list,
             ondeleteItem : ondeleteItem.bind(this),
+            ontoggleItem : ontoggleItem.bind(this),
+        });
+        new TodoCount(document.querySelector('.todo-count'), newState.length);
+        new TodoFilter(document.querySelector('.filters'), {
+            onfilterItem : onfilterItem.bind(this),
+            filterMode : this.filter,
         });
     }
 
@@ -61,7 +74,8 @@ export default class App {
         this.count++;
         this.storage.setItem('list', JSON.stringify(this.list));
         this.storage.setItem('size', id);
-        this.setState();
+        this.setState(this.list);
+        this.filter ='all';
     }
 
     onupdateItem(id, content) {
@@ -79,45 +93,41 @@ export default class App {
         this.storage.setItem('list', JSON.stringify(this.list));
         this.setState(this.list)
     }
+
+    ontoggleItem(id){
+        this.list.forEach((item) =>{
+            if(item.id == id){
+                item.complete = !item.complete;
+            }
+        });
+        this.storage.setItem('list', JSON.stringify(this.list));
+        this.setState(this.list);
+    }
+    onfilterItem(isactive){
+        let FILTER = isactive;
+        let filterList = this.list;
+        switch(FILTER){          
+            case 'active' :
+                this.filter = 'active'
+                this.setState(filterList.filter(item => item.complete==false));
+                console.log(filterList.filter(item => item.complete==false))
+                break;
+            case 'completed' :
+                this.filter = 'completed'
+                this.setState(filterList.filter(item => item.complete==true));
+                break;
+            case 'all' :
+                this.filter = 'all'
+                this.setState(filterList);
+                break;
+        }
+    }
 }
+
+
 
 new App(document.querySelector('.todoapp'));
 
-
-
-//     const checkboxs = document.querySelectorAll(".toggle");
-//     checkboxs.forEach(checkbox => checkbox.addEventListener("click",changeChecked));
-
-//     showListCount();
-// }
-
-// function changeChecked(){
-//     const checkedInput = this.parentNode.parentNode.classList;
-//     const updateId = this.parentNode.parentNode.id;
-//     if(checkedInput.contains("completed"))
-//     {
-//         checkedInput.remove("completed");
-//         updateCompleted(updateId, false);
-//     }else
-//     {
-//         checkedInput.add("completed");
-//         updateCompleted(updateId, true);
-//     }
-// }
-
-
-// function updateCompleted(id, completed){
-//     const realID = id.replace("li","");
-
-//     todoList.forEach( todo =>{
-//         if(todo.id === realID)
-//         {
-//             todo.completed = completed;
-//         }
-//     });
-//     storage.setItem("list", JSON.stringify(todoList));
-
-// }
 
 
 

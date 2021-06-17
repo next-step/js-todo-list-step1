@@ -1,12 +1,14 @@
 export default class TodoCount {
+    $target
+    $props
     constructor($target, $props) {
         this.$target = $target;
         this.$props = $props;
+        this.render();
     }
-    template() {
+    render(){
         const count = this.$props;
-        `
-            총 <strong>${count}</strong>개
-        `;
+        this.$target.innerHTML = `총 <strong>${this.$props}</strong>개`;
     }
+
 }

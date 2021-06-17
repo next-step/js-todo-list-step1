@@ -46,6 +46,9 @@ export default class TodoList {
 
         const deleteButtons = document.querySelectorAll(".destroy");
         deleteButtons.forEach(deleteButton => deleteButton.addEventListener("click",this.deleteItem.bind(this)));
+        
+        const checkInputs = document.querySelectorAll(".toggle");
+        checkInputs.forEach(checkInput => checkInput.addEventListener("click",this.checkItem.bind(this)));
     }
 
     onEdit() {
@@ -67,7 +70,12 @@ export default class TodoList {
         }
     }
     deleteItem(event){
-        console.log(this)
         this.$props.ondeleteItem(event.target.id.replace('destory_',''));
+    }
+
+    checkItem(event){
+        event.stopPropagation();
+        console.log(event.target.id.replace('input_',''))
+        this.$props.ontoggleItem(event.target.id.replace('input_',''));
     }
 }
