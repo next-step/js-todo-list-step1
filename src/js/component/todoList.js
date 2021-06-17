@@ -5,10 +5,10 @@ export default class TodoList {
     constructor($target, $props) {
         this.$target = $target;
         this.$props = $props;
-        //this.$todoList = this;
-        console.log(this.$props);
+         console.log(this.$props);
         this.render();
     }
+
     template() {
         const checked = 'checked';
         const todolist = this.$props.list;
@@ -21,7 +21,7 @@ export default class TodoList {
             <div class="view">
             <input id="input_${id}" class="toggle" type="checkbox" ${complete ? checked : ''}/>
             <label class="label">${content}</label>
-            <button class="destroy"></button>
+            <button class="destroy" id="destory_${id}"></button>
             </div>
             <input id="edit_${id}" class="edit" value="${content}" />
         `
@@ -30,10 +30,12 @@ export default class TodoList {
         </li>
         `;
     }
+
     render() {
         this.$target.innerHTML = this.template();
         this.mounted();
     }
+
     mounted() {
         let that = this;
         const label = document.querySelectorAll('.label');
@@ -41,28 +43,31 @@ export default class TodoList {
 
         const editInputs = document.querySelectorAll('.edit');
         editInputs.forEach((editInput) => editInput.addEventListener('keydown', this.editKey.bind(this)));
+
+        const deleteButtons = document.querySelectorAll(".destroy");
+        deleteButtons.forEach(deleteButton => deleteButton.addEventListener("click",this.deleteItem.bind(this)));
     }
+
     onEdit() {
         const _edit = document.querySelectorAll('.todo-list > li');
-        console.log('dsfsd' + _edit);
         _edit.forEach((li) => {
             li.classList.remove('editing');
         });
         this.parentNode.parentNode.classList.add('editing');
     }
+
     editKey(event) {
-        console.log(event);
-        console.log(this);
         if (event.key == 'Enter') {
-            console.log('1111111111');
             const id = event.target.id.replace('edit_', '');
             const content = event.target.value;
-            console.log(id + ' ' + content);
             this.$props.onupdateItem(id, content);
-            //this.render();
         }
         if (event.key == 'Escape') {
             event.target.parentNode.classList.remove('editing');
         }
+    }
+    deleteItem(event){
+        console.log(this)
+        this.$props.ondeleteItem(event.target.id.replace('destory_',''));
     }
 }

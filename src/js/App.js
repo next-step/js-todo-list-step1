@@ -32,23 +32,25 @@ export default class App {
     }
 
     mounted() {
-        const { onkeydown, onupdateItem, list } = this;
+        const { onkeydown, onupdateItem, list, ondeleteItem } = this;
         new TodoInput(document.querySelector('.new-todo'), {
             onkeydown: onkeydown.bind(this),
         });
         new TodoList(document.querySelector('#todo-list'), {
-            onupdateItem: onupdateItem.bind(this),
+            onupdateItem : onupdateItem.bind(this),
             list,
+            ondeleteItem : ondeleteItem.bind(this),
         });
         new TodoCount(document.querySelector('.todo-count'), '');
         new TodoFilter(document.querySelector('.filters'), '');
     }
     setState(newState) {
-        const {onupdateItem } =this;
+        const {onupdateItem,ondeleteItem } = this;
         const list = [...newState];
         new TodoList(document.querySelector('#todo-list'), {
-            onupdateItem: onupdateItem.bind(this),
+            onupdateItem : onupdateItem.bind(this),
             list,
+            ondeleteItem : ondeleteItem.bind(this),
         });
     }
 
@@ -56,13 +58,12 @@ export default class App {
         const id = this.count + 1;
         const complete = false;
         this.list = [...this.list, { id, content, complete }];
-        const newItem = { id, content, complete };
-        console.log(this.list);
         this.count++;
         this.storage.setItem('list', JSON.stringify(this.list));
         this.storage.setItem('size', id);
         this.setState();
     }
+
     onupdateItem(id, content) {
         this.list.forEach((item) => {
             if (item.id == id) {
@@ -73,13 +74,16 @@ export default class App {
        this.setState(this.list);
     }
 
+    ondeleteItem(id){
+        this.list=this.list.filter(item => item.id!=id);
+        this.storage.setItem('list', JSON.stringify(this.list));
+        this.setState(this.list)
+    }
 }
 
 new App(document.querySelector('.todoapp'));
 
 
-//     const deleteButtons = document.querySelectorAll(".destroy");
-//     deleteButtons.forEach(deleteButton => deleteButton.addEventListener("click",deleteItem));
 
 //     const checkboxs = document.querySelectorAll(".toggle");
 //     checkboxs.forEach(checkbox => checkbox.addEventListener("click",changeChecked));
@@ -101,18 +105,6 @@ new App(document.querySelector('.todoapp'));
 //     }
 // }
 
-// function updateName(id, name){
-//     const realID = id.replace("li","");
-
-//     todoList.forEach( todo =>{
-//         if(todo.id === realID)
-//         {
-//             todo.name = name;
-//         }
-//     });
-//     storage.setItem("list", JSON.stringify(todoList));
-
-// }
 
 // function updateCompleted(id, completed){
 //     const realID = id.replace("li","");
@@ -127,21 +119,7 @@ new App(document.querySelector('.todoapp'));
 
 // }
 
-// function deleteItem(){
-//     const id = this.getAttribute("id");
-//     let num =0;
-//     todoList.forEach( i =>
-//         {
-//         if(i.id == id)
-//         {
-//             todoList.splice(num,1);
-//         }
-//         num++;
-//     });
-//     console.log(todoList);
-//     storage.setItem("list", JSON.stringify(todoList));
-//     showItem();
-// }
+
 
 // function showListCount(){
 //     const str = document.getElementById("strong");
