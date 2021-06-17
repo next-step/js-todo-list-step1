@@ -12,7 +12,6 @@ export default function TodoList() {
   this.setState = (updatedTodoItems) => {
     this.todoItems = updatedTodoItems;
     this.render(this.todoItems);
-    console.log("test: ", location.href.includes("#active"));
     this.todoCount.setCount(this.todoItems);
     /* 예를 들어 해야 할 일 탭에서 아이템을 삭제하거나 
        변경하면 전체보기로 넘어가는 문제가 있다 */
