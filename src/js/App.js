@@ -32,75 +32,59 @@ export default class App {
     }
 
     mounted() {
-        const { onkeydown } = this;
+        const { onkeydown, onupdateItem, list } = this;
         new TodoInput(document.querySelector('.new-todo'), {
             onkeydown: onkeydown.bind(this),
         });
-        new TodoList(document.querySelector('#todo-list'), '');
+        new TodoList(document.querySelector('#todo-list'), {
+            onupdateItem: onupdateItem.bind(this),
+            list,
+        });
         new TodoCount(document.querySelector('.todo-count'), '');
         new TodoFilter(document.querySelector('.filters'), '');
+    }
+    setState(newState) {
+        const {onupdateItem } =this;
+        const list = [...newState];
+        new TodoList(document.querySelector('#todo-list'), {
+            onupdateItem: onupdateItem.bind(this),
+            list,
+        });
     }
 
     onkeydown(content) {
         const id = this.count + 1;
         const complete = false;
         this.list = [...this.list, { id, content, complete }];
+        const newItem = { id, content, complete };
         console.log(this.list);
         this.count++;
         this.storage.setItem('list', JSON.stringify(this.list));
         this.storage.setItem('size', id);
+        this.setState();
     }
+    onupdateItem(id, content) {
+        this.list.forEach((item) => {
+            if (item.id == id) {
+                item.content = content;
+            }
+        });
+        this.storage.setItem('list', JSON.stringify(this.list));
+       this.setState(this.list);
+    }
+
 }
 
 new App(document.querySelector('.todoapp'));
 
-// function showItem(){
-//     let list ="";
-//     for(let todo of todoList){
-//         let com = todo.completed ? "completed" : "";
-//         let check = todo.completed ? "checked" :"";
-//         list +="<li id=li"+todo.id+" class="+com+">"
-//                     +"<div class=\"view\">"
-//                         +"<input class=\"toggle\" id=\""+todo.id+"\" type=\"checkbox\""+check+">"
-//                         +"<label class=\"label\">"+todo.name+"</label>"
-//                         +"<button class=\"destroy\" id="+todo.id+"></button>"
-//                     +"</div>"
-//                     +"<input class=\"edit\" value="+todo.name+"></li>";
-//     }
-//     document.getElementById("todo-list").innerHTML =list;
 
 //     const deleteButtons = document.querySelectorAll(".destroy");
 //     deleteButtons.forEach(deleteButton => deleteButton.addEventListener("click",deleteItem));
 
-//     const viewDivs = document.querySelectorAll(".view")
-//     viewDivs.forEach(viewDiv => viewDiv.addEventListener("dblclick",changeMode));
-
 //     const checkboxs = document.querySelectorAll(".toggle");
 //     checkboxs.forEach(checkbox => checkbox.addEventListener("click",changeChecked));
 
-//     const editInputs = document.querySelectorAll(".edit");
-//     editInputs.forEach(editInput => editInput.addEventListener("keydown",editKey));
-
 //     showListCount();
-// }
-// function editKey(event){
-//     if(event.key === 'Enter')
-//     {
-//         this.setAttribute("value", this.value);
-//         const toggleInput = this.parentNode.firstChild.childNodes[1];
-//         toggleInput.innerText = this.value;
-//         this.parentNode.classList.remove("editing");
-//         updateName(this.parentNode.id, toggleInput.innerText)
-
-//         return;
-//     }
-//     if(event.key == 'Escape')
-//     {
-//         const boforeValue = this.previousSibling.childNodes[1].outerText;
-//         this.value = boforeValue;
-//         this.parentNode.classList.remove('editing');
-//     }
-
 // }
 
 // function changeChecked(){
@@ -141,15 +125,6 @@ new App(document.querySelector('.todoapp'));
 //     });
 //     storage.setItem("list", JSON.stringify(todoList));
 
-// }
-
-// function changeMode(){
-//     const liNodes = this.parentNode.parentNode.childNodes;
-//     liNodes.forEach(li =>
-//     {
-//         li.classList.remove('editing');
-//     });
-//     this.parentNode.classList.add('editing');
 // }
 
 // function deleteItem(){

@@ -20,8 +20,6 @@ export default class TodoFilter {
         `;
     }
     render() {
-        console.log(this.$target);
-        console.log(this.template());
         this.$target.innerHTML = this.template();
     }
 }
