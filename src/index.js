@@ -1,3 +1,3 @@
-import App from "./App.js"
+import App from './App.js';
 
-new App(document.querySelector(".todoapp"))
+new App(document.querySelector('.todoapp'));

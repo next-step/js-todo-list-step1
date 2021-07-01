@@ -1,18 +1,17 @@
-const TODOS = "todos"
+const TODOS = 'todos';
 
 const getTodos = () => {
-    const value = localStorage.getItem(TODOS);
+  const value = localStorage.getItem(TODOS);
 
-    return value === null ? [] : JSON.parse(value);
-}
+  return value === null ? [] : JSON.parse(value);
+};
 
 const setTodo = (value) => {
-    if (value === null || value === undefined) return;
+  if (value === null || value === undefined) return;
 
-    const toJson = JSON.stringify(value);
+  const toJson = JSON.stringify(value);
 
-    localStorage.setItem(TODOS, toJson);
-}
+  localStorage.setItem(TODOS, toJson);
+};
 
-
-export { getTodos, setTodo }
+export { getTodos, setTodo };
