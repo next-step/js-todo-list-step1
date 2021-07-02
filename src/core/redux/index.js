@@ -1,5 +1,4 @@
-import createStore from './createStore.js';
-import createAction from './createAction.js';
-import combineReducers from './combineReducers.js';
+import Store from './Store.js';
+import Reducer from './Reducer.js';
 
-export { createStore, createAction, combineReducers };
+export { Store, Reducer };
