@@ -1,0 +1,1 @@
+import Component from "../core/component.js";
