@@ -109,27 +109,4 @@ live-server 폴더명
 
 <br/>
 
-## 💬 1주차 미션 후기 블로그
 
-아래 링크는 1주차 미션을 진행하면서 블로그를 작성해주신 분들의 글입니다. 미션을 진행하면서, 다른 분들의 문제 해결 과정이 궁금하다면 참고해주세요 😄
-- [1주차 미션후기](https://www.notion.so/1-2-8b624729fbce4174b8b583efb10c3200)
-- [블랙커피 프론트엔드 스터디 레벨1 후기](https://yujo11.github.io/%EB%B8%94%EB%9E%99%EC%BB%A4%ED%94%BC/%EB%B8%94%EB%9E%99%EC%BB%A4%ED%94%BC-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A0%88%EB%B2%A81-%ED%9B%84%EA%B8%B0/)
-- [블랙커피 프론트엔드 스터디 회고](https://www.notion.so/bffb14daea984293a954ac7cdb4f7c1e)
-
-<br/>
-
-## 👏🏼 Contributing
-
-만약 미션 수행 중에 개선사항이 필요하다면, 언제든 자유롭게 PR을 보내주세요.
-
-<br/>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/next-step/js-todo-list-step1/issues)에 등록해주세요.
-
-<br/>
-
-## 📝 License
-
-This project is [MIT](https://github.com/next-step/js-todo-list-step1/blob/main/LICENSE) licensed.
