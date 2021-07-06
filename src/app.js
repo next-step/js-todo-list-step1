@@ -1,7 +1,7 @@
 import Component from "./core/component.js";
 import Filter from "./components/Filter.js"
-import Input from "./components/Filter.js"
-import TodoList from "./components/Filter.js"
+import Input from "./components/Input.js"
+import TodoList from "./components/TodoList.js"
 
 class App extends Component{ 
     setup(){
@@ -15,9 +15,9 @@ class App extends Component{
             <input id="new-todo-title" class="new-todo"
                 placeholder="할일을 추가해주세요"autofocus
             />
-            <main id="todo-list">
+            <main id="todos">
                 <input class="toggle-all" type="checkbox" />
-                <ul id="todo-list" class="todo-list">
+                <ul id="todo-list" class="todo-list"></ul>
                 <div id="todo-filter" class="count-container"></div>
             </main>
         `
