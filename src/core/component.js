@@ -3,6 +3,9 @@ export default class Component {
     $props;
     $state;
     constructor ($target, $props) {
+      console.log("constructor");
+      console.log($target);
+      console.log($props);
       this.$target = $target;
       this.$props = $props; 
       this.setup();
@@ -13,8 +16,10 @@ export default class Component {
     template () { return ''; }
     render () {
       this.$target.innerHTML = this.template();
+      this.mounted();
     }
     setEvent () {}
+    mounted(){}
     setState (newState) {
         this.$state = { ...this.$state, ...newState };
         this.render();
