@@ -1,0 +1,26 @@
+{
+  "name": "js-todo-list-step1",
+  "version": "1.0.0",
+  "description": "<p align=\"middle\" >\r   <img width=\"200px;\" src=\"./src/images/check_list.png\"/>\r </p>\r <h2 align=\"middle\">JS 투두리스트 스텝1</h2>\r <p align=\"middle\">자바스크립트로 구현 하는 투두리스트</p>\r <p align=\"middle\">\r   <img src=\"https://img.shields.io/badge/version-1.0.0-blue?style=flat-square\" alt=\"template version\"/>\r   <img src=\"https://img.shields.io/badge/language-html-red.svg?style=flat-square\"/>\r   <img src=\"https://img.shields.io/badge/language-css-blue.svg?style=flat-square\"/>\r   <img src=\"https://img.shields.io/badge/language-js-yellow.svg?style=flat-square\"/>\r   <a href=\"https://github.com/next-step/js-todo-list-step1/blob/main/LICENSE\" target=\"_blank\">\r     <img src=\"https://img.shields.io/github/license/next-step/js-todo-list-step1.svg?style=flat-square&label=license&color=08CE5D\"/>\r   </a>\r </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dalcon10028/js-todo-list-step1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dalcon10028/js-todo-list-step1/issues"
+  },
+  "homepage": "https://github.com/dalcon10028/js-todo-list-step1#readme",
+  "devDependencies": {
+    "eslint": "^7.30.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "2.3.2"
+  }
+}
