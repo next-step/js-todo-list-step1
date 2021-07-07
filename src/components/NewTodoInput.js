@@ -1,8 +1,6 @@
 import Component from '../core/component.js';
 
 export default class NewTodoInput extends Component {
-  render() {}
-
   bindEvents() {
     this.$target.addEventListener('keyup', ({ key }) => {
       if (key !== 'Enter') return;
@@ -14,7 +12,11 @@ export default class NewTodoInput extends Component {
 
   addTodo(todo) {
     const todoList = this.props.todoList.get();
-    todoList.push(todo);
+    todoList.push({
+      id: Date.now(),
+      todo,
+      checked: false,
+    });
     this.props.todoList.set(todoList);
   }
 }
