@@ -2,10 +2,11 @@ import Component from "../core/component.js";
 
 class TodoList extends Component{
     setup(){
-        
+        console.log(this.$props);
     }
 
     template(){
+        const todoList =
         return `
           <li>
             <div class="view">
