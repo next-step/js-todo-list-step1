@@ -1,4 +1,4 @@
-const todoButton = {
+const TODO_BUTTONS = {
   TOGGLE: 'toggle',
   LABEL: 'label',
   DESTROY: 'destroy',
@@ -7,4 +7,4 @@ const todoButton = {
   COMPLETED: 'completed',
 };
 
-export { todoButton };
+export { TODO_BUTTONS };
