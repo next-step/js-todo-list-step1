@@ -23,11 +23,18 @@ export default class App extends Component {
   mountTodoList() {
     new TodoList($('#todo-list'), {
       todoList: this.todoList,
-      deleteTodo: this.deleteTodo.bind(this),
+      checkTodo: this.checkTodo.bind(this),
     });
   }
 
-  deleteTodo(id) {
-    console.log(id);
+  checkTodo(id) {
+    const todoList = this.todoList.get().map((todo) => {
+      if (todo.id === id) {
+        todo.checked = !todo.checked;
+        return todo;
+      }
+      return todo;
+    });
+    this.todoList.set([...todoList]);
   }
 }
