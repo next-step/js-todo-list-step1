@@ -24,6 +24,7 @@ export default class App extends Component {
     new TodoList($('#todo-list'), {
       todoList: this.todoList,
       checkTodo: this.checkTodo.bind(this),
+      deleteTodo: this.deleteTodo.bind(this),
     });
   }
 
@@ -36,5 +37,11 @@ export default class App extends Component {
       return todo;
     });
     this.todoList.set([...todoList]);
+  }
+
+  deleteTodo(id) {
+    const todoList = this.todoList.get().filter((todo) => todo.id !== id);
+    this.todoList.set([...todoList]);
+    console.log(this.todoList);
   }
 }

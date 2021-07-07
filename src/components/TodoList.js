@@ -1,6 +1,6 @@
 import Component from '../core/component.js';
 import { $, $$ } from '../utils/utils.js';
-import { todoButton } from '../utils/constants.js';
+import { TODO_BUTTONS } from '../utils/constants.js';
 
 export default class TodoList extends Component {
   render() {
@@ -26,10 +26,17 @@ export default class TodoList extends Component {
   bindEvents() {
     $$('.todo').forEach((item) => {
       item.addEventListener('click', ({ target }) => {
-        if (target.classList.contains(todoButton.TOGGLE)) {
-          const checkId = Number(target.id);
+        const classList = target.classList;
+        const checkId = Number(target.id);
+        if (classList.contains(TODO_BUTTONS.TOGGLE)) {
           target.closest('.todo').classList.toggle('completed');
           this.props.checkTodo(checkId);
+        }
+
+        if (classList.contains(TODO_BUTTONS.DESTROY)) {
+          const removeTarget = target.closest('.todo');
+          this.$target.removeChild(removeTarget);
+          this.props.deleteTodo(checkId);
         }
       });
     });
