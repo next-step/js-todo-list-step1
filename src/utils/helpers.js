@@ -1,15 +1,31 @@
-export function buildNewTodo(store, e) {
+export function buildNewState(op, store, e) {
+  const OPERATIONS = {
+    ADD: buildNewTodo,
+    DELETE: deleteTodo,
+  };
   const prevState = store.getState();
-  const targetId = e.target.getAttribute("dataset-id");
+  const targetId = Number(e.target.closest("li").getAttribute("dataset-id"));
 
+  const newTodos = OPERATIONS[op](prevState, targetId, e);
+
+  const newState = { ...prevState, todos: newTodos };
+  return newState;
+}
+
+export function buildNewTodo(prevState, targetId, e) {
   const newStatus = e.target.checked ? "completed" : "false";
   const newTodos = prevState.todos.map((todo) => {
-    if (todo.id === Number(targetId)) {
+    if (todo.id === targetId) {
       return { ...todo, status: newStatus };
     }
     return todo;
   });
+  return newTodos;
+}
 
-  const newState = { ...prevState, todos: newTodos };
-  return newState;
+export function deleteTodo(prevState, targetId) {
+  const newTodos = prevState.todos.filter((todo) => {
+    return todo.id !== targetId;
+  });
+  return newTodos;
 }
