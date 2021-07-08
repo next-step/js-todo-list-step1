@@ -13,7 +13,7 @@ export default class TodoInput {
   }
   render() {}
   handleInputValue(e) {
-    if (e.key == "Enter") {
+    if (e.key === "Enter") {
       const prevState = this.store.getState();
       const newTodo = {
         id: Math.floor(Math.random() * CIPHER),
