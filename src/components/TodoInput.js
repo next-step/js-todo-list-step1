@@ -1,5 +1,5 @@
 export default class TodoInput {
-  constructor({ $app, onKeypess }) {
+  constructor({ $app, addTodo }) {
     const $target = document.createElement('input');
     $target.id = 'new-todo-title';
     $target.className = 'new-todo';
@@ -8,7 +8,7 @@ export default class TodoInput {
 
     $target.addEventListener('keypress', event => {
       if (event.key === 'Enter' && event.target.value !== '') {
-        onKeypess(event.target.value);
+        addTodo(event.target.value);
         event.target.value = '';
       }
     });

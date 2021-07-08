@@ -14,13 +14,11 @@ export default class App {
       show: ALL,
     };
 
-    // 제목
     new TodoTitle({ $app });
 
-    // 입력상자
     new TodoInput({
       $app,
-      onKeypess: (inputValue) => {
+      addTodo: (inputValue) => {
         const todos = this.state.todos;
         const newTodo = {
           id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 0,
@@ -34,7 +32,6 @@ export default class App {
       },
     });
 
-    // 리스트
     this.todoList = new TodoList({
       $app,
       initialState: {
@@ -68,14 +65,13 @@ export default class App {
       },
     });
 
-    // 카운트
     this.todoCount = new TodoCount({
       $app,
       initialState: {
         count: this.state.count,
         show: this.state.show,
       },
-      onClick: (show) => {
+      changeShow: (show) => {
         this.setState({
           ...this.state,
           show,

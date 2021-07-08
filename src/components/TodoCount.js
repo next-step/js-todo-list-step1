@@ -1,13 +1,13 @@
 import { ALL, ACTIVE, COMPLETED } from '../constants/todoState.js';
 
 export default class TodoCount {
-  constructor({ $app, initialState, onClick }) {
+  constructor({ $app, initialState, changeShow }) {
     this.state = initialState;
     this.$target = document.createElement('div');
     this.$target.className = 'count-container';
 
     this.$target.addEventListener('click', ({ target }) => {
-      if (target.closest('a')) onClick(target.id);
+      if (target.closest('a')) changeShow(target.id);
     });
 
     $app.appendChild(this.$target);
