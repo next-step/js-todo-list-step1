@@ -3,6 +3,7 @@ import TodoInput from './components/TodoInput.js';
 import TodoList from './components/TodoList.js';
 import TodoCount from './components/TodoCount.js';
 
+import { ALL, ACTIVE, COMPLETED } from "./constants/todoState.js";
 import { setTodos, getTodos } from './utils/localStorage.js';
 
 export default class App {
@@ -10,7 +11,7 @@ export default class App {
     this.state = {
       todos: getTodos() || [],
       count: (getTodos() || []).length,
-      show: 'all',
+      show: ALL,
     };
 
     // 제목
@@ -24,7 +25,7 @@ export default class App {
         const newTodo = {
           id: todos.length > 0 ? todos[todos.length - 1].id + 1 : 0,
           title: inputValue,
-          state: 'active',
+          state: ACTIVE,
         };
         this.setState({
           ...this.state,
@@ -45,7 +46,7 @@ export default class App {
           ...this.state,
           todos: this.state.todos.map((todo) => {
             if (todo.id === id)
-              todo.state = todo.state === 'active' ? 'completed' : 'active';
+              todo.state = todo.state === ACTIVE ? COMPLETED : ACTIVE;
             return todo;
           }),
         });
@@ -79,7 +80,6 @@ export default class App {
           ...this.state,
           show,
         });
-        console.log(show);
       },
     });
   }
@@ -92,7 +92,7 @@ export default class App {
     });
     this.todoCount.setState({
       count: this.state.todos.filter(({ state }) => {
-        if (this.state.show === 'all') return true;
+        if (this.state.show === ALL) return true;
         return this.state.show === state;
       }).length,
       show: this.state.show,

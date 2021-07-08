@@ -1,3 +1,5 @@
+import { ALL, ACTIVE, COMPLETED } from '../constants/todoState.js';
+
 export default class TodoCount {
   constructor({ $app, initialState, onClick }) {
     this.state = initialState;
@@ -25,17 +27,17 @@ export default class TodoCount {
         <ul class="filters">
         <li>
             <a id="all" ${
-              this.state.show === 'all' ? 'class="selected"' : ''
+              this.state.show === ALL ? 'class="selected"' : ''
             }href="/#">전체보기</a>
         </li>
         <li>
             <a id="active" ${
-              this.state.show === 'active' ? 'class="selected"' : ''
+              this.state.show === ACTIVE ? 'class="selected"' : ''
             }href="#active">해야할 일</a>
         </li>
         <li>
             <a id="completed" ${
-              this.state.show === 'completed' ? 'class="selected"' : ''
+              this.state.show === COMPLETED ? 'class="selected"' : ''
             }href="#completed">완료한 일</a>
         </li>
         </ul>

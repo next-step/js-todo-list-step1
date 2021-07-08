@@ -1,3 +1,5 @@
+import { ALL, COMPLETED } from '../constants/todoState.js';
+
 export default class TodoList {
   constructor({ $app, initialState, toggleTodo, removeTodo, modifyTodo }) {
     this.state = initialState;
@@ -24,7 +26,7 @@ export default class TodoList {
       if (target.className !== 'label') return;
       const todo = target.closest('li');
       todo.className += ' editing';
-      todo.addEventListener('keypress', (event) => {
+      todo.addEventListener('keypress', event => {
         if (event.key === 'Enter' && event.target.value !== '') {
           modifyTodo(Number(todo.dataset.id), event.target.value);
         }
@@ -44,16 +46,16 @@ export default class TodoList {
 
   render() {
     this.$todolist.innerHTML = `${this.state.todos
-      .filter((todo) => {
-        if (this.state.show === 'all') return true;
+      .filter(todo => {
+        if (this.state.show === ALL) return true;
         return this.state.show === todo.state;
       })
-      .map((todo) => {
+      .map(todo => {
         return `
         <li data-id="${todo.id}" class="${todo.state}">
           <div class="view">
             <input class="toggle" type="checkbox"
-              ${todo.state === 'completed' ? 'checked' : ''} />
+              ${todo.state === COMPLETED ? 'checked' : ''} />
             <label class="label">${todo.title}</label>
             <button class="destroy"></button>
           </div>
