@@ -5,8 +5,9 @@ import TodoList from "./components/TodoList.js"
 
 class App extends Component{ 
     setup(){
-        this.$state = JSON.parse(localStorage.getItem("todo")? 
+        const todo = JSON.parse(localStorage.getItem("todo")? 
         localStorage.getItem("todo") : localStorage.setItem("todo", '{"count": 0,"Filtermode" : 0, "List" : []}')); 
+        this.$state= todo;
     }
 
     template(){
@@ -43,16 +44,20 @@ class App extends Component{
         const id = String(this.$state.count*1+1);
         const Filtermode = this.$state.Filtermode;
         const List = [...this.$state.List, {id ,content:content,activate:false}];
-        localStorage.setItem("todo",JSON.stringify({List,count :id*1, Filtermode}));
-        this.setState({
-            List ,
-            count : id*1,
-            Filtermode 
-        });
+        localStorage.setItem("todo",JSON.stringify({List,count : id*1,Filtermode}));
+        this.setState(JSON(localStorage.getItem("todo")));
         //localStorage.setItem("todo",this.$state);
     }
-    onToggleTodo(){}
-    onDeleteTodo(){}
+    onToggleTodo(id){
+
+    }
+    onDeleteTodo(id){
+        const List = this.$state.List.filter(todo => todo.id!==id);
+        const count = String(this.$state.count*1+1);
+        const Filtermode = this.$state.Filtermode;
+        localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
+        this.setState(List);
+    }
     onCountTodo(){}
     onFilter(mode){}
 }

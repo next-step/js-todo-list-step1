@@ -20,8 +20,8 @@ export default class Component {
     }
     setEvent () {}
     mounted(){}
-    setState (newState) {
-        this.$state = { ...this.$state, ...newState };
+    setState (List) {
+        this.$state = [List];
         this.render();
     }
   }
