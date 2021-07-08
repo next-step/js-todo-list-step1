@@ -1,4 +1,4 @@
-import { buildNewState } from "../utils/helpers.js";
+import { buildNewState, filterTodos } from "../utils/helpers.js";
 import { $ } from "../utils/selectors.js";
 
 export default class TodoList {
@@ -28,7 +28,7 @@ export default class TodoList {
     });
     this.$app.addEventListener("keydown", (e) => {
       const isEditing = e.target.classList.contains("edit");
-      
+
       if (isEditing && e.key === "Enter") {
         const newState = buildNewState("EDIT", this.store, e);
         this.store.setState(newState);
@@ -42,8 +42,12 @@ export default class TodoList {
     });
   }
   render() {
-    const newState = this.store.getState();
-    this.$app.innerHTML = newState.todos
+    const { todos, view } = this.store.getState();
+    //prettier-ignore
+    const curViewTodos = view === "all" ? todos 
+                                        : filterTodos(todos, view);
+
+    this.$app.innerHTML = curViewTodos
       .map(({ id, content, status, edit }) => {
         const isChecked = status === "completed" ? "checked" : "false";
         return `<li dataset-id=${id} class="${status} ${edit}">

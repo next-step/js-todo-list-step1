@@ -1,3 +1,5 @@
+import { $ } from "./selectors.js";
+
 //NEWSTATE
 export function buildNewState(op, store, e) {
   const OPERATIONS = {
@@ -16,7 +18,7 @@ export function buildNewState(op, store, e) {
 
 //NEWTODOS
 function toggleTodoStatus(prevState, targetId, e) {
-  const newStatus = e.target.checked ? "completed" : "false";
+  const newStatus = e.target.checked ? "completed" : "active";
   const newTodos = prevState.todos.map((todo) => {
     if (todo.id === targetId) {
       return { ...todo, status: newStatus };
@@ -41,4 +43,19 @@ function editTodo(prevState, targetId, e) {
     return todo;
   });
   return newTodos;
+}
+
+export function buildViewState(op, store, e) {
+  $(".selected").classList.remove("selected");
+  e.target.className = `${op} selected`;
+
+  const state = store.getState();
+  const newState = { ...state, view: op };
+  store.setState(newState);
+}
+
+export function filterTodos(todos, view) {
+  return todos.filter((todo) => {
+    if (todo.status === view) return todo;
+  });
 }

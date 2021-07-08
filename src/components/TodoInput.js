@@ -1,5 +1,3 @@
-import { $ } from "../utils/selectors.js";
-
 const CIPHER = 1000;
 
 export default class TodoInput {
@@ -18,7 +16,7 @@ export default class TodoInput {
       const newTodo = {
         id: Math.floor(Math.random() * CIPHER),
         content: e.target.value,
-        status: "false",
+        status: "active",
       };
       const newState = { ...prevState, todos: [...prevState.todos, newTodo] };
       this.store.setState(newState);

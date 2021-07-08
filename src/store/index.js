@@ -2,7 +2,7 @@ export default function Store() {
   //State
   this.state = {
     todos: [],
-    status: "all",
+    view: "all",
   };
   //Observer
   this.observers = [];
