@@ -1,5 +1,5 @@
 import TodoInput from "./components/TodoInput.js";
-import TodoList from "./components/TodoList.js";
+import TodoList from "./components/TodoList/index.js";
 import TodoTotal from "./components/TodoTotal.js";
 import TodoFilters from "./components/TodoFilters.js";
 

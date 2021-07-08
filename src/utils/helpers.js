@@ -3,9 +3,9 @@ import { $ } from "./selectors.js";
 //NEWSTATE
 export function buildNewState(op, store, e) {
   const OPERATIONS = {
-    TOGGLE: toggleTodoStatus,
-    DELETE: deleteTodo,
-    EDIT: editTodo,
+    toggle: toggleTodoStatus,
+    delete: deleteTodo,
+    edit: editTodo,
   };
   const prevState = store.getState();
   const targetId = Number(e.target.closest("li").getAttribute("dataset-id"));
@@ -13,7 +13,7 @@ export function buildNewState(op, store, e) {
   const newTodos = OPERATIONS[op](prevState, targetId, e);
 
   const newState = { ...prevState, todos: newTodos };
-  return newState;
+  store.setState(newState);
 }
 
 //NEWTODOS
