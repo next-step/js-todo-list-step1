@@ -1,22 +1,25 @@
-export default function Store() {
-  //State
-  this.state = {
-    todos: [],
-    view: "all",
-  };
-  //Observer
-  this.observers = [];
-  this.addObserver = (observer) => this.observers.push(observer);
-  this.observing = () =>
-    this.observers.forEach((observer) => observer.render());
+import { get, set } from "../storage/index.js";
+const USER = "user";
 
+export default class Store {
+  constructor() {
+    this.state = get(USER, { todos: [], view: "all" });
+    this.observers = [];
+  }
+  addObserver(observer) {
+    this.observers.push(observer);
+  }
+  observing() {
+    this.observers.forEach((observer) => observer.render());
+  }
   //GET
-  this.getState = () => {
+  getState() {
     return this.state;
-  };
+  }
   //SET
-  this.setState = (newState) => {
+  setState(newState) {
     this.state = { ...this.state, ...newState };
+    set(USER, this.state);
     this.observing();
-  };
+  }
 }
