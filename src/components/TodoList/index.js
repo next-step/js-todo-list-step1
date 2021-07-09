@@ -1,5 +1,5 @@
 //prettier-ignore
-import { buildListTodos, addsEventListener } from "./helper.js";
+import { buildListTodos, editSelectedTodo, toggleTodoItem, deleteTodoItem, setEditingMode } from "./helper.js";
 import { COMPLETED, CHECKED, FALSE } from "./constant.js";
 
 export default class TodoList {
@@ -7,9 +7,14 @@ export default class TodoList {
     this.store = store;
     this.$app = $app;
     this.mount();
+    this.render();
   }
   mount() {
-    addsEventListener(this.$app, this.store);
+    //prettier-ignore
+    this.$app.addEventListener("keydown", (e) => editSelectedTodo(e, this.store));
+    this.$app.addEventListener("dblclick", (e) => setEditingMode(e));
+    this.$app.addEventListener("click", (e) => toggleTodoItem(e, this.store));
+    this.$app.addEventListener("click", (e) => deleteTodoItem(e, this.store));
   }
   render() {
     this.$app.innerHTML = buildListTodos(this.store)
