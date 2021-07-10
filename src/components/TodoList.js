@@ -9,12 +9,12 @@ class TodoList extends Component{
     }
 
     template(){
-        const todoList = this.$state.List;
+        const todoList = this.$state;
         return `
-        ${todoList.map(item =>`
+        ${todoList.List.map(item =>`
           <li data-id="${item.id}" class=${item.activate?"completed":"notcompleted"}>
             <div class="view">
-              <input class="toggle" type="checkbox" ${item.activate?"cheked":""}/>
+              <input class="toggle"  id=${item.id} type="checkbox" ${item.activate?"checked":""}/>
               <label class="label">${item.content}</label>
               <button id=${item.id} class="destroy"></button>
             </div>
@@ -29,6 +29,13 @@ class TodoList extends Component{
             element.addEventListener('click',(e)=>{
                 this.$props.onDeleteTodo(e.target.id);
             }) 
+        });
+
+        const toggleBtn = document.querySelectorAll('.toggle');
+        toggleBtn.forEach(element => {
+          element.addEventListener('click',(e)=>{
+            this.$props.onToggleTodo(e.target.id);
+          })
         });
     }
 }

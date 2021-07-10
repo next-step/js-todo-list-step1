@@ -21,7 +21,7 @@ export default class Component {
     setEvent () {}
     mounted(){}
     setState (List) {
-        this.$state = [List];
+        this.$state = List;
         this.render();
     }
   }
