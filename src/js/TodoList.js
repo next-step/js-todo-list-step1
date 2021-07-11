@@ -13,9 +13,9 @@ export default function TodoList({ $app, initialState }) {
   };
 
   this.render = () => {
-    // this.$target.innerHTML = `${this.state
-    //   .map((todo, idx) => `<li data-index="${idx}">${todo}</div>`)
-    //   .join('')}`;
-    this.$target.innerHTML = `<div >hi</div>`;
+    const todoTemplate = `${this.state
+      .map((todo, idx) => `<li data-index="${idx}">${todo}</div>`)
+      .join('')}`;
+    this.$target.innerHTML = todoTemplate;
   };
 }
