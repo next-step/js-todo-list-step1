@@ -28,18 +28,35 @@ export class ToDoList {
 
     }
     initEventListener(){
+        this.addToggleEvent();
+        this.removeToggleEvent();
+
+    }
+
+    addToggleEvent(){
         const toggleComponents = this.$target.querySelectorAll('.toggle');
         const {items} = this.state;
         toggleComponents.forEach((element,idx) => {
-            element.addEventListener('change',(()=>{
+            element.addEventListener('change',(({target})=>{
                 const todoItem = items[idx];
-                todoItem.state = element.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO
+                todoItem.state = target.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO
                 items[idx] = {...todoItem};
                 this.setState({items:[...items]});
             })
         )});
-
     }
+
+    removeToggleEvent(){
+        const destroyComponents = this.$target.querySelectorAll('.destroy');
+        const {items} = this.state;
+        destroyComponents.forEach((element,idx)=>{
+            element.addEventListener('click',()=>{
+                items.splice(idx,1);
+                this.setState({items:[...items]})
+            })
+        })
+    }
+
     setState(payload){
         this.state = {...this.state, ...payload};
         this.render();
