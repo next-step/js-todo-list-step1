@@ -3,24 +3,37 @@ import { $, $$ } from '../utils/utils.js';
 import { TODO_BUTTONS } from '../utils/constants.js';
 
 export default class TodoList extends Component {
+  setState(newState) {
+    this.todoList = newState || this.props.todoList;
+  }
+
   render() {
-    const todoList = this.props.todoList
-      .get()
-      .reduce((html, { id, todo }) => (html += this.renderTodo({ id, todo })), '');
+    console.log(this.todoList);
+    const todoList = this.todoList.reduce(
+      (html, { id, todo, checked }) => (html += this.renderTodo({ id, todo, checked })),
+      '',
+    );
     this.$target.innerHTML = todoList;
   }
 
-  renderTodo({ id, todo }) {
+  renderTodo({ id, todo, checked }) {
+    const checkTodo = checked ? 'completed' : '';
     return `
-      <li class="todo" data-id=${id}>
+      <li class="todo ${checkTodo}" data-id=${id}>
         <div class="view">
-          <input class="toggle" type="checkbox" data-id=${id} />
+          ${this.checkCheckbox(id, checked)}
           <label class="label">${todo}</label>
           <button class="destroy" data-id=${id}></button>
         </div>
         <input class="edit" value="${todo}" data-id=${id} />
       </li>
     `;
+  }
+
+  checkCheckbox(id, checked) {
+    return checked
+      ? `<input class="toggle" type="checkbox" data-id=${id} checked />`
+      : `<input class="toggle" type="checkbox" data-id=${id} />`;
   }
 
   bindEvents() {
@@ -31,6 +44,7 @@ export default class TodoList extends Component {
         if (classList.contains(TODO_BUTTONS.TOGGLE)) {
           target.closest('.todo').classList.toggle('completed');
           this.props.checkTodo(targetId);
+          console.log(targetId);
         }
 
         if (classList.contains(TODO_BUTTONS.DESTROY)) {

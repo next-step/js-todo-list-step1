@@ -1,4 +1,6 @@
 import Component from '../core/component.js';
+import { STORAGE_KEY } from '../utils/constants.js';
+import { setLocalStorageItem } from '../utils/utils.js';
 
 export default class NewTodoInput extends Component {
   bindEvents() {
@@ -18,5 +20,6 @@ export default class NewTodoInput extends Component {
       checked: false,
     });
     this.props.todoList.set(todoList);
+    setLocalStorageItem(STORAGE_KEY.TODO, todoList);
   }
 }
