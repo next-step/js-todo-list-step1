@@ -1,6 +1,19 @@
 export class ToDoInput {
-    constructor(){
-        
+    state; 
+    $target;
+    constructor(target){
+        this.$target = target;
+    }
+  
+    render () {
+  
+    }
+  
+    initEventListener () {
+  
+    }
+  
+    setState () {
+
     }
 }
-

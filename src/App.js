@@ -1,9 +1,12 @@
-import { ToDoInput } from "./component/index.js";
+import { ToDoInput,ToDoList } from "./component/index.js";
 class App {
     $todoInput;
+    $todoList;
     constructor(){
-        console.log("asd")
-        this.$todoInput = new ToDoInput();
+        const toDoInputTarget = document.querySelector("#new-todo-title");
+        const toDoListTarget = document.querySelector('div');
+        this.$todoInput = new ToDoInput(toDoInputTarget);
+        this.$todoList = new ToDoList(toDoListTarget);
     }
 }
 
