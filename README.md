@@ -39,15 +39,15 @@
 
 ## 🎯 요구사항
 
-- [ ] todo list에 todoItem을 키보드로 입력하여 추가하기
-- [ ] todo list의 체크박스를 클릭하여 complete 상태로 변경 (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
-- [ ] todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
-- [ ] todo list를 더블클릭했을 때 input 모드로 변경 (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
-- [ ] todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
-- [ ] todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
+- [x] todo list에 todoItem을 키보드로 입력하여 추가하기
+- [x] todo list의 체크박스를 클릭하여 complete 상태로 변경 (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
+- [x] todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
+- [x] todo list를 더블클릭했을 때 input 모드로 변경 (li tag 에 editing class 추가) 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
+- [x] todo list의 item갯수를 count한 갯수를 리스트의 하단에 보여주기
+- [x] todo list의 상태값을 확인하여, 해야할 일과, 완료한 일을 클릭하면 해당 상태의 아이템만 보여주기
 
 ## 🎯🎯 심화 요구사항
-- [ ] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
+- [x] localStorage에 데이터를 저장하여, TodoItem의 CRUD를 반영하기. 따라서 새로고침하여도 저장된 데이터를 확인할 수 있어야 함
 
 <br/>
 
@@ -109,27 +109,4 @@ live-server 폴더명
 
 <br/>
 
-## 💬 1주차 미션 후기 블로그
 
-아래 링크는 1주차 미션을 진행하면서 블로그를 작성해주신 분들의 글입니다. 미션을 진행하면서, 다른 분들의 문제 해결 과정이 궁금하다면 참고해주세요 😄
-- [1주차 미션후기](https://www.notion.so/1-2-8b624729fbce4174b8b583efb10c3200)
-- [블랙커피 프론트엔드 스터디 레벨1 후기](https://yujo11.github.io/%EB%B8%94%EB%9E%99%EC%BB%A4%ED%94%BC/%EB%B8%94%EB%9E%99%EC%BB%A4%ED%94%BC-%ED%94%84%EB%A1%A0%ED%8A%B8%EC%97%94%EB%93%9C-%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A0%88%EB%B2%A81-%ED%9B%84%EA%B8%B0/)
-- [블랙커피 프론트엔드 스터디 회고](https://www.notion.so/bffb14daea984293a954ac7cdb4f7c1e)
-
-<br/>
-
-## 👏🏼 Contributing
-
-만약 미션 수행 중에 개선사항이 필요하다면, 언제든 자유롭게 PR을 보내주세요.
-
-<br/>
-
-## 🐞 Bug Report
-
-버그를 발견한다면, [Issues](https://github.com/next-step/js-todo-list-step1/issues)에 등록해주세요.
-
-<br/>
-
-## 📝 License
-
-This project is [MIT](https://github.com/next-step/js-todo-list-step1/blob/main/LICENSE) licensed.
