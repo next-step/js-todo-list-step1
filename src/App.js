@@ -4,7 +4,7 @@ class App {
     $todoList;
     constructor(){
         const toDoInputTarget = document.querySelector("#new-todo-title");
-        const toDoListTarget = document.querySelector('div');
+        const toDoListTarget = document.querySelector('#todo-list');
         this.$todoInput = new ToDoInput(toDoInputTarget);
         this.$todoList = new ToDoList(toDoListTarget);
     }
