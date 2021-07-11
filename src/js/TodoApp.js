@@ -1,3 +1,4 @@
+import TodoInput from './TodoInput.js';
 import TodoList from './TodoList.js';
 
 export default function TodoApp($app) {
@@ -13,6 +14,14 @@ export default function TodoApp($app) {
   const todoList = new TodoList({
     $app,
     initialState: this.state.todoes,
+  });
+
+  new TodoInput({
+    $app,
+    onAdd: (contents) => {
+      this.state.todoes.push(contents);
+      this.setState(this.state);
+    },
   });
 
   const init = () => {
