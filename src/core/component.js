@@ -3,9 +3,6 @@ export default class Component {
     $props;
     $state;
     constructor ($target, $props) {
-      console.log("constructor");
-      console.log($target);
-      console.log($props);
       this.$target = $target;
       this.$props = $props; 
       this.setup();

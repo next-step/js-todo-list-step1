@@ -3,9 +3,6 @@ import Component from "../core/component.js";
 class TodoList extends Component{
     setup(){
         this.$state = this.$props.$state;
-
-        console.log(this.$target);
-        console.log(this.$props);
     }
 
     template(){
@@ -18,7 +15,7 @@ class TodoList extends Component{
               <label id=${item.id} class="label">${item.content}</label>
               <button id=${item.id} class="destroy"></button>
             </div>
-            <input class="edit" value="${item.content}" />
+            <input id=${item.id} class="edit" value="${item.content}" />
           </li>
           `).join('')}
          `
@@ -38,15 +35,27 @@ class TodoList extends Component{
           })
         });
 
-        // const editBtn = document.querySelectorAll('.label');
-        // editBtn.forEach(element =>{
-        //     element.addEventListener('dbclick',(e)=>{
-        //         // document.querySelectorAll('li').map(item =>{
+        const editBtn = document.querySelectorAll('.label');
+        editBtn.forEach(element =>{
+            element.addEventListener('dblclick', (e)=>{
+                this.editTodo(e.target);
+            })
+        });
+    }
+    editTodo(targetDom){
+       const edit_li = targetDom.parentNode.parentNode;
+       const edit_input = targetDom.parentNode.nextElementSibling;
+       edit_li.classList.add('editing');
 
-        //         // })
-        //     })
-        // });
-
+       if(edit_li.classList.contains("editing")){
+         edit_li.addEventListener('keyup',(e)=>{
+            if(e.key=="Enter"){
+                this.$props.onUpdateTodo(targetDom.id, edit_input.value)
+            }else if(e.key=="Escape"){
+                edit_li.classList.remove('editing')
+            }
+         })
+       }
     }
 }
 

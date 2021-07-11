@@ -37,7 +37,7 @@ class Filter extends Component{
             element.addEventListener('click',(e)=>{
                 this.$props.onFilterTodo(e.target.id);
             })
-        })
+        });
     }
 }
 

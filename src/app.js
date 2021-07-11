@@ -72,8 +72,19 @@ class App extends Component{
         localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
         this.setState(JSON.parse(localStorage.getItem("todo")));
     }
-    onUpdateTodo(id, content){
-
+    onUpdateTodo(id, new_content){
+        const List =  [];
+        this.$state.List.map(todo => {
+            if(todo.id==id){
+                List.push({id:todo.id, content:new_content, activate:todo.activate})
+            }else{
+                List.push({id:todo.id,content:todo.content, activate:todo.activate})
+            }
+        });
+        const count = String(this.$state.count*1);
+        const Filtermode = this.$state.Filtermode;
+        localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
+        this.setState(JSON.parse(localStorage.getItem("todo")));
     }
     onFilterTodo(mode){
         const List = this.$state.List;

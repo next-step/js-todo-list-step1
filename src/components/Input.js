@@ -1,9 +1,6 @@
 import Component from "../core/component.js";
 
 class Input extends Component{
-    setup(){
-    }
-    
     setEvent(){
         const onAddTodo = this.$props;
         this.$target.addEventListener('keyup',(e)=>{
