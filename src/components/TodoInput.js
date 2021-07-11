@@ -1,11 +1,14 @@
 export default class TodoInput {
-  constructor() {
-    this.input = document.querySelector('#new-todo-title"');
-    this.input.addEventListener('keyup', () => {
-      this.addTodo();
-    });
+  constructor({ onAdd }) {
+    this.todoInput = document.querySelector('#new-todo-title');
+    this.todoInput.addEventListener('keydown', (event) => this.addTodoItem(event, onAdd));
   }
-  addTodo() {
-    console.loog(1);
+
+  addTodoItem(event, onAdd){
+    const $newTodoTarget = event.target;
+    if(event.key !== "Enter") return
+    if($newTodoTarget.value === "") return alert("할일을 입력해주세요.")
+    onAdd($newTodoTarget.value);
+    $newTodoTarget.value="";
   }
 }
