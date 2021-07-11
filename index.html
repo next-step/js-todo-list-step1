@@ -22,7 +22,7 @@
           <span class="todo-count">총 <strong>0</strong> 개</span>
           <ul class="filters">
             <li>
-              <a class="all selected" href="/#">전체보기</a>
+              <a class="all selected" href="#">전체보기</a>
             </li>
             <li>
               <a class="active" href="#active">해야할 일</a>
@@ -32,7 +32,99 @@
             </li>
           </ul>
         </div>
+
       </main>
     </div>
+    <script>
+      const newItem = (title) => {
+        const newItemList = document.createElement('li');
+        const newItemDiv = document.createElement('div');
+        const newItemLabel = document.createElement('label');
+        const newItemButton = document.createElement('button');
+        const newItemCheckbox = document.createElement('input');
+        const newItemInput = document.createElement('input');
+
+        newItemDiv.className = 'view';
+        newItemLabel.className = 'label';
+        newItemLabel.innerText = title;
+        newItemButton.className = 'destroy';
+        newItemCheckbox.className = 'toggle';
+        newItemCheckbox.type = 'checkbox';
+        newItemInput.className = 'edit';
+        newItemInput.setAttribute('value', title);
+        newItemList.appendChild(newItemDiv);
+        newItemList.appendChild(newItemInput);
+        newItemDiv.appendChild(newItemCheckbox);
+        newItemDiv.appendChild(newItemLabel);
+        newItemDiv.appendChild(newItemButton);
+
+        newItemCheckbox.addEventListener('click', event => {
+          if (event.target.value) {
+            event.target.setAttribute('checked', true);
+            newItemList.className = 'completed';
+          } else {
+            event.target.removeAttribute('checked');
+          }
+        });
+
+        newItemButton.addEventListener('click', () => {
+          newItemList.remove();
+          const currentCount = document.getElementsByClassName('todo-count')[0].childNodes[1].textContent;
+          document.getElementsByClassName('todo-count')[0].childNodes[1].innerText = `${Number(currentCount) - 1}`;
+        });
+
+        newItemList.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            newItemList.removeAttribute('class');
+          } else if (e.key === 'Enter'){
+            newItemLabel.innerText = newItemInput.value;
+            newItemList.removeAttribute('class');
+          }
+        });
+
+        newItemList.addEventListener('dblclick', () => {
+          console.log(newItemList);
+          newItemList.className = 'editing';
+        });
+
+        return newItemList;
+      }
+
+      document.getElementById('new-todo-title').addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+          document.getElementById('todo-list').appendChild(newItem(event.target.value));
+          const currentCount = document.getElementsByClassName('todo-count')[0].childNodes[1].textContent;
+          document.getElementsByClassName('todo-count')[0].childNodes[1].innerText = `${Number(currentCount) + 1}`;
+        }
+      });
+
+      document.querySelector('.filters').addEventListener('click', (event) => {
+        const tab = event.currentTarget.querySelectorAll('a');
+        const list = document.getElementById('todo-list').querySelectorAll('li');
+        tab.forEach((element) => {
+          element.classList.remove('selected');
+        })
+        event.target.classList.add('selected');
+
+        list.forEach((element) => {
+          if (event.target.classList.contains('active')) {
+            if (element.classList.contains('completed')) {
+              element.style.display = 'none';
+            } else {
+              element.style.display = 'block';
+            }
+          } else if (event.target.classList.contains('completed')) {
+            if (element.classList.contains('completed')) {
+              element.style.display = 'block';
+            } else {
+              element.style.display = 'none';
+            }
+          } else {
+            element.style.display = 'block';
+          }
+        })
+      })
+
+    </script>
   </body>
 </html>
