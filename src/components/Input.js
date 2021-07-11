@@ -11,9 +11,7 @@ class Input extends Component{
                 const content = this.$target.value;
                 onAddTodo(content);
             }
-            
         });
-
     }
 }
 

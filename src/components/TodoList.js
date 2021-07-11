@@ -15,7 +15,7 @@ class TodoList extends Component{
           <li data-id="${item.id}" class=${item.activate?"completed":"notcompleted"}>
             <div class="view">
               <input class="toggle"  id=${item.id} type="checkbox" ${item.activate?"checked":""}/>
-              <label class="label">${item.content}</label>
+              <label id=${item.id} class="label">${item.content}</label>
               <button id=${item.id} class="destroy"></button>
             </div>
             <input class="edit" value="${item.content}" />
@@ -37,6 +37,16 @@ class TodoList extends Component{
             this.$props.onToggleTodo(e.target.id);
           })
         });
+
+        // const editBtn = document.querySelectorAll('.label');
+        // editBtn.forEach(element =>{
+        //     element.addEventListener('dbclick',(e)=>{
+        //         // document.querySelectorAll('li').map(item =>{
+
+        //         // })
+        //     })
+        // });
+
     }
 }
 

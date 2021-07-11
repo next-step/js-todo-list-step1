@@ -25,7 +25,7 @@ class App extends Component{
     }
   
     mounted(){
-        const {$state ,onAddTodo, onToggleTodo, onDeleteTodo, onCountTodo, onFilter} = this;
+        const {$state ,onAddTodo, onToggleTodo, onDeleteTodo, onUpdateTodo, onFilterTodo} = this;
         const _Input = document.querySelector('#new-todo-title');
         const _TodoList = document.querySelector('#todo-list');
         const _Filter = document.querySelector('#todo-filter');
@@ -34,23 +34,24 @@ class App extends Component{
         new TodoList(_TodoList, {
             $state,
             onToggleTodo: onToggleTodo.bind(this),
-            onDeleteTodo : onDeleteTodo.bind(this)
+            onDeleteTodo : onDeleteTodo.bind(this),
+            onUpdateTodo : onUpdateTodo.bind(this)
         });
-        new Filter(_Filter);
+        new Filter(_Filter,{
+            $state,
+            onFilterTodo : onFilterTodo.bind(this)
+        });
     }
 
     onAddTodo(content){
-        //const {count,Filtermode,List} = this.$state;
         const id = String(this.$state.count*1+1);
         const Filtermode = this.$state.Filtermode;
         const List = [...this.$state.List, {id ,content:content,activate:false}];
         localStorage.setItem("todo",JSON.stringify({List,count : id*1,Filtermode}));
         this.setState(JSON.parse(localStorage.getItem("todo")));
-        //localStorage.setItem("todo",this.$state);
     }
     onToggleTodo(id){
       const List =  [];
-      
       this.$state.List.map(todo => {
           if(todo.id==id){
                 List.push({id:todo.id, content:todo.content, activate:!todo.activate})
@@ -58,7 +59,6 @@ class App extends Component{
               List.push({id:todo.id,content:todo.content, activate:todo.activate})
           }
       });
-      console.log(List);
       const count = String(this.$state.count*1+1);
       const Filtermode = this.$state.Filtermode;
       localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
@@ -67,13 +67,21 @@ class App extends Component{
     }
     onDeleteTodo(id){
         const List = this.$state.List.filter(todo => todo.id!==id);
-        const count = String(this.$state.count*1+1);
+        const count = String(this.$state.count*1);
         const Filtermode = this.$state.Filtermode;
         localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
         this.setState(JSON.parse(localStorage.getItem("todo")));
     }
-    onCountTodo(){}
-    onFilter(mode){}
+    onUpdateTodo(id, content){
+
+    }
+    onFilterTodo(mode){
+        const List = this.$state.List;
+        const count = String(this.$state.count*1);
+        const Filtermode = mode;
+        localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
+        this.setState(JSON.parse(localStorage.getItem("todo")));
+    }
 }
 
 
