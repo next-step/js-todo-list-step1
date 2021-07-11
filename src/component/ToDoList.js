@@ -18,7 +18,7 @@ export class ToDoList {
         this.$target.innerHTML = items.map(({state,title})=>`
          <li ${ getStateClass(state) }>
             <div class="view">
-                <input class="toggle" type="checkbox" checked/>
+                <input class="toggle" type="checkbox" ${state === TODO_STATE.COMPLETED ? 'checked' : '' }/>
                 <label class="label">${title}</label>
                 <button class="destroy"></button>
             </div>
@@ -28,6 +28,16 @@ export class ToDoList {
 
     }
     initEventListener(){
+        const toggleComponents = this.$target.querySelectorAll('.toggle');
+        const {items} = this.state;
+        toggleComponents.forEach((element,idx) => {
+            element.addEventListener('change',(()=>{
+                const todoItem = items[idx];
+                todoItem.state = element.checked ? TODO_STATE.COMPLETED : TODO_STATE.TODO
+                items[idx] = {...todoItem};
+                this.setState({items:[...items]});
+            })
+        )});
 
     }
     setState(payload){
