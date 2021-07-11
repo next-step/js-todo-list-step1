@@ -1,14 +1,11 @@
 export default class TodoList {
-  constructor(todoItems) {
+  constructor() {
     this.todoList = document.querySelector('#todo-list');
-    this.todoItems = todoItems;
-    console.log(todoItems)
-    this.render();
   }
-  render(){
-    const todoItemTemplate = (text) => {
+  render(todoItems){
+    const todoItemTemplate = (id, text) => {
       return `
-        <li>
+        <li data-id=${id}>
             <div class="view">
               <input class="toggle" type="checkbox" />
               <label class="label">${text}</label>
@@ -18,7 +15,10 @@ export default class TodoList {
         </li>
         `
     }
-    const template = this.todoItems.map((todo)=>todoItemTemplate(todo));
+    const template = todoItems.map((todo,id)=>todoItemTemplate(id,todo));
     this.todoList.innerHTML = template.join("");
+  }
+  setEvent({onDelete}){
+    this.todoList.addEventListener('click', onDelete);
   }
 }
