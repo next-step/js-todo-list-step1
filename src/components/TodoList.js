@@ -5,9 +5,9 @@ import $ from "./utils.js";
 export default class TodoList extends Component{
     template() {
         const { filteredItems } = this.$props;
-        const { todoItems, selectedItem } = this.$state;
+        const selectedItem = this.$state.selectedItem;
         return `
-    ${filteredItems.map(({ id, contents, isComplete }) =>
+    ${filteredItems.map(({ id, content, isComplete }) =>
             `<li class=${isComplete ? 'completed' : selectedItem === id ? "editing" : "false"} data-id="${id}">
         <div class="view">
         <input class="toggle" type="checkbox" ${isComplete ? "checked" : ''}/>

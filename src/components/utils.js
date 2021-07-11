@@ -1,0 +1,1 @@
+export default function $(selector){ document.querySelector(selector) }

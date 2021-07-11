@@ -13,7 +13,7 @@ export default class todoApp extends Component { //객체 생성 함수
                 {
                     id: 1,
                     content: 'item1',
-                    isComplete: False
+                    isComplete: false
                 }
             ],
             selectedItem: -1,
@@ -22,7 +22,6 @@ export default class todoApp extends Component { //객체 생성 함수
     }
     template() {
         return `
-        <div class="todoapp">
         <h1>TODOS</h1>
         <input
           id="new-todo-title"
@@ -35,18 +34,17 @@ export default class todoApp extends Component { //객체 생성 함수
           <ul id="todo-list" class="todo-list"></ul>
           <div class="count-container">
           </div>
-        </main>
-      </div>`
+        </main>`;
     }
 
 
     
     mounted() {
         const { filteredItems, addItem, editItem, toggleItem, deleteItem, countItem } = this;
-        $todoInput = $(".new-todo");
-        $todoList = $(".todo-list");
-        $todoCount = $(".count-container");
-        $filter = $(".filters")
+        const $todoInput = $(".new-todo");
+        const $todoList = $(".todo-list");
+        const $todoCount = $(".count-container");
+        
 
         new TodoInput($todoInput, {
             addItem: addItem.bind(this)
@@ -69,9 +67,6 @@ export default class todoApp extends Component { //객체 생성 함수
             isFilter === 0);
     }
             
-
-
-    savedState = localStorage.getItem('$state');
     
     addItem(contents) {
         const { todoItems } = this.$state;

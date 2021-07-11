@@ -1,5 +1,5 @@
-import $ from "./components/utils";
-import todoApp from "./todoApp";
+import $ from "./components/utils.js";
+import todoApp from "./todoApp.js";
 
-const $app = $("todoapp");
-new todoApp($app);
+
+new todoApp(document.querySelector(".todoapp"));
