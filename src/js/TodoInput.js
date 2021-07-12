@@ -6,6 +6,11 @@ export default function TodoInput({ $app, onAdd }) {
   this.$target.autofocus;
   $app.appendChild(this.$target);
 
+  this.setState = (nextState) => {
+    this.setState = nextState;
+    this.render();
+  };
+
   this.$target.addEventListener('keydown', (e) => {
     this.addTodoItem(e);
   });
@@ -17,10 +22,6 @@ export default function TodoInput({ $app, onAdd }) {
       onAdd($newTodoTarget.value);
       $newTodoTarget.value = '';
     }
-  };
-  this.setState = (nextState) => {
-    this.setState = nextState;
-    this.render();
   };
 
   this.render = () => {};
