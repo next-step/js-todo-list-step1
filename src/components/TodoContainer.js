@@ -3,18 +3,18 @@ import Component from "../core/Component.js";
 export default class TodoContainer extends Component{
 
     template(){
-        const {countItem} = this.$props;
+        const {itemCount} = this.$props;
         return `
-        <span class="todo-count">총 <strong>${countItem}</strong> 개</span>
+        <span class="todo-count">총 <strong>${itemCount}</strong> 개</span>
         <ul class="filters">
             <li>
-            <a class="all selected filter" data-filter="0" href="#">전체보기</a>
+            <a class="filter" data-filter="0" href="#">전체보기</a>
             </li>
             <li>
-            <a class="active filter" href="#active" data-filter="1">해야할 일</a>
+            <a class="filter" href="#active" data-filter="2">해야할 일</a>
             </li>
             <li>
-            <a class="completed filter" href="#completed" data-filter="2">완료한 일</a>
+            <a class="filter" href="#completed" data-filter="1">완료한 일</a>
             </li>
         </ul>`
     }
@@ -22,7 +22,7 @@ export default class TodoContainer extends Component{
     setEvent() {
         const { filterItem } = this.$props;
         this.addEvent("click", ".filter", (event) => {
-            event.preventDefault();
+           
             filterItem(Number(event.target.dataset.filter));
         });
     }
