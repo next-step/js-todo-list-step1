@@ -14,7 +14,12 @@ export default function TodoList({ $app, initialState }) {
 
   this.render = () => {
     const todoTemplate = `${this.state
-      .map((todo, idx) => `<li data-index="${idx}">${todo}</div>`)
+      .map(
+        (todo, idx) =>
+          `<li data-index=${idx} class='toggle'>
+            <input type="checkbox" />${todo}
+            </li>`
+      )
       .join('')}`;
     this.$target.innerHTML = todoTemplate;
   };
