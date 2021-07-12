@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html lang="kr">
-  <head>
+
+<head>
     <meta charset="utf-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>이벤트 - TODOS</title>
     <link rel="stylesheet" href="./src/css/style.css" />
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="todoapp">
-      <h1>TODOS</h1>
-      <input
-        id="new-todo-title"
-        class="new-todo"
-        placeholder="할일을 추가해주세요"
-        autofocus
-      />
-      <main>
-        <input class="toggle-all" type="checkbox" />
-        <ul id="todo-list" class="todo-list"></ul>
-        <div class="count-container">
-          <span class="todo-count">총 <strong>0</strong> 개</span>
-          <ul class="filters">
-            <li>
-              <a class="all selected" href="#">전체보기</a>
-            </li>
-            <li>
-              <a class="active" href="#active">해야할 일</a>
-            </li>
-            <li>
-              <a class="completed" href="#completed">완료한 일</a>
-            </li>
-          </ul>
-        </div>
-      </main>
+        <h1>TODOS</h1>
+        <input id="new-todo-title" class="new-todo" placeholder="할일을 추가해주세요" autofocus onkeyup="addTodo()" />
+        <main>
+            <input class="toggle-all" type="checkbox" />
+            <ul id="todo-list" class="todo-list">
+                <li>
+                    <div class="view">
+                        <input class="toggle" type="checkbox" onclick="changeStatus()"/>
+                        <label class="label">새로운 타이틀</label>
+                        <button class="destroy" onclick="deleteTodo()" id="D"></button>
+                    </div>
+                    <input class="edit" value="새로운 타이틀" />
+                </li>
+            </ul>
+            <div class="count-container">
+                <span class="todo-count">총 <strong id="todo-count-text">0</strong> 개</span>
+                <ul class="filters">
+                    <li>
+                        <a class="all selected" href="#">전체보기</a>
+                    </li>
+                    <li>
+                        <a class="active" href="#active">해야할 일</a>
+                    </li>
+                    <li>
+                        <a class="completed" href="#completed">완료한 일</a>
+                    </li>
+                </ul>
+            </div>
+        </main>
     </div>
-  </body>
+    <script type="text/javascript" src="./src/js/main.js"></script>
+</body>
+
 </html>
