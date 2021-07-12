@@ -24,7 +24,7 @@ export default class App {
     this.todoInput.setEvent({
       onAdd: text => {
         const todo =  {
-          id: new Date(),
+          id: Date.now(),
           text,
           completed:false,
         }
@@ -35,18 +35,21 @@ export default class App {
     this.todoList.render(this.todoItems)
     this.todoList.setEvent({
       onDelete: (event) => {
-        const item = event.target;
-        if (!item.classList.contains('destroy')) return;
-        const id = Number(item.closest('li').dataset.id);
-        const itemIdx = this.todoItems.findIndex((i) => i.id === id);
+        const target = event.target;
+        if (!target.classList.contains('destroy')) return;
+        const id = Number(target.closest('li').dataset.id);
+        const itemIdx = this.todoItems.findIndex((item) => item.id === id);
         this.todoItems.splice(itemIdx, 1);
         this.setState(this.todoItems);
       },
       onCompleted : (event) =>{
-        const item = event.target;
-        if (!item.classList.contains('toggle')) return;
-        const itemIdx = this.todoItems.findIndex((i) => i.id === id);
-        console.log(itemIdx)
+        const target = event.target;
+        if (!target.classList.contains('toggle')) return;
+        const id = Number(target.closest('li').dataset.id);
+        console.log(id)
+        const item = this.todoItems.find((todoItem) => todoItem.id === id);
+        item.completed = !item.completed;
+        this.setState(this.todoItems);
       }
     });
   }
