@@ -10,94 +10,103 @@ function TodoList ({
   this.todoList = $('.todo-list')
   this.filters = $('.filters')
   this.todos = todos
-  this.status = STATUS_ALL
-  
-  let todoStatus
 
-  this.mapTodos = () => {
-    switch(this.status) {
-      case STATUS_ALL :
-        todoStatus = this.todos
-        break;
-      case STATUS_ACTIVE :
-        todoStatus = this.todos.filter(item => item.status === 'active')
-        break;
-      case STATUS_COMPLETED :
-        todoStatus = this.todos.filter(item => item.status === 'completed')
-        break;
-    }
-    return todos
+  this.todoTemplate = (item) => {
+    return `<li id=${item.id} ${item.status === 'completed' ? "class=completed" : ""}>
+              <div class="view">
+                <input class="toggle" type="checkbox" id=${item.id} ${item.status === 'completed' ? "class=completed" : "class=checked"} />
+                <label class="label">${item.todo}</label>
+                <button class="destroy" id="${item.id}"></button>
+              </div>
+            </li>`
   }
-
+  
   this.handleMapAllTodo = () => {
-    this.todoList.innerHTML = this.todos.map(item => {
-      return `<li>
-                <div class="view">
-                  <input class="toggle" type="checkbox" />
-                  <label class="label">${item.todo}</label>
-                  <button class="destroy"></button>
-                </div>
-                <input class="edit" value="${item.todo}" />
-              </li>`
-    }).join('')
+    this.todos.map(item => {
+      this.todoList.insertAdjacentHTML('beforeend', this.todoTemplate(item))
+    })
   }
 
   this.handleMapActiveTodo = () => {
     const todos = this.todos.filter(item => item.status === 'active')
-    this.todoList.innerHTML = todos.map(item => {
-      return `<li>
-                <div class="view">
-                  <input class="toggle" type="checkbox" />
-                  <label class="label">${item.todo}</label>
-                  <button class="destroy"></button>
-                </div>
-                <input class="edit" value="${item.todo}" />
-              </li>`
-    }).join('')
+    todos.map(item => {
+      this.todoList.insertAdjacentHTML('beforeend', this.todoTemplate(item))
+    })
   }
 
   this.handleMapCompletedTodo = () => {
     const todos = this.todos.filter(item => item.status === 'completed')
-    this.todoList.innerHTML = todos.map(item => {
-      return `<li>
-                <div class="view">
-                  <input class="toggle" type="checkbox" />
-                  <label class="label">${item.todo}</label>
-                  <button class="destroy"></button>
-                </div>
-                <input class="edit" value="${item.todo}" />
-              </li>`
-    }).join('')
+    todos.map(item => {
+      this.todoList.insertAdjacentHTML('beforeend', this.todoTemplate(item))
+    })
   }
 
-  this.handleCheckTodo = () => {
+  this.mapTodos = (option = STATUS_ALL) => {
+    this.todoList.innerHTML = '';
 
+    switch(option) {
+      case STATUS_ALL :
+        this.handleMapAllTodo()
+        break;
+      case STATUS_ACTIVE :
+        this.handleMapActiveTodo()
+        break;
+      case STATUS_COMPLETED :
+        this.handleMapCompletedTodo()
+        break;
+    }
   }
 
-  this.handleDelTodo = () => {
+  this.toggleTodo = (target) => {
+    this.todos.map(item => {
+      if(item.id == target.id) {
+        if(item.status == "completed") {
+          return item.status = "active"
+        } else if (item.status == "active") {
+          return item.status = "completed"
+        }
+      }
+    })
+    // storage.set(this.TODOS_KEY, this.todos)
+  }
 
+  this.removeTodo = (target) => {
+    this.todos = this.todos.filter(item => {
+      if(item.id !== target.id) {
+        return item
+      }
+    })
+    // storage.set(this.TODOS_KEY, this.todos)
+    this.mapTodos()
   }
 
   this.handleBindEvents = () => {
     this.filters.addEventListener("click", e => {
-      if(e.target.className == 'active') {
-        this.status = STATUS_ACTIVE
-      } else if(e.target.className == 'completed') {
-        this.status = STATUS_COMPLETED
+      if(e.target.nodeName === 'A') {
+        e.target.closest('ul')
+                .querySelectorAll('a')
+                .forEach((target) => target.classList.remove('selected'))
+        e.target.classList.add('selected')
+      }
+      if(e.target.classList.contains("active")) {
+        this.mapTodos(STATUS_ACTIVE)
+      } else if(e.target.classList.contains("completed")) {
+        this.mapTodos(STATUS_COMPLETED)
+      } else if(e.target.classList.contains("all")) {
+        this.mapTodos(STATUS_ALL)
       }
     })
 
     this.todoList.addEventListener("click", e => {
-      if(e.target.className == "destroy") {
-        console.log("삭제")
-      } else if(e.target.className == "toggle") {
-        console.log("checkbox")
+      if(e.target.classList.contains("destroy")) {
+        this.removeTodo(e.target)
+      } else if(e.target.classList.contains("toggle")) {
+        this.toggleTodo(e.target)
       }
     })
   }
 
   this.render = () => {
-    this.handleMapList()
     this.handleBindEvents()
     this.mapTodos()
   }

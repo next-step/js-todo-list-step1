@@ -2,15 +2,17 @@ import TodoInput from '../component/TodoInput.js'
 import TodoList from '../component/TodoList.js'
 import TodoCount from '../component/TodoCount.js'
 
-import $ from '../util/QuerySelector.js'
+import { storage } from '../util/Storage.js'
 
 function TodoApp () {
-  this.todos = []
+  this.TODOS_KEY = "todos"
+  this.todos = (localStorage.getItem(this.TODOS_KEY)) ? storage.get(this.TODOS_KEY) : []
 
   this.handleAddTodo = (todoItem) => {
     const newTodos = this.todos.slice()
     newTodos.push(todoItem)
     this.setState(newTodos)
+    storage.set(this.TODOS_KEY, this.todos)
   }
 
   this.render = () => {

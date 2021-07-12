@@ -11,6 +11,7 @@ function TodoInput({
     this.newTodo.addEventListener("keyup", (e) => {
       if(e.keyCode === 13) {
         const todoItem = {
+          id: String(Date.now()),
           todo : this.newTodo.value,
           status: "active"
         }
