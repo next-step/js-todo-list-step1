@@ -5,8 +5,25 @@ import TodoCount from './TodoCount.js';
 import { TodoFilter, FilterType } from './TodoFilter.js';
 
 export default function TodoApp() {
+  const localStorageKey = 'TODOS';
   let id = 0;
   this.todoItems = [];
+
+  this.init = () => {
+    const savedItems = localStorage.getItem(localStorageKey);
+    if (savedItems) {
+      const parsedItems = JSON.parse(localStorage.getItem(localStorageKey));
+      this.todoItems = parsedItems ? parsedItems : [];
+      id = parsedItems ? parsedItems.length : 0;
+
+      todoList.setState(parsedItems);
+      todoCount.setState(parsedItems);
+    }
+  };
+
+  const saveItems = () => {
+    localStorage.setItem(localStorageKey, JSON.stringify(this.todoItems));
+  };
 
   this.setState = (updatedItems) => {
     this.todoItems = updatedItems;
@@ -21,6 +38,8 @@ export default function TodoApp() {
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
       todoCount.setState(this.todoItems);
+
+      saveItems();
     },
   });
 
@@ -34,6 +53,7 @@ export default function TodoApp() {
       });
       todoList.setState(this.todoItems);
       todoCount.setState(this.todoItems);
+      saveItems();
     },
     onComplete: (id) => {
       this.todoItems = this.todoItems.map((item) => {
@@ -44,6 +64,7 @@ export default function TodoApp() {
       });
       todoList.setState(this.todoItems);
       todoCount.setState(this.todoItems);
+      saveItems();
     },
     onDelete: (id) => {
       this.todoItems = this.todoItems.filter((item) => {
@@ -51,6 +72,7 @@ export default function TodoApp() {
       });
       todoList.setState(this.todoItems);
       todoCount.setState(this.todoItems);
+      saveItems();
     },
     onEdit: (e, id) => {
       if (e.key === 'Enter') {
@@ -63,6 +85,7 @@ export default function TodoApp() {
         });
         todoList.setState(this.todoItems);
         todoCount.setState(this.todoItems);
+        saveItems();
       }
       if (e.key === 'Escape') {
         this.todoItems = this.todoItems.map((item) => {
@@ -73,6 +96,7 @@ export default function TodoApp() {
         });
         todoList.setState(this.todoItems);
         todoCount.setState(this.todoItems);
+        saveItems();
       }
     },
   });
