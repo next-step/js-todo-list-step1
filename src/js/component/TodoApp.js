@@ -15,6 +15,29 @@ function TodoApp () {
     storage.set(this.TODOS_KEY, this.todos)
   }
 
+  this.handleToggleTodo = (target) => {
+    this.todos.map(item => {
+      if(item.id == target.id) {
+        if(item.status == "completed") {
+          return item.status = "active"
+        } else if (item.status == "active") {
+          return item.status = "completed"
+        }
+      }
+    })
+    storage.set(this.TODOS_KEY, this.todos)
+  }
+
+  this.handleRemoveTodo = (target) => {
+    this.todos = this.todos.filter(item => {
+      if(item.id !== target.id) {
+        return item
+      }
+    })
+    this.setState(this.todos)
+    storage.set(this.TODOS_KEY, this.todos)
+  }
+
   this.render = () => {
     this.todoInput = new TodoInput({
       onAddTodo: this.handleAddTodo.bind(this)
@@ -23,7 +46,9 @@ function TodoApp () {
       todos: this.todos
     })
     this.todoList = new TodoList({
-      todos: this.todos
+      todos: this.todos,
+      onToggleTodo: this.handleToggleTodo.bind(this),
+      onRemoveTodo: this.handleRemoveTodo.bind(this)
     })
   }
 

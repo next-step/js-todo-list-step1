@@ -1,14 +1,20 @@
 import $ from '../util/QuerySelector.js'
-
-const STATUS_ALL = "is-all"
-const STATUS_ACTIVE = "is-active"
-const STATUS_COMPLETED = "is-completed"
+import { 
+  STATUS_ALL,
+  STATUS_ACTIVE,
+  STATUS_COMPLETED
+} from '../util/Constant.js'
 
 function TodoList ({
-  todos
+  todos,
+  onToggleTodo,
+  onRemoveTodo
 }) {
   this.todoList = $('.todo-list')
   this.filters = $('.filters')
+
+  this.onToggleTodo = onToggleTodo
+  this.onRemoveTodo = onRemoveTodo
   this.todos = todos
 
   this.todoTemplate = (item) => {
@@ -57,29 +63,6 @@ function TodoList ({
     }
   }
 
-  this.toggleTodo = (target) => {
-    this.todos.map(item => {
-      if(item.id == target.id) {
-        if(item.status == "completed") {
-          return item.status = "active"
-        } else if (item.status == "active") {
-          return item.status = "completed"
-        }
-      }
-    })
-    // storage.set(this.TODOS_KEY, this.todos)
-  }
-
-  this.removeTodo = (target) => {
-    this.todos = this.todos.filter(item => {
-      if(item.id !== target.id) {
-        return item
-      }
-    })
-    // storage.set(this.TODOS_KEY, this.todos)
-    this.mapTodos()
-  }
-
   this.handleBindEvents = () => {
     this.filters.addEventListener("click", e => {
       if(e.target.nodeName === 'A') {
@@ -99,9 +82,9 @@ function TodoList ({
 
     this.todoList.addEventListener("click", e => {
       if(e.target.classList.contains("destroy")) {
-        this.removeTodo(e.target)
+        this.onRemoveTodo(e.target)
       } else if(e.target.classList.contains("toggle")) {
-        this.toggleTodo(e.target)
+        this.onToggleTodo(e.target)
       }
     })
   }
