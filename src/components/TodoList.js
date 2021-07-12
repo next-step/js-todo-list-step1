@@ -13,7 +13,7 @@ export default class TodoList extends Component {
         <input class="toggle" type="checkbox" ${isComplete? "checked" : ''}/>
         <label class="label">${content}</label>
         <button class="destroy"></button>
-        <input class="edit" value=""/>
+        <input class="edit" value="${content}"/>
         </div>
     </li>`).join(``)}`
     }
