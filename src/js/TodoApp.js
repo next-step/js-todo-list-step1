@@ -12,7 +12,7 @@ export default function TodoApp($app) {
         edit: '',
       },
       {
-        idx: 2,
+        idx: 1,
         content: "I'm Tami",
         state: '',
         edit: '',
@@ -28,26 +28,13 @@ export default function TodoApp($app) {
 
   new TodoInput({
     $app,
-    onAdd: (contents) => {
-      const prevIdx = this.state.todoes[this.state.todoes.length - 1].idx;
-
-      const newTodo = {
-        idx: prevIdx + 1,
-        content: contents,
-        state: '',
-        edit: '',
-      };
-      this.state.todoes.push(newTodo);
-
-      this.setState({
-        ...this.state,
-      });
-    },
+    onAdd: (contents) => addTodo(contents),
   });
 
   const todoList = new TodoList({
     $app,
     initialState: this.state.todoes,
+    onToggle: (idx) => toggleTodo(idx),
   });
   const todoCount = new TodoCount({
     $app,
@@ -60,4 +47,34 @@ export default function TodoApp($app) {
     });
   };
   init();
+
+  const addTodo = (contents) => {
+    const todos = this.state.todoes;
+    const nextIdx = Math.max(0, ...todos.map((todo) => todo.idx)) + 1;
+    console.log('next', nextIdx);
+    const newTodo = {
+      idx: nextIdx,
+      content: contents,
+      state: '',
+      edit: '',
+    };
+    this.state.todoes.push(newTodo);
+
+    this.setState({
+      ...this.state,
+    });
+  };
+
+  const toggleTodo = (idx) => {
+    const todos = this.state.todoes;
+
+    todos.map((todo) => {
+      if (todo.idx === parseInt(idx)) {
+        todo.state = todo.state === '' ? 'complete' : '';
+      }
+    });
+    this.setState({
+      ...this.state,
+    });
+  };
 }
