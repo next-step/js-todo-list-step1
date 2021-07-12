@@ -19,7 +19,7 @@
         <input class="toggle-all" type="checkbox" />
         <ul id="todo-list" class="todo-list"></ul>
         <div class="count-container">
-          <span class="todo-count">총 <strong>0</strong> 개</span>
+          <span class="todo-count">총 <strong id='total-count'> 0</strong> 개</span>
           <ul class="filters">
             <li>
               <a class="all selected" href="#">전체보기</a>
@@ -36,3 +36,173 @@
     </div>
   </body>
 </html>
+<script type="text/javascript">
+  const newTodoTitle = document.getElementById("new-todo-title");
+  let   todoView = document.getElementById("todo-list");
+  let   todoData = JSON.parse(localStorage.getItem('todoData')) ?? [];
+
+  console.log("todoData", todoData);
+
+  initLoadTodoData();
+
+  function initLoadTodoData() {
+    for (let i = 0 ; i < todoData.length ; i++) {
+        addTodoItem(todoData[i], true);
+    }
+    document.getElementById("total-count").innerText = todoData.length;
+  }
+  
+  function addTodoItem(todoObj, isFilter) {
+    let id = ( isFilter ? todoObj.id : new Date().getTime() );
+    let isComplete = (todoObj.isComplete === "false" ? "false" : "completed");
+    let isChecked  = (todoObj.isComplete === "false" ? "false" : "checked");
+
+    let itemHTML = "";
+    itemHTML += "<li id='" + id + "' class='" + isComplete + "'>";
+    itemHTML += "<div class='" + todoObj.type + "'>";
+    itemHTML += "<input class='toggle' type='checkbox' id='" + id + "' " + isChecked + " />";
+    itemHTML += "<label class='label'>" + todoObj.value + "</label>";
+    itemHTML += "<button class='destroy' id='" + id + "'></button>";
+    itemHTML += "</div>";
+    itemHTML += "<input class='edit' value='" + todoObj.value + "' />";
+    itemHTML += "</li>";
+
+    todoView = document.getElementById("todo-list");
+    // console.log("todoView", todoView);
+
+    todoView.innerHTML += itemHTML;
+
+    if (!isFilter) {
+      todoData.push({
+        id         : id,
+        isComplete : isComplete,
+        type       : todoObj.type,
+        value      : todoObj.value,
+      });
+      localStorage.setItem('todoData', JSON.stringify(todoData));
+
+      // 요구사항 #5 - item갯수를 count한 갯수를 리스트의 하단에 보여주기
+      document.getElementById("total-count").innerText = todoData.length;
+    }
+  }
+
+  // 엔터키 이벤트 추가
+  // 요구사항 #1 - todo list에 todoItem을 키보드로 입력하여 추가하기
+  newTodoTitle.addEventListener("keyup", (e) => {
+    // console.log("todoData", todoData);
+    if (e.key === "Enter" && newTodoTitle.value !== '') {
+      let todoObj = {
+        isComplete : "false",
+        type : "view",
+        value : newTodoTitle.value,
+      }
+      addTodoItem(todoObj, false);
+      newTodoTitle.value = '';
+    }
+  });
+
+  let test;
+
+  // document.addEventListener("mouseup", (e) => {       // 왜 mouseup로 하면 안되는 이유는 나중에 찾아보기
+  document.addEventListener("click", (e) => {
+    let className = e.target.className;
+
+    // 요구사항 #2 - todo list의 체크박스를 클릭하여 complete 상태로 변경
+    //              (li tag 에 completed class 추가, input 태그에 checked 속성 추가)
+    if (className === "toggle") {
+      if (e.target.getAttribute("checked") === "") {
+        e.target.setAttribute("false", "");
+        e.target.removeAttribute("checked");
+      } else {
+        e.target.setAttribute("checked", "");
+        e.target.removeAttribute("false");
+      }
+      
+      let listItemClass = document.getElementById(e.target.id).className;
+      listItemClass = (listItemClass === "false" ? "completed" : "false");
+      document.getElementById(e.target.id).className = listItemClass;
+
+      let allTodo = Array.prototype.slice.call( todoView.children );
+      let todo = e.target.parentElement.parentElement;
+      let index = allTodo.indexOf(todo);
+      todoData[index].isComplete = listItemClass;
+
+      localStorage.setItem('todoData', JSON.stringify(todoData));
+    }
+
+    // 요구사항 #3 - todo list의 x버튼을 이용해서 해당 엘리먼트를 삭제
+    if (className === "destroy") {
+      let allTodo = Array.prototype.slice.call( todoView.children );
+      let todo = e.target.parentElement.parentElement;
+      let index = allTodo.indexOf(todo);
+
+      todoData.splice(index, 1);
+      todo.remove();
+      localStorage.setItem('todoData', JSON.stringify(todoData));
+      
+      // 요구사항 #5 - item갯수를 count한 갯수를 리스트의 하단에 보여주기
+      document.getElementById("total-count").innerText = todoData.length;
+    }
+
+    // 요구사항 #6
+    if (className === "all selected") {
+      todoView.innerText = "";
+      todoData.forEach(element => {
+        addTodoItem(element, true);
+      });
+      document.getElementById("total-count").innerText = todoData.length;
+    }
+
+    if (className === "active") {
+      todoView.innerText = "";
+      let count = 0;
+      todoData.forEach(element => {
+        if (element.isComplete === "false") {
+          count++;
+          addTodoItem(element, true);
+        }
+      });
+      document.getElementById("total-count").innerText = count;
+    }
+
+    if (className === "completed") {
+      todoView.innerText = "";
+
+      let count = 0;
+      todoData.forEach(element => {
+        if (element.isComplete === "completed") {
+          count++;
+          addTodoItem(element, true);
+        }
+      });
+      // todoData.filter( todo => todo.isComplete === "completed")
+
+      document.getElementById("total-count").innerText = count;
+    }
+
+  });
+
+
+  // 요구사항 #4 - todo list를 더블클릭했을 때 input 모드로 변경 (li tag 에 editing class 추가) 
+  //            - 단 이때 수정을 완료하지 않은 상태에서 esc키를 누르면 수정되지 않은 채로 다시 view 모드로 복귀
+  document.addEventListener("dblclick", (e) => {
+    let li = e.target.parentElement.parentElement;
+    li.classList.add("editing");
+    li.addEventListener('keyup', (e2) => {
+      let orgValue = e.target.innerText;
+      if (e2.key === "Enter") {
+        let labelTag = e2.target.parentElement.getElementsByClassName("label")[0];
+        labelTag.innerText = e2.target.value;
+        localStorage.setItem('todoData', JSON.stringify(todoData));
+        e2.target.parentElement.classList.remove("editing");
+      }
+
+      if (e2.key === "Escape") {
+        e2.target.value = orgValue;
+        e2.target.parentElement.classList.remove("editing");
+      }
+      
+    });
+  });
+
+</script>
