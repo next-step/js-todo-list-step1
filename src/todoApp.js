@@ -40,7 +40,7 @@ export default class todoApp extends Component { //객체 생성 함수
 
     
     mounted() {
-        const { filteredItems, addItem, editItem, toggleItem, deleteItem, itemCount, updateItem, filterItem, resetItem } = this;
+        const { addItem, editItem, toggleItem, deleteItem,  updateItem, filterItem, resetItem } = this;
         const { isFilter, todoItems, selectedItem } = this.$state;
         const $todoInput = $("#new-todo-title");
         const $todoList = $(".todo-list");
