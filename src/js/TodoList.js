@@ -15,19 +15,11 @@ export default function TodoList({ $app, initialState }) {
   this.$target.addEventListener('click', (e) => {});
 
   this.$target.addEventListener('click', (e) => {
-    // const $toggleBox = e
-    // console.log($toggleBox);
     console.log(e.target.className);
-    console.log(e.target);
-    // if ($toggleBox) {
-    //   const { nodeId } = $toggleBox.dataset;
-    //   console.log('nodeid', nodeId);
-    //   const selectNode = this.state.nodes.find((node) => node.id === nodeId);
-
-    //   if (selectNode) {
-    //     this.onClick(selectNode);
-    //   }
-    // }
+    console.log(e);
+    const $node = e;
+    const { nodeId } = $node.dataset;
+    console.log('nodeid', nodeId);
   });
   this.toggleTodo = (e) => {};
 
@@ -37,7 +29,7 @@ export default function TodoList({ $app, initialState }) {
         (todo, idx) =>
           `<li >
           <div class="view">
-            <input class="toggle" type="checkbox" />
+            <input class="toggle" type="checkbox" data-node-id=${todo.idx} />
             <label class="label">${todo.content}</label>
             <button class="destroy"></button>
           </div>
