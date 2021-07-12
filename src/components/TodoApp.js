@@ -20,4 +20,52 @@ export default function TodoApp() {
       this.setState(this.todoItems);
     },
   });
+
+  const todoList = new TodoList({
+    onEditing: (id) => {
+      this.todoItems = this.todoItems.map((item) => {
+        if (item.id === id) {
+          item.editing = !item.editing;
+        }
+        return item;
+      });
+      todoList.setState(this.todoItems);
+    },
+    onComplete: (id) => {
+      this.todoItems = this.todoItems.map((item) => {
+        if (item.id === id) {
+          item.completed = !item.completed;
+        }
+        return item;
+      });
+      todoList.setState(this.todoItems);
+    },
+    onDelete: (id) => {
+      this.todoItems = this.todoItems.filter((item) => {
+        return item.id !== id;
+      });
+      todoList.setState(this.todoItems);
+    },
+    onEdit: (e, id) => {
+      if (e.key === 'Enter') {
+        this.todoItems = this.todoItems.map((item) => {
+          if (item.id === id) {
+            item.contents = e.target.value;
+            item.editing = false;
+          }
+          return item;
+        });
+        todoList.setState(this.todoItems);
+      }
+      if (e.key === 'Escape') {
+        this.todoItems = this.todoItems.map((item) => {
+          if (item.id === id) {
+            item.editing = false;
+          }
+          return item;
+        });
+        todoList.setState(this.todoItems);
+      }
+    },
+  });
 }
