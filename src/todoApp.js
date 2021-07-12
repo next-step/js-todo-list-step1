@@ -40,8 +40,8 @@ export default class todoApp extends Component { //객체 생성 함수
 
     
     mounted() {
-        const { selectedItem, filteredItems, addItem, editItem, toggleItem, deleteItem, itemCount, updateItem, filterItem, resetItem } = this;
-        
+        const { filteredItems, addItem, editItem, toggleItem, deleteItem, itemCount, updateItem, filterItem, resetItem } = this;
+        const { isFilter, todoItems, selectedItem } = this.$state;
         const $todoInput = $("#new-todo-title");
         const $todoList = $(".todo-list");
         const $todoCount = $(".count-container");
@@ -51,7 +51,9 @@ export default class todoApp extends Component { //객체 생성 함수
             addItem: addItem.bind(this)
         });
         new TodoList($todoList, {
-            filteredItems,
+            filteredItems: todoItems.filter(({ isComplete }) => (isFilter === 1 && isComplete) ||
+                (isFilter === 2 && !isComplete) ||
+                (isFilter === 0)),
             selectedItem,
             editItem: editItem.bind(this),
             toggleItem: toggleItem.bind(this),
@@ -61,20 +63,12 @@ export default class todoApp extends Component { //객체 생성 함수
             
         });
         new TodoContainer($todoCount, { //todocount와 filter를 가지는 컨테이너
-            itemCount,
+            itemCount: todoItems.length,
             filterItem: filterItem.bind(this)
         });
     }
-    get filteredItems() {
-        const { isFilter, todoItems } = this.$state;
-        return todoItems.filter(({ isComplete }) => (isFilter === 1 && isComplete) ||
-            (isFilter === 2 && !isComplete) ||
-            (isFilter === 0));
-    }
-    get selectedItem() {
-        const { selectedItem } = this.$state;
-        return selectedItem;
-    }
+
+
     
     addItem(content) {
         const { todoItems } = this.$state;
@@ -82,15 +76,15 @@ export default class todoApp extends Component { //객체 생성 함수
         const isComplete = false;
         this.setState({
             todoItems: [
-            ...todoItems,
-            { id, content, isComplete }
+                ...todoItems,
+                { id, content, isComplete }
             ]
         });
     }
     updateItem(contents) {
         const { todoItems, selectedItem } = this.$state;
         todoItems[selectedItem].content = contents;
-        this.setState({ todoItems, selectedItem:-1})
+        this.setState({ todoItems, selectedItem: -1 })
     }
 
     editItem(id) {
@@ -112,10 +106,6 @@ export default class todoApp extends Component { //객체 생성 함수
     }
     resetItem() {
         this.setState({ selectedItem: -1 });
-    }
-    get itemCount() {
-        const { todoItems } = this.$state;
-        return todoItems.length;
     }
 }
 

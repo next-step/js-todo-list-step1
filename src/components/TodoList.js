@@ -24,10 +24,8 @@ export default class TodoList extends Component {
         this.addEvent("click", ".destroy", ({ target }) => {
             deleteItem(Number(target.closest(`[data-id]`).dataset.id))
         });
-        this.addEvent("dblclick", ".label", (event) => {
-      
-            editItem(Number(event.target.closest(`[data-id]`).dataset.id));
-            
+        this.addEvent("dblclick", ".label", (event) => {   
+            editItem(Number(event.target.closest(`[data-id]`).dataset.id));         
         });
         this.addEvent("input", ".toggle", ({ target }) => {
             toggleItem(Number(target.closest(`[data-id]`).dataset.id));
@@ -41,8 +39,6 @@ export default class TodoList extends Component {
                 resetItem();
             }
             return;
-        
-
         });
   
 }
