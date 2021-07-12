@@ -18,6 +18,7 @@ export default function TodoApp() {
       const newTodoItem = new TodoItem(contents, ++id);
       this.todoItems.push(newTodoItem);
       this.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
   });
 
@@ -30,6 +31,7 @@ export default function TodoApp() {
         return item;
       });
       todoList.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
     onComplete: (id) => {
       this.todoItems = this.todoItems.map((item) => {
@@ -39,12 +41,14 @@ export default function TodoApp() {
         return item;
       });
       todoList.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
     onDelete: (id) => {
       this.todoItems = this.todoItems.filter((item) => {
         return item.id !== id;
       });
       todoList.setState(this.todoItems);
+      todoCount.setState(this.todoItems);
     },
     onEdit: (e, id) => {
       if (e.key === 'Enter') {
@@ -56,6 +60,7 @@ export default function TodoApp() {
           return item;
         });
         todoList.setState(this.todoItems);
+        todoCount.setState(this.todoItems);
       }
       if (e.key === 'Escape') {
         this.todoItems = this.todoItems.map((item) => {
@@ -65,6 +70,7 @@ export default function TodoApp() {
           return item;
         });
         todoList.setState(this.todoItems);
+        todoCount.setState(this.todoItems);
       }
     },
   });
