@@ -12,5 +12,5 @@ dist/
 
 .cache/
 
-
+/webpack.config.js
 
