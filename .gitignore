@@ -1,0 +1,16 @@
+# node js
+node_modules/*
+
+
+
+# projects
+dist/
+
+# vscode
+.vscode
+
+
+.cache/
+
+/webpack.config.js
+

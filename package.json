@@ -1,0 +1,25 @@
+{
+  "name": "js-todo-list-step1",
+  "version": "1.0.0",
+  "description": "<p align=\"middle\" >   <img width=\"200px;\" src=\"./src/images/check_list.png\"/> </p> <h2 align=\"middle\">JS 투두리스트 스텝1</h2> <p align=\"middle\">자바스크립트로 구현 하는 투두리스트</p> <p align=\"middle\">   <img src=\"https://img.shields.io/badge/version-1.0.0-blue?style=flat-square\" alt=\"template version\"/>   <img src=\"https://img.shields.io/badge/language-html-red.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/language-css-blue.svg?style=flat-square\"/>   <img src=\"https://img.shields.io/badge/language-js-yellow.svg?style=flat-square\"/>   <a href=\"https://github.com/next-step/js-todo-list-step1/blob/main/LICENSE\" target=\"_blank\">     <img src=\"https://img.shields.io/github/license/next-step/js-todo-list-step1.svg?style=flat-square&label=license&color=08CE5D\"/>   </a> </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inust33/js-todo-list-step1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inust33/js-todo-list-step1/issues"
+  },
+  "homepage": "https://github.com/inust33/js-todo-list-step1#readme",
+  "devDependencies": {
+    "webpack": "^5.44.0",
+    "webpack-cli": "^4.7.2"
+  }
+}
