@@ -13,6 +13,8 @@ export default function TodoApp() {
     todoList.setState(this.todoItems);
   };
 
+  const todoCount = new TodoCount();
+
   new TodoInput({
     onAdd: (contents) => {
       const newTodoItem = new TodoItem(contents, ++id);
@@ -71,6 +73,32 @@ export default function TodoApp() {
         });
         todoList.setState(this.todoItems);
         todoCount.setState(this.todoItems);
+      }
+    },
+  });
+
+  new TodoFilter({
+    filtering: (type) => {
+      if (type === FilterType.all) {
+        todoList.setState(this.todoItems);
+        todoCount.setState(this.todoItems);
+        return;
+      }
+      if (type === FilterType.active) {
+        const activeItems = this.todoItems.filter((item) => {
+          return item.completed === false;
+        });
+        todoList.setState(activeItems);
+        todoCount.setState(activeItems);
+        return;
+      }
+      if (type === FilterType.completed) {
+        const completedItems = this.todoItems.filter((item) => {
+          return item.completed === true;
+        });
+        todoList.setState(completedItems);
+        todoCount.setState(completedItems);
+        return;
       }
     },
   });
