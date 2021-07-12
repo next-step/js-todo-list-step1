@@ -14,25 +14,159 @@
         class="new-todo"
         placeholder="할일을 추가해주세요"
         autofocus
+        onkeyup="enterKeyFunction()"
       />
       <main>
         <input class="toggle-all" type="checkbox" />
         <ul id="todo-list" class="todo-list"></ul>
         <div class="count-container">
-          <span class="todo-count">총 <strong>0</strong> 개</span>
-          <ul class="filters">
+          <span class="todo-count">총 <strong id="todoItemTotCnt">0</strong> 개</span>
+          <ul class="filters" id="filtersGroup">
             <li>
-              <a class="all selected" href="#">전체보기</a>
+              <a class="all selected filterBtn" href="#" id="allBtn">전체보기</a>
             </li>
             <li>
-              <a class="active" href="#active">해야할 일</a>
+              <a class="active filterBtn" href="#active">해야할 일</a>
             </li>
             <li>
-              <a class="completed" href="#completed">완료한 일</a>
+              <a class="completed filterBtn" href="#completed">완료한 일</a>
             </li>
           </ul>
         </div>
       </main>
     </div>
+
+    <script>
+      let newTodoInput = '';
+      let toDoListItem =  '';
+      let todoList =  document.querySelector('#todo-list');
+      let todoListItemLi ='';
+      let todoItemTotCnt = document.querySelector('#todoItemTotCnt');
+      let filtersGroup = document.querySelector('#filtersGroup');
+      let filterBtnLi = filtersGroup.querySelectorAll('li');
+      let filterBtn  = document.querySelectorAll('.filterBtn');
+      let checkFilter = '';
+
+      filterBtn.forEach(function(item){
+        item.addEventListener('click',function(e){
+          removeSelectedClass();
+          item.classList.add('selected');
+          checkFilter = this.classList[0];
+          checkFilterShowList();
+        });
+      });
+      
+      //모든 filter버튼 'selected'클래스 지우기 
+      function removeSelectedClass(){
+        filterBtn.forEach(function(item){
+          item.classList.remove('selected');
+        });
+      }
+
+      // for(let i=0; filterBtnLi.length; i++){
+      //   let eachBtn = filterBtnLi[i];
+      //   eachBtn.addEventListener('click',function(e){
+      //     if(filterBtn[i].classList.contains('selected')){
+      //       filterBtn[i].classList.remove('selected');
+      //       console.log(i)
+      //     }
+      //     // for(let i=0; filterBtn.length; i++){
+      //     //   if(filterBtn[i].children[0].classList.contains('selected')){
+      //     //   filterBtn[i].children[0].classList.remove('selected');
+      //     //   }
+      //     // }
+      //     eachBtn.children[0].classList.add('selected');
+      //     showTodoItemList();
+      //   });
+      // }
+
+      //filter버튼 클릭시 해당상태 아이템리스트만 보이기
+      function checkFilterShowList(){
+        if(checkFilter === 'completed'){
+          todoList.querySelectorAll('li').forEach(function(item){
+            if(item.classList.contains('completed')){
+              item.style.display = 'block';
+            }else{
+              item.style.display = 'none';
+            }
+          });
+        }else if(checkFilter === 'active'){
+          todoList.querySelectorAll('li').forEach(function(item){
+          if(item.classList.contains('completed')){
+              item.style.display = 'none';
+            }else{
+              item.style.display = 'block';
+            }
+          });
+        } else{
+          todoList.querySelectorAll('li').forEach(function(item){
+            item.style.display = 'block';
+          });
+        }
+      }
+
+      function enterKeyFunction(){
+        //엔터키가 눌렸을 때 실행할 내용
+        if(window.event.keyCode === 13){
+          todoListItemLi = document.createElement('li');
+          newTodoInput =  document.querySelector('#new-todo-title');
+          todoListItemLi.innerHTML = ` <div class="view">
+                                          <input class="toggle" type="checkbox" onclick="chkCompleted(this)"/>
+                                          <label class="label"  ondblclick="editItem(this)" >${newTodoInput.value}</label>
+                                          <button class="destroy" onclick="deleteItem(this)"></button>
+                                        </div>
+                                        <input class="edit" value="${newTodoInput.value}" onkeyup="enterKeyEditFunction(this)"/>
+                                      `;
+            todoList.appendChild(todoListItemLi);
+
+            //리스트 토탈카운트
+            countTodoItemTotCnt();
+            //초기화
+            newTodoInput.value= '';
+        }
+      }
+
+      //체크박스 체크시 이벤트
+      function chkCompleted(e){
+        if(e.parentNode.parentNode.classList.contains('completed')){
+          e.parentNode.parentNode.classList.remove('completed');
+        }else{
+          e.parentNode.parentNode.classList.add('completed');
+        }
+        checkFilterShowList();
+      }
+
+      //'x'버튼 클릭시
+      function deleteItem(e){
+        let index = 0;
+          for(let i=0; i<todoList.children.length; i++){
+            if(todoList.children[i].children[0].children[2] === e){
+              index = i;
+              console.log(i);
+            }
+          }
+          todoList.removeChild(todoList.children[index]);
+         //리스트 토탈카운트
+         countTodoItemTotCnt();
+      }
+
+      //리스트 항목 클릭시 이벤트 
+      function editItem(e){
+        e.parentNode.parentNode.classList.add('editing');
+      }
+
+      function enterKeyEditFunction(e){
+        if(window.event.keyCode === 13){
+          e.parentNode.children[0].children[1].innerText = e.value;
+          e.parentNode.classList.remove('editing');
+        }
+      }
+
+      function countTodoItemTotCnt(){
+        //리스트 토탈카운트
+        todoItemTotCnt.innerHTML = todoList.children.length;
+      }
+    </script>
+
   </body>
 </html>
