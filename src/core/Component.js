@@ -31,6 +31,6 @@ export default class Component {
             if (!isTarget(event.target)) return false;
             callback(event);
         });
-    } $ta
+    } 
   
 }
