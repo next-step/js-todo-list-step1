@@ -3,22 +3,23 @@ export default class TodoList {
     this.todoList = document.querySelector('#todo-list');
   }
   render(todoItems){
-    const todoItemTemplate = (id, text) => {
+    const todoItemTemplate = (todo) => {
       return `
-        <li data-id=${id}>
+        <li data-id="${todo.id}" class="${todo.complete ? 'completed' : ''}">
             <div class="view">
-              <input class="toggle" type="checkbox" />
-              <label class="label">${text}</label>
+            <input class="toggle" type="checkbox" ${todo.complete ? 'checked' : ''} />
+              <label class="label">${todo.text}</label>
               <button class="destroy"></button>
             </div>
-            <input class="edit" value=${text} />
+            <input class="edit" value=${todo.text} />
         </li>
         `
     }
-    const template = todoItems.map((todo,id)=>todoItemTemplate(id,todo));
+    const template = todoItems.map((todo)=>todoItemTemplate(todo));
     this.todoList.innerHTML = template.join("");
   }
-  setEvent({onDelete}){
+  setEvent({onDelete,onCompleted}){
     this.todoList.addEventListener('click', onDelete);
+    this.todoList.addEventListener('click', onCompleted);
   }
 }
