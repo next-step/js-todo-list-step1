@@ -171,6 +171,7 @@ main {
   border: none;
   -webkit-appearance: none;
   appearance: none;
+  cursor: pointer;
 }
 
 .todo-list li .toggle {
