@@ -1,34 +1,22 @@
 // todoList 보여주는 컴포넌트
-export default function TodoList({ onComplete, onDelete, onEditing, onEdit }) {
-  this.todoList = document.querySelector('#todo-list');
+export default function TodoList() {
+  const todoList = document.querySelector('#todo-list');
+
+  todoList.addEventListener('click', (event) => this.handleClick(event));
+  todoList.addEventListener('dblclick', (event) => this.handleDblClick(event));
+  todoList.addEventListener('keydown', (event) => this.handleKeydown(event));
+
+  this.setEventListener = (onComplete, onDelete, onEdit, onUpdate) => {
+    this.onComplete = onComplete;
+    this.onDelete = onDelete;
+    this.onEdit = onEdit;
+    this.onUpdate = onUpdate;
+  };
 
   this.setState = (updatedTodoItems) => {
     this.todoItems = updatedTodoItems;
     this.render(this.todoItems);
   };
-
-  this.todoList.addEventListener('click', (event) => {
-    const li = event.target.parentNode.parentNode;
-    const id = parseInt(li.dataset.id);
-    if (event.target.className === 'toggle') {
-      onComplete(id);
-    }
-    if (event.target.className === 'destroy') {
-      onDelete(id);
-    }
-  });
-
-  this.todoList.addEventListener('dblclick', (event) => {
-    const li = event.target.parentNode.parentNode;
-    const id = parseInt(li.dataset.id);
-    onEditing(id);
-  });
-
-  this.todoList.addEventListener('keydown', (event) => {
-    const li = event.target.parentNode;
-    const id = parseInt(li.dataset.id);
-    onEdit(event, id);
-  });
 
   this.render = (items) => {
     const template = items.map((item) => {
@@ -47,6 +35,26 @@ export default function TodoList({ onComplete, onDelete, onEditing, onEdit }) {
       </li>
       `;
     });
-    this.todoList.innerHTML = template.join('');
+    todoList.innerHTML = template.join('');
+  };
+
+  this.handleKeydown = (event) => {
+    const id = parseInt(event.target.parentNode.dataset.id);
+    this.onUpdate && this.onUpdate(event, id);
+  };
+
+  this.handleDblClick = (event) => {
+    const id = parseInt(event.target.parentNode.parentNode.dataset.id);
+    this.onEdit && this.onEdit(id);
+  };
+
+  this.handleClick = (event) => {
+    const id = parseInt(event.target.parentNode.parentNode.dataset.id);
+    if (event.target.className === 'toggle') {
+      this.onComplete && this.onComplete(id);
+    }
+    if (event.target.className === 'destroy') {
+      this.onDelete && this.onDelete(id);
+    }
   };
 }

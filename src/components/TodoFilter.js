@@ -4,22 +4,23 @@ export const FilterType = Object.freeze({
   completed: 'completed',
 });
 
-export function TodoFilter({ filtering }) {
+export function TodoFilter() {
   this.filters = document.querySelector('.filters');
   this.filtersBtn = this.filters.querySelectorAll('a');
 
-  this.filters.addEventListener('click', (event) => this.onClick(event));
+  this.filters.addEventListener('click', (event) => this.handleClick(event));
 
-  this.onClick = (event) => {
-    const target = event.target;
-    const filterType = target.className;
+  this.setEventListener = (onFilter) => {
+    this.onFilter = onFilter;
+  };
 
-    // selected class 제거
+  this.handleClick = (event) => {
+    const type = event.target.className;
+
     this.removeSelectedClass();
-    // 선택한 filter에 selected class 추가
-    this.addSelectedClass(target);
+    this.addSelectedClass(event.target);
 
-    filtering(filterType);
+    this.onFilter && this.onFilter(type);
   };
 
   this.removeSelectedClass = () => {
