@@ -4,126 +4,108 @@ import TodoList from './TodoList.js';
 import TodoCount from './TodoCount.js';
 import { TodoFilter, FilterType } from './TodoFilter.js';
 
-export default function TodoApp() {
-  const localStorageKey = 'TODOS';
-  let id = 0;
+export default function TodoApp(storage) {
+  this.storage = storage;
   this.todoItems = [];
+  let id = 0;
 
-  this.init = () => {
-    const savedItems = localStorage.getItem(localStorageKey);
-    if (savedItems) {
-      const parsedItems = JSON.parse(localStorage.getItem(localStorageKey));
-      this.todoItems = parsedItems ? parsedItems : [];
-      id = parsedItems ? parsedItems.length : 0;
+  this.init = (savedData) => {
+    this.todoItems = savedData ?? [];
+    id = savedData.length ?? 0;
 
-      todoList.setState(parsedItems);
-      todoCount.setState(parsedItems);
-    }
-  };
-
-  const saveItems = () => {
-    localStorage.setItem(localStorageKey, JSON.stringify(this.todoItems));
+    savedData && this.setState(savedData);
   };
 
   this.setState = (updatedItems) => {
-    this.todoItems = updatedItems;
-    todoList.setState(this.todoItems);
+    todoList.setState(updatedItems);
+    todoCount.setState(updatedItems);
   };
+
+  const onAdd = (contents) => {
+    const newTodoItem = new TodoItem(contents, ++id);
+    this.todoItems.push(newTodoItem);
+    this.setState(this.todoItems);
+    this.storage.saveItems(this.todoItems);
+  };
+
+  const onComplete = (id) => {
+    this.todoItems = this.todoItems.map((item) => {
+      if (item.id === id) {
+        item.completed = !item.completed;
+      }
+      return item;
+    });
+    this.setState(this.todoItems);
+    this.storage.saveItems(this.todoItems);
+  };
+
+  const onDelete = (id) => {
+    this.todoItems = this.todoItems.filter((item) => {
+      return item.id !== id;
+    });
+    this.setState(this.todoItems);
+    this.storage.saveItems(this.todoItems);
+  };
+
+  const onEdit = (id) => {
+    this.todoItems = this.todoItems.map((item) => {
+      if (item.id === id) {
+        item.editing = !item.editing;
+      }
+      return item;
+    });
+    this.setState(this.todoItems);
+    this.storage.saveItems(this.todoItems);
+  };
+
+  const onUpdate = (e, id) => {
+    if (e.key === 'Enter') {
+      this.todoItems = this.todoItems.map((item) => {
+        if (item.id === id) {
+          item.contents = e.target.value;
+          item.editing = false;
+        }
+        return item;
+      });
+      this.setState(this.todoItems);
+      this.storage.saveItems(this.todoItems);
+    }
+    if (e.key === 'Escape') {
+      this.todoItems = this.todoItems.map((item) => {
+        if (item.id === id) {
+          item.editing = false;
+        }
+        return item;
+      });
+      this.setState(this.todoItems);
+      this.storage.saveItems(this.todoItems);
+    }
+  };
+
+  const onFilter = (type) => {
+    if (type === FilterType.all) {
+      this.setState(this.todoItems);
+    } else if (type === FilterType.active) {
+      const activeItems = this.todoItems.filter(
+        (item) => item.completed === false
+      );
+      this.setState(activeItems);
+    } else if (type === FilterType.completed) {
+      const completedItems = this.todoItems.filter(
+        (item) => item.completed === true
+      );
+      this.setState(completedItems);
+    }
+  };
+
+  const todoInput = new TodoInput();
+  todoInput.setEventListener(onAdd);
+
+  const todoList = new TodoList();
+  todoList.setEventListener(onComplete, onDelete, onEdit, onUpdate);
 
   const todoCount = new TodoCount();
 
-  new TodoInput({
-    onAdd: (contents) => {
-      const newTodoItem = new TodoItem(contents, ++id);
-      this.todoItems.push(newTodoItem);
-      this.setState(this.todoItems);
-      todoCount.setState(this.todoItems);
-
-      saveItems();
-    },
-  });
-
-  const todoList = new TodoList({
-    onEditing: (id) => {
-      this.todoItems = this.todoItems.map((item) => {
-        if (item.id === id) {
-          item.editing = !item.editing;
-        }
-        return item;
-      });
-      todoList.setState(this.todoItems);
-      todoCount.setState(this.todoItems);
-      saveItems();
-    },
-    onComplete: (id) => {
-      this.todoItems = this.todoItems.map((item) => {
-        if (item.id === id) {
-          item.completed = !item.completed;
-        }
-        return item;
-      });
-      todoList.setState(this.todoItems);
-      todoCount.setState(this.todoItems);
-      saveItems();
-    },
-    onDelete: (id) => {
-      this.todoItems = this.todoItems.filter((item) => {
-        return item.id !== id;
-      });
-      todoList.setState(this.todoItems);
-      todoCount.setState(this.todoItems);
-      saveItems();
-    },
-    onEdit: (e, id) => {
-      if (e.key === 'Enter') {
-        this.todoItems = this.todoItems.map((item) => {
-          if (item.id === id) {
-            item.contents = e.target.value;
-            item.editing = false;
-          }
-          return item;
-        });
-        todoList.setState(this.todoItems);
-        todoCount.setState(this.todoItems);
-        saveItems();
-      }
-      if (e.key === 'Escape') {
-        this.todoItems = this.todoItems.map((item) => {
-          if (item.id === id) {
-            item.editing = false;
-          }
-          return item;
-        });
-        todoList.setState(this.todoItems);
-        todoCount.setState(this.todoItems);
-        saveItems();
-      }
-    },
-  });
-
-  new TodoFilter({
-    filtering: (type) => {
-      if (type === FilterType.all) {
-        todoList.setState(this.todoItems);
-        todoCount.setState(this.todoItems);
-        return;
-      }
-      if (type === FilterType.active) {
-        const activeItems = this.todoItems.filter((item) => {
-          return item.completed === false;
-        });
-        todoList.setState(activeItems);
-        todoCount.setState(activeItems);
-        return;
-      }
-      if (type === FilterType.completed) {
-        const completedItems = this.todoItems.filter((item) => {
-          return item.completed === true;
-        });
-        todoList.setState(completedItems);
-        todoCount.setState(completedItems);
-        return;
-      }
-    },
-  });
+  const todoFilter = new TodoFilter();
+  todoFilter.setEventListener(onFilter);
 }
