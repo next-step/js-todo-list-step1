@@ -16,12 +16,15 @@ function TodoApp () {
   }
 
   this.handleToggleTodo = (target) => {
+    const liItem = target.closest("li")
     this.todos.map(item => {
       if(item.id == target.id) {
         if(item.status == "completed") {
-          return item.status = "active"
-        } else if (item.status == "active") {
-          return item.status = "completed"
+          item.status = "active"
+          liItem.classList.remove("completed")
+        } else if(item.status == "active") {
+          item.status = "completed"
+          liItem.classList.add("completed")
         }
       }
     })
