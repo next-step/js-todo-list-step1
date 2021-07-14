@@ -35,6 +35,7 @@ export default function TodoApp($app) {
     $app,
     initialState: this.state.todoes,
     onToggle: (idx) => toggleTodo(idx),
+    onDelete: (idx) => deleteTodo(idx),
   });
   const todoCount = new TodoCount({
     $app,
@@ -51,7 +52,6 @@ export default function TodoApp($app) {
   const addTodo = (contents) => {
     const todos = this.state.todoes;
     const nextIdx = Math.max(0, ...todos.map((todo) => todo.idx)) + 1;
-    console.log('next', nextIdx);
     const newTodo = {
       idx: nextIdx,
       content: contents,
@@ -69,12 +69,23 @@ export default function TodoApp($app) {
     const todos = this.state.todoes;
 
     todos.map((todo) => {
-      if (todo.idx === parseInt(idx)) {
+      if (todo.idx === idx) {
         todo.state = todo.state === '' ? 'complete' : '';
       }
     });
     this.setState({
       ...this.state,
+    });
+  };
+
+  const deleteTodo = (idx) => {
+    const todos = this.state.todoes;
+    const newTodos = todos.filter((todo) => {
+      return todo.idx !== idx;
+    });
+
+    this.setState({
+      todoes: newTodos,
     });
   };
 }
