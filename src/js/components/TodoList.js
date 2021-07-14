@@ -1,3 +1,4 @@
+import { FILTER_TYPES, TODO_ITEM_CLASS } from '../../utils/const.js';
 export default function TodoList({
   $app,
   initialState,
@@ -20,14 +21,14 @@ export default function TodoList({
   $nodeTodoList.addEventListener('click', (e) => {
     const $node = e.target;
 
-    if ($node.className === 'toggle') {
+    if ($node.className === TODO_ITEM_CLASS.TOGGLE) {
       this.toggleTodoItem($node);
     }
-    if ($node.className === 'destroy') {
+    if ($node.className === TODO_ITEM_CLASS.DESTROY) {
       this.deleteTodoItem($node);
     }
 
-    if ($node.className === 'edit') {
+    if ($node.className === TODO_ITEM_CLASS.EDIT) {
       this.editTodoItem($node);
     }
   });
@@ -38,17 +39,19 @@ export default function TodoList({
   });
 
   this.toggleTodoItem = ($node) => {
-    const { nodeId } = $node.closest('.view').parentNode.dataset;
+    const { nodeId } = $node.closest(`.${TODO_ITEM_CLASS.VIEW}`).parentNode
+      .dataset;
     onToggle(parseInt(nodeId));
   };
 
   this.deleteTodoItem = ($node) => {
-    const { nodeId } = $node.closest('.view').parentNode.dataset;
+    const { nodeId } = $node.closest(`.${TODO_ITEM_CLASS.VIEW}`).parentNode
+      .dataset;
     onDelete(parseInt(nodeId));
   };
 
   this.editTodoItem = ($node) => {
-    if ($node.className === 'edit') {
+    if ($node.className === TODO_ITEM_CLASS.EDIT) {
       const { nodeId } = $node.parentNode.dataset;
       $node.addEventListener('keydown', (e) => {
         //Enter key 입력
@@ -60,30 +63,34 @@ export default function TodoList({
         }
       });
     } else {
-      const { nodeId } = $node.closest('.view').parentNode.dataset;
-      if ($node.className === 'label') {
+      const { nodeId } = $node.closest(`.${TODO_ITEM_CLASS.VIEW}`).parentNode
+        .dataset;
+      if ($node.className === TODO_ITEM_CLASS.LABEL) {
         onEdit(parseInt(nodeId), false, '');
       }
     }
   };
 
   this.render = () => {
-    const { todoes, isFilter, filterTodoes } = this.state;
-    const viewTodoes = isFilter ? filterTodoes : todoes;
+    const { todoes, isFilter, todoesFiltered } = this.state;
+    const viewTodoes = isFilter ? todoesFiltered : todoes;
 
     const todoTemplate = `${viewTodoes
       .map(
         (todo, idx) =>
-          `<li class="${todo.state === 'completed' ? 'completed' : ''} ${
-            todo.state === 'editing' ? 'editing' : ''
-          }" data-node-id="${todo.idx}">
-          <div class="view"  >
-            <input class="toggle" type="checkbox" />
-            <label class="label">${todo.content}</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value="${todo.content}"/>
-        </li>`
+          `<li class="${
+            todo.state === FILTER_TYPES.COMPLETE ? FILTER_TYPES.COMPLETE : ''
+          }
+           ${todo.state === 'editing' ? 'editing' : ''}" data-node-id="${
+            todo.idx
+          }">
+          <div class="${TODO_ITEM_CLASS.VIEW}"  >
+          <input class="${TODO_ITEM_CLASS.TOGGLE}" type="checkbox" />
+          <label class="${TODO_ITEM_CLASS.LABEL}">${todo.content}</label>
+          <button class="${TODO_ITEM_CLASS.DESTROY}"></button>
+        </div>
+        <input class="edit" value="${todo.content}"/>
+      </li>`
       )
       .join('')}`;
     $nodeTodoList.innerHTML = todoTemplate;

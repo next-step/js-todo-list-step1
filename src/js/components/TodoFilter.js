@@ -1,3 +1,4 @@
+import { FILTER_TYPES, TODO_FILTER_MENU } from '../../utils/const.js';
 export default function TodoFilter({ $app, initialState, onFilter }) {
   this.state = initialState;
 
@@ -14,30 +15,30 @@ export default function TodoFilter({ $app, initialState, onFilter }) {
   $nodeTodoFilter.addEventListener('click', (e) => {
     const $node = e.target;
 
-    if ($node.className === 'completed') {
-      onFilter('completed');
-    } else if ($node.className === 'active') {
-      onFilter('active');
+    if ($node.className === FILTER_TYPES.COMPLETE) {
+      onFilter(FILTER_TYPES.COMPLETE);
+    } else if ($node.className === FILTER_TYPES.ACTIVE) {
+      onFilter(FILTER_TYPES.ACTIVE);
     } else {
-      onFilter('all selected');
+      onFilter(FILTER_TYPES.ALL);
     }
   });
 
   this.render = () => {
-    const todoTotalCount = this.state.isFilter
-      ? this.state.filterTodoes.length
-      : this.state.todoes.length;
+    const { todoes, isFilter, todoesFiltered } = this.state;
+
+    const todoTotalCount = isFilter ? todoesFiltered.length : todoes.length;
     const todoFilterTemplate = `
       <span class="todo-count">총 <strong>${todoTotalCount}</strong> 개</span>
       <ul class="filters">
         <li>
-          <a class="all selected" href="#">전체보기</a>
+          <a class=${FILTER_TYPES.ALL} href="#">${TODO_FILTER_MENU.ALL_MENU}</a>
         </li>
         <li>
-          <a class="active" href="#active">해야할 일</a>
+          <a class=${FILTER_TYPES.ACTIVE} href="#${FILTER_TYPES.ACTIVE}">${TODO_FILTER_MENU.ACTIVE_MENU}</a>
         </li>
         <li>
-          <a class="completed" href="#completed">완료한 일</a>
+          <a class="completed" href="#${FILTER_TYPES.COMPLETE}">${TODO_FILTER_MENU.COMPLETE_MENU}</a>
         </li>
       </ul>`;
     $nodeTodoFilter.innerHTML = todoFilterTemplate;
