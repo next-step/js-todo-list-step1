@@ -1,4 +1,4 @@
-export default function TodoList({ $app, initialState, onToggle }) {
+export default function TodoList({ $app, initialState, onToggle, onDelete }) {
   //렌더링할 DOM 생성
 
   this.state = initialState;
@@ -15,22 +15,29 @@ export default function TodoList({ $app, initialState, onToggle }) {
 
   this.$target.addEventListener('click', (e) => {
     const $node = e.target;
-    const { nodeId } = $node.dataset;
-    if (nodeId) {
-      this.toggleTodoItem(nodeId);
+    const $viewnode = e.target.closest('.view');
+    const { nodeId } = $viewnode.dataset;
+
+    if ($node.className == 'toggle') {
+      this.toggleTodoItem(parseInt(nodeId));
+    }
+    if ($node.className == 'destroy') {
+      this.deleteTodoItem(parseInt(nodeId));
     }
   });
   this.toggleTodoItem = (nodeId) => {
     onToggle(nodeId);
   };
-
+  this.deleteTodoItem = (nodeId) => {
+    onDelete(nodeId);
+  };
   this.render = () => {
     const todoTemplate = `${this.state
       .map(
         (todo, idx) =>
-          `<li class="${todo.state === 'complete' ? 'completed' : ''}">
-          <div class="view">
-            <input class="toggle" type="checkbox" data-node-id=${todo.idx} />
+          `<li  class="${todo.state === 'complete' ? 'completed' : ''}">
+          <div class="view" data-node-id=${todo.idx} >
+            <input class="toggle" type="checkbox" />
             <label class="label">${todo.content}</label>
             <button class="destroy"></button>
           </div>
