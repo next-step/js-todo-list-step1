@@ -18,7 +18,7 @@ export default function TodoApp($app) {
       },
     ],
     todoesFiltered: [],
-    isFilter: false,
+    filterState: FILTER_TYPES.ALL,
     todoesCount: '0',
   };
 
@@ -114,11 +114,10 @@ export default function TodoApp($app) {
 
   const filterTodo = (filterType) => {
     const { todoes } = this.state;
-
     if (filterType === FILTER_TYPES.ALL) {
       this.setState({
         ...this.state,
-        isFilter: false,
+        filterState: FILTER_TYPES.ALL,
         todoesCount: todoes.length,
       });
     } else if (filterType === FILTER_TYPES.COMPLETE) {
@@ -129,7 +128,7 @@ export default function TodoApp($app) {
       this.setState({
         ...this.state,
         todoesFiltered: completedTodoes,
-        isFilter: true,
+        filterState: FILTER_TYPES.COMPLETE,
         todoesCount: completedTodoes.length,
       });
     } else if (filterType === FILTER_TYPES.ACTIVE) {
@@ -139,7 +138,7 @@ export default function TodoApp($app) {
       this.setState({
         ...this.state,
         todoesFiltered: activeTodoes,
-        isFilter: true,
+        filterState: FILTER_TYPES.ACTIVE,
         todoesCount: activeTodoes.length,
       });
     }

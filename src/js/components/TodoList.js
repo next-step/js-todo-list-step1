@@ -72,8 +72,9 @@ export default function TodoList({
   };
 
   this.render = () => {
-    const { todoes, isFilter, todoesFiltered } = this.state;
-    const viewTodoes = isFilter ? todoesFiltered : todoes;
+    const { todoes, filterState, todoesFiltered } = this.state;
+    const viewTodoes =
+      filterState === FILTER_TYPES.ALL ? todoes : todoesFiltered;
 
     const todoTemplate = `${viewTodoes
       .map(
@@ -89,7 +90,7 @@ export default function TodoList({
           <label class="${TODO_ITEM_CLASS.LABEL}">${todo.content}</label>
           <button class="${TODO_ITEM_CLASS.DESTROY}"></button>
         </div>
-        <input class="edit" value="${todo.content}"/>
+        <input class="${TODO_ITEM_CLASS.EDIT}" value="${todo.content}"/>
       </li>`
       )
       .join('')}`;
