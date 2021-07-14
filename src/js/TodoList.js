@@ -10,56 +10,61 @@ export default function TodoList({
   this.$target.className = 'todo-list';
   this.$target.id = 'todo-list';
   $app.appendChild(this.$target);
+  const $nodeTodoList = this.$target;
 
   this.setState = (nextState) => {
     this.state = nextState;
     this.render();
   };
 
-  this.$target.addEventListener('click', (e) => {
+  $nodeTodoList.addEventListener('click', (e) => {
     const $node = e.target;
 
     if ($node.className === 'toggle') {
-      const { nodeId } = e.target.closest('.view').parentNode.dataset;
-      this.toggleTodoItem(parseInt(nodeId));
+      this.toggleTodoItem($node);
     }
-
     if ($node.className === 'destroy') {
-      const { nodeId } = e.target.closest('.view').parentNode.dataset;
-      this.deleteTodoItem(parseInt(nodeId));
+      this.deleteTodoItem($node);
     }
 
     if ($node.className === 'edit') {
-      const { nodeId } = e.target.parentNode.dataset;
+      this.editTodoItem($node);
+    }
+  });
+
+  $nodeTodoList.addEventListener('dblclick', (e) => {
+    const $node = e.target;
+    this.editTodoItem($node);
+  });
+
+  this.toggleTodoItem = ($node) => {
+    const { nodeId } = $node.closest('.view').parentNode.dataset;
+    onToggle(parseInt(nodeId));
+  };
+
+  this.deleteTodoItem = ($node) => {
+    const { nodeId } = $node.closest('.view').parentNode.dataset;
+    onDelete(parseInt(nodeId));
+  };
+
+  this.editTodoItem = ($node) => {
+    if ($node.className === 'edit') {
+      const { nodeId } = $node.parentNode.dataset;
       $node.addEventListener('keydown', (e) => {
+        //Enter key 입력
         if (e.keyCode === 13) {
-          this.editTodoItem(parseInt(nodeId), true, $node.value);
-        } else if (e.keyCode === 27) {
-          this.editTodoItem(parseInt(nodeId), false, '');
+          onEdit(parseInt(nodeId), true, $node.value);
+        } //esc key 입력
+        else if (e.keyCode === 27) {
+          onEdit(parseInt(nodeId), false, '');
         }
       });
-    }
-  });
-
-  this.$target.addEventListener('dblclick', (e) => {
-    const $node = e.target;
-
-    if ($node.className !== 'edit') {
-      const { nodeId } = e.target.closest('.view').parentNode.dataset;
+    } else {
+      const { nodeId } = $node.closest('.view').parentNode.dataset;
       if ($node.className === 'label') {
-        this.editTodoItem(parseInt(nodeId), false, '');
+        onEdit(parseInt(nodeId), false, '');
       }
     }
-  });
-
-  this.toggleTodoItem = (nodeId) => {
-    onToggle(nodeId);
-  };
-  this.deleteTodoItem = (nodeId) => {
-    onDelete(nodeId);
-  };
-  this.editTodoItem = (nodeId, isEdit, newContent) => {
-    onEdit(nodeId, isEdit, newContent);
   };
 
   this.render = () => {
@@ -79,6 +84,6 @@ export default function TodoList({
         </li>`
       )
       .join('')}`;
-    this.$target.innerHTML = todoTemplate;
+    $nodeTodoList.innerHTML = todoTemplate;
   };
 }

@@ -9,13 +9,11 @@ export default function TodoApp($app) {
         idx: 0,
         content: 'hiEvery One',
         state: '',
-        edit: '',
       },
       {
         idx: 1,
         content: 'Im Tami',
         state: '',
-        edit: '',
       },
     ],
   };
@@ -24,10 +22,12 @@ export default function TodoApp($app) {
     this.state = nextState;
     todoList.setState(this.state.todoes);
     todoCount.setState(this.state.todoes);
+    todoInput.setState(this.state.todoes);
   };
 
-  new TodoInput({
+  const todoInput = new TodoInput({
     $app,
+    initialState: this.state.todoes,
     onAdd: (contents) => addTodo(contents),
   });
 
