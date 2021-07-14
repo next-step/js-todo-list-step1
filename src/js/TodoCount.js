@@ -11,8 +11,9 @@ export default function TodoCount({ $app, initialState }) {
   };
 
   this.render = () => {
+    const todoCount = this.state.length;
     const todoCountTemplate = `
-      <span class="todo-count">총 <strong>${this.state}</strong> 개</span>
+      <span class="todo-count">총 <strong>${todoCount}</strong> 개</span>
       <ul class="filters">
         <li>
           <a class="all selected" href="#">전체보기</a>

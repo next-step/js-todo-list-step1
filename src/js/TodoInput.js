@@ -1,4 +1,5 @@
-export default function TodoInput({ $app, onAdd }) {
+export default function TodoInput({ $app, initialState, onAdd }) {
+  this.state = initialState;
   this.$target = document.createElement('input');
   this.$target.id = 'new-todo-title';
   this.$target.className = 'new-todo';
@@ -7,8 +8,7 @@ export default function TodoInput({ $app, onAdd }) {
   $app.appendChild(this.$target);
 
   this.setState = (nextState) => {
-    this.setState = nextState;
-    this.render();
+    this.state = nextState;
   };
 
   this.$target.addEventListener('keydown', (e) => {
@@ -18,11 +18,9 @@ export default function TodoInput({ $app, onAdd }) {
   this.addTodoItem = (e) => {
     const $newTodoTarget = e.target;
 
-    if (e.code === 'Enter') {
+    if (e.keyCode === 13) {
       onAdd($newTodoTarget.value);
       $newTodoTarget.value = '';
     }
   };
-
-  this.render = () => {};
 }
