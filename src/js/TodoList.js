@@ -5,10 +5,7 @@ export default function TodoList({
   onDelete,
   onEdit,
 }) {
-  //렌더링할 DOM 생성
-
   this.state = initialState;
-
   this.$target = document.createElement('ul');
   this.$target.className = 'todo-list';
   this.$target.id = 'todo-list';
@@ -21,21 +18,19 @@ export default function TodoList({
 
   this.$target.addEventListener('click', (e) => {
     const $node = e.target;
+
     if ($node.className === 'toggle') {
-      const $dataNode = e.target.closest('.view').parentNode;
-      const { nodeId } = $dataNode.dataset;
+      const { nodeId } = e.target.closest('.view').parentNode.dataset;
       this.toggleTodoItem(parseInt(nodeId));
     }
+
     if ($node.className === 'destroy') {
-      const $dataNode = e.target.closest('.view').parentNode;
-      const { nodeId } = $dataNode.dataset;
+      const { nodeId } = e.target.closest('.view').parentNode.dataset;
       this.deleteTodoItem(parseInt(nodeId));
     }
-    //1) 엔터 누르면 셋스테이트 변경
-    //2) 이에스씨 누르면 그냥 종료
+
     if ($node.className === 'edit') {
-      const $dataNode = e.target.parentNode;
-      const { nodeId } = $dataNode.dataset;
+      const { nodeId } = e.target.parentNode.dataset;
       $node.addEventListener('keydown', (e) => {
         if (e.keyCode === 13) {
           this.editTodoItem(parseInt(nodeId), true, $node.value);
@@ -48,15 +43,15 @@ export default function TodoList({
 
   this.$target.addEventListener('dblclick', (e) => {
     const $node = e.target;
-    if ($node.className !== 'edit') {
-      const $dataNode = e.target.closest('.view').parentNode;
-      const { nodeId } = $dataNode.dataset;
 
+    if ($node.className !== 'edit') {
+      const { nodeId } = e.target.closest('.view').parentNode.dataset;
       if ($node.className === 'label') {
         this.editTodoItem(parseInt(nodeId), false, '');
       }
     }
   });
+
   this.toggleTodoItem = (nodeId) => {
     onToggle(nodeId);
   };
@@ -66,6 +61,7 @@ export default function TodoList({
   this.editTodoItem = (nodeId, isEdit, newContent) => {
     onEdit(nodeId, isEdit, newContent);
   };
+
   this.render = () => {
     const todos = this.state;
     const todoTemplate = `${todos
