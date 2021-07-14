@@ -7,13 +7,13 @@ export default function TodoApp($app) {
     todoes: [
       {
         idx: 0,
-        content: 'hi EveryOne',
+        content: 'hiEvery One',
         state: '',
         edit: '',
       },
       {
         idx: 1,
-        content: "I'm Tami",
+        content: 'Im Tami',
         state: '',
         edit: '',
       },
@@ -36,6 +36,7 @@ export default function TodoApp($app) {
     initialState: this.state.todoes,
     onToggle: (idx) => toggleTodo(idx),
     onDelete: (idx) => deleteTodo(idx),
+    onEdit: (idx, isEdit, newContent) => editTodo(idx, isEdit, newContent),
   });
   const todoCount = new TodoCount({
     $app,
@@ -67,10 +68,9 @@ export default function TodoApp($app) {
 
   const toggleTodo = (idx) => {
     const todos = this.state.todoes;
-
     todos.map((todo) => {
       if (todo.idx === idx) {
-        todo.state = todo.state === '' ? 'complete' : '';
+        todo.state = todo.state === '' ? 'completed' : '';
       }
     });
     this.setState({
@@ -86,6 +86,21 @@ export default function TodoApp($app) {
 
     this.setState({
       todoes: newTodos,
+    });
+  };
+
+  const editTodo = (idx, isEdit, newContent) => {
+    const todos = this.state.todoes;
+    todos.map((todo) => {
+      if (todo.idx === idx) {
+        todo.state = todo.state === '' ? 'editing' : '';
+        if (isEdit) {
+          todo.content = newContent;
+        }
+      }
+    });
+    this.setState({
+      ...this.state,
     });
   };
 }
