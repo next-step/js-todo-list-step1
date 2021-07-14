@@ -1,4 +1,5 @@
 import Component from "../core/component.js";
+import {$$} from "../utils/util.js";
 
 class TodoList extends Component{
     setup(){
@@ -21,21 +22,21 @@ class TodoList extends Component{
          `
     }
     mounted(){
-        const deleteBtns = document.querySelectorAll('.destroy');
+        const deleteBtns = $$('.destroy');
         deleteBtns.forEach(element => {
             element.addEventListener('click',(e)=>{
                 this.$props.onDeleteTodo(e.target.id);
             }) 
         });
 
-        const toggleBtn = document.querySelectorAll('.toggle');
+        const toggleBtn = $$('.toggle');
         toggleBtn.forEach(element => {
           element.addEventListener('click',(e)=>{
             this.$props.onToggleTodo(e.target.id);
           })
         });
 
-        const editBtn = document.querySelectorAll('.label');
+        const editBtn = $$('.label');
         editBtn.forEach(element =>{
             element.addEventListener('dblclick', (e)=>{
                 this.editTodo(e.target);
@@ -50,9 +51,10 @@ class TodoList extends Component{
        if(edit_li.classList.contains("editing")){
          edit_li.addEventListener('keyup',(e)=>{
             if(e.key=="Enter"){
-                this.$props.onUpdateTodo(targetDom.id, edit_input.value)
-            }else if(e.key=="Escape"){
-                edit_li.classList.remove('editing')
+              this.$props.onUpdateTodo(targetDom.id, edit_input.value);
+            }
+            if(e.key=="Escape"){
+              edit_li.classList.remove('editing');
             }
          })
        }

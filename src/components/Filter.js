@@ -1,4 +1,5 @@
 import Component from "../core/component.js";
+import {$$} from '../utils/util.js';
 
 class Filter extends Component{
     setup(){
@@ -32,7 +33,7 @@ class Filter extends Component{
         `
     }
     mounted(){
-        const filterBtn = document.querySelectorAll('.filters > li > a');
+        const filterBtn = $$('.filters > li > a');
         filterBtn.forEach(element =>{
             element.addEventListener('click',(e)=>{
                 this.$props.onFilterTodo(e.target.id);

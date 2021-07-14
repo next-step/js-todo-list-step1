@@ -2,11 +2,14 @@ import Component from "./core/component.js";
 import Filter from "./components/Filter.js"
 import Input from "./components/Input.js"
 import TodoList from "./components/TodoList.js"
+import {$, setLocalStorageItem, getLocalStorageItem} from './utils/util.js';
+
+
 
 class App extends Component{ 
     setup(){
-        const todo = JSON.parse(localStorage.getItem("todo"))? 
-        JSON.parse(localStorage.getItem("todo")) : localStorage.setItem("todo", '{"count": 0,"Filtermode" : 0, "List" : []}'); 
+        const todo = getLocalStorageItem("todo")? 
+        getLocalStorageItem("todo") : setLocalStorageItem("todo", {"count": 0,"Filtermode" : 0, "List" : []}); 
         this.$state= todo;
     }
 
@@ -26,9 +29,9 @@ class App extends Component{
   
     mounted(){
         const {$state ,onAddTodo, onToggleTodo, onDeleteTodo, onUpdateTodo, onFilterTodo} = this;
-        const _Input = document.querySelector('#new-todo-title');
-        const _TodoList = document.querySelector('#todo-list');
-        const _Filter = document.querySelector('#todo-filter');
+        const _Input = $('#new-todo-title');
+        const _TodoList = $('#todo-list');
+        const _Filter = $('#todo-filter');
 
         new Input(_Input, onAddTodo.bind(this));
         new TodoList(_TodoList, {
@@ -47,8 +50,8 @@ class App extends Component{
         const id = String(this.$state.count*1+1);
         const Filtermode = this.$state.Filtermode;
         const List = [...this.$state.List, {id ,content:content,activate:false}];
-        localStorage.setItem("todo",JSON.stringify({List,count : id*1,Filtermode}));
-        this.setState(JSON.parse(localStorage.getItem("todo")));
+        setLocalStorageItem("todo",{List,count : id*1,Filtermode});
+        this.setState(getLocalStorageItem("todo"));
     }
     onToggleTodo(id){
       const List =  [];
@@ -61,16 +64,16 @@ class App extends Component{
       });
       const count = String(this.$state.count*1+1);
       const Filtermode = this.$state.Filtermode;
-      localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
-      this.setState(JSON.parse(localStorage.getItem("todo")));
+      setLocalStorageItem("todo",{List,count :count*1, Filtermode})
+      this.setState(getLocalStorageItem("todo"));
 
     }
     onDeleteTodo(id){
         const List = this.$state.List.filter(todo => todo.id!==id);
         const count = String(this.$state.count*1);
         const Filtermode = this.$state.Filtermode;
-        localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
-        this.setState(JSON.parse(localStorage.getItem("todo")));
+        setLocalStorageItem("todo",{List,count :count*1, Filtermode})
+        this.setState(getLocalStorageItem("todo"));
     }
     onUpdateTodo(id, new_content){
         const List =  [];
@@ -83,15 +86,15 @@ class App extends Component{
         });
         const count = String(this.$state.count*1);
         const Filtermode = this.$state.Filtermode;
-        localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
-        this.setState(JSON.parse(localStorage.getItem("todo")));
+        setLocalStorageItem("todo",{List,count :count*1, Filtermode})
+        this.setState(getLocalStorageItem("todo"));
     }
     onFilterTodo(mode){
         const List = this.$state.List;
         const count = String(this.$state.count*1);
         const Filtermode = mode;
-        localStorage.setItem("todo",JSON.stringify({List,count :count*1, Filtermode}))
-        this.setState(JSON.parse(localStorage.getItem("todo")));
+        setLocalStorageItem("todo",{List,count :count*1, Filtermode})
+        this.setState(getLocalStorageItem("todo"));
     }
 }
 
