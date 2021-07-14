@@ -1,6 +1,7 @@
-import TodoCount from './TodoCount.js';
-import TodoInput from './TodoInput.js';
-import TodoList from './TodoList.js';
+import TodoFilter from './components/TodoFilter.js';
+import TodoInput from './components/TodoInput.js';
+import TodoList from './components/TodoList.js';
+import { FILTER_TYPES } from '../utils/const.js';
 
 export default function TodoApp($app) {
   this.state = {
@@ -16,31 +17,35 @@ export default function TodoApp($app) {
         state: '',
       },
     ],
+    todoesFiltered: [],
+    isFilter: false,
+    todoesCount: '0',
   };
 
   this.setState = (nextState) => {
     this.state = nextState;
-    todoList.setState(this.state.todoes);
-    todoCount.setState(this.state.todoes);
-    todoInput.setState(this.state.todoes);
+    todoList.setState(nextState);
+    todoInput.setState(nextState);
+    todoFilter.setState(nextState);
   };
 
   const todoInput = new TodoInput({
     $app,
-    initialState: this.state.todoes,
+    initialState: this.state,
     onAdd: (contents) => addTodo(contents),
   });
 
   const todoList = new TodoList({
     $app,
-    initialState: this.state.todoes,
+    initialState: this.state,
     onToggle: (idx) => toggleTodo(idx),
     onDelete: (idx) => deleteTodo(idx),
     onEdit: (idx, isEdit, newContent) => editTodo(idx, isEdit, newContent),
   });
-  const todoCount = new TodoCount({
+  const todoFilter = new TodoFilter({
     $app,
-    initialState: this.state.count,
+    initialState: this.state,
+    onFilter: (filterType) => filterTodo(filterType),
   });
 
   const init = () => {
@@ -50,16 +55,16 @@ export default function TodoApp($app) {
   };
   init();
 
-  const addTodo = (contents) => {
-    const todos = this.state.todoes;
-    const nextIdx = Math.max(0, ...todos.map((todo) => todo.idx)) + 1;
+  const addTodo = (addContent) => {
+    const { todoes } = this.state;
+    const nextIdx = Math.max(0, ...todoes.map((todo) => todo.idx)) + 1;
     const newTodo = {
       idx: nextIdx,
-      content: contents,
+      content: addContent,
       state: '',
       edit: '',
     };
-    this.state.todoes.push(newTodo);
+    todoes.push(newTodo);
 
     this.setState({
       ...this.state,
@@ -67,10 +72,11 @@ export default function TodoApp($app) {
   };
 
   const toggleTodo = (idx) => {
-    const todos = this.state.todoes;
-    todos.map((todo) => {
+    const { todoes } = this.state;
+
+    todoes.map((todo) => {
       if (todo.idx === idx) {
-        todo.state = todo.state === '' ? 'completed' : '';
+        todo.state = todo.state === '' ? FILTER_TYPES.COMPLETE : '';
       }
     });
     this.setState({
@@ -79,19 +85,21 @@ export default function TodoApp($app) {
   };
 
   const deleteTodo = (idx) => {
-    const todos = this.state.todoes;
-    const newTodos = todos.filter((todo) => {
+    const { todoes } = this.state;
+
+    const resetTodoes = todoes.filter((todo) => {
       return todo.idx !== idx;
     });
 
     this.setState({
-      todoes: newTodos,
+      todoes: resetTodoes,
     });
   };
 
   const editTodo = (idx, isEdit, newContent) => {
-    const todos = this.state.todoes;
-    todos.map((todo) => {
+    const { todoes } = this.state;
+
+    todoes.map((todo) => {
       if (todo.idx === idx) {
         todo.state = todo.state === '' ? 'editing' : '';
         if (isEdit) {
@@ -102,5 +110,38 @@ export default function TodoApp($app) {
     this.setState({
       ...this.state,
     });
+  };
+
+  const filterTodo = (filterType) => {
+    const { todoes } = this.state;
+
+    if (filterType === FILTER_TYPES.ALL) {
+      this.setState({
+        ...this.state,
+        isFilter: false,
+        todoesCount: todoes.length,
+      });
+    } else if (filterType === FILTER_TYPES.COMPLETE) {
+      const completedTodoes = todoes.filter(
+        (todo) => todo.state === FILTER_TYPES.COMPLETE
+      );
+
+      this.setState({
+        ...this.state,
+        todoesFiltered: completedTodoes,
+        isFilter: true,
+        todoesCount: completedTodoes.length,
+      });
+    } else if (filterType === FILTER_TYPES.ACTIVE) {
+      const activeTodoes = todoes.filter(
+        (todo) => todo.state !== FILTER_TYPES.COMPLETE
+      );
+      this.setState({
+        ...this.state,
+        todoesFiltered: activeTodoes,
+        isFilter: true,
+        todoesCount: activeTodoes.length,
+      });
+    }
   };
 }
