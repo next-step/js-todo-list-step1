@@ -1,6 +1,6 @@
-import TodoCount from './TodoCount.js';
-import TodoInput from './TodoInput.js';
-import TodoList from './TodoList.js';
+import TodoFilter from './components/TodoFilter.js';
+import TodoInput from './components/TodoInput.js';
+import TodoList from './components/TodoList.js';
 
 export default function TodoApp($app) {
   this.state = {
@@ -16,13 +16,16 @@ export default function TodoApp($app) {
         state: '',
       },
     ],
+    filterTodoes: [],
+    isFilter: false,
+    todoesCount: '0',
   };
 
   this.setState = (nextState) => {
     this.state = nextState;
-    todoList.setState(this.state.todoes);
-    todoCount.setState(this.state.todoes);
-    todoInput.setState(this.state.todoes);
+    todoList.setState(this.state);
+    todoInput.setState(this.state);
+    todoFilter.setState(this.state);
   };
 
   const todoInput = new TodoInput({
@@ -38,9 +41,10 @@ export default function TodoApp($app) {
     onDelete: (idx) => deleteTodo(idx),
     onEdit: (idx, isEdit, newContent) => editTodo(idx, isEdit, newContent),
   });
-  const todoCount = new TodoCount({
+  const todoFilter = new TodoFilter({
     $app,
     initialState: this.state.count,
+    onFilter: (filterType) => filterTodo(filterType),
   });
 
   const init = () => {
@@ -102,5 +106,36 @@ export default function TodoApp($app) {
     this.setState({
       ...this.state,
     });
+  };
+
+  const filterTodo = (filterType) => {
+    const todos = this.state.todoes;
+
+    if (filterType === 'all selected') {
+      this.setState({
+        ...this.state,
+        isFilter: false,
+        todoesCount: todos.length,
+      });
+    } else if (filterType === 'completed') {
+      const completedTodos = todos.filter((todo) => todo.state === 'completed');
+
+      this.setState({
+        ...this.state,
+        filterTodoes: completedTodos,
+        isFilter: true,
+        todoesCount: completedTodos.length,
+      });
+    } else if (filterType === 'active') {
+      const decompletedTodos = todos.filter(
+        (todo) => todo.state !== 'completed'
+      );
+      this.setState({
+        ...this.state,
+        filterTodoes: decompletedTodos,
+        isFilter: true,
+        todoesCount: decompletedTodos.length,
+      });
+    }
   };
 }

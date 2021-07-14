@@ -68,8 +68,10 @@ export default function TodoList({
   };
 
   this.render = () => {
-    const todos = this.state;
-    const todoTemplate = `${todos
+    const { todoes, isFilter, filterTodoes } = this.state;
+    const viewTodoes = isFilter ? filterTodoes : todoes;
+
+    const todoTemplate = `${viewTodoes
       .map(
         (todo, idx) =>
           `<li class="${todo.state === 'completed' ? 'completed' : ''} ${
