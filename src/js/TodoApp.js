@@ -1,10 +1,13 @@
 import TodoFilter from './components/TodoFilter.js';
 import TodoInput from './components/TodoInput.js';
 import TodoList from './components/TodoList.js';
+import TodoLocalStore from './core/TodoLocalStore.js';
 import { FILTER_TYPES } from '../utils/const.js';
 
 export default function TodoApp($app) {
-  this.state = {
+  // localStorage.clear();
+
+  const initialDtate = {
     todoes: [
       {
         idx: 0,
@@ -21,6 +24,9 @@ export default function TodoApp($app) {
     filterState: FILTER_TYPES.ALL,
     todoesCount: '0',
   };
+  const localData = JSON.parse(localStorage.getItem('state'));
+  const viewData = localData ? localData : initialDtate;
+  this.state = viewData;
 
   this.setState = (nextState) => {
     this.state = nextState;
@@ -44,7 +50,7 @@ export default function TodoApp($app) {
   });
   const todoFilter = new TodoFilter({
     $app,
-    initialState: this.state,
+
     onFilter: (filterType) => filterTodo(filterType),
   });
 
@@ -65,7 +71,9 @@ export default function TodoApp($app) {
       edit: '',
     };
     todoes.push(newTodo);
-
+    localStorage.clear();
+    localStorage.setItem('state', JSON.stringify({ ...this.state }));
+    this.state = JSON.parse(localStorage.getItem('state'));
     this.setState({
       ...this.state,
     });
@@ -79,6 +87,9 @@ export default function TodoApp($app) {
         todo.state = todo.state === '' ? FILTER_TYPES.COMPLETE : '';
       }
     });
+    localStorage.clear();
+    localStorage.setItem('state', JSON.stringify({ ...this.state }));
+    this.state = JSON.parse(localStorage.getItem('state'));
     this.setState({
       ...this.state,
     });
@@ -90,9 +101,12 @@ export default function TodoApp($app) {
     const resetTodoes = todoes.filter((todo) => {
       return todo.idx !== idx;
     });
-
+    this.state['todoes'] = resetTodoes;
+    localStorage.clear();
+    localStorage.setItem('state', JSON.stringify({ ...this.state }));
+    this.state = JSON.parse(localStorage.getItem('state'));
     this.setState({
-      todoes: resetTodoes,
+      ...this.state,
     });
   };
 
@@ -106,6 +120,12 @@ export default function TodoApp($app) {
           todo.content = newContent;
         }
       }
+    });
+    localStorage.clear();
+    localStorage.setItem('state', JSON.stringify({ ...this.state }));
+    this.state = JSON.parse(localStorage.getItem('state'));
+    this.setState({
+      ...this.state,
     });
     this.setState({
       ...this.state,

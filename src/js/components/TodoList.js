@@ -1,4 +1,6 @@
+import TodoLocalStore from '../core/TodoLocalStore.js';
 import { FILTER_TYPES, TODO_ITEM_CLASS } from '../../utils/const.js';
+
 export default function TodoList({
   $app,
   initialState,
@@ -6,7 +8,7 @@ export default function TodoList({
   onDelete,
   onEdit,
 }) {
-  this.state = initialState;
+  this.state = JSON.parse(localStorage.getItem('state'));
   this.$target = document.createElement('ul');
   this.$target.className = 'todo-list';
   this.$target.id = 'todo-list';
@@ -75,7 +77,6 @@ export default function TodoList({
     const { todoes, filterState, todoesFiltered } = this.state;
     const viewTodoes =
       filterState === FILTER_TYPES.ALL ? todoes : todoesFiltered;
-
     const todoTemplate = `${viewTodoes
       .map(
         (todo, idx) =>

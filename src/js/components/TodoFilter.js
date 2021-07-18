@@ -1,6 +1,9 @@
+import TodoLocalStore from '../core/TodoLocalStore.js';
 import { FILTER_TYPES, TODO_FILTER_MENU } from '../../utils/const.js';
-export default function TodoFilter({ $app, initialState, onFilter }) {
-  this.state = initialState;
+export default function TodoFilter({ $app, onFilter }) {
+  // const todoLocalStore = new TodoLocalStore();
+  // this.state = todoLocalStore.getItems();
+  this.state = localStorage.getItem('state');
 
   this.$target = document.createElement('div');
   this.$target.className = 'count-container';
