@@ -1,5 +1,5 @@
 export const FILTER_TYPES = {
-  ALL: 'FILTER_TYPES.ALL',
+  ALL: 'all',
   COMPLETE: 'completed',
   ACTIVE: 'active',
 };

@@ -1,6 +1,9 @@
+import TodoLocalStore from '../core/TodoLocalStore.js';
 import { FILTER_TYPES, TODO_FILTER_MENU } from '../../utils/const.js';
-export default function TodoFilter({ $app, initialState, onFilter }) {
-  this.state = initialState;
+export default function TodoFilter({ $app, onFilter }) {
+  // const todoLocalStore = new TodoLocalStore();
+  // this.state = todoLocalStore.getItems();
+  this.state = localStorage.getItem('state');
 
   this.$target = document.createElement('div');
   this.$target.className = 'count-container';
@@ -14,10 +17,10 @@ export default function TodoFilter({ $app, initialState, onFilter }) {
 
   $nodeTodoFilter.addEventListener('click', (e) => {
     const $node = e.target;
-
-    if ($node.className === FILTER_TYPES.COMPLETE) {
+    const nodeClass = $node.className.trim();
+    if (nodeClass === FILTER_TYPES.COMPLETE) {
       onFilter(FILTER_TYPES.COMPLETE);
-    } else if ($node.className === FILTER_TYPES.ACTIVE) {
+    } else if (nodeClass === FILTER_TYPES.ACTIVE) {
       onFilter(FILTER_TYPES.ACTIVE);
     } else {
       onFilter(FILTER_TYPES.ALL);
@@ -25,20 +28,26 @@ export default function TodoFilter({ $app, initialState, onFilter }) {
   });
 
   this.render = () => {
-    const { todoes, isFilter, todoesFiltered } = this.state;
-
-    const todoTotalCount = isFilter ? todoesFiltered.length : todoes.length;
+    const { todoes, todoesFiltered, filterState } = this.state;
+    const todoTotalCount =
+      filterState === FILTER_TYPES.ALL ? todoes.length : todoesFiltered.length;
     const todoFilterTemplate = `
       <span class="todo-count">총 <strong>${todoTotalCount}</strong> 개</span>
       <ul class="filters">
         <li>
-          <a class=${FILTER_TYPES.ALL} href="#">${TODO_FILTER_MENU.ALL_MENU}</a>
+          <a class="${FILTER_TYPES.ALL} ${
+      filterState === FILTER_TYPES.ALL ? 'selected' : ''
+    }" href="#">${TODO_FILTER_MENU.ALL_MENU}</a>
         </li>
         <li>
-          <a class=${FILTER_TYPES.ACTIVE} href="#${FILTER_TYPES.ACTIVE}">${TODO_FILTER_MENU.ACTIVE_MENU}</a>
+          <a class="${FILTER_TYPES.ACTIVE} ${
+      filterState === FILTER_TYPES.ACTIVE ? 'selected' : ''
+    }" href="#${FILTER_TYPES.ACTIVE}">${TODO_FILTER_MENU.ACTIVE_MENU}</a>
         </li>
         <li>
-          <a class="completed" href="#${FILTER_TYPES.COMPLETE}">${TODO_FILTER_MENU.COMPLETE_MENU}</a>
+          <a class="${FILTER_TYPES.COMPLETE} ${
+      filterState === FILTER_TYPES.COMPLETE ? 'selected' : ''
+    }" href="#${FILTER_TYPES.COMPLETE}">${TODO_FILTER_MENU.COMPLETE_MENU}</a>
         </li>
       </ul>`;
     $nodeTodoFilter.innerHTML = todoFilterTemplate;
