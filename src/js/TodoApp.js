@@ -1,12 +1,13 @@
 import TodoFilter from './components/TodoFilter.js';
 import TodoInput from './components/TodoInput.js';
 import TodoList from './components/TodoList.js';
-import TodoLocalStore from './core/TodoLocalStore.js';
 import { FILTER_TYPES } from '../utils/const.js';
 import getUserList from './core/UserList.js';
+import UserList from './components/user/UserList.js';
 
 export default function TodoApp($app) {
-  const initialDtate = {
+  // localStorage.clear();
+  const initialData = {
     todoes: [
       {
         idx: 0,
@@ -22,9 +23,10 @@ export default function TodoApp($app) {
     todoesFiltered: [],
     filterState: FILTER_TYPES.ALL,
     todoesCount: '0',
+    users: [],
   };
   const localData = JSON.parse(localStorage.getItem('state'));
-  const viewData = localData ? localData : initialDtate;
+  const viewData = localData ? localData : initialData;
   this.state = viewData;
 
   this.setState = (nextState) => {
@@ -32,6 +34,7 @@ export default function TodoApp($app) {
     todoList.setState(nextState);
     todoInput.setState(nextState);
     todoFilter.setState(nextState);
+    userList.setState(nextState);
   };
 
   const todoInput = new TodoInput({
@@ -53,6 +56,9 @@ export default function TodoApp($app) {
     onFilter: (filterType) => filterTodo(filterType),
   });
 
+  const userList = new UserList({
+    initialState: this.state,
+  });
   const addTodo = (addContent) => {
     const { todoes } = this.state;
     const nextIdx = Math.max(0, ...todoes.map((todo) => todo.idx)) + 1;
@@ -157,11 +163,12 @@ export default function TodoApp($app) {
   };
 
   const init = async () => {
+    const userData = await getUserList();
+
+    this.state['users'] = userData;
     this.setState({
       ...this.state,
     });
-    const a = await getUserList();
-    console.log(a);
   };
   init();
 }
