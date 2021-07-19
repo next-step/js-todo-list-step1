@@ -1,3 +1,4 @@
+//아직 쓰이지 않음
 import { FILTER_TYPES } from '../../utils/const.js';
 export default function TodoLocalStore() {
   this.setState = (nextState) => {
