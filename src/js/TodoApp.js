@@ -3,10 +3,9 @@ import TodoInput from './components/TodoInput.js';
 import TodoList from './components/TodoList.js';
 import TodoLocalStore from './core/TodoLocalStore.js';
 import { FILTER_TYPES } from '../utils/const.js';
+import getUserList from './core/UserList.js';
 
 export default function TodoApp($app) {
-  // localStorage.clear();
-
   const initialDtate = {
     todoes: [
       {
@@ -53,13 +52,6 @@ export default function TodoApp($app) {
 
     onFilter: (filterType) => filterTodo(filterType),
   });
-
-  const init = () => {
-    this.setState({
-      ...this.state,
-    });
-  };
-  init();
 
   const addTodo = (addContent) => {
     const { todoes } = this.state;
@@ -163,4 +155,13 @@ export default function TodoApp($app) {
       });
     }
   };
+
+  const init = async () => {
+    this.setState({
+      ...this.state,
+    });
+    const a = await getUserList();
+    console.log(a);
+  };
+  init();
 }
