@@ -366,6 +366,11 @@ html .clear-completed:active {
 
   outline: 1px solid #c9c9c9;
   padding: 3px;
+  cursor: pointer;
+}
+.user-list li:hover {
+  color: white;
+  background-color: #c1c1c1;
 }
 
 .drop {

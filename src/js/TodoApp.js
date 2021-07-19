@@ -2,8 +2,9 @@ import TodoFilter from './components/TodoFilter.js';
 import TodoInput from './components/TodoInput.js';
 import TodoList from './components/TodoList.js';
 import { FILTER_TYPES } from '../utils/const.js';
-import getUserList from './core/UserList.js';
+import getUserList from './core/getUserList.js';
 import UserList from './components/user/UserList.js';
+import getUserData from './core/getUserData.js';
 
 export default function TodoApp($app) {
   // localStorage.clear();
@@ -58,7 +59,13 @@ export default function TodoApp($app) {
 
   const userList = new UserList({
     initialState: this.state,
+    onUser: (userId) => updateTodo(userId),
   });
+
+  const updateTodo = (userId) => {
+    getUserData(userId);
+  };
+
   const addTodo = (addContent) => {
     const { todoes } = this.state;
     const nextIdx = Math.max(0, ...todoes.map((todo) => todo.idx)) + 1;
@@ -164,7 +171,6 @@ export default function TodoApp($app) {
 
   const init = async () => {
     const userData = await getUserList();
-
     this.state['users'] = userData;
     this.setState({
       ...this.state,

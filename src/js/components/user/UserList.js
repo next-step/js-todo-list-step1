@@ -1,4 +1,4 @@
-export default function UserList({ initialState }) {
+export default function UserList({ initialState, onUser }) {
   this.state = initialState;
 
   this.$targetBtn = document.createElement('input');
@@ -25,10 +25,15 @@ export default function UserList({ initialState }) {
       $userList.classList.toggle('drop');
     }
   });
+  this.$target.addEventListener('click', (e) => {
+    const { userId } = e.target.dataset;
+    console.log(userId);
+    onUser(userId);
+  });
 
   this.render = () => {
     const userListTemplate = `${users
-      .map((user) => `<li>${user.name}</li>`)
+      .map((user) => `<li data-user-id='${user._id}'>${user.name}</li>`)
       .join('')}`;
 
     this.$target.innerHTML = userListTemplate;
