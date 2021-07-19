@@ -7,7 +7,6 @@ import UserList from './components/user/UserList.js';
 import getUserData from './core/getUserData.js';
 
 export default function TodoApp($app) {
-  // localStorage.clear();
   const initialData = {
     todoes: [
       {
