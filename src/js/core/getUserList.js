@@ -3,7 +3,6 @@ const getUserList = async () => {
   try {
     const res = await fetch(`${BASE_URL}/api/users`);
     if (res.ok) {
-      // console.log('응답 josn', res.json());
       return await res.json();
     } else {
       return null;

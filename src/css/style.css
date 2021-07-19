@@ -40,8 +40,12 @@ body {
 .hidden {
   display: none;
 }
+.todoWrap {
+  display: flex;
+}
 
 .todoapp {
+  min-width: 500px;
   background: #fff;
   margin: 130px 0 40px 0;
   position: relative;
@@ -330,4 +334,45 @@ html .clear-completed:active {
 
 .info a:hover {
   text-decoration: underline;
+}
+
+.userApp {
+  /* margin-left: 50px; */
+  min-width: 200px;
+  font-size: 20px;
+}
+
+.user-drop {
+  margin-left: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  color: dimgray;
+  padding: 3px 7px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+
+.user-list {
+  list-style: none;
+}
+.user-list li {
+  float: left;
+  margin-left: 20px;
+  margin-bottom: 10px;
+
+  border: 1px solid transparent;
+
+  border-radius: 3px;
+
+  outline: 1px solid #c9c9c9;
+  padding: 3px;
+  cursor: pointer;
+}
+.user-list li:hover {
+  color: white;
+  background-color: #c1c1c1;
+}
+
+.drop {
+  display: none;
 }
